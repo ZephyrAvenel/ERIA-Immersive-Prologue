@@ -1,0 +1,11 @@
+{
+  "name": "@ine/sdk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": "./src/index.ts",
+  "dependencies": {
+    "@ine/core": "*",
+    "@ine/validators": "*"
+  }
+}

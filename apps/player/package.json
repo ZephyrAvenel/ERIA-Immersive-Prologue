@@ -1,0 +1,12 @@
+{
+  "name": "@ine/player",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@ine/core": "*",
+    "@ine/renderer": "*",
+    "@ine/ui": "*",
+    "@ine/validators": "*"
+  }
+}
