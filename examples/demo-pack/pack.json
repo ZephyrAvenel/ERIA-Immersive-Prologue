@@ -11,14 +11,14 @@
       "id": "welcome",
       "title": "A player without a story",
       "text": "INE reads narrative content from an independent, validated Narrative Pack.",
-      "image": "demo-pack/assets/welcome.svg",
+      "image": "assets/welcome.svg",
       "imageAlt": "Abstract cyan doorway opening into a dark landscape."
     },
     {
       "id": "foundation",
       "title": "Ready to evolve",
       "text": "The core, renderer, validation, UI, and SDK boundaries can now grow independently.",
-      "image": "demo-pack/assets/foundation.svg",
+      "image": "assets/foundation.svg",
       "imageAlt": "A constellation of connected modules."
     }
   ]

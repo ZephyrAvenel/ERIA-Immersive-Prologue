@@ -24,7 +24,7 @@ export function renderPlayer(
   if (scene.image) {
     const image = document.createElement("img");
     image.className = "scene__image";
-    image.src = new URL(scene.image, document.baseURI).href;
+    image.src = scene.image;
     image.alt = scene.imageAlt ?? "";
     article.append(image);
   }

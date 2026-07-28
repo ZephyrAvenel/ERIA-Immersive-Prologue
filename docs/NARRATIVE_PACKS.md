@@ -12,13 +12,14 @@ language, initial scene, and a non-empty ordered scene list. Each scene includes
 an identifier, title, and text. An image and accessible alternative may be
 provided.
 
-Asset paths are resolved from the deployed player's base URL in this foundation.
-A dedicated portable asset-resolution contract is recommended for the next pack
-specification mission.
+Asset paths are URI references resolved relative to the pack manifest URL.
+Keeping a pack manifest and its asset folders together therefore makes the pack
+portable between deployments. Absolute asset URLs remain valid.
 
 ## Compatibility
 
 The player rejects unknown formats, unknown versions, malformed scenes,
 duplicate scene identifiers, and missing start scenes before rendering. JSON
-Schema supports authoring tools, while the lightweight runtime validator
-protects production loading without introducing a validation framework.
+Schema supports authoring tools, while the lightweight runtime validator mirrors
+its foundation constraints and additionally checks duplicate scene identifiers
+and the `startScene` reference.

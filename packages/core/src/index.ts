@@ -38,7 +38,16 @@ export async function loadNarrativePack(
     throw new Error(`Invalid Narrative Pack: ${result.errors.join("; ")}`);
   }
 
-  return data as NarrativePack;
+  const pack = data as NarrativePack;
+  const packBaseUrl = new URL(".", source);
+
+  return {
+    ...pack,
+    scenes: pack.scenes.map((scene) => ({
+      ...scene,
+      image: scene.image ? new URL(scene.image, packBaseUrl).href : undefined,
+    })),
+  };
 }
 
 export class NarrativeEngine {

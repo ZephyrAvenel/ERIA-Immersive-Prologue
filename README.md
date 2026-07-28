@@ -29,6 +29,11 @@ npm run preview
 
 Additional verification is available with `npm run typecheck`.
 
+The Player reads its Narrative Pack URL from
+`apps/player/public/player.config.json`. Selecting another conforming work only
+requires changing that deployment configuration; no engine package needs to be
+rebuilt or edited.
+
 ## Repository layout
 
 ```text
@@ -60,6 +65,8 @@ See [the architecture guide](docs/ARCHITECTURE.md) and
 
 Every push to `main` is built by GitHub Actions and deployed to GitHub Pages.
 Pull requests run the same type and production-build checks without deploying.
+The repository's Pages publishing source must be set to **GitHub Actions** once
+by an administrator, as required by GitHub.
 
 ## License
 

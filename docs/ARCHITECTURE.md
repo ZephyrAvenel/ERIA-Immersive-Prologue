@@ -5,15 +5,15 @@
 INE is divided into small packages with one-way responsibilities:
 
 ```text
-Narrative Pack JSON
-        |
-   validators
-        |
-      core  <----- sdk
-        |
-    renderer <---- ui
-        |
-      player
+player ──> core <── renderer
+   ├─────> validators ──> core
+   ├─────> renderer
+   └─────> ui
+
+sdk ─────> core
+ └───────> validators
+
+player.config.json ──> player ──> Narrative Pack JSON + colocated assets
 ```
 
 - **core** owns stable domain types, pack loading, and narrative navigation.
@@ -23,10 +23,13 @@ Narrative Pack JSON
 - **sdk** is the eventual author-facing entry point; it currently re-exports
   stable types and validation only.
 - **player** composes packages and owns browser lifecycle concerns such as PWA
-  registration. It does not own narrative content.
+  registration and deployment configuration. It does not own narrative
+  business rules or content.
 
-The example pack is served as static data. Replacing its URL with any conforming
-pack must not require a change to the packages.
+The example pack is served as static data selected through
+`player.config.json`. Replacing its URL with any conforming pack requires no
+change to an application or package. Relative pack assets are resolved from the
+pack location, not from the Player location.
 
 ## Build and deployment
 
@@ -35,13 +38,15 @@ packages directly. TypeScript checks every application and package in strict
 mode before Vite produces `dist/`.
 
 GitHub Actions uses two workflows: continuous integration for pushes and pull
-requests, and Pages deployment for successful pushes to `main`. Both use
-`npm install` and the same `npm run build` command used locally.
+requests, and Pages deployment for successful pushes to `main`. Both use the
+committed npm lockfile through `npm ci` and the same `npm run build` command
+used locally.
 
 ## Evolution rules
 
 1. Keep narrative-specific assets and decisions in Narrative Packs.
 2. Introduce new pack capabilities through versioned schema changes.
-3. Keep packages independently testable and avoid browser APIs in `core`.
+3. Keep packages independently testable and isolate browser I/O from domain
+   state as the loading boundary evolves.
 4. Maintain backward compatibility within a declared pack version.
 5. Prefer small interfaces at package boundaries over shared mutable state.

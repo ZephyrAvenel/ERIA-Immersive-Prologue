@@ -12,12 +12,37 @@ if (!app) {
 
 const mount = app;
 
+interface PlayerConfiguration {
+  readonly narrativePackUrl: string;
+}
+
+async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
+  const response = await fetch(new URL("player.config.json", document.baseURI));
+  if (!response.ok) {
+    throw new Error(`Player configuration request failed (${response.status}).`);
+  }
+
+  const value: unknown = await response.json();
+  if (
+    typeof value !== "object" ||
+    value === null ||
+    !("narrativePackUrl" in value) ||
+    typeof value.narrativePackUrl !== "string" ||
+    value.narrativePackUrl.length === 0
+  ) {
+    throw new Error("Player configuration must define a narrativePackUrl.");
+  }
+
+  return { narrativePackUrl: value.narrativePackUrl };
+}
+
 async function start(): Promise<void> {
-  const packUrl = new URL("demo-pack/pack.json", document.baseURI);
+  const configuration = await loadPlayerConfiguration();
+  const packUrl = new URL(configuration.narrativePackUrl, document.baseURI);
   const pack = await loadNarrativePack(packUrl, validateNarrativePack);
   const engine = new NarrativeEngine(pack);
 
-  const render = (): void => {
+  const render = (focusTarget?: "previous" | "next"): void => {
     const scene = engine.currentScene;
     const controls = document.createElement("nav");
     controls.className = "player-controls";
@@ -25,18 +50,24 @@ async function start(): Promise<void> {
 
     const previous = createButton("Previous", () => {
       engine.previous();
-      render();
+      render("previous");
     });
     previous.disabled = !engine.canGoPrevious;
 
     const next = createButton("Next", () => {
       engine.next();
-      render();
+      render("next");
     });
     next.disabled = !engine.canGoNext;
 
     controls.append(previous, next);
     renderPlayer(mount, pack, scene, engine.progress, controls);
+    if (focusTarget) {
+      const preferredTarget = focusTarget === "previous" ? previous : next;
+      const fallbackTarget = focusTarget === "previous" ? next : previous;
+      const target = preferredTarget.disabled ? fallbackTarget : preferredTarget;
+      requestAnimationFrame(() => target.focus());
+    }
   };
 
   render();
