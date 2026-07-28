@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { NarrativeEngine, loadNarrativePack } from "../../../.test-build/packages/core/src/index.js";
+import {
+  DEFAULT_SCENE_TRANSITION,
+  NarrativeEngine,
+  getSceneTransition,
+  getTransitionDirection,
+  loadNarrativePack,
+  normalizeSceneTransition,
+} from "../../../.test-build/packages/core/src/index.js";
 import { validateNarrativePack } from "../../../.test-build/packages/validators/src/index.js";
 
 function createPack() {
@@ -115,4 +122,85 @@ test("NarrativeEngine reports an incoherent navigation state", () => {
   const engine = new NarrativeEngine(pack);
   pack.scenes.length = 0;
   assert.throws(() => engine.currentScene, /INE_SCENE_STATE_INVALID/);
+});
+
+test("transition normalization keeps absent transitions immediate and deterministic", () => {
+  assert.deepEqual(normalizeSceneTransition(), DEFAULT_SCENE_TRANSITION);
+  assert.deepEqual(normalizeSceneTransition({ type: "none", durationMs: 3000, easing: "linear" }), {
+    type: "none",
+    durationMs: 0,
+    easing: "linear",
+  });
+});
+
+test("transition normalization supports all public transition types and default easing", () => {
+  for (const type of ["fade", "crossfade", "slide"]) {
+    assert.deepEqual(normalizeSceneTransition({ type }), {
+      type,
+      durationMs: 450,
+      easing: "ease-in-out",
+    });
+  }
+  assert.deepEqual(normalizeSceneTransition({ type: "fade", durationMs: 0, easing: "linear" }), {
+    type: "fade",
+    durationMs: 0,
+    easing: "linear",
+  });
+  assert.deepEqual(normalizeSceneTransition({ type: "slide", durationMs: 3000, easing: "ease-out" }), {
+    type: "slide",
+    durationMs: 3000,
+    easing: "ease-out",
+  });
+});
+
+test("scene transitions override the pack default transition", () => {
+  const pack = {
+    ...createPack(),
+    presentation: {
+      defaultTransition: { type: "fade", durationMs: 450, easing: "ease-in-out" },
+    },
+    scenes: [
+      { id: "start", title: "Start", text: "First." },
+      {
+        id: "middle",
+        title: "Middle",
+        text: "Second.",
+        transition: { type: "crossfade", durationMs: 700, easing: "ease" },
+      },
+    ],
+  };
+
+  assert.deepEqual(getSceneTransition(pack, pack.scenes[0]), {
+    type: "fade",
+    durationMs: 450,
+    easing: "ease-in-out",
+  });
+  assert.deepEqual(getSceneTransition(pack, pack.scenes[1]), {
+    type: "crossfade",
+    durationMs: 700,
+    easing: "ease",
+  });
+});
+
+test("NarrativeEngine exposes the transition used when entering a scene", () => {
+  const pack = {
+    ...createPack(),
+    scenes: [
+      { id: "start", title: "Start", text: "First." },
+      { id: "middle", title: "Middle", text: "Second.", transition: { type: "slide", easing: "ease-in" } },
+    ],
+  };
+  const engine = new NarrativeEngine(pack);
+
+  assert.deepEqual(engine.transitionForSceneIndex(1), {
+    type: "slide",
+    durationMs: 450,
+    easing: "ease-in",
+  });
+});
+
+test("slide transition direction is derived from navigation indexes", () => {
+  assert.equal(getTransitionDirection(0, 1), "forward");
+  assert.equal(getTransitionDirection(2, 1), "backward");
+  assert.equal(getTransitionDirection(1, 1), "none");
 });

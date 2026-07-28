@@ -1,0 +1,22 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "reduced-transition-none",
+  "title": "Reduced transition none",
+  "language": "en",
+  "startScene": "start",
+  "presentation": {
+    "defaultTransition": {
+      "type": "none",
+      "durationMs": 0,
+      "easing": "linear"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}

@@ -15,6 +15,13 @@ const expectedInvalidCodes = {
   "invalid-image-display-mode.json": "INE_VALIDATION_SCENE_0_IMAGE_DISPLAY_MODE_INVALID",
   "wrong-property-type.json": "INE_VALIDATION_SCENE_0_TEXT_REQUIRED",
   "empty-scenes.json": "INE_VALIDATION_SCENES_REQUIRED",
+  "unknown-transition-type.json": "INE_VALIDATION_TRANSITION_TYPE_INVALID",
+  "negative-transition-duration.json": "INE_VALIDATION_TRANSITION_DURATION_INVALID",
+  "too-long-transition-duration.json": "INE_VALIDATION_TRANSITION_DURATION_INVALID",
+  "nonnumeric-transition-duration.json": "INE_VALIDATION_TRANSITION_DURATION_INVALID",
+  "unknown-transition-easing.json": "INE_VALIDATION_TRANSITION_EASING_INVALID",
+  "transition-extra-property.json": "INE_VALIDATION_UNKNOWN_PROPERTY",
+  "malformed-transition.json": "INE_VALIDATION_TRANSITION_OBJECT_REQUIRED",
 };
 
 test("validator accepts every valid fixture", async () => {
@@ -59,4 +66,33 @@ test("JSON Schema and runtime validator agree on required root and scene fields"
   assert.deepEqual(schema.$defs.scene.required, ["id", "title", "text"]);
   assert.equal(schema.additionalProperties, false);
   assert.equal(schema.$defs.scene.additionalProperties, false);
+});
+
+test("runtime validator and JSON Schema expose the same transition contract", async () => {
+  const schema = await readProjectJson("schemas", "narrative-pack.schema.json");
+  assert.deepEqual(schema.$defs.transition.required, ["type"]);
+  assert.deepEqual(schema.$defs.transition.properties.type.enum, ["none", "fade", "crossfade", "slide"]);
+  assert.deepEqual(schema.$defs.transition.properties.easing.enum, [
+    "linear",
+    "ease",
+    "ease-in",
+    "ease-out",
+    "ease-in-out",
+  ]);
+  assert.equal(schema.$defs.transition.properties.durationMs.minimum, 0);
+  assert.equal(schema.$defs.transition.properties.durationMs.maximum, 3000);
+
+  for (const type of schema.$defs.transition.properties.type.enum) {
+    const result = validateNarrativePack({
+      format: "ine-narrative-pack",
+      version: "1.0",
+      id: `transition-${type}`,
+      title: type,
+      language: "en",
+      startScene: "start",
+      presentation: { defaultTransition: { type } },
+      scenes: [{ id: "start", title: "Start", text: "Text." }],
+    });
+    assert.equal(result.valid, true, type);
+  }
 });

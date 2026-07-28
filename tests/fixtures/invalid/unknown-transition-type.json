@@ -1,0 +1,20 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "unknown-transition-type",
+  "title": "Unknown transition type",
+  "language": "en",
+  "startScene": "start",
+  "presentation": {
+    "defaultTransition": {
+      "type": "spin"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}

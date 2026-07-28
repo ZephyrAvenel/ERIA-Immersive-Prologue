@@ -1,3 +1,28 @@
+export const TRANSITION_TYPES = ["none", "fade", "crossfade", "slide"] as const;
+export const TRANSITION_EASINGS = ["linear", "ease", "ease-in", "ease-out", "ease-in-out"] as const;
+export const MAX_TRANSITION_DURATION_MS = 3_000;
+export const DEFAULT_TRANSITION_DURATION_MS = 450;
+
+export type TransitionType = (typeof TRANSITION_TYPES)[number];
+export type TransitionEasing = (typeof TRANSITION_EASINGS)[number];
+export type TransitionDirection = "none" | "forward" | "backward";
+
+export interface SceneTransition {
+  readonly type: TransitionType;
+  readonly durationMs?: number;
+  readonly easing?: TransitionEasing;
+}
+
+export interface NormalizedSceneTransition {
+  readonly type: TransitionType;
+  readonly durationMs: number;
+  readonly easing: TransitionEasing;
+}
+
+export interface NarrativePresentation {
+  readonly defaultTransition?: SceneTransition;
+}
+
 export interface NarrativeScene {
   readonly id: string;
   readonly title: string;
@@ -5,6 +30,7 @@ export interface NarrativeScene {
   readonly image?: string;
   readonly imageAlt?: string;
   readonly imageDisplayMode?: ImageDisplayMode;
+  readonly transition?: SceneTransition;
 }
 
 export interface NarrativePack {
@@ -14,6 +40,7 @@ export interface NarrativePack {
   readonly title: string;
   readonly language: string;
   readonly startScene: string;
+  readonly presentation?: NarrativePresentation;
   readonly scenes: readonly NarrativeScene[];
 }
 
@@ -26,6 +53,40 @@ export type NarrativePackValidator = (value: unknown) => ValidationResult;
 
 export type AssetKind = "images" | "audio" | "video" | "icons";
 export type ImageDisplayMode = "contain" | "cover" | "fill" | "immersive";
+
+export const DEFAULT_SCENE_TRANSITION: NormalizedSceneTransition = {
+  type: "none",
+  durationMs: 0,
+  easing: "ease-in-out",
+};
+
+export function normalizeSceneTransition(transition?: SceneTransition): NormalizedSceneTransition {
+  if (!transition) return DEFAULT_SCENE_TRANSITION;
+
+  if (transition.type === "none") {
+    return {
+      type: "none",
+      durationMs: 0,
+      easing: transition.easing ?? DEFAULT_SCENE_TRANSITION.easing,
+    };
+  }
+
+  return {
+    type: transition.type,
+    durationMs: transition.durationMs ?? DEFAULT_TRANSITION_DURATION_MS,
+    easing: transition.easing ?? DEFAULT_SCENE_TRANSITION.easing,
+  };
+}
+
+export function getSceneTransition(pack: NarrativePack, scene: NarrativeScene): NormalizedSceneTransition {
+  return normalizeSceneTransition(scene.transition ?? pack.presentation?.defaultTransition);
+}
+
+export function getTransitionDirection(fromIndex: number, toIndex: number): TransitionDirection {
+  if (toIndex > fromIndex) return "forward";
+  if (toIndex < fromIndex) return "backward";
+  return "none";
+}
 
 export class AssetManager {
   readonly #baseUrl: URL;
@@ -139,6 +200,18 @@ export class NarrativeEngine {
 
   get progress(): number {
     return (this.#index + 1) / this.#pack.scenes.length;
+  }
+
+  transitionForScene(scene: NarrativeScene): NormalizedSceneTransition {
+    return getSceneTransition(this.#pack, scene);
+  }
+
+  transitionForSceneIndex(index: number): NormalizedSceneTransition {
+    const scene = this.#pack.scenes[index];
+    if (!scene) {
+      throw new Error("INE_SCENE_STATE_INVALID");
+    }
+    return this.transitionForScene(scene);
   }
 
   previous(): void {

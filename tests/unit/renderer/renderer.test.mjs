@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { renderPlayer } from "../../../.test-build/packages/renderer/src/index.js";
+import { renderPlayer, renderPlayerWithTransition } from "../../../.test-build/packages/renderer/src/index.js";
 import { FakeElement, findElement, findElements, withFakeDocument } from "../../helpers/fake-dom.mjs";
 
 function createState(overrides = {}) {
@@ -32,6 +32,45 @@ function createState(overrides = {}) {
     },
     ...overrides,
   };
+}
+
+function createTransition(type, overrides = {}) {
+  return {
+    type,
+    durationMs: type === "none" ? 0 : 450,
+    easing: "ease-in-out",
+    ...overrides,
+  };
+}
+
+function installControlledAnimations() {
+  const animations = [];
+  const previousAnimate = FakeElement.prototype.animate;
+  FakeElement.prototype.animate = function animate(keyframes, options) {
+    let resolve;
+    let reject;
+    const finished = new Promise((resolvePromise, rejectPromise) => {
+      resolve = resolvePromise;
+      reject = rejectPromise;
+    });
+    animations.push({ element: this, keyframes, options, resolve, reject });
+    return { finished };
+  };
+  return {
+    animations,
+    restore() {
+      if (previousAnimate) FakeElement.prototype.animate = previousAnimate;
+      else delete FakeElement.prototype.animate;
+    },
+  };
+}
+
+async function waitForAnimationCount(controlled, count) {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    if (controlled.animations.length >= count) return;
+    await Promise.resolve();
+  }
+  assert.fail(`Expected ${count} animations, received ${controlled.animations.length}`);
 }
 
 test("Renderer creates public scene content from trusted state", () =>
@@ -90,4 +129,154 @@ test("Renderer uses caller-provided locale labels instead of hard-coded UI strin
     assert.ok(renderedText.includes("Step 2 of 4"));
     assert.equal(renderedText.includes("Previous"), false);
     assert.equal(renderedText.includes("Progress"), false);
+  }));
+
+test("Renderer renders immediately when transition type is none", async () =>
+  withFakeDocument(async () => {
+    const target = new FakeElement("main");
+    renderPlayer(target, createState({ scene: { ...createState().scene, title: "Old" } }));
+
+    await renderPlayerWithTransition(target, createState({ scene: { ...createState().scene, title: "New" } }), {
+      transition: createTransition("none"),
+      direction: "forward",
+      reduceMotion: false,
+    });
+
+    assert.equal(findElement(target, ".scene__title").textContent, "New");
+    assert.equal(target.getAttribute("data-transition"), null);
+  }));
+
+test("Renderer bypasses animated transitions when reduced motion is requested", async () =>
+  withFakeDocument(async () => {
+    const target = new FakeElement("main");
+    const controlled = installControlledAnimations();
+    try {
+      renderPlayer(target, createState({ scene: { ...createState().scene, title: "Old" } }));
+      await renderPlayerWithTransition(target, createState({ scene: { ...createState().scene, title: "Reduced" } }), {
+        transition: createTransition("slide"),
+        direction: "forward",
+        reduceMotion: true,
+      });
+
+      assert.equal(findElement(target, ".scene__title").textContent, "Reduced");
+      assert.equal(controlled.animations.length, 0);
+    } finally {
+      controlled.restore();
+    }
+  }));
+
+test("Renderer applies fade transition and cleans transient state", async () =>
+  withFakeDocument(async () => {
+    const target = new FakeElement("main");
+    const controlled = installControlledAnimations();
+    try {
+      renderPlayer(target, createState({ scene: { ...createState().scene, title: "Old" } }));
+      const promise = renderPlayerWithTransition(
+        target,
+        createState({ scene: { ...createState().scene, title: "New" } }),
+        {
+          transition: createTransition("fade"),
+          direction: "forward",
+          reduceMotion: false,
+        },
+      );
+
+      assert.equal(target.getAttribute("data-transition"), "fade");
+      assert.equal(controlled.animations[0].options.duration, 450);
+      assert.equal(controlled.animations[0].options.easing, "ease-in-out");
+      controlled.animations[0].resolve();
+      await waitForAnimationCount(controlled, 2);
+      controlled.animations[1].resolve();
+      await promise;
+
+      assert.equal(findElement(target, ".scene__title").textContent, "New");
+      assert.equal(target.getAttribute("data-transition"), null);
+      assert.equal(target.classList.contains("player-transition-stage"), false);
+    } finally {
+      controlled.restore();
+    }
+  }));
+
+test("Renderer removes old content after crossfade", async () =>
+  withFakeDocument(async () => {
+    const target = new FakeElement("main");
+    const controlled = installControlledAnimations();
+    try {
+      renderPlayer(target, createState({ scene: { ...createState().scene, title: "Old" } }));
+      const promise = renderPlayerWithTransition(
+        target,
+        createState({ scene: { ...createState().scene, title: "Crossfade" } }),
+        {
+          transition: createTransition("crossfade"),
+          direction: "forward",
+          reduceMotion: false,
+        },
+      );
+
+      assert.equal(findElements(target, ".player").length, 2);
+      assert.equal(
+        findElements(target, ".player").filter((element) => element.getAttribute("aria-hidden") === "true").length,
+        1,
+      );
+      controlled.animations.forEach((animation) => animation.resolve());
+      await promise;
+
+      assert.equal(findElements(target, ".player").length, 1);
+      assert.equal(findElement(target, ".scene__title").textContent, "Crossfade");
+      assert.equal(
+        findElements(target, ".player").filter((element) => element.getAttribute("aria-hidden") === "true").length,
+        0,
+      );
+    } finally {
+      controlled.restore();
+    }
+  }));
+
+test("Renderer applies deterministic slide directions", async () =>
+  withFakeDocument(async () => {
+    const target = new FakeElement("main");
+    const controlled = installControlledAnimations();
+    try {
+      renderPlayer(target, createState({ scene: { ...createState().scene, title: "Old" } }));
+      const promise = renderPlayerWithTransition(
+        target,
+        createState({ scene: { ...createState().scene, title: "Slide" } }),
+        {
+          transition: createTransition("slide"),
+          direction: "backward",
+          reduceMotion: false,
+        },
+      );
+
+      assert.equal(controlled.animations[0].keyframes[1].transform, "translateX(4rem)");
+      assert.equal(controlled.animations[1].keyframes[0].transform, "translateX(-4rem)");
+      controlled.animations.forEach((animation) => animation.resolve());
+      await promise;
+      assert.equal(findElement(target, ".scene__title").textContent, "Slide");
+    } finally {
+      controlled.restore();
+    }
+  }));
+
+test("Renderer falls back to immediate rendering when animation fails", async () =>
+  withFakeDocument(async () => {
+    const target = new FakeElement("main");
+    const previousAnimate = FakeElement.prototype.animate;
+    FakeElement.prototype.animate = () => {
+      throw new Error("animation failed");
+    };
+    try {
+      renderPlayer(target, createState({ scene: { ...createState().scene, title: "Old" } }));
+      await renderPlayerWithTransition(target, createState({ scene: { ...createState().scene, title: "Fallback" } }), {
+        transition: createTransition("fade"),
+        direction: "forward",
+        reduceMotion: false,
+      });
+
+      assert.equal(findElement(target, ".scene__title").textContent, "Fallback");
+      assert.equal(target.getAttribute("data-transition"), null);
+    } finally {
+      if (previousAnimate) FakeElement.prototype.animate = previousAnimate;
+      else delete FakeElement.prototype.animate;
+    }
   }));

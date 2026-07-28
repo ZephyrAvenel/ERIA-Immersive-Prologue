@@ -1,5 +1,12 @@
-import { NarrativeEngine, loadNarrativePack } from "@ine/core";
-import { renderPlayer } from "@ine/renderer";
+import {
+  DEFAULT_SCENE_TRANSITION,
+  NarrativeEngine,
+  getTransitionDirection,
+  loadNarrativePack,
+  type NormalizedSceneTransition,
+  type TransitionDirection,
+} from "@ine/core";
+import { renderPlayer, renderPlayerWithTransition } from "@ine/renderer";
 import { createButton } from "@ine/ui";
 import { validateNarrativePack } from "@ine/validators";
 import { interpolate, resolveLocale, type LocaleMessages } from "./localization";
@@ -12,9 +19,14 @@ if (!app) {
 }
 
 const mount = app;
+type NavigationTarget = "previous" | "next";
 
 interface PlayerConfiguration {
   readonly narrativePackUrl: string;
+}
+
+function prefersReducedMotion(): boolean {
+  return globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 }
 
 function updateShell(messages: LocaleMessages, packTitle?: string): void {
@@ -58,29 +70,56 @@ async function start(): Promise<void> {
   const engine = new NarrativeEngine(pack);
   const messages = resolveLocale(pack.language);
   updateShell(messages, pack.title);
+  let transitionInProgress = false;
 
-  const render = (focusTarget?: "previous" | "next"): void => {
+  const updateControlAvailability = (): void => {
+    const previous = mount.querySelector<HTMLButtonElement>('[data-navigation="previous"]');
+    const next = mount.querySelector<HTMLButtonElement>('[data-navigation="next"]');
+    if (previous) previous.disabled = transitionInProgress || !engine.canGoPrevious;
+    if (next) next.disabled = transitionInProgress || !engine.canGoNext;
+  };
+
+  const disableCurrentControls = (): void => {
+    for (const button of mount.querySelectorAll<HTMLButtonElement>(".player-controls button")) {
+      button.disabled = true;
+    }
+  };
+
+  const focusNavigationControl = (focusTarget: NavigationTarget): void => {
+    const preferredTarget = mount.querySelector<HTMLButtonElement>(`[data-navigation="${focusTarget}"]`);
+    const fallbackTarget = mount.querySelector<HTMLButtonElement>(
+      `[data-navigation="${focusTarget === "previous" ? "next" : "previous"}"]`,
+    );
+    const target = preferredTarget && !preferredTarget.disabled ? preferredTarget : fallbackTarget;
+    if (target && !target.disabled) target.focus();
+  };
+
+  const render = async (
+    focusTarget?: NavigationTarget,
+    transition: NormalizedSceneTransition = DEFAULT_SCENE_TRANSITION,
+    direction: TransitionDirection = "none",
+  ): Promise<void> => {
     const scene = engine.currentScene;
     const controls = document.createElement("nav");
     controls.className = "player-controls";
     controls.setAttribute("aria-label", messages.navigationLabel);
 
     const previous = createButton(messages.previous, () => {
-      engine.previous();
-      render("previous");
+      void navigate("previous");
     });
-    previous.disabled = !engine.canGoPrevious;
+    previous.dataset.navigation = "previous";
+    previous.disabled = transitionInProgress || !engine.canGoPrevious;
 
     const next = createButton(messages.next, () => {
-      engine.next();
-      render("next");
+      void navigate("next");
     });
-    next.disabled = !engine.canGoNext;
+    next.dataset.navigation = "next";
+    next.disabled = transitionInProgress || !engine.canGoNext;
 
     controls.append(previous, next);
     const sceneIndex = engine.currentSceneIndex;
     const sceneCount = engine.sceneCount;
-    renderPlayer(mount, {
+    const state = {
       pack,
       scene,
       sceneIndex,
@@ -95,16 +134,63 @@ async function start(): Promise<void> {
           total: sceneCount,
         }),
       },
-    });
-    if (focusTarget) {
-      const preferredTarget = focusTarget === "previous" ? previous : next;
-      const fallbackTarget = focusTarget === "previous" ? next : previous;
-      const target = preferredTarget.disabled ? fallbackTarget : preferredTarget;
-      target.focus();
+    };
+
+    if (transitionInProgress) {
+      await renderPlayerWithTransition(mount, state, {
+        transition,
+        direction,
+        reduceMotion: prefersReducedMotion(),
+      });
+    } else {
+      renderPlayer(mount, state);
+    }
+    updateControlAvailability();
+    if (focusTarget) focusNavigationControl(focusTarget);
+  };
+
+  const navigate = async (target: NavigationTarget): Promise<void> => {
+    if (transitionInProgress) return;
+    if (target === "previous" && !engine.canGoPrevious) return;
+    if (target === "next" && !engine.canGoNext) return;
+
+    const previousIndex = engine.currentSceneIndex;
+    const targetIndex = target === "next" ? previousIndex + 1 : previousIndex - 1;
+    const transition = engine.transitionForSceneIndex(targetIndex);
+
+    transitionInProgress = true;
+    disableCurrentControls();
+    mount.setAttribute("aria-busy", "true");
+    try {
+      if (target === "next") engine.next();
+      else engine.previous();
+      await render(target, transition, getTransitionDirection(previousIndex, engine.currentSceneIndex));
+    } catch {
+      renderPlayer(mount, {
+        pack,
+        scene: engine.currentScene,
+        sceneIndex: engine.currentSceneIndex,
+        sceneCount: engine.sceneCount,
+        controls: document.createElement("nav"),
+        messages: {
+          engineTitle: messages.engineTitle,
+          packLabel: messages.packLabel,
+          progressLabel: messages.progressLabel,
+          progressText: interpolate(messages.progressText, {
+            current: engine.currentSceneIndex + 1,
+            total: engine.sceneCount,
+          }),
+        },
+      });
+    } finally {
+      transitionInProgress = false;
+      mount.removeAttribute("aria-busy");
+      updateControlAvailability();
+      focusNavigationControl(target);
     }
   };
 
-  render();
+  void render();
 }
 
 function renderError(): void {

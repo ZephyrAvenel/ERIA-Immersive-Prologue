@@ -15,7 +15,8 @@ npm run test:ci
 ```
 
 - `test:unit` checks Core navigation/loading contracts, AssetManager path
-  resolution, Validators, Renderer output, and locale helpers.
+  resolution, Validators, Renderer output, transition contracts, and locale
+  helpers.
 - `test:integration` checks the real demo Narrative Pack against the schema,
   runtime validator, Core loader, assets, and locale files.
 - `test:e2e` starts the Vite Player and drives a real browser through the
@@ -66,6 +67,10 @@ Player for:
 - French interface copy for the current pack;
 - separate engine and Narrative Pack titles;
 - default `contain` image display mode;
+- configurable scene transitions;
+- navigation locking during a transition;
+- focus restoration after animated and reduced-motion navigation;
+- `prefers-reduced-motion` disabling visual animations;
 - desktop, tablet, and mobile layout sanity;
 - keyboard focus behavior;
 - elementary accessibility signals such as headings, alt text, named buttons,
@@ -75,6 +80,12 @@ In CI, Chrome must be available. Locally, set `CHROME_PATH` when you want to
 force browser execution from a specific executable. If Chrome is not explicitly
 available in a restricted local environment, the browser test is skipped rather
 than becoming flaky.
+
+Transition tests should observe stable states such as `aria-busy`, progress
+text, DOM cleanup, and focus target. Avoid pixel-perfect expectations and avoid
+long sleeps. If a transition needs to wait for completion, prefer the observable
+end state: `aria-busy` removed, one `.player` in the DOM, expected progress
+visible, and focus on an enabled control.
 
 On failure, useful files are written under `test-results/`; GitHub Actions
 uploads them only for failed runs.

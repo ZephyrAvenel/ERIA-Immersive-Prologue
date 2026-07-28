@@ -15,6 +15,11 @@ test("demo Narrative Pack remains valid, French, and independent from engine cod
   assert.equal(pack.scenes.length, 8);
   assert.equal(pack.scenes.every((scene) => scene.image?.startsWith("assets/images/")), true);
   assert.equal(pack.scenes.some((scene) => "imageDisplayMode" in scene), false);
+  assert.deepEqual(pack.presentation.defaultTransition, {
+    type: "fade",
+    durationMs: 450,
+    easing: "ease-in-out",
+  });
 });
 
 test("demo Narrative Pack references exactly eight existing PNG images", async () => {

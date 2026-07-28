@@ -14,7 +14,11 @@ export class FakeElement {
     this.children = [];
     this.attributes = new Map();
     this.dataset = {};
-    this.style = {};
+    this.style = {
+      removeProperty(name) {
+        delete this[name];
+      },
+    };
     this.className = "";
     this.id = "";
     this.tabIndex = 0;
@@ -41,11 +45,25 @@ export class FakeElement {
     this.attributes.set(name, String(value));
   }
 
+  removeAttribute(name) {
+    this.attributes.delete(name);
+  }
+
   getAttribute(name) {
     return this.attributes.get(name) ?? null;
   }
 
   addEventListener() {}
+
+  remove() {
+    if (!this.parentElement) return;
+    this.parentElement.children = this.parentElement.children.filter((child) => child !== this);
+    this.parentElement = null;
+  }
+
+  get firstElementChild() {
+    return this.children[0] ?? null;
+  }
 
   querySelector(selector) {
     return findElement(this, selector);
@@ -92,9 +110,19 @@ export function findElement(root, selector) {
 export function withFakeDocument(callback) {
   const previousDocument = globalThis.document;
   globalThis.document = new FakeDocument();
+  let isAsync = false;
   try {
-    return callback();
+    const result = callback();
+    if (result && typeof result.then === "function") {
+      isAsync = true;
+      return result.finally(() => {
+        globalThis.document = previousDocument;
+      });
+    }
+    return result;
   } finally {
-    globalThis.document = previousDocument;
+    if (!isAsync) {
+      globalThis.document = previousDocument;
+    }
   }
 }

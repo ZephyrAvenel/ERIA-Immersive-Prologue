@@ -1,0 +1,21 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "negative-transition-duration",
+  "title": "Negative transition duration",
+  "language": "en",
+  "startScene": "start",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": -1
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}

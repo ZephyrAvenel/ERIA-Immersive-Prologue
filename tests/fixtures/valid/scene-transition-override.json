@@ -1,0 +1,25 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "scene-transition-override",
+  "title": "Scene transition override",
+  "language": "en",
+  "startScene": "start",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text.",
+      "transition": {
+        "type": "crossfade",
+        "durationMs": 700,
+        "easing": "ease-in-out"
+      }
+    }
+  ]
+}

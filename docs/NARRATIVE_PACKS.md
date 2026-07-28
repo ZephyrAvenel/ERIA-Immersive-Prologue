@@ -50,6 +50,67 @@ Authors should prefer `contain` when preserving the full illustration matters.
 Other modes are explicit presentation choices made by the pack, not by the
 engine.
 
+## Scene transitions
+
+Transitions are optional visual presentation metadata. A pack that omits them
+remains valid and uses an immediate `none` transition.
+
+Supported transition types:
+
+```text
+none       Replace the scene immediately.
+fade       Fade the current scene out, then fade the target scene in.
+crossfade  Temporarily overlap old and new scenes while their opacity crosses.
+slide      Move between scenes horizontally; direction follows navigation.
+```
+
+A pack may define a default transition:
+
+```json
+{
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 450,
+      "easing": "ease-in-out"
+    }
+  }
+}
+```
+
+An individual scene may override the pack default:
+
+```json
+{
+  "id": "scene-04",
+  "title": "Scene title",
+  "text": "Scene text.",
+  "transition": {
+    "type": "crossfade",
+    "durationMs": 700,
+    "easing": "ease-in-out"
+  }
+}
+```
+
+The transition declared on a scene is used when that scene is entered.
+
+`durationMs` is optional, must be between `0` and `3000`, and defaults to a
+moderate engine value for animated transition types. `none` always normalizes to
+duration `0`. Supported easing values are `linear`, `ease`, `ease-in`,
+`ease-out`, and `ease-in-out`; arbitrary CSS timing functions are rejected.
+
+When `prefers-reduced-motion: reduce` is active, the Player treats animated
+transitions as immediate. A pack cannot override this user preference.
+
+If a browser animation fails or is unavailable, the Renderer displays the target
+scene immediately, clears transient transition state, and keeps the story
+accessible.
+
+To add a future transition type, update the Core transition union and defaults,
+the JSON Schema enum, runtime validation, Renderer behavior, unit fixtures,
+browser tests, and this document in the same mission.
+
 ## Interface language
 
 The Player selects interface copy from the pack `language` field. Narrative text
@@ -62,4 +123,5 @@ The player rejects unknown formats, unknown versions, malformed scenes,
 duplicate scene identifiers, and missing start scenes before rendering. JSON
 Schema supports authoring tools, while the lightweight runtime validator mirrors
 its foundation constraints and additionally checks duplicate scene identifiers
-the `startScene` reference, and allowed image display modes.
+the `startScene` reference, allowed image display modes, and transition
+contracts.

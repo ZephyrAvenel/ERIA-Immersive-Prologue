@@ -1,0 +1,21 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "nonnumeric-transition-duration",
+  "title": "Nonnumeric transition duration",
+  "language": "en",
+  "startScene": "start",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": "slow"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}

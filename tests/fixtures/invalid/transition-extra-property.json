@@ -1,0 +1,22 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "transition-extra-property",
+  "title": "Transition extra property",
+  "language": "en",
+  "startScene": "start",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 450,
+      "css": "opacity 1s"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}

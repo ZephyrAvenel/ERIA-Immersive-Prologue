@@ -1,0 +1,21 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "too-long-transition-duration",
+  "title": "Too long transition duration",
+  "language": "en",
+  "startScene": "start",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 3001
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}

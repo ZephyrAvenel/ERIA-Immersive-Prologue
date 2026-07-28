@@ -32,6 +32,11 @@ body {
     linear-gradient(135deg, #10100f 0, #181612 44%, #0d1413 100%);
 }
 
+#app {
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
 button {
   min-height: 2.75rem;
   min-width: 8rem;
@@ -91,6 +96,15 @@ button:disabled {
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: clamp(1rem, 3vw, 2rem);
+}
+
+.player-transition-stage {
+  overflow-x: clip;
+}
+
+.player--transition-enter,
+.player--transition-leave {
+  will-change: opacity, transform;
 }
 
 .player__header,
@@ -273,6 +287,7 @@ button:disabled {
   *,
   *::before,
   *::after {
+    animation-duration: 0.01ms !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }

@@ -43,6 +43,22 @@ future art direction without changing the Renderer contract.
 Localization is selected from the pack language and passed into rendering as
 data. This keeps UI copy, pack content, and DOM rendering separate.
 
+Transitions are split across the existing layers:
+
+- **Core** defines the serializable transition contract, default values, and
+  deterministic scene-entry resolution.
+- **Validators** and JSON Schema reject unknown transition types, invalid
+  durations, unknown easing names, malformed transition objects, and extra
+  properties.
+- **Player** owns navigation orchestration, temporary locking, `aria-busy`,
+  focus restoration, and user motion preferences.
+- **Renderer** executes the visual transition with native browser animation
+  primitives and falls back to immediate rendering if animation is unavailable
+  or fails.
+
+This keeps transitions independent from narrative content and prevents Core from
+depending on DOM, CSS, timers, or browser APIs.
+
 Future input and ambience features should attach at the Player boundary:
 keyboard, swipe, gamepad, transitions, audio, video, animation, ambience, and
 voice narration must be introduced through explicit configuration and package

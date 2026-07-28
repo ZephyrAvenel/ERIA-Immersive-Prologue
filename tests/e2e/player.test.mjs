@@ -264,6 +264,10 @@ async function readPlayerState(client) {
       const controlsRect = controls?.getBoundingClientRect();
       const contentRect = content?.getBoundingClientRect();
       return {
+        busy: document.querySelector('#app')?.getAttribute('aria-busy'),
+        transitionName: document.querySelector('#app')?.getAttribute('data-transition'),
+        playerCount: document.querySelectorAll('.player').length,
+        hiddenPlayerCount: document.querySelectorAll('.player[aria-hidden="true"]').length,
         lang: document.documentElement.lang,
         documentTitle: document.title,
         brand: document.querySelector('.player__brand')?.textContent,
@@ -298,8 +302,12 @@ async function readPlayerState(client) {
   );
 }
 
-async function clickLocalizedNext(client) {
+async function clickLocalizedNext(client, expectedProgress) {
   await evaluate(client, "Array.from(document.querySelectorAll('button')).find((button) => button.textContent === 'Suivant')?.click()");
+  if (expectedProgress) {
+    await waitForExpression(client, `document.querySelector('.progress__text')?.textContent === ${JSON.stringify(expectedProgress)}`);
+    await waitForExpression(client, "document.querySelector('#app')?.getAttribute('aria-busy') === null");
+  }
   await waitForExpression(client, "document.querySelector('.scene__image')?.complete === true");
 }
 
@@ -345,6 +353,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     });
 
     const url = `http://127.0.0.1:${port}${baseUrl}`;
+    await page.send("Emulation.setEmulatedMedia", {
+      features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
+    });
     await navigate(page, url);
 
     const first = await readPlayerState(page);
@@ -356,6 +367,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(first.progress, "Scène 1 / 8");
     assert.equal(first.previousDisabled, true);
     assert.equal(first.nextDisabled, false);
+    assert.equal(first.busy, null);
+    assert.equal(first.transitionName, null);
+    assert.equal(first.playerCount, 1);
+    assert.equal(first.hiddenPlayerCount, 0);
     assert.equal(first.objectFit, "contain");
     assert.equal(first.displayMode, "contain");
     assert.equal(first.imageComplete, true);
@@ -374,10 +389,56 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       { text: "Suivant", disabled: false },
     ]);
 
-    for (let index = 2; index <= 8; index += 1) {
-      await clickLocalizedNext(page);
+    await evaluate(
+      page,
+      `(() => {
+        window.__ineAnimations = [];
+        window.__ineBusyObserved = false;
+        window.__ineControlsDisabledDuringBusy = false;
+        const app = document.querySelector('#app');
+        const observer = new MutationObserver(() => {
+          if (app?.getAttribute('aria-busy') === 'true') {
+            window.__ineBusyObserved = true;
+            window.__ineControlsDisabledDuringBusy = Array.from(document.querySelectorAll('button')).every((button) => button.disabled);
+          }
+        });
+        if (app) observer.observe(app, { attributes: true, attributeFilter: ['aria-busy'] });
+        const originalAnimate = Element.prototype.animate;
+        Element.prototype.animate = function(keyframes, options) {
+          window.__ineAnimations.push({ className: this.className, keyframes, options });
+          return originalAnimate.call(this, keyframes, options);
+        };
+      })()`,
+    );
+
+    await evaluate(
+      page,
+      `(() => {
+        const next = Array.from(document.querySelectorAll('button')).find((button) => button.textContent === 'Suivant');
+        next?.click();
+        next?.click();
+      })()`,
+    );
+    await waitForExpression(page, "window.__ineBusyObserved === true", 1_000);
+    assert.equal(await evaluate(page, "window.__ineControlsDisabledDuringBusy"), true);
+    await waitForExpression(page, "document.querySelector('.progress__text')?.textContent === 'Scène 2 / 8'");
+    await waitForExpression(page, "document.querySelector('#app')?.getAttribute('aria-busy') === null");
+    const afterDoubleActivation = await readPlayerState(page);
+    assert.equal(afterDoubleActivation.progress, "Scène 2 / 8");
+    assert.equal(afterDoubleActivation.busy, null);
+    assert.equal(afterDoubleActivation.transitionName, null);
+    assert.equal(afterDoubleActivation.playerCount, 1);
+    assert.equal(afterDoubleActivation.hiddenPlayerCount, 0);
+    assert.equal(afterDoubleActivation.activeElementText, "Suivant");
+    assert.ok((await evaluate(page, "window.__ineAnimations.length")) >= 2);
+
+    for (let index = 3; index <= 8; index += 1) {
+      await clickLocalizedNext(page, `Scène ${index} / 8`);
       const state = await readPlayerState(page);
       assert.equal(state.progress, `Scène ${index} / 8`);
+      assert.equal(state.busy, null);
+      assert.equal(state.playerCount, 1);
+      assert.equal(state.hiddenPlayerCount, 0);
       assert.equal(state.objectFit, "contain");
       assert.equal(state.displayMode, "contain");
       assert.equal(state.imageComplete, true);
@@ -392,7 +453,11 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
 
     await evaluate(page, "Array.from(document.querySelectorAll('button')).find((button) => button.textContent === 'Précédent')?.click()");
     await waitForExpression(page, "document.querySelector('.progress__text')?.textContent === 'Scène 7 / 8'");
-    assert.equal((await readPlayerState(page)).activeElementText, "Précédent");
+    await waitForExpression(page, "document.querySelector('#app')?.getAttribute('aria-busy') === null");
+    const previousState = await readPlayerState(page);
+    assert.equal(previousState.activeElementText, "Précédent");
+    assert.equal(previousState.busy, null);
+    assert.equal(previousState.playerCount, 1);
 
     for (const viewport of [
       { width: 1280, height: 800 },
@@ -412,6 +477,28 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       assert.equal(state.imageVisible, true, `${viewport.width} image is not visible`);
       assert.deepEqual(state.buttons, ["Précédent", "Suivant"]);
     }
+
+    await page.send("Emulation.setEmulatedMedia", {
+      features: [{ name: "prefers-reduced-motion", value: "reduce" }],
+    });
+    await navigate(page, url);
+    await evaluate(
+      page,
+      `(() => {
+        window.__ineReducedAnimations = [];
+        const originalAnimate = Element.prototype.animate;
+        Element.prototype.animate = function(keyframes, options) {
+          window.__ineReducedAnimations.push({ className: this.className, keyframes, options });
+          return originalAnimate.call(this, keyframes, options);
+        };
+      })()`,
+    );
+    await clickLocalizedNext(page, "Scène 2 / 8");
+    const reducedState = await readPlayerState(page);
+    assert.equal(reducedState.busy, null);
+    assert.equal(reducedState.playerCount, 1);
+    assert.equal(reducedState.activeElementText, "Suivant");
+    assert.equal(await evaluate(page, "window.__ineReducedAnimations.length"), 0);
 
     assert.deepEqual(consoleErrors, []);
     assert.deepEqual(failedRequests, []);

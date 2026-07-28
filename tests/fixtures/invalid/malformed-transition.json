@@ -1,0 +1,16 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "malformed-transition",
+  "title": "Malformed transition",
+  "language": "en",
+  "startScene": "start",
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text.",
+      "transition": "fade"
+    }
+  ]
+}

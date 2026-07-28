@@ -1,4 +1,9 @@
-import type { ValidationResult } from "@ine/core";
+import {
+  MAX_TRANSITION_DURATION_MS,
+  TRANSITION_EASINGS,
+  TRANSITION_TYPES,
+  type ValidationResult,
+} from "@ine/core";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -27,11 +32,43 @@ const PACK_PROPERTIES = new Set([
   "title",
   "language",
   "startScene",
+  "presentation",
   "scenes",
 ]);
-const SCENE_PROPERTIES = new Set(["id", "title", "text", "image", "imageAlt", "imageDisplayMode"]);
+const PRESENTATION_PROPERTIES = new Set(["defaultTransition"]);
+const SCENE_PROPERTIES = new Set(["id", "title", "text", "image", "imageAlt", "imageDisplayMode", "transition"]);
+const TRANSITION_PROPERTIES = new Set(["type", "durationMs", "easing"]);
 const PACK_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const IMAGE_DISPLAY_MODES = new Set(["contain", "cover", "fill", "immersive"]);
+const ALLOWED_TRANSITION_TYPES = new Set<string>(TRANSITION_TYPES);
+const ALLOWED_TRANSITION_EASINGS = new Set<string>(TRANSITION_EASINGS);
+
+function validateTransition(value: unknown, path: string, errors: string[]): void {
+  if (!isRecord(value)) {
+    errors.push(`INE_VALIDATION_TRANSITION_OBJECT_REQUIRED:${path}`);
+    return;
+  }
+
+  reportUnknownProperties(value, TRANSITION_PROPERTIES, path, errors);
+  if (typeof value.type !== "string" || !ALLOWED_TRANSITION_TYPES.has(value.type)) {
+    errors.push(`INE_VALIDATION_TRANSITION_TYPE_INVALID:${path}.type`);
+  }
+  if (
+    value.durationMs !== undefined &&
+    (typeof value.durationMs !== "number" ||
+      !Number.isFinite(value.durationMs) ||
+      value.durationMs < 0 ||
+      value.durationMs > MAX_TRANSITION_DURATION_MS)
+  ) {
+    errors.push(`INE_VALIDATION_TRANSITION_DURATION_INVALID:${path}.durationMs`);
+  }
+  if (
+    value.easing !== undefined &&
+    (typeof value.easing !== "string" || !ALLOWED_TRANSITION_EASINGS.has(value.easing))
+  ) {
+    errors.push(`INE_VALIDATION_TRANSITION_EASING_INVALID:${path}.easing`);
+  }
+}
 
 export function validateNarrativePack(value: unknown): ValidationResult {
   const errors: string[] = [];
@@ -53,6 +90,16 @@ export function validateNarrativePack(value: unknown): ValidationResult {
   }
   if (typeof value.language === "string" && value.language.length < 2) {
     errors.push("INE_VALIDATION_LANGUAGE_INVALID");
+  }
+  if (value.presentation !== undefined) {
+    if (!isRecord(value.presentation)) {
+      errors.push("INE_VALIDATION_PRESENTATION_OBJECT_REQUIRED");
+    } else {
+      reportUnknownProperties(value.presentation, PRESENTATION_PROPERTIES, "root.presentation", errors);
+      if (value.presentation.defaultTransition !== undefined) {
+        validateTransition(value.presentation.defaultTransition, "root.presentation.defaultTransition", errors);
+      }
+    }
   }
 
   if (!Array.isArray(value.scenes) || value.scenes.length === 0) {
@@ -83,6 +130,9 @@ export function validateNarrativePack(value: unknown): ValidationResult {
         (typeof scene.imageDisplayMode !== "string" || !IMAGE_DISPLAY_MODES.has(scene.imageDisplayMode))
       ) {
         errors.push(`INE_VALIDATION_SCENE_${index}_IMAGE_DISPLAY_MODE_INVALID`);
+      }
+      if (scene.transition !== undefined) {
+        validateTransition(scene.transition, `scenes[${index}].transition`, errors);
       }
     });
     if (typeof value.startScene === "string" && !ids.has(value.startScene)) {

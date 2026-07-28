@@ -1,0 +1,22 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "default-transition-pack",
+  "title": "Default transition pack",
+  "language": "en",
+  "startScene": "start",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 450,
+      "easing": "ease-in-out"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}

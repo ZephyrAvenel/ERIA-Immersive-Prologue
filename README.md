@@ -50,6 +50,12 @@ Scene images use `contain` by default so an author's illustration is displayed
 in full. Packs may opt into `cover`, `fill`, or `immersive` through
 `imageDisplayMode` when a different visual treatment is intentional.
 
+Narrative Packs may also declare scene transitions. Supported transition types
+are `none`, `fade`, `crossfade`, and `slide`. A pack can define
+`presentation.defaultTransition`, and an individual scene can override it with
+its own `transition`. Transitions are optional and are disabled automatically
+when the user prefers reduced motion.
+
 ## Interface language
 
 Player interface copy lives in `apps/player/src/locales/`. The active locale is
@@ -101,7 +107,9 @@ npm run test:ci
 Browser tests start the Vite player and drive Chrome through the Chrome DevTools
 Protocol. In CI, Chrome must be available and the test fails if it cannot run.
 Locally, set `CHROME_PATH` when Chrome is not discoverable or when the desktop
-environment restricts browser automation.
+environment restricts browser automation. The browser scenario covers scene
+transitions, navigation locking, focus restoration, responsive layout, and
+`prefers-reduced-motion`.
 
 ## Deployment
 

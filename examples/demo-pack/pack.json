@@ -6,6 +6,13 @@
   "title": "Le Seuil des Étoiles",
   "language": "fr",
   "startScene": "scene-01",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 450,
+      "easing": "ease-in-out"
+    }
+  },
   "scenes": [
     {
       "id": "scene-01",

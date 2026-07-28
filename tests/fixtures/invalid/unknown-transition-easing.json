@@ -1,0 +1,21 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "unknown-transition-easing",
+  "title": "Unknown transition easing",
+  "language": "en",
+  "startScene": "start",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "easing": "spring"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}
