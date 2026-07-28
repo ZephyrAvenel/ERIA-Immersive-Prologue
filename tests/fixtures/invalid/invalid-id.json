@@ -1,0 +1,15 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "Invalid Id",
+  "title": "Invalid Id",
+  "language": "en",
+  "startScene": "start",
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "The pack id is not kebab-case."
+    }
+  ]
+}

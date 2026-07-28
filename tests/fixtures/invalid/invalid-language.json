@@ -1,0 +1,15 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "invalid-language",
+  "title": "Invalid Language",
+  "language": "f",
+  "startScene": "start",
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "The language code is too short."
+    }
+  ]
+}

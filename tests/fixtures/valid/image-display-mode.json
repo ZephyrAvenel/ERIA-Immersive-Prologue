@@ -1,0 +1,18 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "image-mode-pack",
+  "title": "Image Mode Pack",
+  "language": "en",
+  "startScene": "cover-scene",
+  "scenes": [
+    {
+      "id": "cover-scene",
+      "title": "Cover",
+      "text": "A scene with an explicit image display mode.",
+      "image": "assets/images/cover.png",
+      "imageAlt": "Cover mode image.",
+      "imageDisplayMode": "cover"
+    }
+  ]
+}

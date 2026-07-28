@@ -1,0 +1,17 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "invalid-image-display-mode",
+  "title": "Invalid Image Display Mode",
+  "language": "en",
+  "startScene": "start",
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "The display mode is not known.",
+      "image": "assets/images/start.png",
+      "imageDisplayMode": "crop"
+    }
+  ]
+}

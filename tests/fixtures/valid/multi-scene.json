@@ -1,0 +1,24 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "multi-scene-pack",
+  "title": "Multi Scene Pack",
+  "language": "en",
+  "startScene": "one",
+  "scenes": [
+    {
+      "id": "one",
+      "title": "One",
+      "text": "First scene.",
+      "image": "assets/images/one.png",
+      "imageAlt": "First image."
+    },
+    {
+      "id": "two",
+      "title": "Two",
+      "text": "Second scene.",
+      "image": "assets/images/two.png",
+      "imageAlt": "Second image."
+    }
+  ]
+}

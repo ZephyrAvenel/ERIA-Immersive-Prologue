@@ -1,0 +1,15 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "missing-start-scene",
+  "title": "Missing Start Scene",
+  "language": "en",
+  "startScene": "missing",
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "The startScene reference is missing."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "unknown-property",
+  "title": "Unknown Property",
+  "language": "en",
+  "startScene": "start",
+  "unknown": true,
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "This pack has an unknown root property."
+    }
+  ]
+}

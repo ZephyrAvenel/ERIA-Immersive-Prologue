@@ -1,0 +1,15 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "pack-francais",
+  "title": "Pack français",
+  "language": "fr",
+  "startScene": "debut",
+  "scenes": [
+    {
+      "id": "debut",
+      "title": "Début",
+      "text": "Une scène française valide."
+    }
+  ]
+}

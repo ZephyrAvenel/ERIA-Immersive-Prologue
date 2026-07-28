@@ -1,0 +1,62 @@
+import assert from "node:assert/strict";
+import { readdir } from "node:fs/promises";
+import test from "node:test";
+import { validateNarrativePack } from "../../../.test-build/packages/validators/src/index.js";
+import { readJsonFixture, readProjectJson } from "../../helpers/fixtures.mjs";
+
+const expectedInvalidCodes = {
+  "unknown-property.json": "INE_VALIDATION_UNKNOWN_PROPERTY",
+  "invalid-id.json": "INE_VALIDATION_ID_KEBAB_CASE_REQUIRED",
+  "duplicate-scene-id.json": "INE_VALIDATION_SCENE_1_ID_DUPLICATED",
+  "missing-start-scene.json": "INE_VALIDATION_START_SCENE_UNKNOWN",
+  "scene-missing-title.json": "INE_VALIDATION_SCENE_0_TITLE_REQUIRED",
+  "empty-image.json": "INE_VALIDATION_SCENE_0_IMAGE_INVALID",
+  "invalid-language.json": "INE_VALIDATION_LANGUAGE_INVALID",
+  "invalid-image-display-mode.json": "INE_VALIDATION_SCENE_0_IMAGE_DISPLAY_MODE_INVALID",
+  "wrong-property-type.json": "INE_VALIDATION_SCENE_0_TEXT_REQUIRED",
+  "empty-scenes.json": "INE_VALIDATION_SCENES_REQUIRED",
+};
+
+test("validator accepts every valid fixture", async () => {
+  const names = await readdir("tests/fixtures/valid");
+  for (const name of names) {
+    const result = validateNarrativePack(await readJsonFixture("valid", name));
+    assert.equal(result.valid, true, `${name}: ${result.errors.join(", ")}`);
+    assert.deepEqual(result.errors, []);
+  }
+});
+
+test("validator rejects every invalid fixture with stable error codes", async () => {
+  for (const [name, expectedCode] of Object.entries(expectedInvalidCodes)) {
+    const result = validateNarrativePack(await readJsonFixture("invalid", name));
+    assert.equal(result.valid, false, `${name} should be invalid`);
+    assert.ok(result.errors.some((error) => error.includes(expectedCode)), `${name}: ${result.errors.join(", ")}`);
+  }
+});
+
+test("runtime validator and JSON Schema expose the same structural image display modes", async () => {
+  const schema = await readProjectJson("schemas", "narrative-pack.schema.json");
+  const enumValues = schema.$defs.scene.properties.imageDisplayMode.enum;
+  assert.deepEqual(enumValues, ["contain", "cover", "fill", "immersive"]);
+
+  for (const mode of enumValues) {
+    const result = validateNarrativePack({
+      format: "ine-narrative-pack",
+      version: "1.0",
+      id: `mode-${mode}`,
+      title: mode,
+      language: "en",
+      startScene: "start",
+      scenes: [{ id: "start", title: "Start", text: "Text.", imageDisplayMode: mode }],
+    });
+    assert.equal(result.valid, true, mode);
+  }
+});
+
+test("JSON Schema and runtime validator agree on required root and scene fields", async () => {
+  const schema = await readProjectJson("schemas", "narrative-pack.schema.json");
+  assert.deepEqual(schema.required, ["format", "version", "id", "title", "language", "startScene", "scenes"]);
+  assert.deepEqual(schema.$defs.scene.required, ["id", "title", "text"]);
+  assert.equal(schema.additionalProperties, false);
+  assert.equal(schema.$defs.scene.additionalProperties, false);
+});

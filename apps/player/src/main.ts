@@ -2,8 +2,7 @@ import { NarrativeEngine, loadNarrativePack } from "@ine/core";
 import { renderPlayer } from "@ine/renderer";
 import { createButton } from "@ine/ui";
 import { validateNarrativePack } from "@ine/validators";
-import en from "./locales/en.json";
-import fr from "./locales/fr.json";
+import { interpolate, resolveLocale, type LocaleMessages } from "./localization";
 import "./styles.css";
 
 const app = document.querySelector<HTMLElement>("#app");
@@ -14,42 +13,8 @@ if (!app) {
 
 const mount = app;
 
-interface LocaleMessages {
-  readonly language: string;
-  readonly engineTitle: string;
-  readonly packLabel: string;
-  readonly skipToNarrative: string;
-  readonly navigationLabel: string;
-  readonly previous: string;
-  readonly next: string;
-  readonly progressLabel: string;
-  readonly progressText: string;
-  readonly errorTitle: string;
-  readonly errorMessage: string;
-  readonly unknownError: string;
-}
-
-const locales: Readonly<Record<string, LocaleMessages>> = {
-  en,
-  fr,
-};
-
 interface PlayerConfiguration {
   readonly narrativePackUrl: string;
-}
-
-function interpolate(template: string, values: Readonly<Record<string, string | number>>): string {
-  return Object.entries(values).reduce(
-    (text, [key, value]) => text.replaceAll(`{${key}}`, String(value)),
-    template,
-  );
-}
-
-function resolveLocale(language: string): LocaleMessages {
-  const languageCode = language.toLowerCase().split("-")[0] ?? "en";
-  const fallback = locales.en;
-  if (!fallback) throw new Error("INE_LOCALE_FALLBACK_MISSING");
-  return locales[languageCode] ?? fallback;
 }
 
 function updateShell(messages: LocaleMessages, packTitle?: string): void {

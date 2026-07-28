@@ -56,8 +56,13 @@ mode before Vite produces `dist/`.
 
 GitHub Actions uses two workflows: continuous integration for pushes and pull
 requests, and Pages deployment for successful pushes to `main`. Both use the
-committed npm lockfile through `npm ci` and the same `npm run build` command
-used locally.
+committed npm lockfile through `npm ci`. Deployment is gated by type checking,
+unit tests, integration tests, coverage, production build, and browser tests.
+
+The automated test foundation is intentionally package-oriented: Core,
+Validators, Renderer, AssetManager, localization, and the Player browser shell
+are verified through public contracts and observable behavior. See
+`docs/TESTING.md` for contributor guidance.
 
 ## Evolution rules
 

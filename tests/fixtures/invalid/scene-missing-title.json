@@ -1,0 +1,14 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "scene-missing-title",
+  "title": "Scene Missing Title",
+  "language": "en",
+  "startScene": "start",
+  "scenes": [
+    {
+      "id": "start",
+      "text": "The scene title is required."
+    }
+  ]
+}

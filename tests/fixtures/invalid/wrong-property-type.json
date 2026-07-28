@@ -1,0 +1,15 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "wrong-property-type",
+  "title": "Wrong Property Type",
+  "language": "en",
+  "startScene": "start",
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": 42
+    }
+  ]
+}

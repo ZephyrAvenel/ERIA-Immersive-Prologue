@@ -1,0 +1,9 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "empty-scenes",
+  "title": "Empty Scenes",
+  "language": "en",
+  "startScene": "start",
+  "scenes": []
+}

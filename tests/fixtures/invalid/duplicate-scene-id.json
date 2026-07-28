@@ -1,0 +1,20 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "duplicate-scene-id",
+  "title": "Duplicate Scene Id",
+  "language": "en",
+  "startScene": "start",
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "First scene."
+    },
+    {
+      "id": "start",
+      "title": "Duplicate",
+      "text": "Duplicate scene id."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "empty-image",
+  "title": "Empty Image",
+  "language": "en",
+  "startScene": "start",
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "The image path must not be empty.",
+      "image": ""
+    }
+  ]
+}

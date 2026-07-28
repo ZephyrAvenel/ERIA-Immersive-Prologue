@@ -10,7 +10,7 @@ pack, PWA shell, and continuous delivery to GitHub Pages.
 
 ## Requirements
 
-- Node.js 20 or later
+- Node.js 24 or later
 - npm 10 or later
 
 ## Get started
@@ -27,7 +27,12 @@ npm run build
 npm run preview
 ```
 
-Additional verification is available with `npm run typecheck`.
+Additional verification is available with:
+
+```sh
+npm run typecheck
+npm run test:ci
+```
 
 The Player reads its Narrative Pack URL from
 `apps/player/public/player.config.json`. Selecting another conforming work only
@@ -63,7 +68,7 @@ packages/validators/ Runtime Narrative Pack validation
 examples/demo-pack/ First integrated Narrative Pack and normalized assets
 schemas/           Versioned JSON Schemas
 docs/              Architecture and Narrative Pack documentation
-tests/             Reserved for cross-package integration tests
+tests/             Unit, integration, browser, accessibility, and fixture tests
 reports/           Mission reports
 ```
 
@@ -76,13 +81,46 @@ reports/           Mission reports
 - The player is mobile-first, keyboard accessible, and progressively enhanced.
 - Every change must leave the default branch installable and buildable.
 
-See [the architecture guide](docs/ARCHITECTURE.md) and
-[Narrative Pack specification](docs/NARRATIVE_PACKS.md).
+See [the architecture guide](docs/ARCHITECTURE.md),
+[Narrative Pack specification](docs/NARRATIVE_PACKS.md), and
+[testing guide](docs/TESTING.md).
+
+## Tests
+
+The repository uses Node.js' built-in test runner so the automated test
+foundation stays dependency-light and reproducible with the committed lockfile.
+
+```sh
+npm run test:unit
+npm run test:integration
+npm run test:e2e
+npm run test:coverage
+npm run test:ci
+```
+
+Browser tests start the Vite player and drive Chrome through the Chrome DevTools
+Protocol. In CI, Chrome must be available and the test fails if it cannot run.
+Locally, set `CHROME_PATH` when Chrome is not discoverable or when the desktop
+environment restricts browser automation.
 
 ## Deployment
 
-Every push to `main` is built by GitHub Actions and deployed to GitHub Pages.
-Pull requests run the same type and production-build checks without deploying.
+Every push to `main` is tested, built, and deployed to GitHub Pages by GitHub
+Actions. Pull requests and non-main branches run the same quality gate without
+deploying. The deployment chain is:
+
+```text
+npm ci
+typecheck
+unit tests
+integration tests
+coverage
+build
+browser tests
+upload Pages artifact
+deploy Pages
+```
+
 The repository's Pages publishing source must be set to **GitHub Actions** once
 by an administrator, as required by GitHub.
 

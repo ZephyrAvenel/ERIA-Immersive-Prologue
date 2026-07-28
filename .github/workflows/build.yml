@@ -15,13 +15,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit tests
+        run: npm run test:unit
+      - name: Integration tests
+        run: npm run test:integration
+      - name: Coverage
+        run: npm run test:coverage
       - name: Build
         run: npm run build
+      - name: Browser tests
+        run: npm run test:e2e
+      - name: Upload browser test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-test-artifacts
+          path: test-results/
+          if-no-files-found: ignore
