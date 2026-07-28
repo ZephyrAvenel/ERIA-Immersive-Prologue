@@ -3,7 +3,7 @@
 INE is a work-independent, web-based player for **Narrative Packs**. The engine
 contains no story-specific logic: any pack that follows the published schemas
 can be loaded without changing the runtime.
-
+-
 This repository currently provides the production foundation: a minimal player,
 core loading contract, renderer, validator, UI helpers, SDK entry point, example
 pack, PWA shell, and continuous delivery to GitHub Pages.
