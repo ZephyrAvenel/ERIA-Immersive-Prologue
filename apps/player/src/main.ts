@@ -144,6 +144,7 @@ async function start(): Promise<void> {
       });
     } else {
       renderPlayer(mount, state);
+      mount.removeAttribute("aria-busy");
     }
     updateControlAvailability();
     if (focusTarget) focusNavigationControl(focusTarget);

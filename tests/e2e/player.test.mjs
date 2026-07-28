@@ -241,6 +241,28 @@ async function waitForExpression(client, expression, timeoutMs = 10_000) {
   throw new Error(`Timed out waiting for expression: ${expression}`);
 }
 
+async function waitForPlayerReady(client, expectedProgress, timeoutMs = 10_000) {
+  const progressPredicate = expectedProgress
+    ? `document.querySelector('.progress__text')?.textContent === ${JSON.stringify(expectedProgress)}`
+    : "true";
+  await waitForExpression(
+    client,
+    `(() => {
+      const app = document.querySelector('#app');
+      const image = document.querySelector('.scene__image');
+      const media = document.querySelector('.scene__media');
+      return ${progressPredicate}
+        && app?.getAttribute('aria-busy') === null
+        && image?.complete === true
+        && image?.naturalWidth > 0
+        && image?.naturalHeight > 0
+        && image?.getAttribute('data-image-state') === 'ready'
+        && media?.getAttribute('data-image-state') === 'ready';
+    })()`,
+    timeoutMs,
+  );
+}
+
 async function navigate(client, url) {
   const load = client.waitFor("Page.loadEventFired");
   await client.send("Page.navigate", { url });
@@ -283,7 +305,10 @@ async function readPlayerState(client) {
         buttons: Array.from(document.querySelectorAll('button')).map((button) => button.textContent),
         objectFit: image ? getComputedStyle(image).objectFit : null,
         displayMode: image?.getAttribute('data-display-mode'),
+        imageState: image?.getAttribute('data-image-state'),
+        mediaState: document.querySelector('.scene__media')?.getAttribute('data-image-state'),
         imageComplete: image?.complete === true,
+        currentSrc: image?.currentSrc ?? '',
         naturalWidth: image?.naturalWidth ?? 0,
         naturalHeight: image?.naturalHeight ?? 0,
         imageVisible: Boolean(imageRect && imageRect.width > 0 && imageRect.height > 0),
@@ -302,13 +327,35 @@ async function readPlayerState(client) {
   );
 }
 
+async function readStablePlayerState(client, expectedProgress) {
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    await waitForPlayerReady(client, expectedProgress);
+    const state = await readPlayerState(client);
+    if (state.busy === null && state.transitionName === null) return state;
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  return readPlayerState(client);
+}
+
 async function clickLocalizedNext(client, expectedProgress) {
   await evaluate(client, "Array.from(document.querySelectorAll('button')).find((button) => button.textContent === 'Suivant')?.click()");
   if (expectedProgress) {
-    await waitForExpression(client, `document.querySelector('.progress__text')?.textContent === ${JSON.stringify(expectedProgress)}`);
-    await waitForExpression(client, "document.querySelector('#app')?.getAttribute('aria-busy') === null");
+    await waitForPlayerReady(client, expectedProgress);
+  } else {
+    await waitForPlayerReady(client);
   }
-  await waitForExpression(client, "document.querySelector('.scene__image')?.complete === true");
+}
+
+function assertSceneImageReady(state) {
+  assert.equal(state.objectFit, "contain");
+  assert.equal(state.displayMode, "contain");
+  assert.equal(state.imageState, "ready");
+  assert.equal(state.mediaState, "ready");
+  assert.equal(state.imageComplete, true);
+  assert.ok(state.currentSrc.endsWith(".png"), state.currentSrc);
+  assert.ok(state.naturalWidth > 0);
+  assert.ok(state.naturalHeight > 0);
+  assert.equal(state.imageVisible, true);
 }
 
 test("Player loads, localizes, navigates, keeps focus, and remains responsive in a real browser", async (t) => {
@@ -332,6 +379,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
   const page = await openPage(chrome.endpoint);
   const consoleErrors = [];
   const failedRequests = [];
+  const imageResponses = [];
 
   try {
     await page.send("Page.enable");
@@ -347,6 +395,15 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     page.on("Network.responseReceived", (event) => {
       const status = event.response.status;
       if (status >= 400) failedRequests.push({ status, url: event.response.url });
+      if (event.response.url.endsWith(".png")) {
+        const headers = event.response.headers ?? {};
+        imageResponses.push({
+          status,
+          url: event.response.url,
+          mimeType: event.response.mimeType,
+          contentType: headers["content-type"] ?? headers["Content-Type"] ?? "",
+        });
+      }
     });
     page.on("Network.loadingFailed", (event) => {
       failedRequests.push({ status: "failed", url: event.requestId, errorText: event.errorText });
@@ -357,8 +414,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
     });
     await navigate(page, url);
+    await waitForPlayerReady(page, "Scène 1 / 8");
 
-    const first = await readPlayerState(page);
+    const first = await readStablePlayerState(page, "Scène 1 / 8");
     assert.equal(first.lang, "fr");
     assert.equal(first.brand, "Immersive Narrative Engine");
     assert.equal(first.packLabel, "Pack narratif");
@@ -371,11 +429,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(first.transitionName, null);
     assert.equal(first.playerCount, 1);
     assert.equal(first.hiddenPlayerCount, 0);
-    assert.equal(first.objectFit, "contain");
-    assert.equal(first.displayMode, "contain");
-    assert.equal(first.imageComplete, true);
-    assert.ok(first.naturalWidth > 0);
-    assert.ok(first.naturalHeight > 0);
+    assertSceneImageReady(first);
     assert.equal(first.stepCount, 8);
     assert.equal(first.sceneBorderWidth, "0px");
     assert.equal(first.noHorizontalOverflow, true);
@@ -421,9 +475,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     );
     await waitForExpression(page, "window.__ineBusyObserved === true", 1_000);
     assert.equal(await evaluate(page, "window.__ineControlsDisabledDuringBusy"), true);
-    await waitForExpression(page, "document.querySelector('.progress__text')?.textContent === 'Scène 2 / 8'");
-    await waitForExpression(page, "document.querySelector('#app')?.getAttribute('aria-busy') === null");
-    const afterDoubleActivation = await readPlayerState(page);
+    await waitForPlayerReady(page, "Scène 2 / 8");
+    const afterDoubleActivation = await readStablePlayerState(page, "Scène 2 / 8");
     assert.equal(afterDoubleActivation.progress, "Scène 2 / 8");
     assert.equal(afterDoubleActivation.busy, null);
     assert.equal(afterDoubleActivation.transitionName, null);
@@ -434,27 +487,22 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
 
     for (let index = 3; index <= 8; index += 1) {
       await clickLocalizedNext(page, `Scène ${index} / 8`);
-      const state = await readPlayerState(page);
+      const state = await readStablePlayerState(page, `Scène ${index} / 8`);
       assert.equal(state.progress, `Scène ${index} / 8`);
       assert.equal(state.busy, null);
       assert.equal(state.playerCount, 1);
       assert.equal(state.hiddenPlayerCount, 0);
-      assert.equal(state.objectFit, "contain");
-      assert.equal(state.displayMode, "contain");
-      assert.equal(state.imageComplete, true);
-      assert.ok(state.naturalWidth > 0);
-      assert.ok(state.naturalHeight > 0);
+      assertSceneImageReady(state);
       assert.equal(state.activeElementText, index === 8 ? "Précédent" : "Suivant");
     }
 
-    const last = await readPlayerState(page);
+    const last = await readStablePlayerState(page, "Scène 8 / 8");
     assert.equal(last.nextDisabled, true);
     assert.equal(last.previousDisabled, false);
 
     await evaluate(page, "Array.from(document.querySelectorAll('button')).find((button) => button.textContent === 'Précédent')?.click()");
-    await waitForExpression(page, "document.querySelector('.progress__text')?.textContent === 'Scène 7 / 8'");
-    await waitForExpression(page, "document.querySelector('#app')?.getAttribute('aria-busy') === null");
-    const previousState = await readPlayerState(page);
+    await waitForPlayerReady(page, "Scène 7 / 8");
+    const previousState = await readStablePlayerState(page, "Scène 7 / 8");
     assert.equal(previousState.activeElementText, "Précédent");
     assert.equal(previousState.busy, null);
     assert.equal(previousState.playerCount, 1);
@@ -470,11 +518,12 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         mobile: viewport.width < 600,
       });
       await navigate(page, url);
-      const state = await readPlayerState(page);
+      await waitForPlayerReady(page, "Scène 1 / 8");
+      const state = await readStablePlayerState(page, "Scène 1 / 8");
       assert.equal(state.noHorizontalOverflow, true, `${viewport.width} has horizontal overflow`);
       assert.equal(state.controlsInsideViewport, true, `${viewport.width} controls overflow`);
       assert.equal(state.contentInsideViewport, true, `${viewport.width} content overflow`);
-      assert.equal(state.imageVisible, true, `${viewport.width} image is not visible`);
+      assertSceneImageReady(state);
       assert.deepEqual(state.buttons, ["Précédent", "Suivant"]);
     }
 
@@ -482,6 +531,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],
     });
     await navigate(page, url);
+    await waitForPlayerReady(page, "Scène 1 / 8");
     await evaluate(
       page,
       `(() => {
@@ -494,18 +544,68 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       })()`,
     );
     await clickLocalizedNext(page, "Scène 2 / 8");
-    const reducedState = await readPlayerState(page);
+    const reducedState = await readStablePlayerState(page, "Scène 2 / 8");
     assert.equal(reducedState.busy, null);
     assert.equal(reducedState.playerCount, 1);
     assert.equal(reducedState.activeElementText, "Suivant");
+    assertSceneImageReady(reducedState);
     assert.equal(await evaluate(page, "window.__ineReducedAnimations.length"), 0);
 
+    assert.equal(
+      imageResponses.every((response) => response.status < 400),
+      true,
+      JSON.stringify(imageResponses),
+    );
+    assert.equal(
+      imageResponses.every(
+        (response) =>
+          response.mimeType.startsWith("image/") ||
+          String(response.contentType).toLowerCase().startsWith("image/"),
+      ),
+      true,
+      JSON.stringify(imageResponses),
+    );
+    assert.equal(
+      imageResponses.some((response) => String(response.contentType).toLowerCase().includes("text/html")),
+      false,
+      JSON.stringify(imageResponses),
+    );
     assert.deepEqual(consoleErrors, []);
     assert.deepEqual(failedRequests, []);
   } catch (error) {
-    const screenshot = await page.send("Page.captureScreenshot", { format: "png" }).catch(() => undefined);
+    const diagnostic = await Promise.race([
+      evaluate(
+        page,
+        `(() => {
+          const app = document.querySelector('#app');
+          const image = document.querySelector('.scene__image');
+          return {
+            busy: app?.getAttribute('aria-busy'),
+            transition: app?.getAttribute('data-transition'),
+            progress: document.querySelector('.progress__text')?.textContent,
+            title: document.querySelector('.scene__title')?.textContent,
+            imageState: image?.getAttribute('data-image-state'),
+            mediaState: document.querySelector('.scene__media')?.getAttribute('data-image-state'),
+            imageComplete: image?.complete,
+            naturalWidth: image?.naturalWidth,
+            naturalHeight: image?.naturalHeight,
+            currentSrc: image?.currentSrc,
+            playerCount: document.querySelectorAll('.player').length,
+            hiddenPlayerCount: document.querySelectorAll('.player[aria-hidden="true"]').length
+          };
+        })()`,
+      ),
+      new Promise((resolve) => setTimeout(() => resolve({ diagnosticError: "Timed out collecting DOM diagnostic" }), 2_000)),
+    ]).catch((diagnosticError) => ({ diagnosticError: String(diagnosticError) }));
+    await writeFile(
+      join(artifactsDir, "failure.txt"),
+      `${String(error.stack ?? error)}\n\nDOM diagnostic:\n${JSON.stringify(diagnostic, null, 2)}\n\nImage responses:\n${JSON.stringify(imageResponses, null, 2)}\n\nFailed requests:\n${JSON.stringify(failedRequests, null, 2)}`,
+    );
+    const screenshot = await Promise.race([
+      page.send("Page.captureScreenshot", { format: "png" }),
+      new Promise((resolve) => setTimeout(() => resolve(undefined), 2_000)),
+    ]).catch(() => undefined);
     if (screenshot?.data) await writeFile(join(artifactsDir, "player-failure.png"), Buffer.from(screenshot.data, "base64"));
-    await writeFile(join(artifactsDir, "failure.txt"), String(error.stack ?? error));
     throw error;
   } finally {
     await page.close();

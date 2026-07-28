@@ -22,10 +22,82 @@ export interface RenderPlayerState {
   readonly messages: RendererMessages;
 }
 
+const IMAGE_READY_TIMEOUT_MS = 2_500;
+type ImageLoadingState = "loading" | "ready" | "error";
+
 function createSceneStep(active: boolean): HTMLSpanElement {
   const step = document.createElement("span");
   step.className = active ? "progress__step progress__step--active" : "progress__step";
   return step;
+}
+
+function setImageState(image: HTMLImageElement, state: ImageLoadingState): void {
+  image.dataset.imageState = state;
+  if (image.parentElement) image.parentElement.dataset.imageState = state;
+}
+
+function markImageState(image: HTMLImageElement): void {
+  if (!image.complete) {
+    setImageState(image, "loading");
+    return;
+  }
+  setImageState(image, image.naturalWidth > 0 && image.naturalHeight > 0 ? "ready" : "error");
+}
+
+function createSceneImage(scene: NarrativeScene): HTMLImageElement {
+  const image = document.createElement("img");
+  image.className = "scene__image";
+  image.alt = scene.imageAlt ?? "";
+  image.dataset.displayMode = scene.imageDisplayMode ?? "contain";
+  image.dataset.imageState = "loading";
+  image.addEventListener("load", () => {
+    setImageState(image, "ready");
+  });
+  image.addEventListener("error", () => {
+    setImageState(image, "error");
+    console.warn("INE_IMAGE_LOAD_FAILED", { alt: image.alt });
+  });
+  image.src = scene.image ?? "";
+  markImageState(image);
+  return image;
+}
+
+function waitForImageReady(image: HTMLImageElement, timeoutMs = IMAGE_READY_TIMEOUT_MS): Promise<void> {
+  if (image.complete) {
+    markImageState(image);
+    if (image.naturalWidth > 0 && image.naturalHeight > 0 && typeof image.decode === "function") {
+      return Promise.race([
+        image.decode().then(() => {
+          setImageState(image, "ready");
+        }),
+        new Promise<void>((resolve) => globalThis.setTimeout(resolve, timeoutMs)),
+      ]).catch(() => {
+        setImageState(image, "error");
+      });
+    }
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    let timeout: ReturnType<typeof globalThis.setTimeout>;
+    const finish = (state: "ready" | "error"): void => {
+      globalThis.clearTimeout(timeout);
+      image.removeEventListener("load", onLoad);
+      image.removeEventListener("error", onError);
+      setImageState(image, state);
+      resolve();
+    };
+    const onLoad = (): void => finish(image.naturalWidth > 0 && image.naturalHeight > 0 ? "ready" : "error");
+    const onError = (): void => finish("error");
+    timeout = globalThis.setTimeout(() => finish("error"), timeoutMs);
+    image.addEventListener("load", onLoad, { once: true });
+    image.addEventListener("error", onError, { once: true });
+  });
+}
+
+async function waitForImagesReady(root: HTMLElement): Promise<void> {
+  const images = [...root.querySelectorAll("img")];
+  await Promise.all(images.map((image) => waitForImageReady(image)));
 }
 
 function addClass(element: HTMLElement, className: string): void {
@@ -72,11 +144,15 @@ function createPlayerElement(state: RenderPlayerState): HTMLElement {
   if (state.scene.image) {
     const media = document.createElement("figure");
     media.className = "scene__media";
-    const image = document.createElement("img");
-    image.className = "scene__image";
-    image.src = state.scene.image;
-    image.alt = state.scene.imageAlt ?? "";
-    image.dataset.displayMode = state.scene.imageDisplayMode ?? "contain";
+    media.dataset.imageState = "loading";
+    const image = createSceneImage(state.scene);
+    image.addEventListener("load", () => {
+      media.dataset.imageState = "ready";
+    });
+    image.addEventListener("error", () => {
+      media.dataset.imageState = "error";
+    });
+    if (image.complete) media.dataset.imageState = image.dataset.imageState ?? "loading";
     media.append(image);
     article.append(media);
   }
@@ -180,21 +256,21 @@ export async function renderPlayerWithTransition(
 
   try {
     if (transition.type === "fade") {
+      const nextPlayer = createPlayerElement(state);
+      await waitForImagesReady(nextPlayer);
       const fadeOut = animateElement(currentPlayer, [{ opacity: 1 }, { opacity: 0 }], transition);
       if (!fadeOut) {
-        renderPlayer(target, state);
+        target.replaceChildren(nextPlayer);
         return;
       }
       await fadeOut;
-      renderPlayer(target, state);
-      const nextPlayer = target.firstElementChild as HTMLElement | null;
-      if (nextPlayer) {
-        await animateElement(nextPlayer, [{ opacity: 0 }, { opacity: 1 }], transition);
-      }
+      target.replaceChildren(nextPlayer);
+      await animateElement(nextPlayer, [{ opacity: 0 }, { opacity: 1 }], transition);
       return;
     }
 
     const nextPlayer = createPlayerElement(state);
+    await waitForImagesReady(nextPlayer);
     currentPlayer.setAttribute("aria-hidden", "true");
     addClass(currentPlayer, "player--transition-leave");
     addClass(nextPlayer, "player--transition-enter");

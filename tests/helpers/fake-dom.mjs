@@ -9,6 +9,13 @@ class FakeClassList {
 }
 
 export class FakeElement {
+  static imageDefaults = {
+    complete: true,
+    naturalWidth: 1,
+    naturalHeight: 1,
+    decode: async () => {},
+  };
+
   constructor(tagName) {
     this.tagName = tagName.toUpperCase();
     this.children = [];
@@ -27,6 +34,9 @@ export class FakeElement {
     this.type = "";
     this.parentElement = null;
     this.classList = new FakeClassList(this);
+    if (this.tagName === "IMG") {
+      Object.assign(this, FakeElement.imageDefaults);
+    }
   }
 
   append(...children) {
@@ -54,6 +64,8 @@ export class FakeElement {
   }
 
   addEventListener() {}
+
+  removeEventListener() {}
 
   remove() {
     if (!this.parentElement) return;

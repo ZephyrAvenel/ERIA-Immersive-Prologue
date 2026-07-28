@@ -66,9 +66,9 @@ function installControlledAnimations() {
 }
 
 async function waitForAnimationCount(controlled, count) {
-  for (let attempt = 0; attempt < 5; attempt += 1) {
+  for (let attempt = 0; attempt < 20; attempt += 1) {
     if (controlled.animations.length >= count) return;
-    await Promise.resolve();
+    await new Promise((resolve) => setTimeout(resolve, 1));
   }
   assert.fail(`Expected ${count} animations, received ${controlled.animations.length}`);
 }
@@ -181,6 +181,7 @@ test("Renderer applies fade transition and cleans transient state", async () =>
         },
       );
 
+      await waitForAnimationCount(controlled, 1);
       assert.equal(target.getAttribute("data-transition"), "fade");
       assert.equal(controlled.animations[0].options.duration, 450);
       assert.equal(controlled.animations[0].options.easing, "ease-in-out");
@@ -213,6 +214,7 @@ test("Renderer removes old content after crossfade", async () =>
         },
       );
 
+      await waitForAnimationCount(controlled, 2);
       assert.equal(findElements(target, ".player").length, 2);
       assert.equal(
         findElements(target, ".player").filter((element) => element.getAttribute("aria-hidden") === "true").length,
@@ -248,6 +250,7 @@ test("Renderer applies deterministic slide directions", async () =>
         },
       );
 
+      await waitForAnimationCount(controlled, 2);
       assert.equal(controlled.animations[0].keyframes[1].transform, "translateX(4rem)");
       assert.equal(controlled.animations[1].keyframes[0].transform, "translateX(-4rem)");
       controlled.animations.forEach((animation) => animation.resolve());
@@ -278,5 +281,42 @@ test("Renderer falls back to immediate rendering when animation fails", async ()
     } finally {
       if (previousAnimate) FakeElement.prototype.animate = previousAnimate;
       else delete FakeElement.prototype.animate;
+    }
+  }));
+
+test("Renderer marks failed images and keeps narrative content available", async () =>
+  withFakeDocument(async () => {
+    const previousDefaults = FakeElement.imageDefaults;
+    FakeElement.imageDefaults = {
+      complete: true,
+      naturalWidth: 0,
+      naturalHeight: 0,
+      decode: async () => {
+        throw new Error("decode failed");
+      },
+    };
+    const target = new FakeElement("main");
+    const controlled = installControlledAnimations();
+    try {
+      renderPlayer(target, createState({ scene: { ...createState().scene, title: "Old" } }));
+      const promise = renderPlayerWithTransition(target, createState({ scene: { ...createState().scene, title: "Broken image" } }), {
+        transition: createTransition("fade"),
+        direction: "forward",
+        reduceMotion: false,
+      });
+      await waitForAnimationCount(controlled, 1);
+      controlled.animations[0].resolve();
+      await waitForAnimationCount(controlled, 2);
+      controlled.animations[1].resolve();
+      await promise;
+
+      assert.equal(findElement(target, ".scene__title").textContent, "Broken image");
+      assert.equal(findElement(target, ".scene__text").textContent, "Text with <strong>markup</strong> kept as text.");
+      assert.equal(findElement(target, "img").dataset.imageState, "error");
+      assert.equal(findElement(target, ".scene__media").dataset.imageState, "error");
+      assert.equal(target.getAttribute("data-transition"), null);
+    } finally {
+      controlled.restore();
+      FakeElement.imageDefaults = previousDefaults;
     }
   }));

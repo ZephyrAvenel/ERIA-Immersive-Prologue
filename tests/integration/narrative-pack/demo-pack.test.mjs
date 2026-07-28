@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readdir } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import test from "node:test";
 import { loadNarrativePack, NarrativeEngine } from "../../../.test-build/packages/core/src/index.js";
@@ -35,6 +35,17 @@ test("demo Narrative Pack references exactly eight existing PNG images", async (
   for (const image of sceneImages) {
     await access(join("examples", "demo-pack", image));
     assert.ok(pngFiles.includes(image.replace("assets/images/", "")));
+  }
+});
+
+test("demo Narrative Pack images are non-empty PNG files", async () => {
+  const pack = await readProjectJson("examples", "demo-pack", "pack.json");
+  const pngSignature = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+
+  for (const scene of pack.scenes) {
+    const bytes = await readFile(join("examples", "demo-pack", scene.image));
+    assert.ok(bytes.length > 0, scene.image);
+    assert.equal(bytes.subarray(0, pngSignature.length).equals(pngSignature), true, scene.image);
   }
 });
 
