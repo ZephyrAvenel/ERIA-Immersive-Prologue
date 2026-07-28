@@ -19,18 +19,34 @@ player.config.json --> player --> Narrative Pack JSON + colocated assets
 - **core** owns stable domain types, pack loading, asset resolution, and
   narrative navigation.
 - **validators** protects the engine boundary from malformed external data.
-- **renderer** translates trusted domain state into accessible DOM.
+- **renderer** translates trusted domain state into accessible DOM. It receives
+  localized interface copy and display options from the Player.
 - **ui** contains work-independent controls and future design primitives.
 - **sdk** is the eventual author-facing entry point; it currently re-exports
   stable types, asset resolution, and validation only.
 - **player** composes packages and owns browser lifecycle concerns such as PWA
-  registration and deployment configuration. It does not own narrative
-  business rules or content.
+  registration, localization, input wiring, and deployment configuration. It
+  does not own narrative business rules or content.
 
 The example pack is served as static data selected through
 `player.config.json`. Replacing its URL with any conforming pack requires no
 change to an application or package. Relative pack assets are resolved by the
 Core `AssetManager` from the pack location, not from the Player location.
+
+## UX foundation
+
+The Player presents a generic engine identity separately from the selected
+Narrative Pack title. Visual content remains dominant: images use `contain` by
+default, while optional scene-level modes (`cover`, `fill`, `immersive`) prepare
+future art direction without changing the Renderer contract.
+
+Localization is selected from the pack language and passed into rendering as
+data. This keeps UI copy, pack content, and DOM rendering separate.
+
+Future input and ambience features should attach at the Player boundary:
+keyboard, swipe, gamepad, transitions, audio, video, animation, ambience, and
+voice narration must be introduced through explicit configuration and package
+interfaces rather than by embedding work-specific behavior in the engine.
 
 ## Build and deployment
 

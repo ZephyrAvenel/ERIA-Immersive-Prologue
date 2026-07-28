@@ -2,24 +2,74 @@ import { NarrativeEngine, loadNarrativePack } from "@ine/core";
 import { renderPlayer } from "@ine/renderer";
 import { createButton } from "@ine/ui";
 import { validateNarrativePack } from "@ine/validators";
+import en from "./locales/en.json";
+import fr from "./locales/fr.json";
 import "./styles.css";
 
 const app = document.querySelector<HTMLElement>("#app");
 
 if (!app) {
-  throw new Error("Player mount element not found.");
+  throw new Error("INE_PLAYER_MOUNT_MISSING");
 }
 
 const mount = app;
+
+interface LocaleMessages {
+  readonly language: string;
+  readonly engineTitle: string;
+  readonly packLabel: string;
+  readonly skipToNarrative: string;
+  readonly navigationLabel: string;
+  readonly previous: string;
+  readonly next: string;
+  readonly progressLabel: string;
+  readonly progressText: string;
+  readonly errorTitle: string;
+  readonly errorMessage: string;
+  readonly unknownError: string;
+}
+
+const locales: Readonly<Record<string, LocaleMessages>> = {
+  en,
+  fr,
+};
 
 interface PlayerConfiguration {
   readonly narrativePackUrl: string;
 }
 
+function interpolate(template: string, values: Readonly<Record<string, string | number>>): string {
+  return Object.entries(values).reduce(
+    (text, [key, value]) => text.replaceAll(`{${key}}`, String(value)),
+    template,
+  );
+}
+
+function resolveLocale(language: string): LocaleMessages {
+  const languageCode = language.toLowerCase().split("-")[0] ?? "en";
+  const fallback = locales.en;
+  if (!fallback) throw new Error("INE_LOCALE_FALLBACK_MISSING");
+  return locales[languageCode] ?? fallback;
+}
+
+function updateShell(messages: LocaleMessages, packTitle?: string): void {
+  document.documentElement.lang = messages.language;
+  document.title = packTitle ? `${packTitle} | ${messages.engineTitle}` : messages.engineTitle;
+
+  let skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
+  if (!skipLink) {
+    skipLink = document.createElement("a");
+    skipLink.className = "skip-link";
+    skipLink.href = "#scene";
+    document.body.prepend(skipLink);
+  }
+  skipLink.textContent = messages.skipToNarrative;
+}
+
 async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
   const response = await fetch(new URL("player.config.json", document.baseURI));
   if (!response.ok) {
-    throw new Error(`Player configuration request failed (${response.status}).`);
+    throw new Error("INE_PLAYER_CONFIGURATION_REQUEST_FAILED");
   }
 
   const value: unknown = await response.json();
@@ -30,7 +80,7 @@ async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
     typeof value.narrativePackUrl !== "string" ||
     value.narrativePackUrl.length === 0
   ) {
-    throw new Error("Player configuration must define a narrativePackUrl.");
+    throw new Error("INE_PLAYER_CONFIGURATION_INVALID");
   }
 
   return { narrativePackUrl: value.narrativePackUrl };
@@ -41,27 +91,46 @@ async function start(): Promise<void> {
   const packUrl = new URL(configuration.narrativePackUrl, document.baseURI);
   const pack = await loadNarrativePack(packUrl, validateNarrativePack);
   const engine = new NarrativeEngine(pack);
+  const messages = resolveLocale(pack.language);
+  updateShell(messages, pack.title);
 
   const render = (focusTarget?: "previous" | "next"): void => {
     const scene = engine.currentScene;
     const controls = document.createElement("nav");
     controls.className = "player-controls";
-    controls.setAttribute("aria-label", "Narrative navigation");
+    controls.setAttribute("aria-label", messages.navigationLabel);
 
-    const previous = createButton("Previous", () => {
+    const previous = createButton(messages.previous, () => {
       engine.previous();
       render("previous");
     });
     previous.disabled = !engine.canGoPrevious;
 
-    const next = createButton("Next", () => {
+    const next = createButton(messages.next, () => {
       engine.next();
       render("next");
     });
     next.disabled = !engine.canGoNext;
 
     controls.append(previous, next);
-    renderPlayer(mount, pack, scene, engine.progress, controls);
+    const sceneIndex = engine.currentSceneIndex;
+    const sceneCount = engine.sceneCount;
+    renderPlayer(mount, {
+      pack,
+      scene,
+      sceneIndex,
+      sceneCount,
+      controls,
+      messages: {
+        engineTitle: messages.engineTitle,
+        packLabel: messages.packLabel,
+        progressLabel: messages.progressLabel,
+        progressText: interpolate(messages.progressText, {
+          current: sceneIndex + 1,
+          total: sceneCount,
+        }),
+      },
+    });
     if (focusTarget) {
       const preferredTarget = focusTarget === "previous" ? previous : next;
       const fallbackTarget = focusTarget === "previous" ? next : previous;
@@ -73,16 +142,17 @@ async function start(): Promise<void> {
   render();
 }
 
-function renderError(error: unknown): void {
-  const message = error instanceof Error ? error.message : "Unknown player error";
+function renderError(): void {
+  const messages = resolveLocale(navigator.language);
+  updateShell(messages);
   mount.replaceChildren();
   const panel = document.createElement("section");
   panel.className = "error-panel";
   panel.setAttribute("role", "alert");
   const title = document.createElement("h1");
-  title.textContent = "Unable to load the Narrative Pack";
+  title.textContent = messages.errorTitle;
   const detail = document.createElement("p");
-  detail.textContent = message;
+  detail.textContent = messages.errorMessage;
   panel.append(title, detail);
   mount.append(panel);
 }

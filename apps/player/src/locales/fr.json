@@ -1,0 +1,14 @@
+{
+  "language": "fr",
+  "engineTitle": "Immersive Narrative Engine",
+  "packLabel": "Pack narratif",
+  "skipToNarrative": "Passer au récit",
+  "navigationLabel": "Navigation du récit",
+  "previous": "Précédent",
+  "next": "Suivant",
+  "progressLabel": "Progression du récit",
+  "progressText": "Scène {current} / {total}",
+  "errorTitle": "Impossible de charger le pack narratif",
+  "errorMessage": "Le lecteur ne peut pas ouvrir ce pack narratif.",
+  "unknownError": "Erreur inconnue du lecteur"
+}

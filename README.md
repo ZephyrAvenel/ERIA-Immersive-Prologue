@@ -41,6 +41,16 @@ folders for `images/`, `audio/`, `video/`, and `icons/`. Runtime code resolves
 asset references through the Core `AssetManager`, so applications and renderers
 do not hard-code file locations.
 
+Scene images use `contain` by default so an author's illustration is displayed
+in full. Packs may opt into `cover`, `fill`, or `immersive` through
+`imageDisplayMode` when a different visual treatment is intentional.
+
+## Interface language
+
+Player interface copy lives in `apps/player/src/locales/`. The active locale is
+selected from the Narrative Pack language, with English as fallback for unknown
+language codes. Content text remains owned by the pack manifest.
+
 ## Repository layout
 
 ```text
@@ -62,6 +72,7 @@ reports/           Mission reports
 - The engine and narrative content remain strictly separated.
 - Package boundaries describe responsibilities and can evolve independently.
 - External data is validated before it reaches rendering code.
+- Interface copy is localized outside rendering logic.
 - The player is mobile-first, keyboard accessible, and progressively enhanced.
 - Every change must leave the default branch installable and buildable.
 

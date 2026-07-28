@@ -30,7 +30,12 @@
         "title": { "type": "string", "minLength": 1 },
         "text": { "type": "string", "minLength": 1 },
         "image": { "type": "string", "minLength": 1 },
-        "imageAlt": { "type": "string" }
+        "imageAlt": { "type": "string" },
+        "imageDisplayMode": {
+          "type": "string",
+          "enum": ["contain", "cover", "fill", "immersive"],
+          "default": "contain"
+        }
       }
     }
   }

@@ -15,7 +15,7 @@ function reportUnknownProperties(
   errors: string[],
 ): void {
   for (const key of Object.keys(record)) {
-    if (!allowed.has(key)) errors.push(`${path}.${key} is not allowed`);
+    if (!allowed.has(key)) errors.push(`INE_VALIDATION_UNKNOWN_PROPERTY:${path}.${key}`);
   }
 }
 
@@ -29,57 +29,64 @@ const PACK_PROPERTIES = new Set([
   "startScene",
   "scenes",
 ]);
-const SCENE_PROPERTIES = new Set(["id", "title", "text", "image", "imageAlt"]);
+const SCENE_PROPERTIES = new Set(["id", "title", "text", "image", "imageAlt", "imageDisplayMode"]);
 const PACK_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const IMAGE_DISPLAY_MODES = new Set(["contain", "cover", "fill", "immersive"]);
 
 export function validateNarrativePack(value: unknown): ValidationResult {
   const errors: string[] = [];
   if (!isRecord(value)) {
-    return { valid: false, errors: ["root must be an object"] };
+    return { valid: false, errors: ["INE_VALIDATION_ROOT_OBJECT_REQUIRED"] };
   }
 
   reportUnknownProperties(value, PACK_PROPERTIES, "root", errors);
-  if (value.format !== "ine-narrative-pack") errors.push('format must be "ine-narrative-pack"');
-  if (value.version !== "1.0") errors.push('version must be "1.0"');
+  if (value.format !== "ine-narrative-pack") errors.push("INE_VALIDATION_FORMAT_INVALID");
+  if (value.version !== "1.0") errors.push("INE_VALIDATION_VERSION_INVALID");
   if (value.$schema !== undefined && typeof value.$schema !== "string") {
-    errors.push("$schema must be a string");
+    errors.push("INE_VALIDATION_SCHEMA_STRING_REQUIRED");
   }
   for (const key of ["id", "title", "language", "startScene"]) {
-    if (!hasString(value, key)) errors.push(`${key} must be a non-empty string`);
+    if (!hasString(value, key)) errors.push(`INE_VALIDATION_${key.toUpperCase()}_REQUIRED`);
   }
   if (typeof value.id === "string" && !PACK_ID_PATTERN.test(value.id)) {
-    errors.push("id must use lowercase kebab-case");
+    errors.push("INE_VALIDATION_ID_KEBAB_CASE_REQUIRED");
   }
   if (typeof value.language === "string" && value.language.length < 2) {
-    errors.push("language must contain at least two characters");
+    errors.push("INE_VALIDATION_LANGUAGE_INVALID");
   }
 
   if (!Array.isArray(value.scenes) || value.scenes.length === 0) {
-    errors.push("scenes must be a non-empty array");
+    errors.push("INE_VALIDATION_SCENES_REQUIRED");
   } else {
     const ids = new Set<string>();
     value.scenes.forEach((scene, index) => {
       if (!isRecord(scene)) {
-        errors.push(`scenes[${index}] must be an object`);
+        errors.push(`INE_VALIDATION_SCENE_${index}_OBJECT_REQUIRED`);
         return;
       }
       reportUnknownProperties(scene, SCENE_PROPERTIES, `scenes[${index}]`, errors);
       for (const key of ["id", "title", "text"]) {
-        if (!hasString(scene, key)) errors.push(`scenes[${index}].${key} must be a non-empty string`);
+        if (!hasString(scene, key)) errors.push(`INE_VALIDATION_SCENE_${index}_${key.toUpperCase()}_REQUIRED`);
       }
       if (typeof scene.id === "string") {
-        if (ids.has(scene.id)) errors.push(`scene id "${scene.id}" is duplicated`);
+        if (ids.has(scene.id)) errors.push(`INE_VALIDATION_SCENE_${index}_ID_DUPLICATED`);
         ids.add(scene.id);
       }
       if (scene.image !== undefined && !hasString(scene, "image")) {
-        errors.push(`scenes[${index}].image must be a non-empty string`);
+        errors.push(`INE_VALIDATION_SCENE_${index}_IMAGE_INVALID`);
       }
       if (scene.imageAlt !== undefined && typeof scene.imageAlt !== "string") {
-        errors.push(`scenes[${index}].imageAlt must be a string`);
+        errors.push(`INE_VALIDATION_SCENE_${index}_IMAGE_ALT_INVALID`);
+      }
+      if (
+        scene.imageDisplayMode !== undefined &&
+        (typeof scene.imageDisplayMode !== "string" || !IMAGE_DISPLAY_MODES.has(scene.imageDisplayMode))
+      ) {
+        errors.push(`INE_VALIDATION_SCENE_${index}_IMAGE_DISPLAY_MODE_INVALID`);
       }
     });
     if (typeof value.startScene === "string" && !ids.has(value.startScene)) {
-      errors.push("startScene must reference an existing scene");
+      errors.push("INE_VALIDATION_START_SCENE_UNKNOWN");
     }
   }
 

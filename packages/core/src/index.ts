@@ -4,6 +4,7 @@ export interface NarrativeScene {
   readonly text: string;
   readonly image?: string;
   readonly imageAlt?: string;
+  readonly imageDisplayMode?: ImageDisplayMode;
 }
 
 export interface NarrativePack {
@@ -24,6 +25,7 @@ export interface ValidationResult {
 export type NarrativePackValidator = (value: unknown) => ValidationResult;
 
 export type AssetKind = "images" | "audio" | "video" | "icons";
+export type ImageDisplayMode = "contain" | "cover" | "fill" | "immersive";
 
 export class AssetManager {
   readonly #baseUrl: URL;
@@ -75,13 +77,13 @@ export async function loadNarrativePack(
 ): Promise<NarrativePack> {
   const response = await fetch(source);
   if (!response.ok) {
-    throw new Error(`Narrative Pack request failed (${response.status}).`);
+    throw new Error("INE_PACK_REQUEST_FAILED");
   }
 
   const data: unknown = await response.json();
   const result = validate(data);
   if (!result.valid) {
-    throw new Error(`Invalid Narrative Pack: ${result.errors.join("; ")}`);
+    throw new Error("INE_PACK_INVALID");
   }
 
   const pack = data as NarrativePack;
@@ -106,7 +108,7 @@ export class NarrativeEngine {
     this.#pack = pack;
     const startIndex = pack.scenes.findIndex((scene) => scene.id === pack.startScene);
     if (startIndex < 0) {
-      throw new Error(`Start scene "${pack.startScene}" does not exist.`);
+      throw new Error("INE_START_SCENE_MISSING");
     }
     this.#index = startIndex;
   }
@@ -114,9 +116,17 @@ export class NarrativeEngine {
   get currentScene(): NarrativeScene {
     const scene = this.#pack.scenes[this.#index];
     if (!scene) {
-      throw new Error("Narrative state points to an unknown scene.");
+      throw new Error("INE_SCENE_STATE_INVALID");
     }
     return scene;
+  }
+
+  get currentSceneIndex(): number {
+    return this.#index;
+  }
+
+  get sceneCount(): number {
+    return this.#pack.scenes.length;
   }
 
   get canGoPrevious(): boolean {

@@ -2,66 +2,66 @@
   "$schema": "../../schemas/narrative-pack.schema.json",
   "format": "ine-narrative-pack",
   "version": "1.0",
-  "id": "eria-immersive-prologue",
-  "title": "ERIA Immersive Prologue",
-  "language": "en",
+  "id": "le-seuil-des-etoiles",
+  "title": "Le Seuil des Étoiles",
+  "language": "fr",
   "startScene": "scene-01",
   "scenes": [
     {
       "id": "scene-01",
-      "title": "Mount Fuji",
-      "text": "The pack begins with a quiet landmark, loaded as external content through the Narrative Pack contract.",
+      "title": "Le mont silencieux",
+      "text": "La première image installe le seuil du récit, préservée dans son cadrage complet par le moteur.",
       "image": "assets/images/scene-01-mount-fuji.png",
-      "imageAlt": "Mount Fuji rising above a calm landscape under a luminous sky."
+      "imageAlt": "Le mont Fuji se dresse au-dessus d’un paysage calme sous un ciel lumineux."
     },
     {
       "id": "scene-02",
-      "title": "Cosmic Whale",
-      "text": "A vast celestial passage confirms that the player can render a pack without knowing its story in advance.",
+      "title": "La baleine cosmique",
+      "text": "Le pack décrit le voyage; le moteur se contente d’en lire la structure et les ressources.",
       "image": "assets/images/scene-02-cosmic-whale.png",
-      "imageAlt": "A whale-like cosmic figure crossing a star-filled scene."
+      "imageAlt": "Une forme de baleine cosmique traverse une scène remplie d’étoiles."
     },
     {
       "id": "scene-03",
-      "title": "Snow Leopards",
-      "text": "Each scene references only portable assets inside the pack, keeping the runtime independent.",
+      "title": "Les léopards des neiges",
+      "text": "Chaque scène reste autonome, reliée à ses images par des chemins portables dans le pack.",
       "image": "assets/images/scene-03-snow-leopards.png",
-      "imageAlt": "Snow leopards standing in a cold mountain environment."
+      "imageAlt": "Des léopards des neiges se tiennent dans un environnement de montagne froide."
     },
     {
       "id": "scene-04",
-      "title": "Cosmic Mandala",
-      "text": "The same schema links every visual resource through normalized, predictable paths.",
+      "title": "Le mandala stellaire",
+      "text": "La progression devient un repère narratif, discret, lisible et indépendant du contenu.",
       "image": "assets/images/scene-04-cosmic-mandala.png",
-      "imageAlt": "A bright cosmic mandala pattern with layered circular geometry."
+      "imageAlt": "Un mandala cosmique lumineux composé de cercles et de motifs géométriques."
     },
     {
       "id": "scene-05",
-      "title": "Golden Eagle",
-      "text": "The renderer receives trusted scene state while asset resolution remains a Core responsibility.",
+      "title": "L’aigle d’or",
+      "text": "L’illustration domine l’écran tandis que le texte conserve une place claire et respirante.",
       "image": "assets/images/scene-05-golden-eagle.png",
-      "imageAlt": "A golden eagle presented against a dramatic illuminated background."
+      "imageAlt": "Un aigle doré se détache sur un fond lumineux et dramatique."
     },
     {
       "id": "scene-06",
-      "title": "Traveler Cat",
-      "text": "The pack structure leaves room for future audio, video, and icon resources without changing the player.",
+      "title": "Le chat voyageur",
+      "text": "La structure prépare l’arrivée future de sons, d’animations et de transitions sans les imposer.",
       "image": "assets/images/scene-06-traveler-cat.png",
-      "imageAlt": "A traveling cat character in an adventurous illustrated scene."
+      "imageAlt": "Un chat voyageur apparaît dans une scène illustrée aux accents d’aventure."
     },
     {
       "id": "scene-07",
-      "title": "Guardian",
-      "text": "The import model keeps work-specific choices inside the Narrative Pack boundary.",
+      "title": "Le gardien",
+      "text": "Le moteur garde sa distance: il orchestre l’expérience, mais ne dicte jamais l’œuvre.",
       "image": "assets/images/scene-07-guardian.png",
-      "imageAlt": "A guardian figure standing in a powerful atmospheric scene."
+      "imageAlt": "Une figure de gardien se tient dans une atmosphère puissante."
     },
     {
       "id": "scene-08",
-      "title": "White Cat",
-      "text": "The final scene completes the first official asset set for the Immersive Narrative Engine.",
+      "title": "Le chat blanc",
+      "text": "Le pack se referme sur une image entière, stable, accessible et prête pour les prochaines missions.",
       "image": "assets/images/scene-08-white-cat.png",
-      "imageAlt": "A white cat shown as the focus of a polished illustrative scene."
+      "imageAlt": "Un chat blanc est présenté comme le sujet principal d’une scène illustrée."
     }
   ]
 }

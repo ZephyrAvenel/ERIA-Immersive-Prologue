@@ -1,0 +1,14 @@
+{
+  "language": "en",
+  "engineTitle": "Immersive Narrative Engine",
+  "packLabel": "Narrative Pack",
+  "skipToNarrative": "Skip to narrative",
+  "navigationLabel": "Narrative navigation",
+  "previous": "Previous",
+  "next": "Next",
+  "progressLabel": "Narrative progress",
+  "progressText": "Scene {current} / {total}",
+  "errorTitle": "Unable to load the Narrative Pack",
+  "errorMessage": "The player could not open this Narrative Pack.",
+  "unknownError": "Unknown player error"
+}
