@@ -3,7 +3,7 @@
 INE is a work-independent, web-based player for **Narrative Packs**. The engine
 contains no story-specific logic: any pack that follows the published schemas
 can be loaded without changing the runtime.
--
+
 This repository currently provides the production foundation: a minimal player,
 core loading contract, renderer, validator, UI helpers, SDK entry point, example
 pack, PWA shell, and continuous delivery to GitHub Pages.
@@ -34,6 +34,13 @@ The Player reads its Narrative Pack URL from
 requires changing that deployment configuration; no engine package needs to be
 rebuilt or edited.
 
+## Narrative Pack assets
+
+Pack resources live beside the pack manifest under `assets/`, with reserved
+folders for `images/`, `audio/`, `video/`, and `icons/`. Runtime code resolves
+asset references through the Core `AssetManager`, so applications and renderers
+do not hard-code file locations.
+
 ## Repository layout
 
 ```text
@@ -43,7 +50,7 @@ packages/renderer/ DOM rendering boundary
 packages/sdk/      Public author-facing types and future SDK entry point
 packages/ui/       Accessible reusable UI primitives
 packages/validators/ Runtime Narrative Pack validation
-examples/demo-pack/ Small, work-neutral sample pack
+examples/demo-pack/ First integrated Narrative Pack and normalized assets
 schemas/           Versioned JSON Schemas
 docs/              Architecture and Narrative Pack documentation
 tests/             Reserved for cross-package integration tests

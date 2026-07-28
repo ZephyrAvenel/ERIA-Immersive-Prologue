@@ -26,6 +26,7 @@ function serveDirectory(root: string) {
 
     const contentTypes: Readonly<Record<string, string>> = {
       ".json": "application/json; charset=utf-8",
+      ".png": "image/png",
       ".svg": "image/svg+xml",
     };
     response.setHeader("Content-Type", contentTypes[extname(filePath)] ?? "application/octet-stream");

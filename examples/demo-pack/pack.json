@@ -2,24 +2,66 @@
   "$schema": "../../schemas/narrative-pack.schema.json",
   "format": "ine-narrative-pack",
   "version": "1.0",
-  "id": "ine-foundation-demo",
-  "title": "INE Foundation Demo",
+  "id": "eria-immersive-prologue",
+  "title": "ERIA Immersive Prologue",
   "language": "en",
-  "startScene": "welcome",
+  "startScene": "scene-01",
   "scenes": [
     {
-      "id": "welcome",
-      "title": "A player without a story",
-      "text": "INE reads narrative content from an independent, validated Narrative Pack.",
-      "image": "assets/welcome.svg",
-      "imageAlt": "Abstract cyan doorway opening into a dark landscape."
+      "id": "scene-01",
+      "title": "Mount Fuji",
+      "text": "The pack begins with a quiet landmark, loaded as external content through the Narrative Pack contract.",
+      "image": "assets/images/scene-01-mount-fuji.png",
+      "imageAlt": "Mount Fuji rising above a calm landscape under a luminous sky."
     },
     {
-      "id": "foundation",
-      "title": "Ready to evolve",
-      "text": "The core, renderer, validation, UI, and SDK boundaries can now grow independently.",
-      "image": "assets/foundation.svg",
-      "imageAlt": "A constellation of connected modules."
+      "id": "scene-02",
+      "title": "Cosmic Whale",
+      "text": "A vast celestial passage confirms that the player can render a pack without knowing its story in advance.",
+      "image": "assets/images/scene-02-cosmic-whale.png",
+      "imageAlt": "A whale-like cosmic figure crossing a star-filled scene."
+    },
+    {
+      "id": "scene-03",
+      "title": "Snow Leopards",
+      "text": "Each scene references only portable assets inside the pack, keeping the runtime independent.",
+      "image": "assets/images/scene-03-snow-leopards.png",
+      "imageAlt": "Snow leopards standing in a cold mountain environment."
+    },
+    {
+      "id": "scene-04",
+      "title": "Cosmic Mandala",
+      "text": "The same schema links every visual resource through normalized, predictable paths.",
+      "image": "assets/images/scene-04-cosmic-mandala.png",
+      "imageAlt": "A bright cosmic mandala pattern with layered circular geometry."
+    },
+    {
+      "id": "scene-05",
+      "title": "Golden Eagle",
+      "text": "The renderer receives trusted scene state while asset resolution remains a Core responsibility.",
+      "image": "assets/images/scene-05-golden-eagle.png",
+      "imageAlt": "A golden eagle presented against a dramatic illuminated background."
+    },
+    {
+      "id": "scene-06",
+      "title": "Traveler Cat",
+      "text": "The pack structure leaves room for future audio, video, and icon resources without changing the player.",
+      "image": "assets/images/scene-06-traveler-cat.png",
+      "imageAlt": "A traveling cat character in an adventurous illustrated scene."
+    },
+    {
+      "id": "scene-07",
+      "title": "Guardian",
+      "text": "The import model keeps work-specific choices inside the Narrative Pack boundary.",
+      "image": "assets/images/scene-07-guardian.png",
+      "imageAlt": "A guardian figure standing in a powerful atmospheric scene."
+    },
+    {
+      "id": "scene-08",
+      "title": "White Cat",
+      "text": "The final scene completes the first official asset set for the Immersive Narrative Engine.",
+      "image": "assets/images/scene-08-white-cat.png",
+      "imageAlt": "A white cat shown as the focus of a polished illustrative scene."
     }
   ]
 }

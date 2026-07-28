@@ -23,6 +23,52 @@ export interface ValidationResult {
 
 export type NarrativePackValidator = (value: unknown) => ValidationResult;
 
+export type AssetKind = "images" | "audio" | "video" | "icons";
+
+export class AssetManager {
+  readonly #baseUrl: URL;
+
+  constructor(baseUrl: URL) {
+    this.#baseUrl = new URL(".", baseUrl);
+  }
+
+  resolve(path: string): string {
+    return new URL(path, this.#baseUrl).href;
+  }
+
+  image(path: string): string {
+    return this.resolve(path);
+  }
+
+  audio(path: string): string {
+    return this.resolve(path);
+  }
+
+  video(path: string): string {
+    return this.resolve(path);
+  }
+
+  icon(path: string): string {
+    return this.resolve(path);
+  }
+
+  async preloadImage(path: string): Promise<void> {
+    const image = new Image();
+    const loaded = new Promise<void>((resolve, reject) => {
+      image.addEventListener("load", () => resolve(), { once: true });
+      image.addEventListener("error", () => reject(new Error(`Image asset failed to load: ${path}`)), {
+        once: true,
+      });
+    });
+    image.src = this.image(path);
+    await loaded;
+  }
+
+  async preloadImages(paths: readonly string[]): Promise<void> {
+    await Promise.all(paths.map((path) => this.preloadImage(path)));
+  }
+}
+
 export async function loadNarrativePack(
   source: URL,
   validate: NarrativePackValidator,
@@ -39,13 +85,15 @@ export async function loadNarrativePack(
   }
 
   const pack = data as NarrativePack;
-  const packBaseUrl = new URL(".", source);
+  const assets = new AssetManager(source);
+  const imagePaths = pack.scenes.flatMap((scene) => (scene.image ? [scene.image] : []));
+  void assets.preloadImages(imagePaths).catch(() => undefined);
 
   return {
     ...pack,
     scenes: pack.scenes.map((scene) => ({
       ...scene,
-      image: scene.image ? new URL(scene.image, packBaseUrl).href : undefined,
+      image: scene.image ? assets.image(scene.image) : undefined,
     })),
   };
 }

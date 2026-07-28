@@ -5,31 +5,32 @@
 INE is divided into small packages with one-way responsibilities:
 
 ```text
-player ──> core <── renderer
-   ├─────> validators ──> core
-   ├─────> renderer
-   └─────> ui
+player --> core <-- renderer
+   |----> validators --> core
+   |----> renderer
+   `----> ui
 
-sdk ─────> core
- └───────> validators
+sdk ----> core
+ `------> validators
 
-player.config.json ──> player ──> Narrative Pack JSON + colocated assets
+player.config.json --> player --> Narrative Pack JSON + colocated assets
 ```
 
-- **core** owns stable domain types, pack loading, and narrative navigation.
+- **core** owns stable domain types, pack loading, asset resolution, and
+  narrative navigation.
 - **validators** protects the engine boundary from malformed external data.
 - **renderer** translates trusted domain state into accessible DOM.
 - **ui** contains work-independent controls and future design primitives.
 - **sdk** is the eventual author-facing entry point; it currently re-exports
-  stable types and validation only.
+  stable types, asset resolution, and validation only.
 - **player** composes packages and owns browser lifecycle concerns such as PWA
   registration and deployment configuration. It does not own narrative
   business rules or content.
 
 The example pack is served as static data selected through
 `player.config.json`. Replacing its URL with any conforming pack requires no
-change to an application or package. Relative pack assets are resolved from the
-pack location, not from the Player location.
+change to an application or package. Relative pack assets are resolved by the
+Core `AssetManager` from the pack location, not from the Player location.
 
 ## Build and deployment
 

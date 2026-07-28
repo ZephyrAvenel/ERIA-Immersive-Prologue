@@ -12,9 +12,26 @@ language, initial scene, and a non-empty ordered scene list. Each scene includes
 an identifier, title, and text. An image and accessible alternative may be
 provided.
 
-Asset paths are URI references resolved relative to the pack manifest URL.
-Keeping a pack manifest and its asset folders together therefore makes the pack
-portable between deployments. Absolute asset URLs remain valid.
+Asset paths are URI references resolved relative to the pack manifest URL by
+the Core `AssetManager`. Keeping a pack manifest and its asset folders together
+therefore makes the pack portable between deployments. Absolute asset URLs
+remain valid.
+
+## Asset layout
+
+Narrative Packs reserve the following folders under `assets/`:
+
+```text
+assets/
+  images/
+  audio/
+  video/
+  icons/
+```
+
+Image references should point to normalized files under `assets/images/`.
+Future audio, video, and icon references will use the same resolution boundary
+instead of direct file paths in the Player or Renderer.
 
 ## Compatibility
 
