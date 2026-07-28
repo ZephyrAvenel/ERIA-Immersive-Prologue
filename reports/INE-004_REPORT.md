@@ -238,9 +238,27 @@ Contrôles préliminaires exécutés avec le runtime Node.js fourni par Codex :
 Résultat navigateur local :
 
 - le scénario navigateur est déterministe ;
-- dans l'environnement Codex local, Chrome n'est pas exposé explicitement à la
-  commande de test, donc le test est ignoré proprement hors CI ;
+- sans `CHROME_PATH`, Chrome n'est pas exposé explicitement à la commande de
+  test dans l'environnement Codex local, donc le test est ignoré proprement hors
+  CI ;
+- avec `CHROME_PATH` explicite vers Chrome, le test navigateur réel passe ;
 - en CI, l'absence de Chrome est traitée comme une erreur bloquante.
+
+Après première publication, GitHub Actions a révélé deux points spécifiques au
+test navigateur réel :
+
+1. le nettoyage du profil temporaire Chrome pouvait échouer sous Windows à cause
+   d'un fichier dictionnaire encore verrouillé ;
+2. le focus après changement de scène n'était pas restauré de manière
+   immédiatement observable.
+
+Corrections réalisées :
+
+- nettoyage du profil temporaire rendu tolérant aux verrous transitoires ;
+- restauration immédiate du focus sur un contrôle actif après rendu.
+
+Ces corrections restent dans le périmètre INE-004 : elles stabilisent le test
+navigateur et l'accessibilité clavier sans ajouter de fonctionnalité narrative.
 
 ## Couverture obtenue
 
@@ -301,6 +319,12 @@ Le commit de mission doit être unique :
 ```text
 INE-004 Add automated test foundation
 ```
+
+Note post-publication : le premier run GitHub Actions du commit INE-004 a
+échoué uniquement sur le scénario navigateur. Comme le push forcé et la
+réécriture de l'historique distant sont interdits, la correction minimale doit
+être publiée par un commit additionnel de stabilisation plutôt que par amend
+forcé.
 
 Avant publication, les contrôles Git requis seront relancés :
 

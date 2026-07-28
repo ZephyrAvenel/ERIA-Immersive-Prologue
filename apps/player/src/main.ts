@@ -100,7 +100,7 @@ async function start(): Promise<void> {
       const preferredTarget = focusTarget === "previous" ? previous : next;
       const fallbackTarget = focusTarget === "previous" ? next : previous;
       const target = preferredTarget.disabled ? fallbackTarget : preferredTarget;
-      requestAnimationFrame(() => target.focus());
+      target.focus();
     }
   };
 

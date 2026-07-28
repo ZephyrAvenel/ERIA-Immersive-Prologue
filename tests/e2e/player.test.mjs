@@ -424,6 +424,6 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await page.close();
     await stopChild(vite);
     await stopChild(chrome.child);
-    await rm(chrome.userDataDir, { recursive: true, force: true });
+    await rm(chrome.userDataDir, { recursive: true, force: true }).catch(() => undefined);
   }
 });
