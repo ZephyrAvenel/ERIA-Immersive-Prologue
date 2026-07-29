@@ -214,6 +214,17 @@ export class NarrativeEngine {
     return this.transitionForScene(scene);
   }
 
+  findSceneIndex(sceneId: string): number {
+    return this.#pack.scenes.findIndex((scene) => scene.id === sceneId);
+  }
+
+  goToScene(sceneId: string): boolean {
+    const index = this.findSceneIndex(sceneId);
+    if (index < 0) return false;
+    this.#index = index;
+    return true;
+  }
+
   previous(): void {
     if (this.canGoPrevious) this.#index -= 1;
   }

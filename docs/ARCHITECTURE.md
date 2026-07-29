@@ -25,8 +25,8 @@ player.config.json --> player --> Narrative Pack JSON + colocated assets
 - **sdk** is the eventual author-facing entry point; it currently re-exports
   stable types, asset resolution, and validation only.
 - **player** composes packages and owns browser lifecycle concerns such as PWA
-  registration, localization, input wiring, and deployment configuration. It
-  does not own narrative business rules or content.
+  registration, localization, local reading progress, input wiring, and
+  deployment configuration. It does not own narrative business rules or content.
 
 The example pack is served as static data selected through
 `player.config.json`. Replacing its URL with any conforming pack requires no
@@ -58,6 +58,27 @@ Transitions are split across the existing layers:
 
 This keeps transitions independent from narrative content and prevents Core from
 depending on DOM, CSS, timers, or browser APIs.
+
+Reading progress is another Player boundary concern. `ReadingProgressStore`
+uses an injected storage adapter and stores only a small versioned record:
+
+```text
+schemaVersion
+packId
+packVersion
+sceneId
+sceneIndex
+updatedAt
+completed
+```
+
+The storage key is `ine:progress:v1:<pack-id>`. The pack id comes from the
+Narrative Pack manifest and is independent from the title. The Player resolves
+stored progress by `sceneId`, so a changed index does not prevent resume when
+the scene still exists. If storage is corrupt, unavailable, or points to a
+removed scene, the Player ignores it and renders the initial scene. Core exposes
+only deterministic scene lookup/selection by id; it never reads or writes
+browser storage.
 
 Future input and ambience features should attach at the Player boundary:
 keyboard, swipe, gamepad, transitions, audio, video, animation, ambience, and

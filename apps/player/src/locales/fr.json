@@ -8,6 +8,10 @@
   "next": "Suivant",
   "progressLabel": "Progression du récit",
   "progressText": "Scène {current} / {total}",
+  "resumeTitle": "Reprendre votre lecture ?",
+  "resumeDescription": "Vous vous êtes arrêté à la scène {current} sur {total}.",
+  "resumeAction": "Reprendre",
+  "restartAction": "Recommencer",
   "errorTitle": "Impossible de charger le pack narratif",
   "errorMessage": "Le lecteur ne peut pas ouvrir ce pack narratif.",
   "unknownError": "Erreur inconnue du lecteur"

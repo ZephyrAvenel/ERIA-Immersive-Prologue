@@ -8,6 +8,10 @@
   "next": "Next",
   "progressLabel": "Narrative progress",
   "progressText": "Scene {current} / {total}",
+  "resumeTitle": "Resume your reading?",
+  "resumeDescription": "You stopped at scene {current} of {total}.",
+  "resumeAction": "Resume",
+  "restartAction": "Restart",
   "errorTitle": "Unable to load the Narrative Pack",
   "errorMessage": "The player could not open this Narrative Pack.",
   "unknownError": "Unknown player error"

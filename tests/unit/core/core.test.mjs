@@ -110,6 +110,17 @@ test("NarrativeEngine selects the start scene and navigates deterministically", 
   assert.equal(engine.canGoPrevious, false);
 });
 
+test("NarrativeEngine can resume from a stable scene id", () => {
+  const engine = new NarrativeEngine(createPack());
+
+  assert.equal(engine.findSceneIndex("end"), 2);
+  assert.equal(engine.goToScene("end"), true);
+  assert.equal(engine.currentScene.id, "end");
+  assert.equal(engine.currentSceneIndex, 2);
+  assert.equal(engine.goToScene("missing"), false);
+  assert.equal(engine.currentScene.id, "end");
+});
+
 test("NarrativeEngine rejects a missing start scene", () => {
   assert.throws(
     () => new NarrativeEngine({ ...createPack(), startScene: "missing" }),

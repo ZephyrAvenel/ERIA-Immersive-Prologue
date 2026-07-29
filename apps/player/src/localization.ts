@@ -11,6 +11,10 @@ export interface LocaleMessages {
   readonly next: string;
   readonly progressLabel: string;
   readonly progressText: string;
+  readonly resumeTitle: string;
+  readonly resumeDescription: string;
+  readonly resumeAction: string;
+  readonly restartAction: string;
   readonly errorTitle: string;
   readonly errorMessage: string;
   readonly unknownError: string;

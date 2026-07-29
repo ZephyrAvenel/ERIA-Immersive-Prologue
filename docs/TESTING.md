@@ -69,6 +69,9 @@ Player for:
 - default `contain` image display mode;
 - configurable scene transitions;
 - navigation locking during a transition;
+- local reading progress persisted only after stable navigation;
+- resume and restart decisions after reload;
+- unavailable browser storage fallback;
 - focus restoration after animated and reduced-motion navigation;
 - `prefers-reduced-motion` disabling visual animations;
 - desktop, tablet, and mobile layout sanity;

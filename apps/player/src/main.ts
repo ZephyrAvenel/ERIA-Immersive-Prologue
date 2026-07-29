@@ -10,6 +10,11 @@ import { renderPlayer, renderPlayerWithTransition } from "@ine/renderer";
 import { createButton } from "@ine/ui";
 import { validateNarrativePack } from "@ine/validators";
 import { interpolate, resolveLocale, type LocaleMessages } from "./localization";
+import {
+  createBrowserReadingProgressStore,
+  createReadingProgress,
+  resolveProgressSceneIndex,
+} from "./progress";
 import "./styles.css";
 
 const app = document.querySelector<HTMLElement>("#app");
@@ -20,6 +25,7 @@ if (!app) {
 
 const mount = app;
 type NavigationTarget = "previous" | "next";
+type ResumeChoice = "resume" | "restart";
 
 interface PlayerConfiguration {
   readonly narrativePackUrl: string;
@@ -41,6 +47,60 @@ function updateShell(messages: LocaleMessages, packTitle?: string): void {
     document.body.prepend(skipLink);
   }
   skipLink.textContent = messages.skipToNarrative;
+}
+
+function renderResumePrompt(
+  messages: LocaleMessages,
+  sceneIndex: number,
+  sceneCount: number,
+): Promise<ResumeChoice> {
+  mount.removeAttribute("aria-busy");
+  mount.replaceChildren();
+
+  const panel = document.createElement("section");
+  panel.className = "resume-panel";
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-modal", "true");
+  panel.setAttribute("aria-labelledby", "resume-title");
+  panel.setAttribute("aria-describedby", "resume-description");
+
+  const title = document.createElement("h1");
+  title.id = "resume-title";
+  title.textContent = messages.resumeTitle;
+
+  const description = document.createElement("p");
+  description.id = "resume-description";
+  description.textContent = interpolate(messages.resumeDescription, {
+    current: sceneIndex + 1,
+    total: sceneCount,
+  });
+
+  const actions = document.createElement("div");
+  actions.className = "resume-panel__actions";
+
+  return new Promise((resolve) => {
+    let resolved = false;
+    const settle = (choice: ResumeChoice): void => {
+      if (resolved) return;
+      resolved = true;
+      resolve(choice);
+    };
+
+    const resume = createButton(messages.resumeAction, () => {
+      settle("resume");
+    });
+    resume.dataset.resumeAction = "resume";
+
+    const restart = createButton(messages.restartAction, () => {
+      settle("restart");
+    });
+    restart.dataset.resumeAction = "restart";
+
+    actions.append(resume, restart);
+    panel.append(title, description, actions);
+    mount.append(panel);
+    resume.focus();
+  });
 }
 
 async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
@@ -69,8 +129,21 @@ async function start(): Promise<void> {
   const pack = await loadNarrativePack(packUrl, validateNarrativePack);
   const engine = new NarrativeEngine(pack);
   const messages = resolveLocale(pack.language);
+  const progressStore = createBrowserReadingProgressStore();
   updateShell(messages, pack.title);
   let transitionInProgress = false;
+
+  const saveCurrentProgress = (): void => {
+    progressStore.save(
+      createReadingProgress({
+        packId: pack.id,
+        packVersion: pack.version,
+        sceneId: engine.currentScene.id,
+        sceneIndex: engine.currentSceneIndex,
+        completed: !engine.canGoNext,
+      }),
+    );
+  };
 
   const updateControlAvailability = (): void => {
     const previous = mount.querySelector<HTMLButtonElement>('[data-navigation="previous"]');
@@ -91,6 +164,13 @@ async function start(): Promise<void> {
       `[data-navigation="${focusTarget === "previous" ? "next" : "previous"}"]`,
     );
     const target = preferredTarget && !preferredTarget.disabled ? preferredTarget : fallbackTarget;
+    if (target && !target.disabled) target.focus();
+  };
+
+  const focusFirstAvailableNavigationControl = (): void => {
+    const next = mount.querySelector<HTMLButtonElement>('[data-navigation="next"]');
+    const previous = mount.querySelector<HTMLButtonElement>('[data-navigation="previous"]');
+    const target = next && !next.disabled ? next : previous;
     if (target && !target.disabled) target.focus();
   };
 
@@ -158,6 +238,7 @@ async function start(): Promise<void> {
     const previousIndex = engine.currentSceneIndex;
     const targetIndex = target === "next" ? previousIndex + 1 : previousIndex - 1;
     const transition = engine.transitionForSceneIndex(targetIndex);
+    let navigationSucceeded = false;
 
     transitionInProgress = true;
     disableCurrentControls();
@@ -166,6 +247,7 @@ async function start(): Promise<void> {
       if (target === "next") engine.next();
       else engine.previous();
       await render(target, transition, getTransitionDirection(previousIndex, engine.currentSceneIndex));
+      navigationSucceeded = true;
     } catch {
       renderPlayer(mount, {
         pack,
@@ -188,10 +270,31 @@ async function start(): Promise<void> {
       mount.removeAttribute("aria-busy");
       updateControlAvailability();
       focusNavigationControl(target);
+      if (navigationSucceeded) saveCurrentProgress();
     }
   };
 
-  void render();
+  const savedProgress = progressStore.load(pack.id);
+  if (savedProgress && savedProgress.packVersion === pack.version) {
+    const savedSceneIndex = resolveProgressSceneIndex(savedProgress, pack.scenes);
+    if (savedSceneIndex === null) {
+      progressStore.clear(pack.id);
+    } else if (savedSceneIndex !== engine.currentSceneIndex) {
+      const choice = await renderResumePrompt(messages, savedSceneIndex, engine.sceneCount);
+      if (choice === "resume") {
+        engine.goToScene(savedProgress.sceneId);
+        await render();
+        saveCurrentProgress();
+        focusFirstAvailableNavigationControl();
+        return;
+      }
+      progressStore.clear(pack.id);
+    }
+  } else if (savedProgress) {
+    progressStore.clear(pack.id);
+  }
+
+  await render();
 }
 
 function renderError(): void {

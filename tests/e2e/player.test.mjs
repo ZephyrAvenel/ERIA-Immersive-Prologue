@@ -9,6 +9,7 @@ import test from "node:test";
 
 const baseUrl = "/ERIA-Immersive-Prologue/";
 const artifactsDir = "test-results/e2e";
+const progressStorageKey = "ine:progress:v1:le-seuil-des-etoiles";
 
 function once(emitter, event) {
   return new Promise((resolve) => emitter.once(event, resolve));
@@ -253,6 +254,8 @@ async function waitForPlayerReady(client, expectedProgress, timeoutMs = 10_000) 
       const media = document.querySelector('.scene__media');
       return ${progressPredicate}
         && app?.getAttribute('aria-busy') === null
+        && app?.getAttribute('data-transition') === null
+        && document.querySelectorAll('.player').length === 1
         && image?.complete === true
         && image?.naturalWidth > 0
         && image?.naturalHeight > 0
@@ -263,11 +266,47 @@ async function waitForPlayerReady(client, expectedProgress, timeoutMs = 10_000) 
   );
 }
 
-async function navigate(client, url) {
+async function loadUrl(client, url) {
   const load = client.waitFor("Page.loadEventFired");
   await client.send("Page.navigate", { url });
   await load;
+}
+
+async function navigate(client, url) {
+  await loadUrl(client, url);
   await waitForExpression(client, "document.querySelector('.scene__image')?.complete === true");
+}
+
+async function clearReadingProgress(client) {
+  await evaluate(client, `localStorage.removeItem(${JSON.stringify(progressStorageKey)})`);
+}
+
+async function readStoredProgress(client) {
+  return evaluate(
+    client,
+    `(() => {
+      const raw = localStorage.getItem(${JSON.stringify(progressStorageKey)});
+      return raw ? JSON.parse(raw) : null;
+    })()`,
+  );
+}
+
+async function waitForResumePrompt(client, expectedDescription) {
+  await waitForExpression(
+    client,
+    `(() => {
+      return document.querySelector('.resume-panel h1')?.textContent === 'Reprendre votre lecture ?'
+        && document.querySelector('#resume-description')?.textContent === ${JSON.stringify(expectedDescription)}
+        && document.querySelector('[data-resume-action="resume"]') === document.activeElement;
+    })()`,
+  );
+}
+
+async function clickResumeAction(client, action) {
+  await evaluate(
+    client,
+    `document.querySelector(${JSON.stringify(`[data-resume-action="${action}"]`)})?.click()`,
+  );
 }
 
 async function readPlayerState(client) {
@@ -415,6 +454,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     });
     await navigate(page, url);
     await waitForPlayerReady(page, "Scène 1 / 8");
+    assert.equal(await readStoredProgress(page), null);
 
     const first = await readStablePlayerState(page, "Scène 1 / 8");
     assert.equal(first.lang, "fr");
@@ -449,6 +489,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         window.__ineAnimations = [];
         window.__ineBusyObserved = false;
         window.__ineControlsDisabledDuringBusy = false;
+        window.__ineProgressWrites = [];
         const app = document.querySelector('#app');
         const observer = new MutationObserver(() => {
           if (app?.getAttribute('aria-busy') === 'true') {
@@ -461,6 +502,17 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         Element.prototype.animate = function(keyframes, options) {
           window.__ineAnimations.push({ className: this.className, keyframes, options });
           return originalAnimate.call(this, keyframes, options);
+        };
+        const originalSetItem = Storage.prototype.setItem;
+        Storage.prototype.setItem = function(key, value) {
+          if (key === ${JSON.stringify(progressStorageKey)}) {
+            window.__ineProgressWrites.push({
+              busy: app?.getAttribute('aria-busy'),
+              transition: app?.getAttribute('data-transition'),
+              value: JSON.parse(value)
+            });
+          }
+          return originalSetItem.call(this, key, value);
         };
       })()`,
     );
@@ -484,8 +536,40 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(afterDoubleActivation.hiddenPlayerCount, 0);
     assert.equal(afterDoubleActivation.activeElementText, "Suivant");
     assert.ok((await evaluate(page, "window.__ineAnimations.length")) >= 2);
+    assert.deepEqual(
+      await evaluate(page, "window.__ineProgressWrites.map((write) => ({ busy: write.busy, transition: write.transition, sceneId: write.value.sceneId }))"),
+      [{ busy: null, transition: null, sceneId: "scene-02" }],
+    );
+    const progressAfterDoubleActivation = await readStoredProgress(page);
+    assert.equal(progressAfterDoubleActivation.sceneId, "scene-02");
+    assert.equal(progressAfterDoubleActivation.sceneIndex, 1);
+    assert.equal(progressAfterDoubleActivation.completed, false);
 
-    for (let index = 3; index <= 8; index += 1) {
+    await clickLocalizedNext(page, "Scène 3 / 8");
+    assert.equal((await readStoredProgress(page)).sceneId, "scene-03");
+    await clickLocalizedNext(page, "Scène 4 / 8");
+    assert.equal((await readStoredProgress(page)).sceneId, "scene-04");
+
+    await loadUrl(page, url);
+    await waitForResumePrompt(page, "Vous vous êtes arrêté à la scène 4 sur 8.");
+    await clickResumeAction(page, "resume");
+    await waitForPlayerReady(page, "Scène 4 / 8");
+    const resumed = await readStablePlayerState(page, "Scène 4 / 8");
+    assert.equal(resumed.progress, "Scène 4 / 8");
+    assert.equal(resumed.activeElementText, "Suivant");
+    assert.equal((await readStoredProgress(page)).sceneIndex, 3);
+
+    await loadUrl(page, url);
+    await waitForResumePrompt(page, "Vous vous êtes arrêté à la scène 4 sur 8.");
+    await clickResumeAction(page, "restart");
+    await waitForPlayerReady(page, "Scène 1 / 8");
+    const restarted = await readStablePlayerState(page, "Scène 1 / 8");
+    assert.equal(restarted.progress, "Scène 1 / 8");
+    assert.equal(restarted.previousDisabled, true);
+    assert.equal(restarted.nextDisabled, false);
+    assert.equal(await readStoredProgress(page), null);
+
+    for (let index = 2; index <= 8; index += 1) {
       await clickLocalizedNext(page, `Scène ${index} / 8`);
       const state = await readStablePlayerState(page, `Scène ${index} / 8`);
       assert.equal(state.progress, `Scène ${index} / 8`);
@@ -499,6 +583,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     const last = await readStablePlayerState(page, "Scène 8 / 8");
     assert.equal(last.nextDisabled, true);
     assert.equal(last.previousDisabled, false);
+    const completedProgress = await readStoredProgress(page);
+    assert.equal(completedProgress.sceneId, "scene-08");
+    assert.equal(completedProgress.sceneIndex, 7);
+    assert.equal(completedProgress.completed, true);
 
     await evaluate(page, "Array.from(document.querySelectorAll('button')).find((button) => button.textContent === 'Précédent')?.click()");
     await waitForPlayerReady(page, "Scène 7 / 8");
@@ -517,6 +605,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         deviceScaleFactor: 1,
         mobile: viewport.width < 600,
       });
+      await clearReadingProgress(page);
       await navigate(page, url);
       await waitForPlayerReady(page, "Scène 1 / 8");
       const state = await readStablePlayerState(page, "Scène 1 / 8");
@@ -530,6 +619,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await page.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],
     });
+    await clearReadingProgress(page);
     await navigate(page, url);
     await waitForPlayerReady(page, "Scène 1 / 8");
     await evaluate(
@@ -550,6 +640,17 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(reducedState.activeElementText, "Suivant");
     assertSceneImageReady(reducedState);
     assert.equal(await evaluate(page, "window.__ineReducedAnimations.length"), 0);
+
+    await page.send("Page.addScriptToEvaluateOnNewDocument", {
+      source:
+        "Object.defineProperty(window, 'localStorage', { get() { throw new Error('localStorage unavailable'); } });",
+    });
+    await loadUrl(page, url);
+    await waitForPlayerReady(page, "Scène 1 / 8");
+    const storageUnavailableState = await readStablePlayerState(page, "Scène 1 / 8");
+    assert.equal(storageUnavailableState.progress, "Scène 1 / 8");
+    assert.equal(storageUnavailableState.busy, null);
+    assertSceneImageReady(storageUnavailableState);
 
     assert.equal(
       imageResponses.every((response) => response.status < 400),

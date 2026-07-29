@@ -56,6 +56,18 @@ are `none`, `fade`, `crossfade`, and `slide`. A pack can define
 its own `transition`. Transitions are optional and are disabled automatically
 when the user prefers reduced motion.
 
+## Reading progress
+
+The Player can persist reading progress locally per Narrative Pack. Progress is
+stored under `ine:progress:v1:<pack-id>` and contains only stable runtime state:
+pack id, pack version, scene id, current scene index, update date, completion
+state, and a schema version. It never stores pack content, images, analytics,
+accounts, or personal data.
+
+When a valid saved scene exists, the Player offers an accessible choice to
+resume or restart. If storage is unavailable, corrupt, or references a removed
+scene, the Player falls back to the pack start scene without blocking reading.
+
 ## Interface language
 
 Player interface copy lives in `apps/player/src/locales/`. The active locale is
@@ -108,8 +120,8 @@ Browser tests start the Vite player and drive Chrome through the Chrome DevTools
 Protocol. In CI, Chrome must be available and the test fails if it cannot run.
 Locally, set `CHROME_PATH` when Chrome is not discoverable or when the desktop
 environment restricts browser automation. The browser scenario covers scene
-transitions, navigation locking, focus restoration, responsive layout, and
-`prefers-reduced-motion`.
+transitions, navigation locking, reading progress resume/restart, unavailable
+storage, focus restoration, responsive layout, and `prefers-reduced-motion`.
 
 ## Deployment
 

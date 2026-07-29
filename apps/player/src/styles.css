@@ -258,6 +258,37 @@ button:disabled {
   background: rgb(246 240 232 / 8%);
 }
 
+.resume-panel {
+  width: min(calc(100% - 2rem), 44rem);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 6vw, 3rem);
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+}
+
+.resume-panel h1 {
+  margin: 0;
+  color: #fffaf2;
+  font-size: clamp(2rem, 7vw, 3.75rem);
+  line-height: 1.05;
+}
+
+.resume-panel p {
+  max-width: 42rem;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: clamp(1rem, 2.6vw, 1.2rem);
+}
+
+.resume-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
 .error-panel h1 {
   margin: 0 0 0.75rem;
   font-size: clamp(1.6rem, 6vw, 2.4rem);
@@ -281,6 +312,10 @@ button:disabled {
 
   .player-controls {
     justify-content: end;
+  }
+
+  .resume-panel__actions {
+    justify-content: flex-start;
   }
 }
 
