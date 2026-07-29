@@ -188,18 +188,78 @@ Couverture :
 
 Les seuils de couverture n’ont pas été diminués.
 
-## 10. Limites restantes
+## 10. Validation distante
+
+Commit publié :
+
+```text
+ae3a3e9 — INE-007 First immersive Recits Vivants experience
+```
+
+Exécution GitHub Actions :
+
+- workflow : `Deploy GitHub Pages` ;
+- run : `30470826289` ;
+- URL : <https://github.com/ZephyrAvenel/ERIA-Immersive-Prologue/actions/runs/30470826289> ;
+- conclusion : succès.
+
+Étapes vérifiées :
+
+- `Install dependencies` : succès ;
+- `Typecheck` : succès ;
+- `Unit tests` : succès ;
+- `Integration tests` : succès ;
+- `Coverage` : succès ;
+- `Build` : succès ;
+- `Browser tests` : succès ;
+- `Upload Pages artifact` : succès ;
+- `Deploy to GitHub Pages` : succès.
+
+GitHub Pages :
+
+- URL : <https://zephyravenel.github.io/ERIA-Immersive-Prologue/> ;
+- statut HTTP : `200` ;
+- type : `text/html; charset=utf-8`.
+
+Vérification navigateur publiée :
+
+- prologue affiché ;
+- bouton `Franchir le seuil` fonctionnel sans rechargement de page ;
+- huit scènes parcourues ;
+- huit images visibles ;
+- `naturalWidth > 0` et `naturalHeight > 0` pour chaque image ;
+- `data-image-state="ready"` pour chaque scène ;
+- `object-fit: contain` conservé ;
+- `aria-busy` absent après chaque transition ;
+- focus restauré sur un bouton actif ;
+- aucune réponse PNG invalide ;
+- aucune erreur console détectée.
+
+Tailles vérifiées sur la version publiée :
+
+- `1366 × 768` ;
+- `1280 × 800` ;
+- `1024 × 768` ;
+- `768 × 1024` ;
+- `430 × 932` ;
+- `390 × 844` ;
+- `360 × 800`.
+
+Pour chaque taille, la scène standard tient dans la hauteur visible, les commandes restent visibles et aucun débordement horizontal n’a été détecté.
+
+## 11. Limites restantes
 
 - Les polices souhaitées sont déclarées par familles CSS, sans import externe bloquant.
 - Aucun son artificiel n’a été ajouté ; l’architecture laisse la place à une future mission audio.
 - Le prologue reste volontairement sobre et générique.
-- Le rapport GitHub Actions et Pages final doit être confirmé après publication du commit.
 
-## 11. État attendu après publication
+## 12. État final
 
-La mission sera clôturée après confirmation que :
+INE-007 est validée :
 
-- le commit INE-007 est publié en fast-forward ;
-- GitHub Actions est vert ;
-- GitHub Pages répond en HTTP 200 ;
-- l’expérience publiée présente le prologue et les scènes sans régression.
+- l’interface technique s’efface au profit de l’œuvre ;
+- le Narrative Pack `Les Gardiens des Récits Vivants` est opérationnel ;
+- le prologue cinématographique fonctionne ;
+- les scènes standards ne nécessitent pas de défilement pour atteindre la navigation ;
+- les tests locaux et distants sont verts ;
+- GitHub Pages est publié et accessible.
