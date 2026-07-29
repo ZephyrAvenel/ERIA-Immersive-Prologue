@@ -279,3 +279,141 @@ La mission ne doit être considérée comme définitivement clôturée qu’apr�
 - GitHub Actions vert ;
 - GitHub Pages accessible ;
 - navigation visuelle confirmée sur le site publié.
+
+## 15. Validation finale et publication
+
+Date de validation finale : 2026-07-29.
+
+### Commit publié
+
+Le commit exact a été publié sans recréation et sans réécriture d’historique :
+
+- `0be17f9cfccc1b7fcf274834f7ddb36ddac76957 — INE-005A Stabilize image loading across scene transitions`
+
+La publication a été réalisée par `git push origin main` en fast-forward :
+
+```text
+85f43ef..0be17f9  main -> main
+```
+
+Le plugin GitHub a confirmé que `main` distante pointe désormais sur `0be17f9`.
+
+### Validation locale
+
+La validation locale a été exécutée avec :
+
+- Node.js `v24.18.0` ;
+- npm `11.16.0` via `npm.cmd` ;
+- Chrome headless depuis `C:\Program Files\Google\Chrome\Application\chrome.exe`.
+
+Résultats :
+
+| Contrôle | Résultat |
+|---|---|
+| `npm.cmd ci` | Réussi |
+| `npm.cmd run typecheck` | Réussi |
+| `npm.cmd run test:unit` | 38 tests passés |
+| `npm.cmd run test:integration` | 5 tests passés |
+| `npm.cmd run test:coverage` | 43 tests passés |
+| `npm.cmd run build` | Réussi hors sandbox |
+| `npm.cmd run test:e2e` | 1 scénario navigateur passé |
+
+Couverture finale :
+
+| Zone | Lignes | Branches | Fonctions |
+|---|---:|---:|---:|
+| Core | 95,86 % | 89,47 % | 96,77 % |
+| Renderer | 85,90 % | 85,25 % | 77,78 % |
+| Validators | 91,34 % | 90,38 % | 100,00 % |
+| Total | 90,12 % | 88,24 % | 89,06 % |
+
+Le build Vite échoue encore dans le sandbox Codex avec une restriction `esbuild` d’accès à un dossier parent, mais il réussit hors sandbox avec le même état de source.
+
+### GitHub Actions
+
+Workflow vérifié :
+
+- run ID : `30425710927`
+- URL : `https://github.com/ZephyrAvenel/ERIA-Immersive-Prologue/actions/runs/30425710927`
+- statut : `completed`
+- conclusion : `success`
+
+Étapes du job `build` :
+
+| Étape | Résultat |
+|---|---|
+| Check out repository | Succès |
+| Set up Node.js | Succès |
+| Configure Pages | Succès |
+| Install dependencies | Succès |
+| Typecheck | Succès |
+| Unit tests | Succès |
+| Integration tests | Succès |
+| Coverage | Succès |
+| Build | Succès |
+| Browser tests | Succès |
+| Upload Pages artifact | Succès |
+
+Étapes du job `deploy` :
+
+| Étape | Résultat |
+|---|---|
+| Deploy to GitHub Pages | Succès |
+
+### GitHub Pages
+
+URL vérifiée :
+
+```text
+https://zephyravenel.github.io/ERIA-Immersive-Prologue/
+```
+
+Résultat HTTP :
+
+- statut `200` ;
+- `Content-Type` HTML attendu.
+
+La vérification navigateur publiée a parcouru les huit scènes et validé :
+
+- images réellement visibles ;
+- `image.complete === true` ;
+- `naturalWidth > 0` ;
+- `naturalHeight > 0` ;
+- `data-image-state="ready"` ;
+- `data-image-state="ready"` sur le conteneur média ;
+- `object-fit: contain` ;
+- opacité de l’image à `1` ;
+- absence de grande zone vide ;
+- absence de texte alternatif affiché comme fallback accidentel ;
+- aucune réponse HTML servie sous une URL `.png` ;
+- aucune erreur console ;
+- aucun échec réseau ;
+- `aria-busy` absent après chaque navigation validée ;
+- `data-transition` absent après chaque navigation validée ;
+- un seul `.player` présent après chaque transition ;
+- focus restauré sur un bouton actif après les navigations ;
+- absence de débordement horizontal.
+
+Configurations vérifiées :
+
+| Configuration | Résultat |
+|---|---|
+| Cache vide | Succès |
+| Cache rempli | Succès |
+| `prefers-reduced-motion: reduce` | Succès |
+| Desktop `1280 × 800` | Succès |
+| Tablette `768 × 1024` | Succès |
+| Mobile `390 × 844` | Succès |
+
+Chaque passe navigateur a observé au moins huit réponses PNG valides. Les passes complètes ont observé `32` réponses PNG en raison des rechargements et parcours responsive.
+
+### État final
+
+INE-005A est validée :
+
+- le correctif image est publié ;
+- les transitions n’exposent plus une scène dont l’image cible n’est pas prête ;
+- le service worker ne met plus en cache de réponse invalide comme image ;
+- la CI est verte ;
+- GitHub Pages est accessible ;
+- les huit images du Narrative Pack sont visibles sur le site publié.
