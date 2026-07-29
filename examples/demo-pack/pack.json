@@ -26,56 +26,56 @@
     {
       "id": "scene-01",
       "title": "La gardienne des profondeurs",
-      "text": "La baleine traverse la nuit étoilée. Autour d’elle, les récits anciens respirent encore.",
+      "text": "Sous la voûte profonde, la baleine porte les mémoires qui ne tiennent dans aucun livre. Son passage ouvre l’eau noire comme une première phrase.",
       "image": "assets/images/scene-02-cosmic-whale.png",
       "imageAlt": "Une baleine cosmique traverse une scène remplie d’étoiles."
     },
     {
       "id": "scene-02",
       "title": "La montagne du silence",
-      "text": "Au-delà du seuil, la montagne garde la mémoire des premiers regards.",
+      "text": "La montagne ne répond pas. Elle enseigne l’attente, la distance juste, le silence où les récits apprennent à devenir paysages.",
       "image": "assets/images/scene-01-mount-fuji.png",
       "imageAlt": "Le mont Fuji se dresse au-dessus d’un paysage calme sous un ciel lumineux."
     },
     {
       "id": "scene-03",
       "title": "Les veilleurs de neige",
-      "text": "Deux présences avancent sans bruit, attentives aux traces que les histoires laissent derrière elles.",
+      "text": "Trois veilleurs avancent dans le blanc. Ils ne suivent pas une piste : ils protègent ce qui fragilement persiste après le passage des voix.",
       "image": "assets/images/scene-03-snow-leopards.png",
       "imageAlt": "Des léopards des neiges se tiennent dans un environnement de montagne froide."
     },
     {
       "id": "scene-04",
       "title": "Le centre vivant",
-      "text": "Dans la spirale dorée, chaque fragment devient passage, chaque passage devient monde.",
+      "text": "Au centre, la forme respire. Ce qui semblait ornement devient boussole, et chaque cercle rappelle qu’un récit revient toujours autrement.",
       "image": "assets/images/scene-04-cosmic-mandala.png",
       "imageAlt": "Un mandala cosmique lumineux composé de cercles et de motifs géométriques."
     },
     {
       "id": "scene-05",
       "title": "L’aigle des hauteurs",
-      "text": "Il ouvre l’espace d’un battement lent et rappelle que tout récit cherche un horizon.",
+      "text": "L’aigle ne domine pas le ciel : il l’écoute. Dans son élan, l’histoire retrouve l’altitude nécessaire pour voir plus loin.",
       "image": "assets/images/scene-05-golden-eagle.png",
       "imageAlt": "Un aigle doré se détache sur un fond lumineux et dramatique."
     },
     {
       "id": "scene-06",
       "title": "Le voyageur des seuils",
-      "text": "Le chat avance entre les salles, porteur d’une curiosité plus ancienne que les cartes.",
+      "text": "Le voyageur connaît les passages que les plans oublient. Il avance sans hâte, certain que chaque détour peut devenir une chambre secrète.",
       "image": "assets/images/scene-06-traveler-cat.png",
       "imageAlt": "Un chat voyageur apparaît dans une scène illustrée aux accents d’aventure."
     },
     {
       "id": "scene-07",
       "title": "Le gardien sans nom",
-      "text": "Il ne parle pas. Sa présence suffit à tenir ouverte la porte des récits vivants.",
+      "text": "Le gardien demeure là où les seuils hésitent. Sa force n’est pas de fermer, mais de permettre au merveilleux de rester praticable.",
       "image": "assets/images/scene-07-guardian.png",
       "imageAlt": "Une figure de gardien se tient dans une atmosphère puissante."
     },
     {
       "id": "scene-08",
       "title": "La lumière du retour",
-      "text": "Le chat blanc demeure au bord du passage. Le récit se tait, mais le seuil reste ouvert.",
+      "text": "Au terme du parcours, le chat blanc ne conclut rien. Il veille simplement, comme si la sortie était déjà une autre invitation.",
       "image": "assets/images/scene-08-white-cat.png",
       "imageAlt": "Un chat blanc est présenté comme le sujet principal d’une scène illustrée."
     }
