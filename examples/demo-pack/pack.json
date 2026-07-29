@@ -14,70 +14,77 @@
     },
     "intro": {
       "lines": [
-        "Avant les mots…",
-        "il y avait le souffle.",
-        "Avant les théories…",
-        "il y avait le récit."
+        "Avant les mots, il y avait le souffle.",
+        "Avant les certitudes, il y avait l'émerveillement.",
+        "Chaque récit vivant commence lorsqu'une porte s'entrouvre.",
+        "Ce seuil ne se franchit pas avec les pieds.",
+        "Il se franchit avec le regard."
       ],
+      "title": "Le Seuil",
       "actionLabel": "Franchir le seuil"
     }
   },
   "scenes": [
     {
       "id": "scene-01",
-      "title": "La gardienne des profondeurs",
-      "text": "Sous la voûte profonde, la baleine porte les mémoires qui ne tiennent dans aucun livre. Son passage ouvre l’eau noire comme une première phrase.",
+      "title": "La Gardienne des profondeurs",
+      "text": "Les récits les plus anciens ne cherchent pas à convaincre.\n\nIls nous apprennent d'abord à écouter.\n\nComme les profondeurs de l'océan, ils portent une mémoire qui ne s'impose jamais, mais qui attend patiemment d'être rencontrée.",
       "image": "assets/images/scene-02-cosmic-whale.png",
       "imageAlt": "Une baleine cosmique traverse une scène remplie d’étoiles."
     },
     {
       "id": "scene-02",
-      "title": "La montagne du silence",
-      "text": "La montagne ne répond pas. Elle enseigne l’attente, la distance juste, le silence où les récits apprennent à devenir paysages.",
+      "title": "Le Gardien du silence",
+      "text": "Toute rencontre véritable commence lorsque le bruit s'apaise.\n\nLe silence n'est pas un vide.\n\nIl est l'espace où un récit vivant peut enfin être entendu.",
       "image": "assets/images/scene-01-mount-fuji.png",
       "imageAlt": "Le mont Fuji se dresse au-dessus d’un paysage calme sous un ciel lumineux."
     },
     {
       "id": "scene-03",
-      "title": "Les veilleurs de neige",
-      "text": "Trois veilleurs avancent dans le blanc. Ils ne suivent pas une piste : ils protègent ce qui fragilement persiste après le passage des voix.",
+      "title": "Les Veilleurs",
+      "text": "Nul ne veille seul.\n\nChaque regard éclaire celui des autres.\n\nEnsemble, les veilleurs protègent ce qui ne peut être gardé par la force :\nla confiance,\nla présence\net le vivant.",
       "image": "assets/images/scene-03-snow-leopards.png",
       "imageAlt": "Des léopards des neiges se tiennent dans un environnement de montagne froide."
     },
     {
       "id": "scene-04",
-      "title": "Le centre vivant",
-      "text": "Au centre, la forme respire. Ce qui semblait ornement devient boussole, et chaque cercle rappelle qu’un récit revient toujours autrement.",
-      "image": "assets/images/scene-04-cosmic-mandala.png",
-      "imageAlt": "Un mandala cosmique lumineux composé de cercles et de motifs géométriques."
+      "title": "Le Voyageur des seuils",
+      "text": "Aucun chemin n'est tracé d'avance.\n\nChaque passage transforme celui qui accepte de l'emprunter.\n\nLes récits vivants ne montrent pas la route.\n\nIls invitent à marcher.",
+      "image": "assets/images/scene-06-traveler-cat.png",
+      "imageAlt": "Un chat voyageur apparaît dans une scène illustrée aux accents d’aventure."
     },
     {
       "id": "scene-05",
-      "title": "L’aigle des hauteurs",
-      "text": "L’aigle ne domine pas le ciel : il l’écoute. Dans son élan, l’histoire retrouve l’altitude nécessaire pour voir plus loin.",
+      "title": "Le Messager des hauteurs",
+      "text": "Prendre de la hauteur n'est pas s'éloigner du monde.\n\nC'est découvrir que chaque histoire appartient à un paysage plus vaste.\n\nCe qui semblait séparé révèle peu à peu ses liens invisibles.",
       "image": "assets/images/scene-05-golden-eagle.png",
       "imageAlt": "Un aigle doré se détache sur un fond lumineux et dramatique."
     },
     {
       "id": "scene-06",
-      "title": "Le voyageur des seuils",
-      "text": "Le voyageur connaît les passages que les plans oublient. Il avance sans hâte, certain que chaque détour peut devenir une chambre secrète.",
-      "image": "assets/images/scene-06-traveler-cat.png",
-      "imageAlt": "Un chat voyageur apparaît dans une scène illustrée aux accents d’aventure."
-    },
-    {
-      "id": "scene-07",
-      "title": "Le gardien sans nom",
-      "text": "Le gardien demeure là où les seuils hésitent. Sa force n’est pas de fermer, mais de permettre au merveilleux de rester praticable.",
+      "title": "Le Gardien des passages",
+      "text": "Garder un récit vivant ne consiste pas à le figer.\n\nC'est préserver la possibilité d'une rencontre.\n\nChaque seuil ouvert devient une invitation adressée à ceux qui viendront après nous.",
       "image": "assets/images/scene-07-guardian.png",
       "imageAlt": "Une figure de gardien se tient dans une atmosphère puissante."
     },
     {
-      "id": "scene-08",
-      "title": "La lumière du retour",
-      "text": "Au terme du parcours, le chat blanc ne conclut rien. Il veille simplement, comme si la sortie était déjà une autre invitation.",
+      "id": "scene-07",
+      "title": "La Lumière du vivant",
+      "text": "La lumière ne répond pas aux questions.\n\nElle révèle simplement ce qui était déjà là.\n\nLes récits vivants grandissent lorsqu'ils éclairent sans éblouir.",
       "image": "assets/images/scene-08-white-cat.png",
       "imageAlt": "Un chat blanc est présenté comme le sujet principal d’une scène illustrée."
+    },
+    {
+      "id": "scene-08",
+      "title": "Le Mandala des Récits Vivants",
+      "text": "Aucun gardien ne détient le récit à lui seul.\n\nChacun en révèle une facette.\n\nLorsque les chemins se rejoignent,\nune même évidence apparaît :\n\nLe vivant est une histoire que nous écrivons ensemble.",
+      "image": "assets/images/scene-04-cosmic-mandala.png",
+      "imageAlt": "Un mandala cosmique lumineux composé de cercles et de motifs géométriques."
+    },
+    {
+      "id": "scene-09",
+      "title": "Épilogue",
+      "text": "Les gardiens ne demandent pas à être suivis.\n\nIls rappellent simplement qu'un récit vivant ne s'achève jamais.\n\nIl continue chaque fois qu'un être humain choisit d'écouter,\nde transmettre\net de prendre soin du monde qu'il habite."
     }
   ]
 }

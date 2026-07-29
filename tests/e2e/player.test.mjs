@@ -252,15 +252,18 @@ async function waitForPlayerReady(client, expectedProgress, timeoutMs = 10_000) 
       const app = document.querySelector('#app');
       const image = document.querySelector('.scene__image');
       const media = document.querySelector('.scene__media');
+      const imageReady = image === null
+        ? media === null
+        : image.complete === true
+          && image.naturalWidth > 0
+          && image.naturalHeight > 0
+          && image.getAttribute('data-image-state') === 'ready'
+          && media?.getAttribute('data-image-state') === 'ready';
       return ${progressPredicate}
         && app?.getAttribute('aria-busy') === null
         && app?.getAttribute('data-transition') === null
         && document.querySelectorAll('.player').length === 1
-        && image?.complete === true
-        && image?.naturalWidth > 0
-        && image?.naturalHeight > 0
-        && image?.getAttribute('data-image-state') === 'ready'
-        && media?.getAttribute('data-image-state') === 'ready';
+        && imageReady;
     })()`,
     timeoutMs,
   );
@@ -290,8 +293,8 @@ async function waitForPrologueReady(client) {
     `(() => {
       const button = document.querySelector('.prologue button');
       return document.querySelector('.prologue') !== null
-        && document.querySelector('#prologue-title')?.textContent === 'Les Gardiens des Récits Vivants'
-        && Array.from(document.querySelectorAll('.prologue__line')).map((line) => line.textContent).join('|') === 'Avant les mots…|il y avait le souffle.|Avant les théories…|il y avait le récit.'
+        && document.querySelector('#prologue-title')?.textContent === 'Le Seuil'
+        && Array.from(document.querySelectorAll('.prologue__line')).map((line) => line.textContent).join('|') === "Avant les mots, il y avait le souffle.|Avant les certitudes, il y avait l'émerveillement.|Chaque récit vivant commence lorsqu'une porte s'entrouvre.|Ce seuil ne se franchit pas avec les pieds.|Il se franchit avec le regard."
         && button?.textContent === 'Franchir le seuil'
         && button === document.activeElement;
     })()`,
@@ -301,7 +304,7 @@ async function waitForPrologueReady(client) {
 async function enterPrologue(client) {
   await waitForPrologueReady(client);
   await evaluate(client, "document.querySelector('.prologue button')?.click()");
-  await waitForPlayerReady(client, "Scène 1 / 8");
+  await waitForPlayerReady(client, "Scène 1 / 9");
 }
 
 async function clearReadingProgress(client) {
@@ -487,21 +490,21 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await loadUrl(page, url);
     await waitForPrologueReady(page);
     await enterPrologue(page);
-    await waitForPlayerReady(page, "Scène 1 / 8");
+    await waitForPlayerReady(page, "Scène 1 / 9");
     const progressAfterThreshold = await readStoredProgress(page);
     assert.equal(progressAfterThreshold.sceneId, "scene-01");
     assert.equal(progressAfterThreshold.sceneIndex, 0);
     assert.equal(progressAfterThreshold.completed, false);
 
-    const first = await readStablePlayerState(page, "Scène 1 / 8");
+    const first = await readStablePlayerState(page, "Scène 1 / 9");
     assert.equal(first.lang, "fr");
     assert.equal(first.engineTitleData, "Immersive Narrative Engine");
     assert.equal(first.packIdData, "les-gardiens-des-recits-vivants");
     assert.equal(first.hasVisibleEngineBrand, false);
     assert.equal(first.hasVisiblePackLabel, false);
     assert.equal(first.packTitle, "Les Gardiens des Récits Vivants");
-    assert.equal(first.sceneTitle, "La gardienne des profondeurs");
-    assert.equal(first.progress, "Scène 1 / 8");
+    assert.equal(first.sceneTitle, "La Gardienne des profondeurs");
+    assert.equal(first.progress, "Scène 1 / 9");
     assert.equal(first.previousDisabled, true);
     assert.equal(first.nextDisabled, false);
     assert.equal(first.busy, null);
@@ -509,7 +512,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(first.playerCount, 1);
     assert.equal(first.hiddenPlayerCount, 0);
     assertSceneImageReady(first);
-    assert.equal(first.stepCount, 8);
+    assert.equal(first.stepCount, 9);
     assert.equal(first.sceneBorderWidth, "0px");
     assert.equal(first.noHorizontalOverflow, true);
     assert.equal(first.noVerticalOverflow, true);
@@ -569,9 +572,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     );
     await waitForExpression(page, "window.__ineBusyObserved === true", 1_000);
     assert.equal(await evaluate(page, "window.__ineControlsDisabledDuringBusy"), true);
-    await waitForPlayerReady(page, "Scène 2 / 8");
-    const afterDoubleActivation = await readStablePlayerState(page, "Scène 2 / 8");
-    assert.equal(afterDoubleActivation.progress, "Scène 2 / 8");
+    await waitForPlayerReady(page, "Scène 2 / 9");
+    const afterDoubleActivation = await readStablePlayerState(page, "Scène 2 / 9");
+    assert.equal(afterDoubleActivation.progress, "Scène 2 / 9");
     assert.equal(afterDoubleActivation.busy, null);
     assert.equal(afterDoubleActivation.transitionName, null);
     assert.equal(afterDoubleActivation.playerCount, 1);
@@ -587,54 +590,55 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(progressAfterDoubleActivation.sceneIndex, 1);
     assert.equal(progressAfterDoubleActivation.completed, false);
 
-    await clickLocalizedNext(page, "Scène 3 / 8");
+    await clickLocalizedNext(page, "Scène 3 / 9");
     assert.equal((await readStoredProgress(page)).sceneId, "scene-03");
-    await clickLocalizedNext(page, "Scène 4 / 8");
+    await clickLocalizedNext(page, "Scène 4 / 9");
     assert.equal((await readStoredProgress(page)).sceneId, "scene-04");
 
     await loadUrl(page, url);
-    await waitForResumePrompt(page, "Vous vous êtes arrêté à la scène 4 sur 8.");
+    await waitForResumePrompt(page, "Vous vous êtes arrêté à la scène 4 sur 9.");
     await clickResumeAction(page, "resume");
-    await waitForPlayerReady(page, "Scène 4 / 8");
-    const resumed = await readStablePlayerState(page, "Scène 4 / 8");
-    assert.equal(resumed.progress, "Scène 4 / 8");
+    await waitForPlayerReady(page, "Scène 4 / 9");
+    const resumed = await readStablePlayerState(page, "Scène 4 / 9");
+    assert.equal(resumed.progress, "Scène 4 / 9");
     assert.equal(resumed.activeElementText, "Suivant");
     assert.equal((await readStoredProgress(page)).sceneIndex, 3);
 
     await loadUrl(page, url);
-    await waitForResumePrompt(page, "Vous vous êtes arrêté à la scène 4 sur 8.");
+    await waitForResumePrompt(page, "Vous vous êtes arrêté à la scène 4 sur 9.");
     await clickResumeAction(page, "restart");
     await waitForPrologueReady(page);
     await enterPrologue(page);
-    await waitForPlayerReady(page, "Scène 1 / 8");
-    const restarted = await readStablePlayerState(page, "Scène 1 / 8");
-    assert.equal(restarted.progress, "Scène 1 / 8");
+    await waitForPlayerReady(page, "Scène 1 / 9");
+    const restarted = await readStablePlayerState(page, "Scène 1 / 9");
+    assert.equal(restarted.progress, "Scène 1 / 9");
     assert.equal(restarted.previousDisabled, true);
     assert.equal(restarted.nextDisabled, false);
     assert.equal((await readStoredProgress(page)).sceneId, "scene-01");
 
-    for (let index = 2; index <= 8; index += 1) {
-      await clickLocalizedNext(page, `Scène ${index} / 8`);
-      const state = await readStablePlayerState(page, `Scène ${index} / 8`);
-      assert.equal(state.progress, `Scène ${index} / 8`);
+    for (let index = 2; index <= 9; index += 1) {
+      await clickLocalizedNext(page, `Scène ${index} / 9`);
+      const state = await readStablePlayerState(page, `Scène ${index} / 9`);
+      assert.equal(state.progress, `Scène ${index} / 9`);
       assert.equal(state.busy, null);
       assert.equal(state.playerCount, 1);
       assert.equal(state.hiddenPlayerCount, 0);
-      assertSceneImageReady(state);
-      assert.equal(state.activeElementText, index === 8 ? "Précédent" : "Suivant");
+      if (index <= 8) assertSceneImageReady(state);
+      else assert.equal(state.currentSrc, "");
+      assert.equal(state.activeElementText, index === 9 ? "Précédent" : "Suivant");
     }
 
-    const last = await readStablePlayerState(page, "Scène 8 / 8");
+    const last = await readStablePlayerState(page, "Scène 9 / 9");
     assert.equal(last.nextDisabled, true);
     assert.equal(last.previousDisabled, false);
     const completedProgress = await readStoredProgress(page);
-    assert.equal(completedProgress.sceneId, "scene-08");
-    assert.equal(completedProgress.sceneIndex, 7);
+    assert.equal(completedProgress.sceneId, "scene-09");
+    assert.equal(completedProgress.sceneIndex, 8);
     assert.equal(completedProgress.completed, true);
 
     await evaluate(page, "Array.from(document.querySelectorAll('button')).find((button) => button.textContent === 'Précédent')?.click()");
-    await waitForPlayerReady(page, "Scène 7 / 8");
-    const previousState = await readStablePlayerState(page, "Scène 7 / 8");
+    await waitForPlayerReady(page, "Scène 8 / 9");
+    const previousState = await readStablePlayerState(page, "Scène 8 / 9");
     assert.equal(previousState.activeElementText, "Précédent");
     assert.equal(previousState.busy, null);
     assert.equal(previousState.playerCount, 1);
@@ -655,8 +659,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       });
       await clearReadingProgress(page);
       await navigate(page, url);
-      await waitForPlayerReady(page, "Scène 1 / 8");
-      const state = await readStablePlayerState(page, "Scène 1 / 8");
+      await waitForPlayerReady(page, "Scène 1 / 9");
+      const state = await readStablePlayerState(page, "Scène 1 / 9");
       assert.equal(state.noHorizontalOverflow, true, `${viewport.width} has horizontal overflow`);
       assert.equal(state.noVerticalOverflow, true, `${viewport.width} has vertical overflow`);
       assert.equal(state.controlsInsideViewport, true, `${viewport.width} controls overflow`);
@@ -671,7 +675,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     });
     await clearReadingProgress(page);
     await navigate(page, url);
-    await waitForPlayerReady(page, "Scène 1 / 8");
+    await waitForPlayerReady(page, "Scène 1 / 9");
     await evaluate(
       page,
       `(() => {
@@ -683,8 +687,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         };
       })()`,
     );
-    await clickLocalizedNext(page, "Scène 2 / 8");
-    const reducedState = await readStablePlayerState(page, "Scène 2 / 8");
+    await clickLocalizedNext(page, "Scène 2 / 9");
+    const reducedState = await readStablePlayerState(page, "Scène 2 / 9");
     assert.equal(reducedState.busy, null);
     assert.equal(reducedState.playerCount, 1);
     assert.equal(reducedState.activeElementText, "Suivant");
@@ -698,9 +702,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await loadUrl(page, url);
     await waitForPrologueReady(page);
     await enterPrologue(page);
-    await waitForPlayerReady(page, "Scène 1 / 8");
-    const storageUnavailableState = await readStablePlayerState(page, "Scène 1 / 8");
-    assert.equal(storageUnavailableState.progress, "Scène 1 / 8");
+    await waitForPlayerReady(page, "Scène 1 / 9");
+    const storageUnavailableState = await readStablePlayerState(page, "Scène 1 / 9");
+    assert.equal(storageUnavailableState.progress, "Scène 1 / 9");
     assert.equal(storageUnavailableState.busy, null);
     assert.equal(storageUnavailableState.noVerticalOverflow, true);
     assertSceneImageReady(storageUnavailableState);
