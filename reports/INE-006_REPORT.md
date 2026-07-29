@@ -209,15 +209,84 @@ Le build échoue dans le sandbox Codex avec une restriction connue d’accès es
 
 ## 11. GitHub Actions
 
-À compléter après publication du commit INE-006.
+Commit fonctionnel publié :
+
+```text
+0e08333b17d26a9ab1fc29b9ace6b7166620b5f0 — INE-006 Add reading progress persistence
+```
+
+Workflow vérifié :
+
+- run ID : `30427280082` ;
+- URL : `https://github.com/ZephyrAvenel/ERIA-Immersive-Prologue/actions/runs/30427280082` ;
+- événement : `push` ;
+- statut : `completed` ;
+- conclusion : `success`.
+
+Étapes du job `build` :
+
+| Étape | Résultat |
+|---|---|
+| Check out repository | Succès |
+| Set up Node.js | Succès |
+| Configure Pages | Succès |
+| Install dependencies | Succès |
+| Typecheck | Succès |
+| Unit tests | Succès |
+| Integration tests | Succès |
+| Coverage | Succès |
+| Build | Succès |
+| Browser tests | Succès |
+| Upload browser test artifacts | Ignoré, car aucun échec navigateur |
+| Upload Pages artifact | Succès |
+
+Étapes du job `deploy` :
+
+| Étape | Résultat |
+|---|---|
+| Deploy to GitHub Pages | Succès |
 
 ## 12. GitHub Pages
 
-À compléter après publication et déploiement GitHub Pages.
+URL vérifiée :
+
+```text
+https://zephyravenel.github.io/ERIA-Immersive-Prologue/
+```
+
+Résultat HTTP :
+
+- statut `200` ;
+- `Content-Type: text/html; charset=utf-8`.
+
+Vérification navigateur publiée :
+
+| Taille | Scènes parcourues | Images prêtes | PNG | `object-fit` | Overflow horizontal | `aria-busy` final | Erreurs console |
+|---|---:|---|---|---|---|---|---|
+| `1280 × 800` | 8 | Oui | Oui | `contain` | Non | Absent | Aucune |
+| `768 × 1024` | 8 | Oui | Oui | `contain` | Non | Absent | Aucune |
+| `390 × 844` | 8 | Oui | Oui | `contain` | Non | Absent | Aucune |
+
+Pour chaque scène vérifiée :
+
+- `image.complete === true` ;
+- `naturalWidth > 0` ;
+- `naturalHeight > 0` ;
+- `data-image-state="ready"` ;
+- `currentSrc` pointe vers un PNG ;
+- `data-transition` est absent après stabilisation ;
+- un seul Player reste exposé ;
+- la progression atteint `Scène 8 / 8`.
 
 ## 13. État Git final
 
-À compléter après publication et synchronisation finale.
+Après publication du commit fonctionnel :
+
+```text
+origin/main...main = 0 0
+```
+
+Le présent rapport a ensuite été complété avec la validation distante réelle. Il doit être publié par un commit documentaire final afin que le dépôt conserve les preuves de validation de la mission.
 
 ## 14. Recommandations pour INE-007
 
