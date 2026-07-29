@@ -1,0 +1,22 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "intro-pack",
+  "title": "Intro Pack",
+  "language": "fr",
+  "startScene": "start",
+  "presentation": {
+    "intro": {
+      "lines": ["First threshold.", "Second breath."],
+      "title": "Threshold",
+      "actionLabel": "Enter"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}

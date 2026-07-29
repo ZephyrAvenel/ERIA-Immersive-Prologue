@@ -43,6 +43,12 @@ future art direction without changing the Renderer contract.
 Localization is selected from the pack language and passed into rendering as
 data. This keeps UI copy, pack content, and DOM rendering separate.
 
+Optional introductory sequences are declared by the Narrative Pack under
+`presentation.intro`. The Player renders the threshold using generic visual
+language; the authored lines, title, and entry label remain pack data. This
+keeps the engine independent from a particular work while allowing the public
+experience to feel like an installation rather than a technical shell.
+
 Transitions are split across the existing layers:
 
 - **Core** defines the serializable transition contract, default values, and
@@ -81,9 +87,10 @@ only deterministic scene lookup/selection by id; it never reads or writes
 browser storage.
 
 Future input and ambience features should attach at the Player boundary:
-keyboard, swipe, gamepad, transitions, audio, video, animation, ambience, and
-voice narration must be introduced through explicit configuration and package
-interfaces rather than by embedding work-specific behavior in the engine.
+keyboard, swipe, gamepad, transitions, intro variants, audio, video, animation,
+ambience, and voice narration must be introduced through explicit configuration
+and package interfaces rather than by embedding work-specific behavior in the
+engine.
 
 ## Build and deployment
 

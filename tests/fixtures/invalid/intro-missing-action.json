@@ -1,0 +1,20 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "intro-missing-action",
+  "title": "Intro Missing Action",
+  "language": "fr",
+  "startScene": "start",
+  "presentation": {
+    "intro": {
+      "lines": ["A line."]
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}

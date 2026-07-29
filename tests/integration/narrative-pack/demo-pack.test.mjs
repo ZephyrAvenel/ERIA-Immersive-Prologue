@@ -11,15 +11,24 @@ test("demo Narrative Pack remains valid, French, and independent from engine cod
   const result = validateNarrativePack(pack);
 
   assert.equal(result.valid, true, result.errors.join(", "));
+  assert.equal(pack.id, "les-gardiens-des-recits-vivants");
+  assert.equal(pack.title, "Les Gardiens des Récits Vivants");
   assert.equal(pack.language, "fr");
   assert.equal(pack.scenes.length, 8);
   assert.equal(pack.scenes.every((scene) => scene.image?.startsWith("assets/images/")), true);
   assert.equal(pack.scenes.some((scene) => "imageDisplayMode" in scene), false);
   assert.deepEqual(pack.presentation.defaultTransition, {
     type: "fade",
-    durationMs: 450,
+    durationMs: 650,
     easing: "ease-in-out",
   });
+  assert.deepEqual(pack.presentation.intro.lines, [
+    "Avant les mots…",
+    "il y avait le souffle.",
+    "Avant les théories…",
+    "il y avait le récit.",
+  ]);
+  assert.equal(pack.presentation.intro.actionLabel, "Franchir le seuil");
 });
 
 test("demo Narrative Pack references exactly eight existing PNG images", async () => {
@@ -64,7 +73,7 @@ test("loading a moved pack keeps image URLs relative to the moved manifest", asy
     );
     assert.equal(
       loaded.scenes[0].image,
-      "https://cdn.example.test/moved/work/assets/images/scene-01-mount-fuji.png",
+      "https://cdn.example.test/moved/work/assets/images/scene-02-cosmic-whale.png",
     );
   } finally {
     globalThis.fetch = previousFetch;
@@ -76,6 +85,7 @@ test("loaded demo pack can be navigated from first to last scene", async () => {
   const engine = new NarrativeEngine(pack);
 
   assert.equal(engine.currentScene.id, "scene-01");
+  assert.equal(engine.currentScene.image, "assets/images/scene-02-cosmic-whale.png");
   for (let index = 1; index < pack.scenes.length; index += 1) {
     engine.next();
     assert.equal(engine.currentScene.id, `scene-${String(index + 1).padStart(2, "0")}`);

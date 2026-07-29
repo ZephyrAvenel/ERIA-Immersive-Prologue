@@ -4,9 +4,10 @@ INE is a work-independent, web-based player for **Narrative Packs**. The engine
 contains no story-specific logic: any pack that follows the published schemas
 can be loaded without changing the runtime.
 
-This repository currently provides the production foundation: a minimal player,
-core loading contract, renderer, validator, UI helpers, SDK entry point, example
-pack, PWA shell, and continuous delivery to GitHub Pages.
+This repository currently provides the production foundation: an immersive
+player, core loading contract, renderer, validator, UI helpers, SDK entry point,
+the first artistic Narrative Pack, PWA shell, and continuous delivery to GitHub
+Pages.
 
 ## Requirements
 
@@ -56,6 +57,10 @@ are `none`, `fade`, `crossfade`, and `slide`. A pack can define
 its own `transition`. Transitions are optional and are disabled automatically
 when the user prefers reduced motion.
 
+Packs may declare an optional `presentation.intro` with authored lines and an
+entry label. The Player renders it as a generic threshold experience before the
+first scene; the copy and title still come from the pack.
+
 ## Reading progress
 
 The Player can persist reading progress locally per Narrative Pack. Progress is
@@ -83,7 +88,7 @@ packages/renderer/ DOM rendering boundary
 packages/sdk/      Public author-facing types and future SDK entry point
 packages/ui/       Accessible reusable UI primitives
 packages/validators/ Runtime Narrative Pack validation
-examples/demo-pack/ First integrated Narrative Pack and normalized assets
+examples/demo-pack/ First artistic Narrative Pack and normalized assets
 schemas/           Versioned JSON Schemas
 docs/              Architecture and Narrative Pack documentation
 tests/             Unit, integration, browser, accessibility, and fixture tests
@@ -120,8 +125,9 @@ Browser tests start the Vite player and drive Chrome through the Chrome DevTools
 Protocol. In CI, Chrome must be available and the test fails if it cannot run.
 Locally, set `CHROME_PATH` when Chrome is not discoverable or when the desktop
 environment restricts browser automation. The browser scenario covers scene
-transitions, navigation locking, reading progress resume/restart, unavailable
-storage, focus restoration, responsive layout, and `prefers-reduced-motion`.
+intro threshold, transitions, navigation locking, reading progress
+resume/restart, unavailable storage, focus restoration, responsive layout
+without standard-scene scrolling, and `prefers-reduced-motion`.
 
 ## Deployment
 

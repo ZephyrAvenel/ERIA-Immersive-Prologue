@@ -11,7 +11,8 @@ A pack declares its format and version, stable identifier, display title,
 language, initial scene, and a non-empty ordered scene list. Each scene includes
 an identifier, title, and text. An image and accessible alternative may be
 provided. A scene may also declare `imageDisplayMode`; when omitted, `contain`
-is used.
+is used. Presentation metadata may define transitions and an optional
+introductory threshold sequence.
 
 Asset paths are URI references resolved relative to the pack manifest URL by
 the Core `AssetManager`. Keeping a pack manifest and its asset folders together
@@ -111,6 +112,31 @@ To add a future transition type, update the Core transition union and defaults,
 the JSON Schema enum, runtime validation, Renderer behavior, unit fixtures,
 browser tests, and this document in the same mission.
 
+## Introductory threshold
+
+A pack may provide a short opening sequence under `presentation.intro`:
+
+```json
+{
+  "presentation": {
+    "intro": {
+      "lines": [
+        "Avant les mots…",
+        "il y avait le souffle."
+      ],
+      "actionLabel": "Franchir le seuil"
+    }
+  }
+}
+```
+
+`lines` and `actionLabel` are required when `intro` is present. `title` is
+optional; when omitted, the Player uses the pack title. The engine controls the
+generic visual treatment, while the pack owns the wording and identity.
+
+The intro is optional and backwards compatible. A pack without intro starts
+directly at its `startScene`.
+
 ## Interface language
 
 The Player selects interface copy from the pack `language` field. Narrative text
@@ -123,5 +149,5 @@ The player rejects unknown formats, unknown versions, malformed scenes,
 duplicate scene identifiers, and missing start scenes before rendering. JSON
 Schema supports authoring tools, while the lightweight runtime validator mirrors
 its foundation constraints and additionally checks duplicate scene identifiers
-the `startScene` reference, allowed image display modes, and transition
-contracts.
+the `startScene` reference, allowed image display modes, transition contracts,
+and intro structure.

@@ -65,7 +65,8 @@ Player for:
 - absence of console errors and critical failed requests;
 - full eight-scene navigation;
 - French interface copy for the current pack;
-- separate engine and Narrative Pack titles;
+- public work identity without visible technical engine labels;
+- introductory threshold rendering and entry without page reload;
 - default `contain` image display mode;
 - configurable scene transitions;
 - navigation locking during a transition;
@@ -75,6 +76,7 @@ Player for:
 - focus restoration after animated and reduced-motion navigation;
 - `prefers-reduced-motion` disabling visual animations;
 - desktop, tablet, and mobile layout sanity;
+- no vertical scrolling for standard short scenes at the supported viewports;
 - keyboard focus behavior;
 - elementary accessibility signals such as headings, alt text, named buttons,
   semantic scene structure, and an accessible progress indication.

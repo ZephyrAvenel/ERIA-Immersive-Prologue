@@ -1,0 +1,22 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "intro-extra-property",
+  "title": "Intro Extra Property",
+  "language": "fr",
+  "startScene": "start",
+  "presentation": {
+    "intro": {
+      "lines": ["A line."],
+      "actionLabel": "Enter",
+      "effect": "custom"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}

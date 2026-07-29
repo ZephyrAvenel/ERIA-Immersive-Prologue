@@ -18,7 +18,8 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "defaultTransition": { "$ref": "#/$defs/transition" }
+        "defaultTransition": { "$ref": "#/$defs/transition" },
+        "intro": { "$ref": "#/$defs/intro" }
       }
     },
     "scenes": {
@@ -28,6 +29,20 @@
     }
   },
   "$defs": {
+    "intro": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lines", "actionLabel"],
+      "properties": {
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "actionLabel": { "type": "string", "minLength": 1 }
+      }
+    },
     "scene": {
       "type": "object",
       "additionalProperties": false,

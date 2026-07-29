@@ -19,8 +19,15 @@ export interface NormalizedSceneTransition {
   readonly easing: TransitionEasing;
 }
 
+export interface NarrativeIntro {
+  readonly lines: readonly string[];
+  readonly title?: string;
+  readonly actionLabel: string;
+}
+
 export interface NarrativePresentation {
   readonly defaultTransition?: SceneTransition;
+  readonly intro?: NarrativeIntro;
 }
 
 export interface NarrativeScene {

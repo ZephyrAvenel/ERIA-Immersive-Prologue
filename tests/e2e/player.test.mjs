@@ -9,7 +9,7 @@ import test from "node:test";
 
 const baseUrl = "/ERIA-Immersive-Prologue/";
 const artifactsDir = "test-results/e2e";
-const progressStorageKey = "ine:progress:v1:le-seuil-des-etoiles";
+const progressStorageKey = "ine:progress:v1:les-gardiens-des-recits-vivants";
 
 function once(emitter, event) {
   return new Promise((resolve) => emitter.once(event, resolve));
@@ -274,7 +274,34 @@ async function loadUrl(client, url) {
 
 async function navigate(client, url) {
   await loadUrl(client, url);
+  await waitForExpression(
+    client,
+    "document.querySelector('.prologue') !== null || document.querySelector('.scene__image') !== null || document.querySelector('.resume-panel') !== null",
+  );
+  if (await evaluate(client, "document.querySelector('.prologue') !== null")) {
+    await enterPrologue(client);
+  }
   await waitForExpression(client, "document.querySelector('.scene__image')?.complete === true");
+}
+
+async function waitForPrologueReady(client) {
+  await waitForExpression(
+    client,
+    `(() => {
+      const button = document.querySelector('.prologue button');
+      return document.querySelector('.prologue') !== null
+        && document.querySelector('#prologue-title')?.textContent === 'Les Gardiens des Récits Vivants'
+        && Array.from(document.querySelectorAll('.prologue__line')).map((line) => line.textContent).join('|') === 'Avant les mots…|il y avait le souffle.|Avant les théories…|il y avait le récit.'
+        && button?.textContent === 'Franchir le seuil'
+        && button === document.activeElement;
+    })()`,
+  );
+}
+
+async function enterPrologue(client) {
+  await waitForPrologueReady(client);
+  await evaluate(client, "document.querySelector('.prologue button')?.click()");
+  await waitForPlayerReady(client, "Scène 1 / 8");
 }
 
 async function clearReadingProgress(client) {
@@ -314,6 +341,7 @@ async function readPlayerState(client) {
     client,
     `(() => {
       const image = document.querySelector('.scene__image');
+      const player = document.querySelector('.player');
       const scene = document.querySelector('.scene');
       const controls = document.querySelector('.player-controls');
       const content = document.querySelector('.scene__content');
@@ -331,9 +359,11 @@ async function readPlayerState(client) {
         hiddenPlayerCount: document.querySelectorAll('.player[aria-hidden="true"]').length,
         lang: document.documentElement.lang,
         documentTitle: document.title,
-        brand: document.querySelector('.player__brand')?.textContent,
-        packLabel: document.querySelector('.player__pack-label')?.textContent,
-        packTitle: document.querySelector('.player__pack-title')?.textContent,
+        engineTitleData: player?.getAttribute('data-engine-title'),
+        packIdData: player?.getAttribute('data-pack-id'),
+        hasVisibleEngineBrand: document.querySelector('.player__brand') !== null,
+        hasVisiblePackLabel: document.querySelector('.player__pack-label') !== null,
+        packTitle: document.querySelector('.player__work-title')?.textContent,
         sceneTitle: document.querySelector('.scene__title')?.textContent,
         sceneText: document.querySelector('.scene__text')?.textContent,
         progress: document.querySelector('.progress__text')?.textContent,
@@ -353,7 +383,9 @@ async function readPlayerState(client) {
         imageVisible: Boolean(imageRect && imageRect.width > 0 && imageRect.height > 0),
         sceneBorderWidth: scene ? getComputedStyle(scene).borderWidth : null,
         noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+        noVerticalOverflow: document.documentElement.scrollHeight <= document.documentElement.clientHeight + 1,
         controlsInsideViewport: Boolean(controlsRect && controlsRect.left >= 0 && controlsRect.right <= document.documentElement.clientWidth),
+        controlsVisibleVertically: Boolean(controlsRect && controlsRect.top >= 0 && controlsRect.bottom <= document.documentElement.clientHeight),
         contentInsideViewport: Boolean(contentRect && contentRect.left >= 0 && contentRect.right <= document.documentElement.clientWidth),
         activeElementText: document.activeElement?.textContent,
         focusable,
@@ -452,16 +484,23 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await page.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
     });
-    await navigate(page, url);
+    await loadUrl(page, url);
+    await waitForPrologueReady(page);
+    await enterPrologue(page);
     await waitForPlayerReady(page, "Scène 1 / 8");
-    assert.equal(await readStoredProgress(page), null);
+    const progressAfterThreshold = await readStoredProgress(page);
+    assert.equal(progressAfterThreshold.sceneId, "scene-01");
+    assert.equal(progressAfterThreshold.sceneIndex, 0);
+    assert.equal(progressAfterThreshold.completed, false);
 
     const first = await readStablePlayerState(page, "Scène 1 / 8");
     assert.equal(first.lang, "fr");
-    assert.equal(first.brand, "Immersive Narrative Engine");
-    assert.equal(first.packLabel, "Pack narratif");
-    assert.equal(first.packTitle, "Le Seuil des Étoiles");
-    assert.equal(first.sceneTitle, "Le mont silencieux");
+    assert.equal(first.engineTitleData, "Immersive Narrative Engine");
+    assert.equal(first.packIdData, "les-gardiens-des-recits-vivants");
+    assert.equal(first.hasVisibleEngineBrand, false);
+    assert.equal(first.hasVisiblePackLabel, false);
+    assert.equal(first.packTitle, "Les Gardiens des Récits Vivants");
+    assert.equal(first.sceneTitle, "La gardienne des profondeurs");
     assert.equal(first.progress, "Scène 1 / 8");
     assert.equal(first.previousDisabled, true);
     assert.equal(first.nextDisabled, false);
@@ -473,10 +512,13 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(first.stepCount, 8);
     assert.equal(first.sceneBorderWidth, "0px");
     assert.equal(first.noHorizontalOverflow, true);
+    assert.equal(first.noVerticalOverflow, true);
+    assert.equal(first.controlsVisibleVertically, true);
     assert.equal(first.hasHeading, true);
     assert.equal(first.hasNamedButtons, true);
     assert.equal(first.hasArticle, true);
     assert.ok(first.imageAlt.length > 0);
+    assert.equal(first.currentSrc.endsWith("scene-02-cosmic-whale.png"), true);
     assert.deepEqual(first.focusable, [
       { text: "Passer au récit", disabled: false },
       { text: "Précédent", disabled: true },
@@ -562,12 +604,14 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await loadUrl(page, url);
     await waitForResumePrompt(page, "Vous vous êtes arrêté à la scène 4 sur 8.");
     await clickResumeAction(page, "restart");
+    await waitForPrologueReady(page);
+    await enterPrologue(page);
     await waitForPlayerReady(page, "Scène 1 / 8");
     const restarted = await readStablePlayerState(page, "Scène 1 / 8");
     assert.equal(restarted.progress, "Scène 1 / 8");
     assert.equal(restarted.previousDisabled, true);
     assert.equal(restarted.nextDisabled, false);
-    assert.equal(await readStoredProgress(page), null);
+    assert.equal((await readStoredProgress(page)).sceneId, "scene-01");
 
     for (let index = 2; index <= 8; index += 1) {
       await clickLocalizedNext(page, `Scène ${index} / 8`);
@@ -596,9 +640,13 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(previousState.playerCount, 1);
 
     for (const viewport of [
+      { width: 1366, height: 768 },
       { width: 1280, height: 800 },
+      { width: 1024, height: 768 },
       { width: 768, height: 1024 },
+      { width: 430, height: 932 },
       { width: 390, height: 844 },
+      { width: 360, height: 800 },
     ]) {
       await page.send("Emulation.setDeviceMetricsOverride", {
         ...viewport,
@@ -610,7 +658,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       await waitForPlayerReady(page, "Scène 1 / 8");
       const state = await readStablePlayerState(page, "Scène 1 / 8");
       assert.equal(state.noHorizontalOverflow, true, `${viewport.width} has horizontal overflow`);
+      assert.equal(state.noVerticalOverflow, true, `${viewport.width} has vertical overflow`);
       assert.equal(state.controlsInsideViewport, true, `${viewport.width} controls overflow`);
+      assert.equal(state.controlsVisibleVertically, true, `${viewport.width} controls below viewport`);
       assert.equal(state.contentInsideViewport, true, `${viewport.width} content overflow`);
       assertSceneImageReady(state);
       assert.deepEqual(state.buttons, ["Précédent", "Suivant"]);
@@ -646,10 +696,13 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         "Object.defineProperty(window, 'localStorage', { get() { throw new Error('localStorage unavailable'); } });",
     });
     await loadUrl(page, url);
+    await waitForPrologueReady(page);
+    await enterPrologue(page);
     await waitForPlayerReady(page, "Scène 1 / 8");
     const storageUnavailableState = await readStablePlayerState(page, "Scène 1 / 8");
     assert.equal(storageUnavailableState.progress, "Scène 1 / 8");
     assert.equal(storageUnavailableState.busy, null);
+    assert.equal(storageUnavailableState.noVerticalOverflow, true);
     assertSceneImageReady(storageUnavailableState);
 
     assert.equal(

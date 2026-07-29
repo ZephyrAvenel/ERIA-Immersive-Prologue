@@ -3,6 +3,7 @@ import {
   NarrativeEngine,
   getTransitionDirection,
   loadNarrativePack,
+  type NarrativeIntro,
   type NormalizedSceneTransition,
   type TransitionDirection,
 } from "@ine/core";
@@ -103,6 +104,61 @@ function renderResumePrompt(
   });
 }
 
+async function waitForOptionalAnimation(element: HTMLElement, durationMs: number): Promise<void> {
+  if (prefersReducedMotion() || typeof element.animate !== "function") return;
+
+  const animation = element.animate([{ opacity: 1 }, { opacity: 0 }], {
+    duration: durationMs,
+    easing: "ease-in-out",
+    fill: "both",
+  });
+  const fallback = new Promise<void>((resolve) => {
+    globalThis.setTimeout(resolve, durationMs + 50);
+  });
+  await Promise.race([animation.finished.then(() => undefined), fallback]).catch(() => undefined);
+}
+
+async function renderPrologue(intro: NarrativeIntro, packTitle: string): Promise<void> {
+  mount.removeAttribute("aria-busy");
+  mount.replaceChildren();
+
+  const section = document.createElement("section");
+  section.className = "prologue";
+  section.setAttribute("aria-labelledby", "prologue-title");
+
+  const content = document.createElement("div");
+  content.className = "prologue__content";
+
+  intro.lines.forEach((line, index) => {
+    const paragraph = document.createElement("p");
+    paragraph.className = "prologue__line";
+    paragraph.textContent = line;
+    paragraph.style.setProperty("--line-delay", `${2_200 + index * 600}ms`);
+    content.append(paragraph);
+  });
+
+  const title = document.createElement("h1");
+  title.id = "prologue-title";
+  title.className = "prologue__title";
+  title.textContent = intro.title ?? packTitle;
+
+  const enter = createButton(intro.actionLabel, () => {
+    section.dispatchEvent(new CustomEvent("ine:intro-enter"));
+  });
+
+  content.append(title, enter);
+  section.append(content);
+  mount.append(section);
+  enter.focus();
+
+  await new Promise<void>((resolve) => {
+    section.addEventListener("ine:intro-enter", () => resolve(), { once: true });
+  });
+  mount.setAttribute("aria-busy", "true");
+  section.classList.add("prologue--leaving");
+  await waitForOptionalAnimation(section, 650);
+}
+
 async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
   const response = await fetch(new URL("player.config.json", document.baseURI));
   if (!response.ok) {
@@ -130,6 +186,7 @@ async function start(): Promise<void> {
   const engine = new NarrativeEngine(pack);
   const messages = resolveLocale(pack.language);
   const progressStore = createBrowserReadingProgressStore();
+  const intro = pack.presentation?.intro;
   updateShell(messages, pack.title);
   let transitionInProgress = false;
 
@@ -289,9 +346,24 @@ async function start(): Promise<void> {
         return;
       }
       progressStore.clear(pack.id);
+      if (intro) {
+        await renderPrologue(intro, pack.title);
+        await render();
+        saveCurrentProgress();
+        focusFirstAvailableNavigationControl();
+        return;
+      }
     }
   } else if (savedProgress) {
     progressStore.clear(pack.id);
+  }
+
+  if (!savedProgress && intro) {
+    await renderPrologue(intro, pack.title);
+    await render();
+    saveCurrentProgress();
+    focusFirstAvailableNavigationControl();
+    return;
   }
 
   await render();

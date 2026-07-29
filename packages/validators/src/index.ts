@@ -35,7 +35,8 @@ const PACK_PROPERTIES = new Set([
   "presentation",
   "scenes",
 ]);
-const PRESENTATION_PROPERTIES = new Set(["defaultTransition"]);
+const PRESENTATION_PROPERTIES = new Set(["defaultTransition", "intro"]);
+const INTRO_PROPERTIES = new Set(["lines", "title", "actionLabel"]);
 const SCENE_PROPERTIES = new Set(["id", "title", "text", "image", "imageAlt", "imageDisplayMode", "transition"]);
 const TRANSITION_PROPERTIES = new Set(["type", "durationMs", "easing"]);
 const PACK_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -70,6 +71,28 @@ function validateTransition(value: unknown, path: string, errors: string[]): voi
   }
 }
 
+function validateIntro(value: unknown, path: string, errors: string[]): void {
+  if (!isRecord(value)) {
+    errors.push(`INE_VALIDATION_INTRO_OBJECT_REQUIRED:${path}`);
+    return;
+  }
+
+  reportUnknownProperties(value, INTRO_PROPERTIES, path, errors);
+  if (
+    !Array.isArray(value.lines) ||
+    value.lines.length === 0 ||
+    value.lines.some((line) => typeof line !== "string" || line.length === 0)
+  ) {
+    errors.push(`INE_VALIDATION_INTRO_LINES_INVALID:${path}.lines`);
+  }
+  if (value.title !== undefined && !hasString(value, "title")) {
+    errors.push(`INE_VALIDATION_INTRO_TITLE_INVALID:${path}.title`);
+  }
+  if (!hasString(value, "actionLabel")) {
+    errors.push(`INE_VALIDATION_INTRO_ACTION_LABEL_REQUIRED:${path}.actionLabel`);
+  }
+}
+
 export function validateNarrativePack(value: unknown): ValidationResult {
   const errors: string[] = [];
   if (!isRecord(value)) {
@@ -98,6 +121,9 @@ export function validateNarrativePack(value: unknown): ValidationResult {
       reportUnknownProperties(value.presentation, PRESENTATION_PROPERTIES, "root.presentation", errors);
       if (value.presentation.defaultTransition !== undefined) {
         validateTransition(value.presentation.defaultTransition, "root.presentation.defaultTransition", errors);
+      }
+      if (value.presentation.intro !== undefined) {
+        validateIntro(value.presentation.intro, "root.presentation.intro", errors);
       }
     }
   }

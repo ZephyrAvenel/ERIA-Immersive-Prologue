@@ -22,6 +22,9 @@ const expectedInvalidCodes = {
   "unknown-transition-easing.json": "INE_VALIDATION_TRANSITION_EASING_INVALID",
   "transition-extra-property.json": "INE_VALIDATION_UNKNOWN_PROPERTY",
   "malformed-transition.json": "INE_VALIDATION_TRANSITION_OBJECT_REQUIRED",
+  "intro-missing-action.json": "INE_VALIDATION_INTRO_ACTION_LABEL_REQUIRED",
+  "intro-extra-property.json": "INE_VALIDATION_UNKNOWN_PROPERTY",
+  "intro-empty-lines.json": "INE_VALIDATION_INTRO_LINES_INVALID",
 };
 
 test("validator accepts every valid fixture", async () => {
@@ -95,4 +98,29 @@ test("runtime validator and JSON Schema expose the same transition contract", as
     });
     assert.equal(result.valid, true, type);
   }
+});
+
+test("runtime validator and JSON Schema expose the same intro contract", async () => {
+  const schema = await readProjectJson("schemas", "narrative-pack.schema.json");
+  assert.deepEqual(schema.$defs.intro.required, ["lines", "actionLabel"]);
+  assert.equal(schema.$defs.intro.additionalProperties, false);
+  assert.equal(schema.$defs.intro.properties.lines.minItems, 1);
+
+  const result = validateNarrativePack({
+    format: "ine-narrative-pack",
+    version: "1.0",
+    id: "intro-contract",
+    title: "Intro Contract",
+    language: "en",
+    startScene: "start",
+    presentation: {
+      intro: {
+        lines: ["Before the words.", "There was breath."],
+        actionLabel: "Enter",
+      },
+    },
+    scenes: [{ id: "start", title: "Start", text: "Text." }],
+  });
+
+  assert.equal(result.valid, true, result.errors.join(", "));
 });

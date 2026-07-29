@@ -116,25 +116,18 @@ function removeClass(element: HTMLElement, className: string): void {
 function createPlayerElement(state: RenderPlayerState): HTMLElement {
   const player = document.createElement("div");
   player.className = "player";
+  player.dataset.engineTitle = state.messages.engineTitle;
+  player.dataset.packId = state.pack.id;
 
   const header = document.createElement("header");
   header.className = "player__header";
+  header.setAttribute("aria-label", state.messages.packLabel);
 
-  const engineTitle = document.createElement("p");
-  engineTitle.className = "player__brand";
-  engineTitle.textContent = state.messages.engineTitle;
-
-  const packMeta = document.createElement("div");
-  packMeta.className = "player__pack";
-  const packLabel = document.createElement("span");
-  packLabel.className = "player__pack-label";
-  packLabel.textContent = state.messages.packLabel;
   const packTitle = document.createElement("strong");
-  packTitle.className = "player__pack-title";
+  packTitle.className = "player__work-title";
   packTitle.textContent = state.pack.title;
-  packMeta.append(packLabel, packTitle);
 
-  header.append(engineTitle, packMeta);
+  header.append(packTitle);
 
   const article = document.createElement("article");
   article.id = "scene";

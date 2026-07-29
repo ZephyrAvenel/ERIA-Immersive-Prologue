@@ -78,9 +78,12 @@ test("Renderer creates public scene content from trusted state", () =>
     const target = new FakeElement("main");
     renderPlayer(target, createState());
 
-    assert.equal(findElement(target, ".player__brand").textContent, "Engine Label");
-    assert.equal(findElement(target, ".player__pack-label").textContent, "Pack Label");
-    assert.equal(findElement(target, ".player__pack-title").textContent, "Renderer Pack");
+    const player = findElement(target, ".player");
+    const header = findElement(target, "header");
+    assert.equal(player.dataset.engineTitle, "Engine Label");
+    assert.equal(player.dataset.packId, "renderer-pack");
+    assert.equal(header.getAttribute("aria-label"), "Pack Label");
+    assert.equal(findElement(target, ".player__work-title").textContent, "Renderer Pack");
     assert.equal(findElement(target, ".scene__title").textContent, "Scene <Title>");
     assert.equal(findElement(target, ".scene__text").textContent, "Text with <strong>markup</strong> kept as text.");
   }));
@@ -124,8 +127,9 @@ test("Renderer uses caller-provided locale labels instead of hard-coded UI strin
     const collectText = (element) => [element.textContent, ...element.children.flatMap(collectText)].join(" ");
     const renderedText = collectText(target);
 
-    assert.ok(renderedText.includes("Engine Label"));
-    assert.ok(renderedText.includes("Pack Label"));
+    assert.equal(renderedText.includes("Engine Label"), false);
+    assert.equal(renderedText.includes("Pack Label"), false);
+    assert.ok(renderedText.includes("Renderer Pack"));
     assert.ok(renderedText.includes("Step 2 of 4"));
     assert.equal(renderedText.includes("Previous"), false);
     assert.equal(renderedText.includes("Progress"), false);

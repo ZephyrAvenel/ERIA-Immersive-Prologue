@@ -1,0 +1,21 @@
+{
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "intro-empty-lines",
+  "title": "Intro Empty Lines",
+  "language": "fr",
+  "startScene": "start",
+  "presentation": {
+    "intro": {
+      "lines": [],
+      "actionLabel": "Enter"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "title": "Start",
+      "text": "Text."
+    }
+  ]
+}
