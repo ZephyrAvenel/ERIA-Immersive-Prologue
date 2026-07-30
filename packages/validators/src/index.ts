@@ -30,6 +30,10 @@ const PACK_PROPERTIES = new Set([
   "version",
   "id",
   "title",
+  "subtitle",
+  "description",
+  "coverImage",
+  "coverImageAlt",
   "language",
   "startScene",
   "presentation",
@@ -183,6 +187,14 @@ export function validatePolarity(value: unknown): ValidationResult {
     "id", "title", "subtitle", "image", "imageAlt", "quote", "question", "article",
   ]) {
     if (!hasString(value, key)) errors.push(`INE_POLARITY_STRING_REQUIRED:polarity.${key}`);
+  }
+  for (const key of ["subtitle", "description", "coverImage"]) {
+    if (value[key] !== undefined && !hasString(value, key)) {
+      errors.push(`INE_VALIDATION_${key.toUpperCase()}_INVALID`);
+    }
+  }
+  if (value.coverImageAlt !== undefined && typeof value.coverImageAlt !== "string") {
+    errors.push("INE_VALIDATION_COVERIMAGEALT_INVALID");
   }
   if (typeof value.id === "string" && !PACK_ID_PATTERN.test(value.id)) {
     errors.push("INE_POLARITY_ID_INVALID:polarity.id");

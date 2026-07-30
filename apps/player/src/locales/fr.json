@@ -14,5 +14,8 @@
   "restartAction": "Recommencer",
   "errorTitle": "Impossible de charger le pack narratif",
   "errorMessage": "Le lecteur ne peut pas ouvrir ce pack narratif.",
-  "unknownError": "Erreur inconnue du lecteur"
+  "unknownError": "Erreur inconnue du lecteur",
+  "libraryTitle": "Bibliothèque des œuvres immersives",
+  "libraryDescription": "Des récits indépendants, un même espace d’immersion.",
+  "exploreWork": "Explorer"
 }

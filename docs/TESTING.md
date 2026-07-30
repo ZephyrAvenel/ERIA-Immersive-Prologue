@@ -63,7 +63,8 @@ Player for:
 
 - successful pack loading;
 - absence of console errors and critical failed requests;
-- full eight-scene navigation;
+- full nine-scene PACK-001 navigation;
+- manifest-driven library rendering and direct routes for both packs;
 - French interface copy for the current pack;
 - public work identity without visible technical engine labels;
 - introductory threshold rendering and entry without page reload;
@@ -80,6 +81,7 @@ Player for:
 - keyboard focus behavior;
 - elementary accessibility signals such as headings, alt text, named buttons,
   semantic scene structure, and an accessible progress indication.
+- complete PACK-002 polarity navigation and its authored closing step.
 
 In CI, Chrome must be available. Locally, set `CHROME_PATH` when you want to
 force browser execution from a specific executable. If Chrome is not explicitly

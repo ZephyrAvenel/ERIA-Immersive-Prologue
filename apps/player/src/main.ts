@@ -25,6 +25,11 @@ import {
   createReadingProgress,
   resolveProgressSceneIndex,
 } from "./progress";
+import {
+  findRegistryEntryBySlug,
+  loadCatalog,
+  loadPackRegistry,
+} from "./catalog";
 import "./styles.css";
 
 const app = document.querySelector<HTMLElement>("#app");
@@ -40,6 +45,11 @@ type ResumeChoice = "resume" | "restart";
 interface PlayerConfiguration {
   readonly packUrl: string;
 }
+
+declare const __INE_BASE__: string;
+
+const applicationBaseUrl = new URL(__INE_BASE__, globalThis.location.origin);
+const registryUrl = new URL("packs/index.json", applicationBaseUrl);
 
 function prefersReducedMotion(): boolean {
   return globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
@@ -180,7 +190,30 @@ async function renderPrologue(
   await waitForOptionalAnimation(section, 650);
 }
 
-async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
+function requestedWorkSlug(): string | null {
+  const basePath = applicationBaseUrl.pathname.endsWith("/")
+    ? applicationBaseUrl.pathname
+    : `${applicationBaseUrl.pathname}/`;
+  if (!globalThis.location.pathname.startsWith(basePath)) return null;
+  const relativePath = globalThis.location.pathname.slice(basePath.length);
+  const match = /^oeuvres\/([^/]+)\/?$/.exec(relativePath);
+  return match?.[1] ? decodeURIComponent(match[1]) : null;
+}
+
+async function loadPlayerConfiguration(): Promise<PlayerConfiguration | null> {
+  const requestedPack = new URL(globalThis.location.href).searchParams.get("pack");
+  if (requestedPack) return { packUrl: requestedPack };
+
+  const workSlug = requestedWorkSlug();
+  if (workSlug) {
+    const registry = await loadPackRegistry(registryUrl);
+    const entry = findRegistryEntryBySlug(registry, workSlug);
+    if (!entry) throw new Error("INE_PACK_ROUTE_NOT_FOUND");
+    return { packUrl: new URL(entry.manifest, registryUrl).href };
+  }
+
+  if (globalThis.location.pathname === applicationBaseUrl.pathname) return null;
+
   const response = await fetch(new URL("player.config.json", document.baseURI));
   if (!response.ok) {
     throw new Error("INE_PLAYER_CONFIGURATION_REQUEST_FAILED");
@@ -197,8 +230,66 @@ async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
     throw new Error("INE_PLAYER_CONFIGURATION_INVALID");
   }
 
-  const requestedPack = new URL(globalThis.location.href).searchParams.get("pack");
-  return { packUrl: requestedPack || value.packUrl };
+  return { packUrl: value.packUrl };
+}
+
+async function renderLibrary(): Promise<void> {
+  const messages = resolveLocale(navigator.language);
+  const packs = await loadCatalog(registryUrl);
+  updateShell(messages, messages.libraryTitle);
+  const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
+  if (skipLink) {
+    skipLink.href = "#works";
+    skipLink.textContent = messages.skipToNarrative;
+  }
+  mount.removeAttribute("aria-busy");
+  mount.replaceChildren();
+
+  const library = document.createElement("section");
+  library.id = "works";
+  library.className = "library";
+  library.setAttribute("aria-labelledby", "library-title");
+
+  const header = document.createElement("header");
+  header.className = "library__header";
+  const title = document.createElement("h1");
+  title.id = "library-title";
+  title.textContent = messages.libraryTitle;
+  const description = document.createElement("p");
+  description.textContent = messages.libraryDescription;
+  header.append(title, description);
+
+  const grid = document.createElement("div");
+  grid.className = "library__grid";
+  for (const pack of packs) {
+    const article = document.createElement("article");
+    article.className = "work-card";
+    const image = document.createElement("img");
+    image.className = "work-card__image";
+    image.src = pack.coverImage;
+    image.alt = pack.coverImageAlt;
+    image.loading = "lazy";
+    const content = document.createElement("div");
+    content.className = "work-card__content";
+    const workTitle = document.createElement("h2");
+    workTitle.textContent = pack.title;
+    const subtitle = document.createElement("p");
+    subtitle.className = "work-card__subtitle";
+    subtitle.textContent = pack.subtitle;
+    const summary = document.createElement("p");
+    summary.textContent = pack.description;
+    const link = document.createElement("a");
+    link.className = "work-card__action";
+    link.href = new URL(`oeuvres/${pack.slug}/`, applicationBaseUrl).href;
+    link.textContent = messages.exploreWork;
+    link.setAttribute("aria-label", `${messages.exploreWork} — ${pack.title}`);
+    content.append(workTitle, subtitle, summary, link);
+    article.append(image, content);
+    grid.append(article);
+  }
+
+  library.append(header, grid);
+  mount.append(library);
 }
 
 async function startNarrativePack(packUrl: URL): Promise<void> {
@@ -462,7 +553,11 @@ async function startPolarityPack(packUrl: URL): Promise<void> {
 
 async function start(): Promise<void> {
   const configuration = await loadPlayerConfiguration();
-  const packUrl = new URL(configuration.packUrl, document.baseURI);
+  if (!configuration) {
+    await renderLibrary();
+    return;
+  }
+  const packUrl = new URL(configuration.packUrl, applicationBaseUrl);
   const format = await detectPackFormat(packUrl);
   if (format === "ine-narrative-pack") {
     await startNarrativePack(packUrl);
@@ -494,6 +589,6 @@ void start().catch(renderError);
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    void navigator.serviceWorker.register(new URL("sw.js", document.baseURI));
+    void navigator.serviceWorker.register(new URL("sw.js", applicationBaseUrl));
   });
 }

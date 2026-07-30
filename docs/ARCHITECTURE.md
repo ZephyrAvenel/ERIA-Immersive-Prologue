@@ -13,7 +13,9 @@ player --> core <-- renderer
 sdk ----> core
  `------> validators
 
-player.config.json --> player --> Narrative Pack JSON + colocated assets
+packs/index.json --> library + static routes --> player
+                                          |----> pack.json + colocated assets
+?pack=<manifest> -------------------------'
 ```
 
 - **core** owns stable domain types, pack loading, asset resolution, and
@@ -28,10 +30,17 @@ player.config.json --> player --> Narrative Pack JSON + colocated assets
   registration, localization, local reading progress, input wiring, and
   deployment configuration. It does not own narrative business rules or content.
 
-The example pack is served as static data selected through
-`player.config.json`. Replacing its URL with any conforming pack requires no
-change to an application or package. Relative pack assets are resolved by the
-Core `AssetManager` from the pack location, not from the Player location.
+The versioned pack registry contains only a stable id, a public slug, and a
+manifest path. The library reads presentation data from manifests, and the
+build generates real `/oeuvres/<slug>/index.html` entry pages for GitHub Pages.
+`player.config.json` is retained as a legacy deployment fallback; `?pack=` is
+the explicit preview override. Relative pack assets are resolved by the Core
+`AssetManager` from the pack location, not from the Player location.
+
+The registry owns deployment coordinates. A manifest owns the work identity,
+resources, and optional editorial metadata. A narrative path owns only scenes,
+polarities, chapters, or other format-specific content. This prevents the
+library and engine from acquiring work-specific knowledge.
 
 ## UX foundation
 
@@ -102,6 +111,10 @@ GitHub Actions uses two workflows: continuous integration for pushes and pull
 requests, and Pages deployment for successful pushes to `main`. Both use the
 committed npm lockfile through `npm ci`. Deployment is gated by type checking,
 unit tests, integration tests, coverage, production build, and browser tests.
+
+Vite also validates the registry and generates a static entry page for each
+published work. Those pages share one JavaScript and CSS bundle while carrying
+work-specific canonical and Open Graph metadata.
 
 The automated test foundation is intentionally package-oriented: Core,
 Validators, Renderer, AssetManager, localization, and the Player browser shell

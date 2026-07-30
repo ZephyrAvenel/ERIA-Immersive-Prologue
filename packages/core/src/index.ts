@@ -45,6 +45,10 @@ export interface NarrativePack {
   readonly version: "1.0";
   readonly id: string;
   readonly title: string;
+  readonly subtitle?: string;
+  readonly description?: string;
+  readonly coverImage?: string;
+  readonly coverImageAlt?: string;
   readonly language: string;
   readonly startScene: string;
   readonly presentation?: NarrativePresentation;
@@ -98,6 +102,7 @@ export interface PolarityPack {
   readonly id: string;
   readonly title: string;
   readonly subtitle: string;
+  readonly description: string;
   readonly type: "contemplatif";
   readonly version: string;
   readonly author: string;
@@ -249,6 +254,7 @@ export async function loadPolarityPack(source: URL): Promise<PolarityPack> {
     !("id" in value) || typeof value.id !== "string" ||
     !("title" in value) || typeof value.title !== "string" ||
     !("subtitle" in value) || typeof value.subtitle !== "string" ||
+    !("description" in value) || typeof value.description !== "string" ||
     !("type" in value) || value.type !== "contemplatif" ||
     !("version" in value) || typeof value.version !== "string" ||
     !("author" in value) || typeof value.author !== "string" ||

@@ -63,9 +63,20 @@ test("PACK-002 contains twelve optimized WebP illustrations and immutable PNG or
 
 test("pack registry discovers both packs without introducing cross-pack dependencies", async () => {
   const registry = await readProjectJson("packs", "index.json");
-  assert.deepEqual(registry.map(({ id }) => id), ["pack-001", "pack-002"]);
-  for (const entry of registry) {
+  assert.equal(registry.format, "ine-pack-registry");
+  assert.equal(registry.version, "1.0");
+  assert.deepEqual(
+    registry.packs.map(({ id }) => id),
+    ["les-gardiens-des-recits-vivants", "pack-002"],
+  );
+  assert.equal(registry.packs.every((entry) => !("title" in entry) && !("type" in entry)), true);
+  for (const entry of registry.packs) {
     await access(join("packs", entry.manifest));
+    const manifest = await readProjectJson("packs", ...entry.manifest.split("/"));
+    assert.equal(manifest.id, entry.id);
+    for (const field of ["title", "subtitle", "description", "coverImage", "coverImageAlt"]) {
+      assert.equal(typeof manifest[field], "string", `${entry.id}.${field}`);
+    }
   }
 
   const engineSources = await Promise.all([

@@ -1,16 +1,16 @@
-[
-  {
-    "id": "pack-001",
-    "title": "Les Gardiens des Récits Vivants",
-    "type": "initiatique",
-    "format": "ine-narrative-pack",
-    "manifest": "../examples/demo-pack/pack.json"
-  },
-  {
-    "id": "pack-002",
-    "title": "Polarités Vivantes",
-    "type": "contemplatif",
-    "format": "ine-polarity-pack",
-    "manifest": "pack-002-polarites-vivantes/pack.json"
-  }
-]
+{
+  "format": "ine-pack-registry",
+  "version": "1.0",
+  "packs": [
+    {
+      "id": "les-gardiens-des-recits-vivants",
+      "slug": "les-gardiens-des-recits-vivants",
+      "manifest": "../examples/demo-pack/pack.json"
+    },
+    {
+      "id": "pack-002",
+      "slug": "polarites-vivantes",
+      "manifest": "pack-002-polarites-vivantes/pack.json"
+    }
+  ]
+}

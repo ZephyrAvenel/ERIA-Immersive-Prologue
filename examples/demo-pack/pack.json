@@ -4,6 +4,10 @@
   "version": "1.0",
   "id": "les-gardiens-des-recits-vivants",
   "title": "Les Gardiens des Récits Vivants",
+  "subtitle": "Le prologue immersif",
+  "description": "Un voyage initiatique à la rencontre des gardiens qui veillent sur les récits vivants.",
+  "coverImage": "assets/images/scene-01-mount-fuji.png",
+  "coverImageAlt": "Le mont Fuji sous un ciel étoilé",
   "language": "fr",
   "startScene": "scene-01",
   "presentation": {

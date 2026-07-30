@@ -1,0 +1,45 @@
+{
+  "$schema": "../schemas/editorial-metadata.schema.json",
+  "presentation": {
+    "longDescription": "Une œuvre immersive qui prolonge un motif de l’univers de Zéphyr Avenel.",
+    "shareImage": "assets/images/share.webp",
+    "shareImageAlt": "Illustration de partage de l’œuvre",
+    "estimatedDurationMinutes": 12
+  },
+  "publication": {
+    "createdAt": "2026-07-30",
+    "publishedAt": "2026-07-30",
+    "updatedAt": "2026-07-30",
+    "copyright": "© 2026 Zéphyr Avenel",
+    "license": "Tous droits réservés"
+  },
+  "discovery": {
+    "keywords": [
+      "récit immersif",
+      "contemplation"
+    ],
+    "seoDescription": "Une œuvre immersive de Zéphyr Avenel."
+  },
+  "connections": [
+    {
+      "kind": "article",
+      "title": "Article associé",
+      "url": "https://example.com/article",
+      "relationship": "source",
+      "description": "Le texte à l’origine de l’œuvre."
+    },
+    {
+      "kind": "immersive-work",
+      "title": "Une autre œuvre immersive",
+      "targetWorkId": "pack-003",
+      "relationship": "prolongement"
+    }
+  ],
+  "resources": [
+    {
+      "kind": "document",
+      "label": "Carnet d’accompagnement",
+      "url": "assets/documents/carnet.pdf"
+    }
+  ]
+}

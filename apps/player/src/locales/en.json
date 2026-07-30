@@ -14,5 +14,8 @@
   "restartAction": "Restart",
   "errorTitle": "Unable to load the Narrative Pack",
   "errorMessage": "The player could not open this Narrative Pack.",
-  "unknownError": "Unknown player error"
+  "unknownError": "Unknown player error",
+  "libraryTitle": "Immersive works library",
+  "libraryDescription": "Independent stories, one immersive space.",
+  "exploreWork": "Explore"
 }

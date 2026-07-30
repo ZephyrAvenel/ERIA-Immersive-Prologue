@@ -483,10 +483,39 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       failedRequests.push({ status: "failed", url: event.requestId, errorText: event.errorText });
     });
 
-    const url = `http://127.0.0.1:${port}${baseUrl}`;
+    const libraryUrl = `http://127.0.0.1:${port}${baseUrl}`;
+    const url = `${libraryUrl}oeuvres/les-gardiens-des-recits-vivants/`;
     await page.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
     });
+    await loadUrl(page, libraryUrl);
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 2");
+    const libraryState = await evaluate(
+      page,
+      `({
+        language: navigator.language,
+        title: document.querySelector('#library-title')?.textContent,
+        cards: Array.from(document.querySelectorAll('.work-card')).map((card) => ({
+          title: card.querySelector('h2')?.textContent,
+          imageAlt: card.querySelector('img')?.getAttribute('alt'),
+          href: card.querySelector('a')?.getAttribute('href'),
+          linkLabel: card.querySelector('a')?.getAttribute('aria-label')
+        })),
+        noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
+      })`,
+    );
+    const expectedLibraryTitle = libraryState.language.toLowerCase().startsWith("fr")
+      ? "Biblioth\u00e8que des \u0153uvres immersives"
+      : "Immersive works library";
+    assert.equal(libraryState.title, expectedLibraryTitle);
+    assert.deepEqual(
+      libraryState.cards.map(({ title }) => title),
+      ["Les Gardiens des R\u00e9cits Vivants", "Polarit\u00e9s Vivantes"],
+    );
+    assert.equal(libraryState.cards.every(({ imageAlt, linkLabel }) => imageAlt.length > 0 && linkLabel.length > 0), true);
+    assert.equal(libraryState.cards[0].href.endsWith("/oeuvres/les-gardiens-des-recits-vivants/"), true);
+    assert.equal(libraryState.cards[1].href.endsWith("/oeuvres/polarites-vivantes/"), true);
+    assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);
     await enterPrologue(page);
@@ -671,12 +700,12 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       assert.deepEqual(state.buttons, ["Précédent", "Suivant"]);
     }
 
-    const polarityPackUrl = `${url}?pack=${encodeURIComponent("packs/pack-002-polarites-vivantes/pack.json")}`;
+    const polarityPackUrl = `${libraryUrl}oeuvres/polarites-vivantes/`;
     await loadUrl(page, polarityPackUrl);
     await waitForExpression(page, "document.querySelector('.prologue__title')?.textContent === 'Polarités Vivantes'");
-    assert.equal(
-      await evaluate(page, "document.querySelector('.prologue__cover')?.currentSrc.endsWith('/00-couverture.webp')"),
-      true,
+    await waitForExpression(
+      page,
+      "document.querySelector('.prologue__cover')?.currentSrc.endsWith('/00-couverture.webp') === true && document.querySelector('.prologue__cover')?.complete === true && document.querySelector('.prologue__cover')?.naturalWidth > 0",
     );
     await evaluate(page, "document.querySelector('.prologue button')?.click()");
     const polarityTitles = [

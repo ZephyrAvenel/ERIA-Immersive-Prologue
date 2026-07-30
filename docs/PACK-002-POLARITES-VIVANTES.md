@@ -117,20 +117,22 @@ le texte contemplatif reste toujours présent dans le DOM.
 
 ## Registre des packs
 
-`packs/index.json` est un catalogue déclaratif. Chaque entrée fournit `id`,
-`title`, `type`, `format` et `manifest`. Il prépare un futur sélecteur sans
-imposer cette interface aujourd'hui.
+`packs/index.json` est le registre déclaratif versionné de la bibliothèque.
+Chaque entrée fournit uniquement `id`, `slug` et `manifest`. Le titre, le type,
+le résumé et les illustrations restent dans le manifeste afin d'éviter toute
+duplication.
 
 Le moteur ne contient aucun identifiant de pack. Ajouter ou retirer une entrée
-du registre ne demande donc aucune modification du Core, du Renderer ou du
-Player. Le déploiement courant reste choisi par `player.config.json`.
+du registre ne demande donc aucune modification du Core ou du Renderer. Le
+Player résout le slug depuis le registre ; le build génère la route statique
+`/oeuvres/polarites-vivantes/`.
 
 ## Indépendance
 
-- supprimer `packs/pack-002-polarites-vivantes/` laisse PACK-001 exécutable en
-  conservant sa configuration actuelle ;
-- supprimer `examples/demo-pack/` laisse PACK-002 exécutable en configurant son
-  propre manifeste ;
+- supprimer `packs/pack-002-polarites-vivantes/` et son entrée de registre
+  laisse PACK-001 exécutable ;
+- supprimer `examples/demo-pack/` et son entrée de registre laisse PACK-002
+  exécutable ;
 - retirer l'un des deux du registre n'affecte pas le format ni les assets de
   l'autre ;
 - le seul code partagé réside dans `apps/` et `packages/`.

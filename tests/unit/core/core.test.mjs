@@ -95,6 +95,7 @@ test("polarity pack loader validates its manifest and resolves independent conte
       id: "pack-002",
       title: "Polarités Vivantes",
       subtitle: "Des tensions fécondes à habiter",
+      description: "Un parcours contemplatif.",
       type: "contemplatif",
       version: "1.0.0",
       author: "Zéphyr Avenel",
