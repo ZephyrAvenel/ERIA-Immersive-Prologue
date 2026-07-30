@@ -302,9 +302,13 @@ async function waitForPrologueReady(client) {
 }
 
 async function enterPrologue(client) {
+  await crossPrologue(client);
+  await waitForPlayerReady(client, "Scène 1 / 9");
+}
+
+async function crossPrologue(client) {
   await waitForPrologueReady(client);
   await evaluate(client, "document.querySelector('.prologue button')?.click()");
-  await waitForPlayerReady(client, "Scène 1 / 9");
 }
 
 async function clearReadingProgress(client) {
@@ -580,6 +584,12 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       { text: "Explorer les œuvres", disabled: false },
     ]);
 
+    await loadUrl(page, url);
+    await waitForPrologueReady(page);
+    await enterPrologue(page);
+    await waitForPlayerReady(page, "Scène 1 / 9");
+    assert.equal((await readStoredProgress(page)).sceneId, "scene-01");
+
     await evaluate(
       page,
       `(() => {
@@ -648,6 +658,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal((await readStoredProgress(page)).sceneId, "scene-04");
 
     await loadUrl(page, url);
+    await crossPrologue(page);
     await waitForResumePrompt(page, "Vous vous êtes arrêté à la scène 4 sur 9.");
     await clickResumeAction(page, "resume");
     await waitForPlayerReady(page, "Scène 4 / 9");
@@ -657,10 +668,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal((await readStoredProgress(page)).sceneIndex, 3);
 
     await loadUrl(page, url);
+    await crossPrologue(page);
     await waitForResumePrompt(page, "Vous vous êtes arrêté à la scène 4 sur 9.");
     await clickResumeAction(page, "restart");
-    await waitForPrologueReady(page);
-    await enterPrologue(page);
     await waitForPlayerReady(page, "Scène 1 / 9");
     const restarted = await readStablePlayerState(page, "Scène 1 / 9");
     assert.equal(restarted.progress, "Scène 1 / 9");
@@ -691,6 +701,12 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(completedProgress.sceneId, "scene-09");
     assert.equal(completedProgress.sceneIndex, 8);
     assert.equal(completedProgress.completed, true);
+
+    await loadUrl(page, url);
+    await crossPrologue(page);
+    await waitForResumePrompt(page, "Vous vous êtes arrêté à la scène 9 sur 9.");
+    await clickResumeAction(page, "resume");
+    await waitForPlayerReady(page, "Scène 9 / 9");
 
     await evaluate(page, "Array.from(document.querySelectorAll('button')).find((button) => button.textContent === 'Précédent')?.click()");
     await waitForPlayerReady(page, "Scène 8 / 9");
