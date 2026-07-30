@@ -580,9 +580,7 @@ async function startPolarityPack(packUrl: URL): Promise<void> {
     mount.setAttribute("aria-busy", "true");
     try {
       const loadedPolarity = await loadPolarity(new URL(item.source), validatePolarity);
-      const polarity = pack.articleUrl
-        ? { ...loadedPolarity, article: pack.articleUrl }
-        : loadedPolarity;
+      const polarity = { ...loadedPolarity, article: pack.articleUrl };
       const previousExists =
         polarity.previous !== null &&
         pack.polarities.some((candidate) => candidate.id === polarity.previous);

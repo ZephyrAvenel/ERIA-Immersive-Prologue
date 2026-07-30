@@ -149,6 +149,45 @@ test("polarity pack loader validates its manifest and resolves independent conte
   }
 });
 
+test("polarity pack loader requires the canonical manifest article URL", async () => {
+  const previousFetch = globalThis.fetch;
+  globalThis.fetch = async () => ({
+    ok: true,
+    json: async () => ({
+      format: "ine-polarity-pack",
+      id: "pack-without-article",
+      title: "Pack",
+      subtitle: "Sous-titre",
+      description: "Description",
+      type: "contemplatif",
+      version: "1.0.0",
+      author: "Auteur",
+      language: "fr",
+      estimatedDuration: 1,
+      entry: "entry",
+      entryAction: "Entrer",
+      coverImage: "cover.webp",
+      coverImageAlt: "Couverture",
+      closingImage: "closing.webp",
+      closingImageAlt: "Clôture",
+      closingAction: "Achever",
+      closingBackAction: "Revenir",
+      polarities: [{ id: "entry", source: "entry.json" }],
+      fallbackImage: "fallback.webp",
+      fallbackImageAlt: "Fallback",
+      landmarkLabel: "Parcours",
+    }),
+  });
+  try {
+    await assert.rejects(
+      () => loadPolarityPack(new URL("https://example.test/pack.json")),
+      /INE_POLARITY_PACK_INVALID/,
+    );
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+});
+
 test("NarrativeEngine selects the start scene and navigates deterministically", () => {
   const engine = new NarrativeEngine(createPack());
 

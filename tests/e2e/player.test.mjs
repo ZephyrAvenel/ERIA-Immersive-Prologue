@@ -842,11 +842,16 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       page,
       `({
         hasPrevious: document.querySelector('[data-polarity-action="previous"]') !== null,
-        hasNext: document.querySelector('[data-polarity-action="next"]') !== null
+        hasNext: document.querySelector('[data-polarity-action="next"]') !== null,
+        articleHref: document.querySelector('.polarity__action--article')?.href
       })`,
     );
     assert.equal(polarityState.hasPrevious, true);
     assert.equal(polarityState.hasNext, false);
+    assert.equal(
+      polarityState.articleHref,
+      "https://zephyr-avenel.blogspot.com/2026/07/les-tensions-fecondes-des-polarites.html?m=1",
+    );
     assert.equal(
       await evaluate(page, "document.querySelector('[data-polarity-action=\"closing\"]')?.textContent"),
       "Achever le parcours",
