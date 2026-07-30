@@ -94,6 +94,6 @@ le retour au parcours.
 
 ## Publication Git
 
-- commit d'intégration : `À_CONSIGNER_APRÈS_COMMIT`
-- branche distante : `À_CONSIGNER_APRÈS_PUSH`
-- push GitHub : `À_CONFIRMER`
+- commit d'intégration : `c01eb29a976d5eced571653296876fd51e6d0627`
+- branche distante : `agent/ine-007-final-illustrations`
+- push GitHub : confirmé le 30 juillet 2026
