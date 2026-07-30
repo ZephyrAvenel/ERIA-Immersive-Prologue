@@ -1,6 +1,7 @@
 {
   "format": "ine-pack-registry",
   "version": "1.0",
+  "home": "les-gardiens-des-recits-vivants",
   "packs": [
     {
       "id": "les-gardiens-des-recits-vivants",

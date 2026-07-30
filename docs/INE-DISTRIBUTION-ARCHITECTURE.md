@@ -14,11 +14,12 @@ Chaque œuvre possède une URL canonique lisible :
 
 Ces URLs correspondent à de vrais dossiers contenant un `index.html`, générés pendant le build. Toutes les pages chargent exactement le même bundle INE. Le chemin sélectionne une entrée du registre, puis le moteur charge le manifeste associé.
 
-La racine du site présente la bibliothèque. Le paramètre `?pack=<url-du-manifeste>` reste disponible pour la prévisualisation et le diagnostic, mais il n’est ni canonique ni destiné au référencement.
+La racine du site présente l’œuvre désignée par `home` dans le registre. Pour le Cycle I, il s’agit du prologue **Les Gardiens des Récits Vivants**. La bibliothèque reste une page statique autonome à `/bibliotheque/`. Le paramètre `?pack=<url-du-manifeste>` reste disponible pour la prévisualisation et le diagnostic, mais il n’est ni canonique ni destiné au référencement.
 
 ```mermaid
 flowchart LR
-  V["Visiteur"] --> L["/ — Bibliothèque"]
+  V["Visiteur"] --> P["/ — Prologue"]
+  P --> L["/bibliotheque/ — Bibliothèque"]
   V --> U1["/oeuvres/gardiens/"]
   V --> U2["/oeuvres/polarites-vivantes/"]
   L --> U1
@@ -57,6 +58,7 @@ Le registre est volontairement minimal :
 {
   "format": "ine-pack-registry",
   "version": "1.0",
+  "home": "pack-001",
   "packs": [
     {
       "id": "pack-002",
@@ -67,7 +69,7 @@ Le registre est volontairement minimal :
 }
 ```
 
-Il ne répète ni titre, ni type, ni illustration, ni description. Ces informations appartiennent au manifeste. Le build et la bibliothèque vérifient que `entry.id` correspond à `manifest.id`. Les identifiants et slugs doivent être uniques.
+`home` désigne l’identifiant éditorial de l’œuvre d’accueil ; il ne duplique aucun contenu. Le registre ne répète ni titre, ni type, ni illustration, ni description. Ces informations appartiennent au manifeste. Le build et la bibliothèque vérifient que `entry.id` correspond à `manifest.id`. Les identifiants et slugs doivent être uniques, et `home` doit correspondre à une entrée existante.
 
 Une recherche automatique des dossiers au build serait possible, mais ne fonctionnerait pas dans le navigateur et compliquerait le cas actuel où PACK-001 vit encore sous `examples/`. Le registre explicite est plus prévisible, portable et auditable. Si tous les packs sont un jour regroupés sous `packs/`, un script de génération du registre pourra être ajouté sans modifier le moteur ni le format public.
 
@@ -115,9 +117,16 @@ Pour publier une nouvelle œuvre :
 
 Le moteur n’est pas modifié.
 
-## Bibliothèque immersive
+## Parcours d’accueil et bibliothèque immersive
 
-La page racine charge le registre, puis les manifestes en parallèle. Chaque carte utilise exclusivement :
+Le parcours canonique accueille d’abord le visiteur dans le prologue. Un accès
+discret à la bibliothèque reste présent pendant l’expérience, et la dernière
+scène invite explicitement à « Poursuivre votre exploration ». Les clôtures des
+autres formats proposent la même continuité. Cette règle appartient à la
+composition du Player et au registre ; elle ne crée aucune dépendance entre les
+packs.
+
+La page `/bibliotheque/` charge le registre, puis les manifestes en parallèle. Chaque carte utilise exclusivement :
 
 - `coverImage` et `coverImageAlt` ;
 - `title` et `subtitle` ;
@@ -129,6 +138,8 @@ Le rendu utilise des éléments sémantiques (`section`, `article`, titres, lien
 ## URLs et métadonnées
 
 - URL publique : `/oeuvres/<slug>/`
+- porte d’entrée narrative : `/`
+- bibliothèque : `/bibliotheque/`
 - URL de prévisualisation : `/?pack=<manifest>`
 - fragments internes : réservés à la progression propre au renderer
 - URL canonique : injectée au build

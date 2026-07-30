@@ -7,6 +7,7 @@ export interface PackRegistryEntry {
 export interface PackRegistry {
   readonly format: "ine-pack-registry";
   readonly version: "1.0";
+  readonly home: string;
   readonly packs: readonly PackRegistryEntry[];
 }
 
@@ -34,6 +35,7 @@ export function validatePackRegistry(value: unknown): PackRegistry {
     !isRecord(value) ||
     value.format !== "ine-pack-registry" ||
     value.version !== "1.0" ||
+    !nonEmptyString(value.home) ||
     !Array.isArray(value.packs) ||
     !value.packs.every(
       (entry) =>
@@ -52,6 +54,7 @@ export function validatePackRegistry(value: unknown): PackRegistry {
   if (ids.size !== registry.packs.length || slugs.size !== registry.packs.length) {
     throw new Error("INE_PACK_REGISTRY_DUPLICATE");
   }
+  if (!ids.has(registry.home)) throw new Error("INE_PACK_REGISTRY_HOME_MISSING");
   return registry;
 }
 

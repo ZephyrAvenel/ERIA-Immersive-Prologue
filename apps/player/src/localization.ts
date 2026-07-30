@@ -21,6 +21,8 @@ export interface LocaleMessages {
   readonly libraryTitle: string;
   readonly libraryDescription: string;
   readonly exploreWork: string;
+  readonly libraryAction: string;
+  readonly continueExploration: string;
 }
 
 export const locales: Readonly<Record<string, LocaleMessages>> = {

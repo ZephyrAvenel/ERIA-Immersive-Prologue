@@ -271,17 +271,37 @@ button:disabled {
   animation: polarity-image-enter 1500ms ease-out both;
 }
 
-.polarity-closing__back {
+.polarity-closing__actions {
   position: absolute;
-  right: 50%;
   bottom: clamp(1rem, 3dvh, 2rem);
-  transform: translateX(50%);
-  background: rgb(8 18 29 / 78%);
-  backdrop-filter: blur(0.5rem);
+  left: 50%;
+  width: min(calc(100% - 2rem), 38rem);
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  transform: translateX(-50%);
 }
 
-.polarity-closing__back:hover:not(:disabled) {
-  transform: translate(50%, -1px);
+.polarity-closing__back,
+.polarity-closing__continue {
+  min-height: 3.25rem;
+  display: inline-grid;
+  place-items: center;
+  padding: 0.75rem 1.35rem;
+  border: 1px solid rgb(216 183 107 / 44%);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgb(8 18 29 / 78%);
+  backdrop-filter: blur(0.5rem);
+  font-family: var(--ui-font);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.polarity-closing__back:hover:not(:disabled),
+.polarity-closing__continue:hover {
+  transform: translateY(-1px);
 }
 
 @keyframes polarity-fade-in {
@@ -326,6 +346,23 @@ button:disabled {
     transform: translateY(-100%);
     animation-name: polarity-bridge-light-mobile;
   }
+
+  .polarity__actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .polarity__actions > * {
+    width: 100%;
+    min-width: 0;
+    white-space: normal;
+  }
+
+  .polarity-closing__actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @keyframes polarity-bridge-light-mobile {
@@ -355,6 +392,37 @@ button:disabled {
 
 .skip-link:focus {
   transform: none;
+}
+
+.site-navigation {
+  position: fixed;
+  z-index: 10;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+}
+
+.site-navigation a,
+.journey-continuation {
+  min-height: 2.75rem;
+  display: inline-grid;
+  place-items: center;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgb(8 18 29 / 76%);
+  backdrop-filter: blur(0.5rem);
+  font-family: var(--ui-font);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.site-navigation a:focus-visible,
+.journey-continuation:focus-visible,
+.polarity-closing__continue:focus-visible {
+  outline: 0.18rem solid var(--accent-cool);
+  outline-offset: 0.22rem;
 }
 
 .player {

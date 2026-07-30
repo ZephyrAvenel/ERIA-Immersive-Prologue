@@ -35,11 +35,13 @@ npm run typecheck
 npm run test:ci
 ```
 
-The site root displays the immersive works library. Public works use stable
-routes under `/oeuvres/<slug>/`; the build derives their content and social
-metadata from `packs/index.json` and each pack manifest. The `?pack=<manifest>`
-query remains available for local preview and diagnostics. Adding a conforming
-work never requires editing an engine package.
+The site root opens the narrative prologue designated by `home` in
+`packs/index.json`. The immersive works library remains available at
+`/bibliotheque/`, and public works keep their stable routes under
+`/oeuvres/<slug>/`. The build derives content and social metadata from the
+registry and each pack manifest. The `?pack=<manifest>` query remains available
+for local preview and diagnostics. Adding a conforming work never requires
+editing an engine package.
 
 ## Narrative Pack assets
 
@@ -133,8 +135,9 @@ Locally, set `CHROME_PATH` when Chrome is not discoverable or when the desktop
 environment restricts browser automation. The browser scenario covers scene
 intro threshold, transitions, navigation locking, reading progress
 resume/restart, unavailable storage, focus restoration, the library, direct
-routes for both published packs, responsive layout without standard-scene
-scrolling, and `prefers-reduced-motion`.
+routes for both published packs, the prologue-to-library journey, responsive
+layout without standard-scene scrolling, mobile polarity controls, and
+`prefers-reduced-motion`.
 
 ## Deployment
 

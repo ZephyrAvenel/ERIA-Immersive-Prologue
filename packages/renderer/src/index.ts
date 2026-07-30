@@ -363,6 +363,8 @@ export interface RenderPolarityClosureState {
   readonly image: string;
   readonly imageAlt: string;
   readonly backLabel: string;
+  readonly continueLabel: string;
+  readonly continueHref: string;
   readonly onBack: () => void;
 }
 
@@ -378,12 +380,19 @@ export function renderPolarityClosure(
   image.className = "polarity-closing__image";
   image.src = state.image;
   image.alt = state.imageAlt;
+  const actions = document.createElement("nav");
+  actions.className = "polarity-closing__actions";
+  const continuation = document.createElement("a");
+  continuation.className = "polarity-closing__continue";
+  continuation.href = state.continueHref;
+  continuation.textContent = state.continueLabel;
   const back = document.createElement("button");
   back.type = "button";
   back.className = "polarity-closing__back";
   back.textContent = state.backLabel;
   back.addEventListener("click", state.onBack);
-  section.append(image, back);
+  actions.append(continuation, back);
+  section.append(image, actions);
   target.replaceChildren(section);
   section.focus();
 }

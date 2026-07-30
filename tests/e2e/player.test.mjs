@@ -483,11 +483,26 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       failedRequests.push({ status: "failed", url: event.requestId, errorText: event.errorText });
     });
 
-    const libraryUrl = `http://127.0.0.1:${port}${baseUrl}`;
-    const url = `${libraryUrl}oeuvres/les-gardiens-des-recits-vivants/`;
+    const entryUrl = `http://127.0.0.1:${port}${baseUrl}`;
+    const libraryUrl = `${entryUrl}bibliotheque/`;
+    const url = `${entryUrl}oeuvres/les-gardiens-des-recits-vivants/`;
     await page.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
     });
+    await loadUrl(page, entryUrl);
+    await waitForPrologueReady(page);
+    const entryState = await evaluate(
+      page,
+      `({
+        title: document.querySelector('.prologue__title')?.textContent,
+        libraryHref: document.querySelector('.site-navigation a')?.href,
+        noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
+      })`,
+    );
+    assert.equal(entryState.title, "Le Seuil");
+    assert.equal(entryState.libraryHref.endsWith("/bibliotheque/"), true);
+    assert.equal(entryState.noHorizontalOverflow, true);
+
     await loadUrl(page, libraryUrl);
     await waitForExpression(page, "document.querySelectorAll('.work-card').length === 2");
     const libraryState = await evaluate(
@@ -556,6 +571,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       { text: "Passer au récit", disabled: false },
       { text: "Précédent", disabled: true },
       { text: "Suivant", disabled: false },
+      { text: "Explorer les œuvres", disabled: false },
     ]);
 
     await evaluate(
@@ -655,12 +671,16 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       assert.equal(state.hiddenPlayerCount, 0);
       if (index <= 8) assertSceneImageReady(state);
       else assert.equal(state.currentSrc, "");
-      assert.equal(state.activeElementText, index === 9 ? "Précédent" : "Suivant");
+      assert.equal(state.activeElementText, index === 9 ? "Poursuivre votre exploration" : "Suivant");
     }
 
     const last = await readStablePlayerState(page, "Scène 9 / 9");
     assert.equal(last.nextDisabled, true);
     assert.equal(last.previousDisabled, false);
+    assert.equal(
+      await evaluate(page, "document.querySelector('[data-library-continuation]')?.href.endsWith('/bibliotheque/')"),
+      true,
+    );
     const completedProgress = await readStoredProgress(page);
     assert.equal(completedProgress.sceneId, "scene-09");
     assert.equal(completedProgress.sceneIndex, 8);
@@ -700,7 +720,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       assert.deepEqual(state.buttons, ["Précédent", "Suivant"]);
     }
 
-    const polarityPackUrl = `${libraryUrl}oeuvres/polarites-vivantes/`;
+    const polarityPackUrl = `${entryUrl}oeuvres/polarites-vivantes/`;
     await loadUrl(page, polarityPackUrl);
     await waitForExpression(page, "document.querySelector('.prologue__title')?.textContent === 'Polarités Vivantes'");
     await waitForExpression(
@@ -746,6 +766,18 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(polarityState.hasPrevious, false);
     assert.equal(polarityState.hasNext, true);
     assert.equal(polarityState.noHorizontalOverflow, true);
+    const mobilePolarityActions = await evaluate(
+      page,
+      `Array.from(document.querySelectorAll('.polarity__actions > *')).map((element) => {
+        const rect = element.getBoundingClientRect();
+        return { top: rect.top, bottom: rect.bottom, height: rect.height, width: rect.width };
+      })`,
+    );
+    assert.equal(mobilePolarityActions.every(({ height, width }) => height >= 44 && width >= 280), true);
+    assert.equal(
+      mobilePolarityActions.every((action, index) => index === 0 || action.top >= mobilePolarityActions[index - 1].bottom),
+      true,
+    );
     for (let index = 1; index < polarityTitles.length; index += 1) {
       await evaluate(page, "document.querySelector('[data-polarity-action=\"next\"]')?.click()");
       await waitForExpression(page, `document.querySelector('.polarity__title')?.textContent === ${JSON.stringify(polarityTitles[index])}`);
@@ -772,6 +804,15 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       await evaluate(page, "document.querySelector('.polarity-closing__image')?.complete === true"),
       true,
     );
+    const closingContinuation = await evaluate(
+      page,
+      `({
+        label: document.querySelector('.polarity-closing__continue')?.textContent,
+        href: document.querySelector('.polarity-closing__continue')?.href
+      })`,
+    );
+    assert.equal(closingContinuation.label, "Poursuivre votre exploration");
+    assert.equal(closingContinuation.href.endsWith("/bibliotheque/"), true);
     await evaluate(page, "document.querySelector('.polarity-closing__back')?.click()");
     await waitForExpression(page, "document.querySelector('.prologue__title')?.textContent === 'Polarités Vivantes'");
 

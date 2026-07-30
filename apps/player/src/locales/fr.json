@@ -17,5 +17,7 @@
   "unknownError": "Erreur inconnue du lecteur",
   "libraryTitle": "Bibliothèque des œuvres immersives",
   "libraryDescription": "Des récits indépendants, un même espace d’immersion.",
-  "exploreWork": "Explorer"
+  "exploreWork": "Explorer",
+  "libraryAction": "Explorer les œuvres",
+  "continueExploration": "Poursuivre votre exploration"
 }
