@@ -1,0 +1,15 @@
+{
+  "id": "05-identite-transformation",
+  "title": "Entre identité et transformation",
+  "subtitle": "Changer sans renier le fil qui nous traverse.",
+  "image": "../assets/images/05-identite-transformation.webp",
+  "imageAlt": "Une forme traverse plusieurs cercles lumineux en conservant son noyau.",
+  "left": { "title": "Identité", "icon": "seed", "text": "Reconnaître une continuité. Nommer ce qui compte. Se sentir demeurer." },
+  "right": { "title": "Transformation", "icon": "wing", "text": "Consentir aux formes nouvelles. Quitter une ancienne peau. Se laisser surprendre." },
+  "quote": "La fidélité vivante ne répète pas : elle métamorphose.",
+  "question": "Quelle part de moi demande aujourd'hui une autre forme ?",
+  "article": "https://zephyr-avenel.blogspot.com/",
+  "previous": "04-proximite-liberte",
+  "next": "06-parole-silence",
+  "actions": { "article": "Explorer l'article", "previous": "Polarité précédente", "next": "Polarité suivante", "back": "Retour au parcours" }
+}

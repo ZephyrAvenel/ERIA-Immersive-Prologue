@@ -1,0 +1,15 @@
+{
+  "id": "06-parole-silence",
+  "title": "Entre parole et silence",
+  "subtitle": "Dire ce qui appelle une voix, taire ce qui demande une écoute.",
+  "image": "../assets/images/06-parole-silence.webp",
+  "imageAlt": "Une onde lumineuse naît dans un vaste espace calme.",
+  "left": { "title": "Parole", "icon": "wave", "text": "Nommer. Témoigner. Mettre en commun ce qui cherche à être entendu." },
+  "right": { "title": "Silence", "icon": "moon", "text": "Écouter. Retenir le bruit. Faire place à ce qui ne parle pas encore." },
+  "quote": "La parole juste se forme dans un silence qui ne l'abandonne pas.",
+  "question": "Ce moment me demande-t-il de parler ou d'écouter ?",
+  "article": "https://zephyr-avenel.blogspot.com/",
+  "previous": "05-identite-transformation",
+  "next": "07-conviction-dialogue",
+  "actions": { "article": "Explorer l'article", "previous": "Polarité précédente", "next": "Polarité suivante", "back": "Retour au parcours" }
+}

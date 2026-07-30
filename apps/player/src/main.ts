@@ -1,21 +1,35 @@
 import {
   DEFAULT_SCENE_TRANSITION,
   NarrativeEngine,
+  detectPackFormat,
   getTransitionDirection,
   loadNarrativePack,
+  loadPolarity,
+  loadPolarityPack,
   type NarrativeIntro,
   type NormalizedSceneTransition,
+  type PolarityPack,
   type TransitionDirection,
 } from "@ine/core";
-import { renderPlayer, renderPlayerWithTransition } from "@ine/renderer";
+import {
+  renderPlayer,
+  renderPlayerWithTransition,
+  renderPolarity,
+  renderPolarityClosure,
+} from "@ine/renderer";
 import { createButton } from "@ine/ui";
-import { validateNarrativePack } from "@ine/validators";
+import { validateNarrativePack, validatePolarity } from "@ine/validators";
 import { interpolate, resolveLocale, type LocaleMessages } from "./localization";
 import {
   createBrowserReadingProgressStore,
   createReadingProgress,
   resolveProgressSceneIndex,
 } from "./progress";
+import {
+  findRegistryEntryBySlug,
+  loadCatalog,
+  loadPackRegistry,
+} from "./catalog";
 import "./styles.css";
 
 const app = document.querySelector<HTMLElement>("#app");
@@ -29,8 +43,13 @@ type NavigationTarget = "previous" | "next";
 type ResumeChoice = "resume" | "restart";
 
 interface PlayerConfiguration {
-  readonly narrativePackUrl: string;
+  readonly packUrl: string;
 }
+
+declare const __INE_BASE__: string;
+
+const applicationBaseUrl = new URL(__INE_BASE__, globalThis.location.origin);
+const registryUrl = new URL("packs/index.json", applicationBaseUrl);
 
 function prefersReducedMotion(): boolean {
   return globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
@@ -118,7 +137,11 @@ async function waitForOptionalAnimation(element: HTMLElement, durationMs: number
   await Promise.race([animation.finished.then(() => undefined), fallback]).catch(() => undefined);
 }
 
-async function renderPrologue(intro: NarrativeIntro, packTitle: string): Promise<void> {
+async function renderPrologue(
+  intro: NarrativeIntro,
+  packTitle: string,
+  cover?: { readonly image: string; readonly imageAlt: string },
+): Promise<void> {
   mount.removeAttribute("aria-busy");
   mount.replaceChildren();
 
@@ -128,6 +151,14 @@ async function renderPrologue(intro: NarrativeIntro, packTitle: string): Promise
 
   const content = document.createElement("div");
   content.className = "prologue__content";
+
+  if (cover) {
+    const image = document.createElement("img");
+    image.className = "prologue__cover";
+    image.src = cover.image;
+    image.alt = cover.imageAlt;
+    section.append(image);
+  }
 
   intro.lines.forEach((line, index) => {
     const paragraph = document.createElement("p");
@@ -159,7 +190,30 @@ async function renderPrologue(intro: NarrativeIntro, packTitle: string): Promise
   await waitForOptionalAnimation(section, 650);
 }
 
-async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
+function requestedWorkSlug(): string | null {
+  const basePath = applicationBaseUrl.pathname.endsWith("/")
+    ? applicationBaseUrl.pathname
+    : `${applicationBaseUrl.pathname}/`;
+  if (!globalThis.location.pathname.startsWith(basePath)) return null;
+  const relativePath = globalThis.location.pathname.slice(basePath.length);
+  const match = /^oeuvres\/([^/]+)\/?$/.exec(relativePath);
+  return match?.[1] ? decodeURIComponent(match[1]) : null;
+}
+
+async function loadPlayerConfiguration(): Promise<PlayerConfiguration | null> {
+  const requestedPack = new URL(globalThis.location.href).searchParams.get("pack");
+  if (requestedPack) return { packUrl: requestedPack };
+
+  const workSlug = requestedWorkSlug();
+  if (workSlug) {
+    const registry = await loadPackRegistry(registryUrl);
+    const entry = findRegistryEntryBySlug(registry, workSlug);
+    if (!entry) throw new Error("INE_PACK_ROUTE_NOT_FOUND");
+    return { packUrl: new URL(entry.manifest, registryUrl).href };
+  }
+
+  if (globalThis.location.pathname === applicationBaseUrl.pathname) return null;
+
   const response = await fetch(new URL("player.config.json", document.baseURI));
   if (!response.ok) {
     throw new Error("INE_PLAYER_CONFIGURATION_REQUEST_FAILED");
@@ -169,19 +223,76 @@ async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
   if (
     typeof value !== "object" ||
     value === null ||
-    !("narrativePackUrl" in value) ||
-    typeof value.narrativePackUrl !== "string" ||
-    value.narrativePackUrl.length === 0
+    !("packUrl" in value) ||
+    typeof value.packUrl !== "string" ||
+    value.packUrl.length === 0
   ) {
     throw new Error("INE_PLAYER_CONFIGURATION_INVALID");
   }
 
-  return { narrativePackUrl: value.narrativePackUrl };
+  return { packUrl: value.packUrl };
 }
 
-async function start(): Promise<void> {
-  const configuration = await loadPlayerConfiguration();
-  const packUrl = new URL(configuration.narrativePackUrl, document.baseURI);
+async function renderLibrary(): Promise<void> {
+  const messages = resolveLocale(navigator.language);
+  const packs = await loadCatalog(registryUrl);
+  updateShell(messages, messages.libraryTitle);
+  const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
+  if (skipLink) {
+    skipLink.href = "#works";
+    skipLink.textContent = messages.skipToNarrative;
+  }
+  mount.removeAttribute("aria-busy");
+  mount.replaceChildren();
+
+  const library = document.createElement("section");
+  library.id = "works";
+  library.className = "library";
+  library.setAttribute("aria-labelledby", "library-title");
+
+  const header = document.createElement("header");
+  header.className = "library__header";
+  const title = document.createElement("h1");
+  title.id = "library-title";
+  title.textContent = messages.libraryTitle;
+  const description = document.createElement("p");
+  description.textContent = messages.libraryDescription;
+  header.append(title, description);
+
+  const grid = document.createElement("div");
+  grid.className = "library__grid";
+  for (const pack of packs) {
+    const article = document.createElement("article");
+    article.className = "work-card";
+    const image = document.createElement("img");
+    image.className = "work-card__image";
+    image.src = pack.coverImage;
+    image.alt = pack.coverImageAlt;
+    image.loading = "lazy";
+    const content = document.createElement("div");
+    content.className = "work-card__content";
+    const workTitle = document.createElement("h2");
+    workTitle.textContent = pack.title;
+    const subtitle = document.createElement("p");
+    subtitle.className = "work-card__subtitle";
+    subtitle.textContent = pack.subtitle;
+    const summary = document.createElement("p");
+    summary.textContent = pack.description;
+    const link = document.createElement("a");
+    link.className = "work-card__action";
+    link.href = new URL(`oeuvres/${pack.slug}/`, applicationBaseUrl).href;
+    link.textContent = messages.exploreWork;
+    link.setAttribute("aria-label", `${messages.exploreWork} — ${pack.title}`);
+    content.append(workTitle, subtitle, summary, link);
+    article.append(image, content);
+    grid.append(article);
+  }
+
+  library.append(header, grid);
+  mount.append(library);
+}
+
+async function startNarrativePack(packUrl: URL): Promise<void> {
   const pack = await loadNarrativePack(packUrl, validateNarrativePack);
   const engine = new NarrativeEngine(pack);
   const messages = resolveLocale(pack.language);
@@ -210,7 +321,7 @@ async function start(): Promise<void> {
   };
 
   const disableCurrentControls = (): void => {
-    for (const button of mount.querySelectorAll<HTMLButtonElement>(".player-controls button")) {
+    for (const button of mount.querySelectorAll<HTMLButtonElement>(".player button")) {
       button.disabled = true;
     }
   };
@@ -369,6 +480,96 @@ async function start(): Promise<void> {
   await render();
 }
 
+async function startPolarityPack(packUrl: URL): Promise<void> {
+  const pack: PolarityPack = await loadPolarityPack(packUrl);
+  const messages = resolveLocale(pack.language);
+  updateShell(messages, pack.title);
+  const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
+  if (skipLink) skipLink.href = "#polarity";
+  let loading = false;
+
+  const showClosing = (): void => {
+    globalThis.history.replaceState(null, "", "#closing");
+    renderPolarityClosure(mount, {
+      image: pack.closingImage,
+      imageAlt: pack.closingImageAlt,
+      backLabel: pack.closingBackAction,
+      onBack: () => void showJourney(),
+    });
+  };
+
+  const showPolarity = async (id: string): Promise<void> => {
+    if (loading) return;
+    const item = pack.polarities.find((candidate) => candidate.id === id);
+    if (!item) throw new Error("INE_POLARITY_NOT_FOUND");
+    loading = true;
+    mount.setAttribute("aria-busy", "true");
+    try {
+      const polarity = await loadPolarity(new URL(item.source), validatePolarity);
+      const previousExists =
+        polarity.previous !== null &&
+        pack.polarities.some((candidate) => candidate.id === polarity.previous);
+      const nextExists =
+        polarity.next !== null &&
+        pack.polarities.some((candidate) => candidate.id === polarity.next);
+      renderPolarity(mount, {
+        polarity,
+        fallbackImage: pack.fallbackImage,
+        fallbackImageAlt: pack.fallbackImageAlt,
+        landmarkLabel: pack.landmarkLabel,
+        onPrevious: previousExists && polarity.previous
+          ? () => void showPolarity(polarity.previous as string)
+          : undefined,
+        onNext: nextExists && polarity.next
+          ? () => void showPolarity(polarity.next as string)
+          : undefined,
+        closingLabel: polarity.next === null ? pack.closingAction : undefined,
+        onClosing: polarity.next === null ? showClosing : undefined,
+        onBack: () => void showJourney(),
+      });
+      globalThis.history.replaceState(null, "", `#polarity=${encodeURIComponent(polarity.id)}`);
+    } finally {
+      loading = false;
+      mount.removeAttribute("aria-busy");
+    }
+  };
+
+  const showJourney = async (): Promise<void> => {
+    globalThis.history.replaceState(null, "", globalThis.location.pathname);
+    await renderPrologue(
+      {
+        lines: [pack.subtitle],
+        title: pack.title,
+        actionLabel: pack.entryAction,
+      },
+      pack.title,
+      { image: pack.coverImage, imageAlt: pack.coverImageAlt },
+    );
+    await showPolarity(pack.entry);
+  };
+
+  await showJourney();
+}
+
+async function start(): Promise<void> {
+  const configuration = await loadPlayerConfiguration();
+  if (!configuration) {
+    await renderLibrary();
+    return;
+  }
+  const packUrl = new URL(configuration.packUrl, applicationBaseUrl);
+  const format = await detectPackFormat(packUrl);
+  if (format === "ine-narrative-pack") {
+    await startNarrativePack(packUrl);
+    return;
+  }
+  if (format === "ine-polarity-pack") {
+    await startPolarityPack(packUrl);
+    return;
+  }
+  throw new Error("INE_PACK_FORMAT_UNSUPPORTED");
+}
+
 function renderError(): void {
   const messages = resolveLocale(navigator.language);
   updateShell(messages);
@@ -388,6 +589,6 @@ void start().catch(renderError);
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    void navigator.serviceWorker.register(new URL("sw.js", document.baseURI));
+    void navigator.serviceWorker.register(new URL("sw.js", applicationBaseUrl));
   });
 }

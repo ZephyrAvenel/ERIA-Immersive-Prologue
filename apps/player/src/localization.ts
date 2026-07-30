@@ -18,6 +18,9 @@ export interface LocaleMessages {
   readonly errorTitle: string;
   readonly errorMessage: string;
   readonly unknownError: string;
+  readonly libraryTitle: string;
+  readonly libraryDescription: string;
+  readonly exploreWork: string;
 }
 
 export const locales: Readonly<Record<string, LocaleMessages>> = {

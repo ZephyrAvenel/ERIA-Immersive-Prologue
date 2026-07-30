@@ -1,0 +1,15 @@
+{
+  "id": "08-protection-ouverture",
+  "title": "Entre protection et ouverture",
+  "subtitle": "Créer une enveloppe assez sûre pour demeurer perméable.",
+  "image": "../assets/images/08-protection-ouverture.webp",
+  "imageAlt": "Une membrane lumineuse protège un noyau tout en laissant passer la lumière.",
+  "left": { "title": "Protection", "icon": "shell", "text": "Préserver le fragile. Poser un seuil. Offrir un lieu où reprendre souffle." },
+  "right": { "title": "Ouverture", "icon": "door", "text": "Recevoir l'inconnu. Laisser entrer l'altérité. Ne pas faire du seuil un mur." },
+  "quote": "Ce qui vit a besoin d'une peau, non d'une forteresse.",
+  "question": "Quelle protection pourrait m'aider à m'ouvrir davantage ?",
+  "article": "https://zephyr-avenel.blogspot.com/",
+  "previous": "07-conviction-dialogue",
+  "next": "09-racines-horizons",
+  "actions": { "article": "Explorer l'article", "previous": "Polarité précédente", "next": "Polarité suivante", "back": "Retour au parcours" }
+}

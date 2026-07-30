@@ -4,10 +4,10 @@ INE is a work-independent, web-based player for **Narrative Packs**. The engine
 contains no story-specific logic: any pack that follows the published schemas
 can be loaded without changing the runtime.
 
-This repository currently provides the production foundation: an immersive
-player, core loading contract, renderer, validator, UI helpers, SDK entry point,
-the first artistic Narrative Pack, PWA shell, and continuous delivery to GitHub
-Pages.
+Cycle I provides the production foundation: an immersive player, core loading
+contract, renderers, validators, UI helpers, SDK entry point, two independent
+works, a manifest-driven library, dedicated public URLs, a PWA shell, and
+continuous delivery to GitHub Pages.
 
 ## Requirements
 
@@ -35,10 +35,11 @@ npm run typecheck
 npm run test:ci
 ```
 
-The Player reads its Narrative Pack URL from
-`apps/player/public/player.config.json`. Selecting another conforming work only
-requires changing that deployment configuration; no engine package needs to be
-rebuilt or edited.
+The site root displays the immersive works library. Public works use stable
+routes under `/oeuvres/<slug>/`; the build derives their content and social
+metadata from `packs/index.json` and each pack manifest. The `?pack=<manifest>`
+query remains available for local preview and diagnostics. Adding a conforming
+work never requires editing an engine package.
 
 ## Narrative Pack assets
 
@@ -89,6 +90,7 @@ packages/sdk/      Public author-facing types and future SDK entry point
 packages/ui/       Accessible reusable UI primitives
 packages/validators/ Runtime Narrative Pack validation
 examples/demo-pack/ First artistic Narrative Pack and normalized assets
+packs/             Published pack registry and PACK-002
 schemas/           Versioned JSON Schemas
 docs/              Architecture and Narrative Pack documentation
 tests/             Unit, integration, browser, accessibility, and fixture tests
@@ -105,6 +107,10 @@ reports/           Mission reports
 - Every change must leave the default branch installable and buildable.
 
 See [the architecture guide](docs/ARCHITECTURE.md),
+[distribution architecture](docs/INE-DISTRIBUTION-ARCHITECTURE.md),
+[editorial model](docs/MODELE-EDITORIAL-OEUVRES-IMMERSIVES.md),
+[new immersive work guide](docs/CREER-UNE-OEUVRE-IMMERSIVE.md),
+[Cycle I releases](CHANGELOG.md),
 [Narrative Pack specification](docs/NARRATIVE_PACKS.md), and
 [testing guide](docs/TESTING.md).
 
@@ -126,8 +132,9 @@ Protocol. In CI, Chrome must be available and the test fails if it cannot run.
 Locally, set `CHROME_PATH` when Chrome is not discoverable or when the desktop
 environment restricts browser automation. The browser scenario covers scene
 intro threshold, transitions, navigation locking, reading progress
-resume/restart, unavailable storage, focus restoration, responsive layout
-without standard-scene scrolling, and `prefers-reduced-motion`.
+resume/restart, unavailable storage, focus restoration, the library, direct
+routes for both published packs, responsive layout without standard-scene
+scrolling, and `prefers-reduced-motion`.
 
 ## Deployment
 

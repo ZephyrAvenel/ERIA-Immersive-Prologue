@@ -27,6 +27,7 @@ export class FakeElement {
       },
     };
     this.className = "";
+    this.listeners = new Map();
     this.id = "";
     this.tabIndex = 0;
     this.textContent = "";
@@ -63,9 +64,24 @@ export class FakeElement {
     return this.attributes.get(name) ?? null;
   }
 
-  addEventListener() {}
+  addEventListener(type, listener) {
+    const listeners = this.listeners.get(type) ?? [];
+    listeners.push(listener);
+    this.listeners.set(type, listeners);
+  }
 
-  removeEventListener() {}
+  removeEventListener(type, listener) {
+    this.listeners.set(type, (this.listeners.get(type) ?? []).filter((candidate) => candidate !== listener));
+  }
+
+  dispatchEvent(event) {
+    for (const listener of this.listeners.get(event.type) ?? []) listener.call(this, event);
+    return true;
+  }
+
+  focus() {
+    this.focused = true;
+  }
 
   remove() {
     if (!this.parentElement) return;

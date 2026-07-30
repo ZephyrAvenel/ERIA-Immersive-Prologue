@@ -1,0 +1,16 @@
+{
+  "format": "ine-pack-registry",
+  "version": "1.0",
+  "packs": [
+    {
+      "id": "les-gardiens-des-recits-vivants",
+      "slug": "les-gardiens-des-recits-vivants",
+      "manifest": "../examples/demo-pack/pack.json"
+    },
+    {
+      "id": "pack-002",
+      "slug": "polarites-vivantes",
+      "manifest": "pack-002-polarites-vivantes/pack.json"
+    }
+  ]
+}

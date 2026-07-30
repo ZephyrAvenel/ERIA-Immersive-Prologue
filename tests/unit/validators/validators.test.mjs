@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readdir } from "node:fs/promises";
 import test from "node:test";
-import { validateNarrativePack } from "../../../.test-build/packages/validators/src/index.js";
+import { validateNarrativePack, validatePolarity } from "../../../.test-build/packages/validators/src/index.js";
 import { readJsonFixture, readProjectJson } from "../../helpers/fixtures.mjs";
 
 const expectedInvalidCodes = {
@@ -123,4 +123,48 @@ test("runtime validator and JSON Schema expose the same intro contract", async (
   });
 
   assert.equal(result.valid, true, result.errors.join(", "));
+});
+
+test("validator accepts a complete reusable polarity", () => {
+  const result = validatePolarity({
+    id: "affirmation-don",
+    title: "Entre affirmation et don",
+    subtitle: "Une tension vivante.",
+    image: "assets/image.svg",
+    imageAlt: "Deux mouvements.",
+    left: { title: "Affirmation", icon: "leaf", text: "Poser des limites." },
+    right: { title: "Don", icon: "hands", text: "Accueillir." },
+    quote: "Une relation vivante.",
+    question: "Où est-elle présente ?",
+    article: "https://example.test",
+    previous: null,
+    next: "memoire-avenir",
+    actions: { article: "Explorer", previous: "Précédente", next: "Suivante", back: "Retour" },
+  });
+  assert.deepEqual(result, { valid: true, errors: [] });
+});
+
+test("validator rejects incomplete or unexpected polarity content", () => {
+  const result = validatePolarity({
+    id: "Bad Id",
+    title: "Titre",
+    subtitle: "",
+    image: "image.svg",
+    imageAlt: "Image",
+    left: { title: "Gauche", icon: "leaf" },
+    right: null,
+    quote: "Citation",
+    question: "Question",
+    article: "Article",
+    previous: null,
+    next: "next",
+    actions: { article: "Article", next: "Next" },
+    unexpected: true,
+  });
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.includes("INE_POLARITY_ID_INVALID:polarity.id"));
+  assert.ok(result.errors.includes("INE_POLARITY_STRING_REQUIRED:polarity.subtitle"));
+  assert.ok(result.errors.includes("INE_POLARITY_POLE_REQUIRED:polarity.right"));
+  assert.ok(result.errors.includes("INE_POLARITY_STRING_REQUIRED:polarity.actions.back"));
+  assert.ok(result.errors.includes("INE_VALIDATION_UNKNOWN_PROPERTY:polarity.unexpected"));
 });
