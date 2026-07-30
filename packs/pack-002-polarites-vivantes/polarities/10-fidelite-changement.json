@@ -1,0 +1,15 @@
+{
+  "id": "10-fidelite-changement",
+  "title": "Entre fidélité et changement",
+  "subtitle": "Demeurer fidèle à l'élan plutôt qu'à sa forme passée.",
+  "image": "../assets/images/10-fidelite-changement.webp",
+  "imageAlt": "Un même fil doré traverse plusieurs formes en transformation.",
+  "left": { "title": "Fidélité", "icon": "thread", "text": "Tenir une promesse. Garder le cap intérieur. Prendre soin de la continuité." },
+  "right": { "title": "Changement", "icon": "metamorphosis", "text": "Répondre au réel. Réviser les formes. Permettre à la promesse de rester vivante." },
+  "quote": "Changer peut être la manière la plus exigeante de rester fidèle.",
+  "question": "À quoi suis-je réellement fidèle lorsque tout change ?",
+  "article": "https://zephyr-avenel.blogspot.com/",
+  "previous": "09-racines-horizons",
+  "next": null,
+  "actions": { "article": "Explorer l'article", "previous": "Polarité précédente", "next": "Polarité suivante", "back": "Retour au parcours" }
+}

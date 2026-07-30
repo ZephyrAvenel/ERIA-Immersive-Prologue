@@ -1,0 +1,15 @@
+{
+  "id": "01-affirmation-don",
+  "title": "Entre affirmation et don",
+  "subtitle": "Se tenir debout sans cesser de tendre la main.",
+  "image": "../assets/images/01-affirmation-don.webp",
+  "imageAlt": "Deux halos doré et bleu se rejoignent au-dessus d'un paysage nocturne.",
+  "left": { "title": "Affirmation", "icon": "leaf", "text": "Reconnaître sa dignité. Poser ses limites. Habiter pleinement sa voix." },
+  "right": { "title": "Don", "icon": "hands", "text": "Accueillir l'autre. Offrir sans s'effacer. Laisser circuler ce qui nous traverse." },
+  "quote": "Une relation vivante naît lorsque ces deux mouvements cessent de s'opposer.",
+  "question": "Dans ma vie, où cette polarité est-elle présente ?",
+  "article": "https://zephyr-avenel.blogspot.com/",
+  "previous": null,
+  "next": "02-autonomie-appartenance",
+  "actions": { "article": "Explorer l'article", "previous": "Polarité précédente", "next": "Polarité suivante", "back": "Retour au parcours" }
+}

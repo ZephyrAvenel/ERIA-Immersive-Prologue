@@ -1,0 +1,15 @@
+{
+  "id": "03-memoire-avenir",
+  "title": "Entre mémoire et avenir",
+  "subtitle": "Recevoir les traces sans refermer l'horizon.",
+  "image": "../assets/images/03-memoire-avenir.webp",
+  "imageAlt": "Une arche relie une constellation ancienne à une aube bleue.",
+  "left": { "title": "Mémoire", "icon": "spiral", "text": "Garder les traces. Honorer les héritages. Écouter ce qui demeure." },
+  "right": { "title": "Avenir", "icon": "star", "text": "Ouvrir l'inédit. Risquer un commencement. Accueillir ce qui vient." },
+  "quote": "Nous avançons lorsque la mémoire devient une source plutôt qu'une frontière.",
+  "question": "Que puis-je garder sans cesser de devenir ?",
+  "article": "https://zephyr-avenel.blogspot.com/",
+  "previous": "02-autonomie-appartenance",
+  "next": "04-proximite-liberte",
+  "actions": { "article": "Explorer l'article", "previous": "Polarité précédente", "next": "Polarité suivante", "back": "Retour au parcours" }
+}

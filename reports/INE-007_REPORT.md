@@ -1,265 +1,99 @@
-# INE-007 — Première expérience immersive « Récits Vivants »
+# INE-007 — Intégration des illustrations définitives du PACK-002
 
-Date : 2026-07-29
+## Résultat
 
-## 1. Résumé
+Les douze illustrations officielles fournies dans
+`Pack narratif Polarités.zip` remplacent les placeholders du PACK-002. PACK-001
+et son dossier `examples/demo-pack/` sont inchangés.
 
-INE-007 transforme le Player en une première expérience immersive contemplative, tout en conservant l’indépendance entre le moteur et l’œuvre.
+## Correspondance appliquée
 
-La mission livre :
-
-- une mise en page `100dvh` qui garde les scènes standards dans la fenêtre visible ;
-- une hiérarchie verticale plus dense et plus lisible ;
-- des commandes tactiles plus confortables ;
-- une interface publique débarrassée des libellés techniques visibles ;
-- un prologue générique piloté par le Narrative Pack ;
-- le premier Narrative Pack artistique : `Les Gardiens des Récits Vivants`.
-
-## 2. Corrections UX réalisées
-
-La structure visuelle du Player a été resserrée :
-
-- hauteur du Player basée sur `100dvh` ;
-- grille verticale `header / scene / footer` avec zone centrale flexible ;
-- réduction des marges verticales ;
-- image maintenue en élément dominant ;
-- progression et navigation conservées dans la zone visible ;
-- titres plus grands et plus organiques ;
-- texte narratif légèrement agrandi avec interlignage renforcé ;
-- boutons élargis, hauteur tactile confortable et contraste plus fort.
-
-Les libellés publics `Immersive Narrative Engine` et `Pack narratif` ne dominent plus l’écran. L’identité visible est désormais celle de l’œuvre.
-
-## 3. Améliorations responsive
-
-Le scénario navigateur couvre explicitement :
-
-- `1366 × 768` ;
-- `1280 × 800` ;
-- `1024 × 768` ;
-- `768 × 1024` ;
-- `430 × 932` ;
-- `390 × 844` ;
-- `360 × 800`.
-
-Pour chaque taille, le test vérifie :
-
-- absence de défilement horizontal ;
-- absence de défilement vertical pour la scène standard courte ;
-- navigation visible ;
-- commandes dans la fenêtre ;
-- image chargée, visible et en `contain`.
-
-## 4. Suppression du défilement standard
-
-Le problème de scène plus haute que la fenêtre a été traité par :
-
-- `height: 100dvh` sur le Player ;
-- lignes de grille flexibles ;
-- hauteur d’image en `clamp()` et `dvh` ;
-- footer compact ;
-- en-tête discret ;
-- réduction des espaces morts.
-
-Le défilement vertical reste possible par le navigateur si un futur pack fournit exceptionnellement un texte long.
-
-## 5. Narrative Pack créé
-
-Le pack intégré devient :
-
-```text
-Les Gardiens des Récits Vivants
-```
-
-Identifiant stable :
-
-```text
-les-gardiens-des-recits-vivants
-```
-
-La première salle utilise la baleine cosmique :
-
-```text
-assets/images/scene-02-cosmic-whale.png
-```
-
-Les huit images existantes sont conservées. Les textes et titres du pack ont été remplacés par une séquence artistique cohérente avec la nouvelle œuvre.
-
-## 6. Prologue
-
-Le prologue est déclaré dans le Narrative Pack via :
-
-```text
-presentation.intro
-```
-
-Contrat ajouté :
-
-- `lines` ;
-- `title` optionnel ;
-- `actionLabel`.
-
-Le Player rend ce prologue comme un seuil générique :
-
-- écran sombre ;
-- étoiles discrètes ;
-- spirale dorée ;
-- phrases progressives ;
-- bouton d’entrée ;
-- transition douce vers la première salle sans rechargement de page.
-
-Le respect de `prefers-reduced-motion` est conservé : les animations deviennent quasi instantanées lorsque l’utilisateur demande une réduction des mouvements.
-
-## 7. Architecture
-
-Le moteur reste générique :
-
-- le Core expose seulement le type `NarrativeIntro` ;
-- le JSON Schema valide la structure `presentation.intro` ;
-- le validateur runtime rejette les intros mal formées ;
-- le Player orchestre l’écran d’intro sans connaître l’œuvre ;
-- le Narrative Pack fournit les phrases, le titre et le libellé d’entrée.
-
-Aucune logique spécifique à ERIA ou aux `Gardiens des Récits Vivants` n’a été placée dans le moteur.
-
-## 8. Tests ajoutés ou adaptés
-
-Tests unitaires :
-
-- contrat runtime de `presentation.intro` ;
-- cohérence JSON Schema / validateur ;
-- rejet d’intro sans `actionLabel` ;
-- rejet d’intro avec propriété inconnue ;
-- rejet d’intro sans lignes valides ;
-- Renderer sans libellés techniques visibles.
-
-Tests d’intégration :
-
-- pack `Les Gardiens des Récits Vivants` valide ;
-- intro présente et localisée dans le pack ;
-- première scène baleine ;
-- huit PNG toujours présents et non vides ;
-- pack toujours portable après déplacement simulé.
-
-Tests navigateur :
-
-- affichage du prologue ;
-- bouton `Franchir le seuil` ;
-- entrée sans rechargement de page ;
-- première scène baleine ;
-- reprise de lecture ;
-- recommencement et relecture du prologue ;
-- dernière scène `completed: true` ;
-- stockage indisponible ;
-- `prefers-reduced-motion` ;
-- sept tailles d’écran ;
-- absence de scroll standard ;
-- focus et navigation clavier ;
-- absence d’erreur console.
-
-## 9. Résultats locaux
-
-Environnement :
-
-- Node.js `v24.18.0` ;
-- npm `11.16.0` via `npm.cmd` ;
-- Chrome `C:\Program Files\Google\Chrome\Application\chrome.exe`.
-
-Commandes exécutées :
-
-| Commande | Résultat |
+| Rôle officiel | Fichier de production |
 |---|---|
-| `npm.cmd ci` | Réussi |
-| `npm.cmd run typecheck` | Réussi |
-| `npm.cmd run test:unit` | 48 tests passés |
-| `npm.cmd run test:integration` | 5 tests passés |
-| `npm.cmd run test:coverage` | 53 tests passés, seuils respectés |
-| `npm.cmd run build` | Réussi hors sandbox après échec esbuild sandbox connu |
-| `npm.cmd run test:e2e` | 1 scénario navigateur passé |
+| Couverture avec les dix stèles | `00-couverture.webp` |
+| Pont entre deux falaises | `01-affirmation-don.webp` |
+| Grand arbre relié à la forêt | `02-autonomie-appartenance.webp` |
+| Arbre entre nuit et jour | `03-memoire-avenir.webp` |
+| Deux oiseaux dans le ciel | `04-proximite-liberte.webp` |
+| Chemin traversant les saisons | `05-identite-transformation.webp` |
+| Lac avec les ondes concentriques | `06-parole-silence.webp` |
+| Deux lanternes sur le chemin | `07-conviction-dialogue.webp` |
+| Porte ouverte vers la lumière | `08-protection-ouverture.webp` |
+| Grand arbre dominant l'horizon | `09-racines-horizons.webp` |
+| Pont de pierre sur la rivière | `10-fidelite-changement.webp` |
+| « Le récit continue avec toi » | `11-cloture.webp` |
 
-Couverture :
+## Originaux et optimisation
 
-| Zone | Lignes | Branches | Fonctions |
-|---|---:|---:|---:|
-| Core | 96.13 % | 90.16 % | 97.06 % |
-| Renderer | 85.53 % | 85.25 % | 77.78 % |
-| Validators | 89.26 % | 88.71 % | 100.00 % |
-| Total | 89.66 % | 88.04 % | 89.86 % |
+Les douze PNG fournis sont copiés byte pour byte sous leur nom officiel dans
+`assets/images/originals/`. Aucun original n'a été écrasé ou recompressé.
 
-Les seuils de couverture n’ont pas été diminués.
+Les douze dérivés WebP :
 
-## 10. Validation distante
+- conservent les dimensions sources, soit `1536 × 1024` pour les paysages et
+  `1024 × 1536` pour la couverture et la clôture ;
+- utilisent une qualité élevée sans redimensionnement ;
+- totalisent `5 541 058` octets contre `34 160 403` octets pour les PNG ;
+- pèsent chacun moins de `700 000` octets.
 
-Commit publié :
+## Manifeste et parcours
+
+Le manifeste déclare désormais :
+
+- `coverImage` et son alternative ;
+- `closingImage` et son alternative ;
+- les libellés de passage vers la clôture et de retour ;
+- la couverture comme fallback officiel.
+
+La couverture accompagne le seuil du PACK-002. Après la dixième polarité,
+« Achever le parcours » affiche l'image de clôture, puis permet de revenir au
+parcours. Ces données restent pilotées par le manifeste.
+
+Les dix JSON référencent leurs WebP officiels. Aucun chemin SVG ne subsiste.
+
+## Nettoyage
+
+- dix placeholders SVG supprimés ;
+- ancien fallback SVG supprimé ;
+- aucun SVG résiduel dans `assets/images/` ;
+- douze WebP de production, tous référencés par le manifeste ou un JSON ;
+- douze PNG originaux conservés intentionnellement ;
+- aucune ressource graphique orpheline.
+
+## Documentation
+
+`docs/PACK-002-POLARITES-VIVANTES.md`, le README du pack et le rapport INE-006
+décrivent maintenant :
+
+- les illustrations définitives PNG/WebP ;
+- la convention `00` à `11` ;
+- le rôle de la couverture et de la clôture ;
+- la conservation des originaux ;
+- la présence intentionnelle de texte intégré sur les deux compositions de
+  seuil.
+
+## Vérifications
 
 ```text
-ae3a3e9 — INE-007 First immersive Recits Vivants experience
+typecheck : succès
+tests unitaires : 54/54
+tests d'intégration : 9/9
+tests avec couverture : 63/63
+couverture : lignes 90,27 %, branches 83,69 %, fonctions 91,25 %
+build de production : succès
+scénario Chrome réel PACK-001 + PACK-002 : 1/1
+originaux byte-identiques : 12/12
+dimensions WebP conservées : 12/12
+git diff --check : succès
+diff PACK-001 (examples/demo-pack) : vide
 ```
 
-Exécution GitHub Actions :
+Le scénario Chrome vérifie le parcours PACK-001 historique, la couverture du
+PACK-002, ses dix polarités, l'absence de débordement horizontal, la clôture et
+le retour au parcours.
 
-- workflow : `Deploy GitHub Pages` ;
-- run : `30470826289` ;
-- URL : <https://github.com/ZephyrAvenel/ERIA-Immersive-Prologue/actions/runs/30470826289> ;
-- conclusion : succès.
+## Publication Git
 
-Étapes vérifiées :
-
-- `Install dependencies` : succès ;
-- `Typecheck` : succès ;
-- `Unit tests` : succès ;
-- `Integration tests` : succès ;
-- `Coverage` : succès ;
-- `Build` : succès ;
-- `Browser tests` : succès ;
-- `Upload Pages artifact` : succès ;
-- `Deploy to GitHub Pages` : succès.
-
-GitHub Pages :
-
-- URL : <https://zephyravenel.github.io/ERIA-Immersive-Prologue/> ;
-- statut HTTP : `200` ;
-- type : `text/html; charset=utf-8`.
-
-Vérification navigateur publiée :
-
-- prologue affiché ;
-- bouton `Franchir le seuil` fonctionnel sans rechargement de page ;
-- huit scènes parcourues ;
-- huit images visibles ;
-- `naturalWidth > 0` et `naturalHeight > 0` pour chaque image ;
-- `data-image-state="ready"` pour chaque scène ;
-- `object-fit: contain` conservé ;
-- `aria-busy` absent après chaque transition ;
-- focus restauré sur un bouton actif ;
-- aucune réponse PNG invalide ;
-- aucune erreur console détectée.
-
-Tailles vérifiées sur la version publiée :
-
-- `1366 × 768` ;
-- `1280 × 800` ;
-- `1024 × 768` ;
-- `768 × 1024` ;
-- `430 × 932` ;
-- `390 × 844` ;
-- `360 × 800`.
-
-Pour chaque taille, la scène standard tient dans la hauteur visible, les commandes restent visibles et aucun débordement horizontal n’a été détecté.
-
-## 11. Limites restantes
-
-- Les polices souhaitées sont déclarées par familles CSS, sans import externe bloquant.
-- Aucun son artificiel n’a été ajouté ; l’architecture laisse la place à une future mission audio.
-- Le prologue reste volontairement sobre et générique.
-
-## 12. État final
-
-INE-007 est validée :
-
-- l’interface technique s’efface au profit de l’œuvre ;
-- le Narrative Pack `Les Gardiens des Récits Vivants` est opérationnel ;
-- le prologue cinématographique fonctionne ;
-- les scènes standards ne nécessitent pas de défilement pour atteindre la navigation ;
-- les tests locaux et distants sont verts ;
-- GitHub Pages est publié et accessible.
+- commit d'intégration : `À_CONSIGNER_APRÈS_COMMIT`
+- branche distante : `À_CONSIGNER_APRÈS_PUSH`
+- push GitHub : `À_CONFIRMER`

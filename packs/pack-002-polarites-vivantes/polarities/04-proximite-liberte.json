@@ -1,0 +1,15 @@
+{
+  "id": "04-proximite-liberte",
+  "title": "Entre proximité et liberté",
+  "subtitle": "Être proche sans retenir, être libre sans disparaître.",
+  "image": "../assets/images/04-proximite-liberte.webp",
+  "imageAlt": "Deux astres proches suivent pourtant deux orbites ouvertes.",
+  "left": { "title": "Proximité", "icon": "orbit", "text": "Partager une présence. Prendre soin. Consentir à être touché." },
+  "right": { "title": "Liberté", "icon": "bird", "text": "Préserver l'élan. Laisser de l'espace. Refuser la possession." },
+  "quote": "La juste proximité offre un abri qui n'est pas une cage.",
+  "question": "Où puis-je desserrer mon étreinte sans perdre le lien ?",
+  "article": "https://zephyr-avenel.blogspot.com/",
+  "previous": "03-memoire-avenir",
+  "next": "05-identite-transformation",
+  "actions": { "article": "Explorer l'article", "previous": "Polarité précédente", "next": "Polarité suivante", "back": "Retour au parcours" }
+}

@@ -43,6 +43,12 @@ const PACK_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const IMAGE_DISPLAY_MODES = new Set(["contain", "cover", "fill", "immersive"]);
 const ALLOWED_TRANSITION_TYPES = new Set<string>(TRANSITION_TYPES);
 const ALLOWED_TRANSITION_EASINGS = new Set<string>(TRANSITION_EASINGS);
+const POLARITY_PROPERTIES = new Set([
+  "id", "title", "subtitle", "image", "imageAlt", "left", "right", "quote", "question",
+  "article", "previous", "next", "actions",
+]);
+const POLARITY_POLE_PROPERTIES = new Set(["title", "icon", "text"]);
+const POLARITY_ACTION_PROPERTIES = new Set(["article", "next", "previous", "back"]);
 
 function validateTransition(value: unknown, path: string, errors: string[]): void {
   if (!isRecord(value)) {
@@ -166,5 +172,44 @@ export function validateNarrativePack(value: unknown): ValidationResult {
     }
   }
 
+  return { valid: errors.length === 0, errors };
+}
+
+export function validatePolarity(value: unknown): ValidationResult {
+  const errors: string[] = [];
+  if (!isRecord(value)) return { valid: false, errors: ["INE_POLARITY_OBJECT_REQUIRED"] };
+  reportUnknownProperties(value, POLARITY_PROPERTIES, "polarity", errors);
+  for (const key of [
+    "id", "title", "subtitle", "image", "imageAlt", "quote", "question", "article",
+  ]) {
+    if (!hasString(value, key)) errors.push(`INE_POLARITY_STRING_REQUIRED:polarity.${key}`);
+  }
+  if (typeof value.id === "string" && !PACK_ID_PATTERN.test(value.id)) {
+    errors.push("INE_POLARITY_ID_INVALID:polarity.id");
+  }
+  for (const key of ["previous", "next"]) {
+    if (value[key] !== null && !hasString(value, key)) {
+      errors.push(`INE_POLARITY_LINK_INVALID:polarity.${key}`);
+    }
+  }
+  for (const side of ["left", "right"]) {
+    const pole = value[side];
+    if (!isRecord(pole)) {
+      errors.push(`INE_POLARITY_POLE_REQUIRED:polarity.${side}`);
+      continue;
+    }
+    reportUnknownProperties(pole, POLARITY_POLE_PROPERTIES, `polarity.${side}`, errors);
+    for (const key of POLARITY_POLE_PROPERTIES) {
+      if (!hasString(pole, key)) errors.push(`INE_POLARITY_STRING_REQUIRED:polarity.${side}.${key}`);
+    }
+  }
+  if (!isRecord(value.actions)) {
+    errors.push("INE_POLARITY_ACTIONS_REQUIRED:polarity.actions");
+  } else {
+    reportUnknownProperties(value.actions, POLARITY_ACTION_PROPERTIES, "polarity.actions", errors);
+    for (const key of POLARITY_ACTION_PROPERTIES) {
+      if (!hasString(value.actions, key)) errors.push(`INE_POLARITY_STRING_REQUIRED:polarity.actions.${key}`);
+    }
+  }
   return { valid: errors.length === 0, errors };
 }

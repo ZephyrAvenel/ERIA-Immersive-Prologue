@@ -3,12 +3,15 @@ import test from "node:test";
 import {
   DEFAULT_SCENE_TRANSITION,
   NarrativeEngine,
+  detectPackFormat,
   getSceneTransition,
   getTransitionDirection,
   loadNarrativePack,
+  loadPolarity,
+  loadPolarityPack,
   normalizeSceneTransition,
 } from "../../../.test-build/packages/core/src/index.js";
-import { validateNarrativePack } from "../../../.test-build/packages/validators/src/index.js";
+import { validateNarrativePack, validatePolarity } from "../../../.test-build/packages/validators/src/index.js";
 
 function createPack() {
   return {
@@ -79,6 +82,65 @@ test("loadNarrativePack rejects invalid manifests with a stable error code", asy
       () => loadNarrativePack(new URL("https://example.test/invalid.json"), validateNarrativePack),
       /INE_PACK_INVALID/,
     );
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+});
+
+test("polarity pack loader validates its manifest and resolves independent content assets", async () => {
+  const responses = [
+    { format: "ine-polarity-pack" },
+    {
+      format: "ine-polarity-pack",
+      id: "pack-002",
+      title: "Polarités Vivantes",
+      subtitle: "Des tensions fécondes à habiter",
+      type: "contemplatif",
+      version: "1.0.0",
+      author: "Zéphyr Avenel",
+      language: "fr",
+      estimatedDuration: 12,
+      entry: "01-affirmation-don",
+      entryAction: "Entrer",
+      coverImage: "assets/00.webp",
+      coverImageAlt: "Couverture",
+      closingImage: "assets/11.webp",
+      closingImageAlt: "Clôture",
+      closingAction: "Achever",
+      closingBackAction: "Revenir",
+      polarities: [{ id: "01-affirmation-don", source: "polarities/01-affirmation-don.json" }],
+      fallbackImage: "assets/fallback.svg",
+      fallbackImageAlt: "Fallback",
+      landmarkLabel: "Deux pôles",
+    },
+    {
+      id: "01-affirmation-don",
+      title: "Titre",
+      subtitle: "Sous-titre",
+      image: "assets/image.svg",
+      imageAlt: "Image",
+      left: { title: "Gauche", icon: "leaf", text: "Texte" },
+      right: { title: "Droite", icon: "hands", text: "Texte" },
+      quote: "Citation",
+      question: "Question ?",
+      article: "https://example.test",
+      previous: null,
+      next: null,
+      actions: { article: "Article", previous: "Précédente", next: "Suivante", back: "Retour" },
+    },
+  ];
+  const previousFetch = globalThis.fetch;
+  globalThis.fetch = async () => ({ ok: true, json: async () => responses.shift() });
+  try {
+    const source = new URL("https://example.test/packs/pack-002/pack.json");
+    assert.equal(await detectPackFormat(source), "ine-polarity-pack");
+    const pack = await loadPolarityPack(source);
+    assert.equal(pack.polarities[0].source, "https://example.test/packs/pack-002/polarities/01-affirmation-don.json");
+    assert.equal(pack.fallbackImage, "https://example.test/packs/pack-002/assets/fallback.svg");
+    assert.equal(pack.coverImage, "https://example.test/packs/pack-002/assets/00.webp");
+    assert.equal(pack.closingImage, "https://example.test/packs/pack-002/assets/11.webp");
+    const polarity = await loadPolarity(new URL(pack.polarities[0].source), validatePolarity);
+    assert.equal(polarity.image, "https://example.test/packs/pack-002/polarities/assets/image.svg");
   } finally {
     globalThis.fetch = previousFetch;
   }

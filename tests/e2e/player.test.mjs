@@ -372,9 +372,9 @@ async function readPlayerState(client) {
         progress: document.querySelector('.progress__text')?.textContent,
         progressLabel: document.querySelector('.progress')?.getAttribute('aria-label'),
         stepCount: document.querySelectorAll('.progress__step').length,
-        previousDisabled: document.querySelectorAll('button')[0]?.disabled === true,
-        nextDisabled: document.querySelectorAll('button')[1]?.disabled === true,
-        buttons: Array.from(document.querySelectorAll('button')).map((button) => button.textContent),
+        previousDisabled: document.querySelector('[data-navigation="previous"]')?.disabled === true,
+        nextDisabled: document.querySelector('[data-navigation="next"]')?.disabled === true,
+        buttons: Array.from(document.querySelectorAll('.player-controls button')).map((button) => button.textContent),
         objectFit: image ? getComputedStyle(image).objectFit : null,
         displayMode: image?.getAttribute('data-display-mode'),
         imageState: image?.getAttribute('data-image-state'),
@@ -514,6 +514,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assertSceneImageReady(first);
     assert.equal(first.stepCount, 9);
     assert.equal(first.sceneBorderWidth, "0px");
+
     assert.equal(first.noHorizontalOverflow, true);
     assert.equal(first.noVerticalOverflow, true);
     assert.equal(first.controlsVisibleVertically, true);
@@ -669,6 +670,81 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       assertSceneImageReady(state);
       assert.deepEqual(state.buttons, ["Précédent", "Suivant"]);
     }
+
+    const polarityPackUrl = `${url}?pack=${encodeURIComponent("packs/pack-002-polarites-vivantes/pack.json")}`;
+    await loadUrl(page, polarityPackUrl);
+    await waitForExpression(page, "document.querySelector('.prologue__title')?.textContent === 'Polarités Vivantes'");
+    assert.equal(
+      await evaluate(page, "document.querySelector('.prologue__cover')?.currentSrc.endsWith('/00-couverture.webp')"),
+      true,
+    );
+    await evaluate(page, "document.querySelector('.prologue button')?.click()");
+    const polarityTitles = [
+      "Entre affirmation et don",
+      "Entre autonomie et appartenance",
+      "Entre mémoire et avenir",
+      "Entre proximité et liberté",
+      "Entre identité et transformation",
+      "Entre parole et silence",
+      "Entre conviction et dialogue",
+      "Entre protection et ouverture",
+      "Entre racines et horizons",
+      "Entre fidélité et changement",
+    ];
+    await waitForExpression(page, `document.querySelector('.polarity__title')?.textContent === ${JSON.stringify(polarityTitles[0])}`);
+    await waitForExpression(
+      page,
+      "document.querySelector('.polarity__image')?.complete === true && document.querySelector('.polarity__image')?.naturalWidth > 0",
+    );
+    let polarityState = await evaluate(
+      page,
+      `(() => ({
+        poles: document.querySelectorAll('.polarity__pole').length,
+        bridgeLabel: document.querySelector('.polarity__bridge')?.getAttribute('aria-label'),
+        imageAlt: document.querySelector('.polarity__image')?.getAttribute('alt'),
+        imageReady: document.querySelector('.polarity__image')?.complete === true,
+        hasArticle: document.querySelector('.polarity__action--article') instanceof HTMLAnchorElement,
+        hasPrevious: document.querySelector('[data-polarity-action="previous"]') !== null,
+        hasNext: document.querySelector('[data-polarity-action="next"]') !== null,
+        noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
+      }))()`,
+    );
+    assert.equal(polarityState.poles, 2);
+    assert.ok(polarityState.bridgeLabel.length > 0);
+    assert.ok(polarityState.imageAlt.length > 0);
+    assert.equal(polarityState.imageReady, true);
+    assert.equal(polarityState.hasArticle, true);
+    assert.equal(polarityState.hasPrevious, false);
+    assert.equal(polarityState.hasNext, true);
+    assert.equal(polarityState.noHorizontalOverflow, true);
+    for (let index = 1; index < polarityTitles.length; index += 1) {
+      await evaluate(page, "document.querySelector('[data-polarity-action=\"next\"]')?.click()");
+      await waitForExpression(page, `document.querySelector('.polarity__title')?.textContent === ${JSON.stringify(polarityTitles[index])}`);
+    }
+    polarityState = await evaluate(
+      page,
+      `({
+        hasPrevious: document.querySelector('[data-polarity-action="previous"]') !== null,
+        hasNext: document.querySelector('[data-polarity-action="next"]') !== null
+      })`,
+    );
+    assert.equal(polarityState.hasPrevious, true);
+    assert.equal(polarityState.hasNext, false);
+    assert.equal(
+      await evaluate(page, "document.querySelector('[data-polarity-action=\"closing\"]')?.textContent"),
+      "Achever le parcours",
+    );
+    await evaluate(page, "document.querySelector('[data-polarity-action=\"closing\"]')?.click()");
+    await waitForExpression(
+      page,
+      "document.querySelector('.polarity-closing__image')?.currentSrc.endsWith('/11-cloture.webp') && document.querySelector('.polarity-closing__image')?.complete === true",
+    );
+    assert.equal(
+      await evaluate(page, "document.querySelector('.polarity-closing__image')?.complete === true"),
+      true,
+    );
+    await evaluate(page, "document.querySelector('.polarity-closing__back')?.click()");
+    await waitForExpression(page, "document.querySelector('.prologue__title')?.textContent === 'Polarités Vivantes'");
 
     await page.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],

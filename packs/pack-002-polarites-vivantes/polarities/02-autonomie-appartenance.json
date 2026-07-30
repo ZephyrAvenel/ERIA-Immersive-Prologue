@@ -1,0 +1,15 @@
+{
+  "id": "02-autonomie-appartenance",
+  "title": "Entre autonomie et appartenance",
+  "subtitle": "Devenir soi au milieu des liens qui nous portent.",
+  "image": "../assets/images/02-autonomie-appartenance.webp",
+  "imageAlt": "Une sphère lumineuse singulière demeure reliée à une constellation.",
+  "left": { "title": "Autonomie", "icon": "circle", "text": "Choisir sa direction. Répondre de ses actes. Cultiver un espace intérieur." },
+  "right": { "title": "Appartenance", "icon": "constellation", "text": "Recevoir une histoire commune. Participer. Se savoir relié." },
+  "quote": "L'autonomie ne rompt pas les liens : elle apprend à y respirer.",
+  "question": "Quels liens me permettent d'être davantage moi-même ?",
+  "article": "https://zephyr-avenel.blogspot.com/",
+  "previous": "01-affirmation-don",
+  "next": "03-memoire-avenir",
+  "actions": { "article": "Explorer l'article", "previous": "Polarité précédente", "next": "Polarité suivante", "back": "Retour au parcours" }
+}

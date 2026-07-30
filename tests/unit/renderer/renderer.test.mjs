@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { renderPlayer, renderPlayerWithTransition } from "../../../.test-build/packages/renderer/src/index.js";
+import {
+  renderPlayer,
+  renderPlayerWithTransition,
+  renderPolarity,
+  renderPolarityClosure,
+} from "../../../.test-build/packages/renderer/src/index.js";
 import { FakeElement, findElement, findElements, withFakeDocument } from "../../helpers/fake-dom.mjs";
 
 function createState(overrides = {}) {
@@ -42,6 +47,78 @@ function createTransition(type, overrides = {}) {
     ...overrides,
   };
 }
+
+function createPolarity() {
+  return {
+    id: "affirmation-don",
+    title: "Entre affirmation et don",
+    subtitle: "Une tension vivante.",
+    image: "https://example.test/polarity.svg",
+    imageAlt: "Deux mouvements reliés.",
+    left: { title: "Affirmation", icon: "leaf", text: "Poser des limites." },
+    right: { title: "Don", icon: "hands", text: "Accueillir l'autre." },
+    quote: "Une relation vivante.",
+    question: "Où est-elle présente ?",
+    article: "https://example.test/article",
+    previous: null,
+    next: "memoire-avenir",
+    actions: { article: "Explorer", previous: "Précédente", next: "Suivante", back: "Retour" },
+  };
+}
+
+test("PolarityRenderer renders authored JSON content and accessible navigation", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    renderPolarity(target, {
+      polarity: createPolarity(),
+      fallbackImage: "https://example.test/fallback.svg",
+      fallbackImageAlt: "Image de remplacement",
+      landmarkLabel: "Deux pôles reliés",
+      onNext() {},
+      onBack() {},
+    });
+
+    assert.equal(findElement(target, ".polarity__title").textContent, "Entre affirmation et don");
+    assert.equal(findElements(target, ".polarity__pole").length, 2);
+    assert.equal(findElement(target, "blockquote").textContent, "Une relation vivante.");
+    assert.equal(findElement(target, ".polarity__question").textContent, "Où est-elle présente ?");
+    assert.equal(findElement(target, ".polarity__bridge").getAttribute("aria-label"), "Deux pôles reliés");
+    assert.equal(findElement(target, "img").alt, "Deux mouvements reliés.");
+    assert.equal(findElements(target, "button").length, 2);
+    assert.equal(target.firstElementChild.focused, true);
+  }));
+
+test("PolarityRenderer replaces a failed illustration with the pack fallback", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    renderPolarity(target, {
+      polarity: createPolarity(),
+      fallbackImage: "https://example.test/fallback.svg",
+      fallbackImageAlt: "Image contemplative de remplacement",
+      landmarkLabel: "Deux pôles reliés",
+      onBack() {},
+    });
+    const image = findElement(target, "img");
+    image.dispatchEvent({ type: "error" });
+    assert.equal(image.src, "https://example.test/fallback.svg");
+    assert.equal(image.alt, "Image contemplative de remplacement");
+    assert.equal(findElement(target, ".polarity__media").dataset.fallback, "true");
+  }));
+
+test("Renderer displays the authored PACK-002 closing illustration", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    renderPolarityClosure(target, {
+      image: "https://example.test/11-cloture.webp",
+      imageAlt: "Le récit continue avec toi.",
+      backLabel: "Revenir au parcours",
+      onBack() {},
+    });
+    assert.equal(findElement(target, "img").src, "https://example.test/11-cloture.webp");
+    assert.equal(findElement(target, "img").alt, "Le récit continue avec toi.");
+    assert.equal(findElement(target, "button").textContent, "Revenir au parcours");
+    assert.equal(target.firstElementChild.focused, true);
+  }));
 
 function installControlledAnimations() {
   const animations = [];

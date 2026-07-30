@@ -81,6 +81,266 @@ button:disabled {
   opacity: 0.38;
 }
 
+.polarity {
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+  overflow: hidden;
+  color: var(--ink);
+  background: var(--night);
+}
+
+.polarity__media,
+.polarity__veil {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+}
+
+.polarity__media {
+  animation: polarity-image-enter 1400ms ease-out both;
+}
+
+.polarity__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.polarity__veil {
+  min-height: 100dvh;
+  padding: clamp(1rem, 3.5vw, 3rem);
+  display: grid;
+  grid-template-rows: auto minmax(12rem, 1fr) auto auto;
+  gap: clamp(0.8rem, 2dvh, 1.6rem);
+  overflow-y: auto;
+  background: linear-gradient(180deg, rgb(3 7 13 / 50%), rgb(3 7 13 / 70%));
+  animation: polarity-fade-in 900ms ease-out both;
+}
+
+.polarity__header {
+  width: min(100%, 72rem);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.polarity__title {
+  margin: 0;
+  font-family: var(--title-font);
+  font-size: clamp(2.3rem, 7vw, 5.8rem);
+  font-weight: 650;
+  line-height: 0.95;
+  text-wrap: balance;
+  animation: polarity-rise 800ms ease-out 450ms both;
+}
+
+.polarity__subtitle {
+  margin: 0.65rem auto 0;
+  color: var(--text-muted);
+  font-family: var(--text-font);
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  animation: polarity-rise 800ms ease-out 650ms both;
+}
+
+.polarity__bridge {
+  width: min(100%, 72rem);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(5rem, 0.65fr) minmax(0, 1fr);
+  align-items: center;
+}
+
+.polarity__pole {
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid rgb(255 249 233 / 20%);
+  border-radius: 1.4rem;
+  background: rgb(8 18 29 / 62%);
+  backdrop-filter: blur(0.65rem);
+  animation: polarity-rise 850ms ease-out 900ms both;
+}
+
+.polarity__pole--right {
+  animation-delay: 1100ms;
+}
+
+.polarity__pole h2,
+.polarity__pole p {
+  margin: 0;
+}
+
+.polarity__pole h2 {
+  font-family: var(--title-font);
+  font-size: clamp(1.65rem, 4vw, 2.7rem);
+}
+
+.polarity__pole p {
+  margin-top: 0.5rem;
+  color: var(--text-muted);
+  font-family: var(--text-font);
+}
+
+.polarity__icon {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: block;
+  margin-bottom: 0.6rem;
+  border: 1px solid var(--accent);
+  border-radius: 50% 50% 45% 55%;
+  box-shadow: 0 0 1.3rem rgb(216 183 107 / 45%);
+  transform: rotate(20deg);
+}
+
+.polarity__light {
+  position: relative;
+  height: 0.16rem;
+  overflow: hidden;
+  background: rgb(255 249 233 / 20%);
+}
+
+.polarity__light::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(90deg, transparent, var(--ink), transparent);
+  transform: translateX(-100%);
+  animation: polarity-bridge-light 1900ms ease-in-out 1550ms infinite;
+}
+
+.polarity__reflection {
+  width: min(100%, 64rem);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.polarity__reflection blockquote {
+  margin: 0;
+  font-family: var(--title-font);
+  font-size: clamp(1.35rem, 3.4vw, 2.25rem);
+  font-style: italic;
+  animation: polarity-rise 850ms ease-out 1750ms both;
+}
+
+.polarity__question {
+  margin: 0.7rem 0 0;
+  color: var(--accent);
+  font-family: var(--text-font);
+  font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+  animation: polarity-rise 850ms ease-out 2100ms both;
+}
+
+.polarity__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem;
+  animation: polarity-rise 700ms ease-out 2350ms both;
+}
+
+.polarity__action {
+  min-height: 3.25rem;
+  padding: 0.75rem 1.35rem;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgb(216 183 107 / 44%);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgb(216 183 107 / 15%);
+  font-family: var(--ui-font);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.polarity__action:focus-visible {
+  outline: 0.18rem solid var(--accent-cool);
+  outline-offset: 0.22rem;
+}
+
+.polarity-closing {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #03070d;
+}
+
+.polarity-closing__image {
+  width: 100%;
+  height: 100dvh;
+  object-fit: contain;
+  animation: polarity-image-enter 1500ms ease-out both;
+}
+
+.polarity-closing__back {
+  position: absolute;
+  right: 50%;
+  bottom: clamp(1rem, 3dvh, 2rem);
+  transform: translateX(50%);
+  background: rgb(8 18 29 / 78%);
+  backdrop-filter: blur(0.5rem);
+}
+
+.polarity-closing__back:hover:not(:disabled) {
+  transform: translate(50%, -1px);
+}
+
+@keyframes polarity-fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes polarity-image-enter {
+  from { opacity: 0; transform: scale(1.04); }
+}
+
+@keyframes polarity-rise {
+  from { opacity: 0; transform: translateY(1.25rem); }
+}
+
+@keyframes polarity-bridge-light {
+  55%, 100% { transform: translateX(100%); }
+}
+
+@media (max-width: 44rem) {
+  .polarity__veil {
+    position: relative;
+    grid-template-rows: auto auto auto auto;
+  }
+
+  .polarity__media {
+    position: fixed;
+  }
+
+  .polarity__bridge {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .polarity__light {
+    width: 0.16rem;
+    height: 3rem;
+    margin-inline: auto;
+  }
+
+  .polarity__light::after {
+    background: linear-gradient(180deg, transparent, var(--ink), transparent);
+    transform: translateY(-100%);
+    animation-name: polarity-bridge-light-mobile;
+  }
+}
+
+@keyframes polarity-bridge-light-mobile {
+  55%, 100% { transform: translateY(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .polarity *,
+  .polarity *::before,
+  .polarity *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 .skip-link {
   position: fixed;
   z-index: 2;
@@ -317,11 +577,24 @@ button:disabled {
 }
 
 .prologue__content {
+  position: relative;
+  z-index: 1;
   width: min(100%, 48rem);
   display: grid;
   justify-items: center;
   gap: clamp(0.75rem, 2.4dvh, 1.4rem);
   text-align: center;
+}
+
+.prologue__cover {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.46;
+  animation: polarity-image-enter 1400ms ease-out both;
 }
 
 .prologue__line {

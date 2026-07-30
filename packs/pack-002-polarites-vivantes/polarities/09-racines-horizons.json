@@ -1,0 +1,15 @@
+{
+  "id": "09-racines-horizons",
+  "title": "Entre racines et horizons",
+  "subtitle": "Puiser dans une terre pour regarder plus loin qu'elle.",
+  "image": "../assets/images/09-racines-horizons.webp",
+  "imageAlt": "Des racines dorées soutiennent un arbre tourné vers un horizon bleu.",
+  "left": { "title": "Racines", "icon": "roots", "text": "Recevoir un lieu. Reconnaître ses lignées. Trouver une profondeur où s'ancrer." },
+  "right": { "title": "Horizons", "icon": "horizon", "text": "Se mettre en route. Élargir le regard. Rencontrer ce qui excède le familier." },
+  "quote": "Les racines les plus vivantes ne retiennent pas l'arbre : elles nourrissent son ciel.",
+  "question": "Depuis quel ancrage puis-je accueillir un horizon nouveau ?",
+  "article": "https://zephyr-avenel.blogspot.com/",
+  "previous": "08-protection-ouverture",
+  "next": "10-fidelite-changement",
+  "actions": { "article": "Explorer l'article", "previous": "Polarité précédente", "next": "Polarité suivante", "back": "Retour au parcours" }
+}

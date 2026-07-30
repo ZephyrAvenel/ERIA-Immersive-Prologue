@@ -1,15 +1,24 @@
 import {
   DEFAULT_SCENE_TRANSITION,
   NarrativeEngine,
+  detectPackFormat,
   getTransitionDirection,
   loadNarrativePack,
+  loadPolarity,
+  loadPolarityPack,
   type NarrativeIntro,
   type NormalizedSceneTransition,
+  type PolarityPack,
   type TransitionDirection,
 } from "@ine/core";
-import { renderPlayer, renderPlayerWithTransition } from "@ine/renderer";
+import {
+  renderPlayer,
+  renderPlayerWithTransition,
+  renderPolarity,
+  renderPolarityClosure,
+} from "@ine/renderer";
 import { createButton } from "@ine/ui";
-import { validateNarrativePack } from "@ine/validators";
+import { validateNarrativePack, validatePolarity } from "@ine/validators";
 import { interpolate, resolveLocale, type LocaleMessages } from "./localization";
 import {
   createBrowserReadingProgressStore,
@@ -29,7 +38,7 @@ type NavigationTarget = "previous" | "next";
 type ResumeChoice = "resume" | "restart";
 
 interface PlayerConfiguration {
-  readonly narrativePackUrl: string;
+  readonly packUrl: string;
 }
 
 function prefersReducedMotion(): boolean {
@@ -118,7 +127,11 @@ async function waitForOptionalAnimation(element: HTMLElement, durationMs: number
   await Promise.race([animation.finished.then(() => undefined), fallback]).catch(() => undefined);
 }
 
-async function renderPrologue(intro: NarrativeIntro, packTitle: string): Promise<void> {
+async function renderPrologue(
+  intro: NarrativeIntro,
+  packTitle: string,
+  cover?: { readonly image: string; readonly imageAlt: string },
+): Promise<void> {
   mount.removeAttribute("aria-busy");
   mount.replaceChildren();
 
@@ -128,6 +141,14 @@ async function renderPrologue(intro: NarrativeIntro, packTitle: string): Promise
 
   const content = document.createElement("div");
   content.className = "prologue__content";
+
+  if (cover) {
+    const image = document.createElement("img");
+    image.className = "prologue__cover";
+    image.src = cover.image;
+    image.alt = cover.imageAlt;
+    section.append(image);
+  }
 
   intro.lines.forEach((line, index) => {
     const paragraph = document.createElement("p");
@@ -169,19 +190,18 @@ async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
   if (
     typeof value !== "object" ||
     value === null ||
-    !("narrativePackUrl" in value) ||
-    typeof value.narrativePackUrl !== "string" ||
-    value.narrativePackUrl.length === 0
+    !("packUrl" in value) ||
+    typeof value.packUrl !== "string" ||
+    value.packUrl.length === 0
   ) {
     throw new Error("INE_PLAYER_CONFIGURATION_INVALID");
   }
 
-  return { narrativePackUrl: value.narrativePackUrl };
+  const requestedPack = new URL(globalThis.location.href).searchParams.get("pack");
+  return { packUrl: requestedPack || value.packUrl };
 }
 
-async function start(): Promise<void> {
-  const configuration = await loadPlayerConfiguration();
-  const packUrl = new URL(configuration.narrativePackUrl, document.baseURI);
+async function startNarrativePack(packUrl: URL): Promise<void> {
   const pack = await loadNarrativePack(packUrl, validateNarrativePack);
   const engine = new NarrativeEngine(pack);
   const messages = resolveLocale(pack.language);
@@ -210,7 +230,7 @@ async function start(): Promise<void> {
   };
 
   const disableCurrentControls = (): void => {
-    for (const button of mount.querySelectorAll<HTMLButtonElement>(".player-controls button")) {
+    for (const button of mount.querySelectorAll<HTMLButtonElement>(".player button")) {
       button.disabled = true;
     }
   };
@@ -367,6 +387,92 @@ async function start(): Promise<void> {
   }
 
   await render();
+}
+
+async function startPolarityPack(packUrl: URL): Promise<void> {
+  const pack: PolarityPack = await loadPolarityPack(packUrl);
+  const messages = resolveLocale(pack.language);
+  updateShell(messages, pack.title);
+  const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
+  if (skipLink) skipLink.href = "#polarity";
+  let loading = false;
+
+  const showClosing = (): void => {
+    globalThis.history.replaceState(null, "", "#closing");
+    renderPolarityClosure(mount, {
+      image: pack.closingImage,
+      imageAlt: pack.closingImageAlt,
+      backLabel: pack.closingBackAction,
+      onBack: () => void showJourney(),
+    });
+  };
+
+  const showPolarity = async (id: string): Promise<void> => {
+    if (loading) return;
+    const item = pack.polarities.find((candidate) => candidate.id === id);
+    if (!item) throw new Error("INE_POLARITY_NOT_FOUND");
+    loading = true;
+    mount.setAttribute("aria-busy", "true");
+    try {
+      const polarity = await loadPolarity(new URL(item.source), validatePolarity);
+      const previousExists =
+        polarity.previous !== null &&
+        pack.polarities.some((candidate) => candidate.id === polarity.previous);
+      const nextExists =
+        polarity.next !== null &&
+        pack.polarities.some((candidate) => candidate.id === polarity.next);
+      renderPolarity(mount, {
+        polarity,
+        fallbackImage: pack.fallbackImage,
+        fallbackImageAlt: pack.fallbackImageAlt,
+        landmarkLabel: pack.landmarkLabel,
+        onPrevious: previousExists && polarity.previous
+          ? () => void showPolarity(polarity.previous as string)
+          : undefined,
+        onNext: nextExists && polarity.next
+          ? () => void showPolarity(polarity.next as string)
+          : undefined,
+        closingLabel: polarity.next === null ? pack.closingAction : undefined,
+        onClosing: polarity.next === null ? showClosing : undefined,
+        onBack: () => void showJourney(),
+      });
+      globalThis.history.replaceState(null, "", `#polarity=${encodeURIComponent(polarity.id)}`);
+    } finally {
+      loading = false;
+      mount.removeAttribute("aria-busy");
+    }
+  };
+
+  const showJourney = async (): Promise<void> => {
+    globalThis.history.replaceState(null, "", globalThis.location.pathname);
+    await renderPrologue(
+      {
+        lines: [pack.subtitle],
+        title: pack.title,
+        actionLabel: pack.entryAction,
+      },
+      pack.title,
+      { image: pack.coverImage, imageAlt: pack.coverImageAlt },
+    );
+    await showPolarity(pack.entry);
+  };
+
+  await showJourney();
+}
+
+async function start(): Promise<void> {
+  const configuration = await loadPlayerConfiguration();
+  const packUrl = new URL(configuration.packUrl, document.baseURI);
+  const format = await detectPackFormat(packUrl);
+  if (format === "ine-narrative-pack") {
+    await startNarrativePack(packUrl);
+    return;
+  }
+  if (format === "ine-polarity-pack") {
+    await startPolarityPack(packUrl);
+    return;
+  }
+  throw new Error("INE_PACK_FORMAT_UNSUPPORTED");
 }
 
 function renderError(): void {

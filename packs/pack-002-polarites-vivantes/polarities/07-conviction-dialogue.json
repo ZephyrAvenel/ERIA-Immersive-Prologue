@@ -1,0 +1,15 @@
+{
+  "id": "07-conviction-dialogue",
+  "title": "Entre conviction et dialogue",
+  "subtitle": "Tenir une orientation tout en restant disponible à la rencontre.",
+  "image": "../assets/images/07-conviction-dialogue.webp",
+  "imageAlt": "Deux faisceaux distincts se croisent et éclairent un espace commun.",
+  "left": { "title": "Conviction", "icon": "flame", "text": "S'engager. Assumer une orientation. Ne pas dissoudre ce que l'on croit juste." },
+  "right": { "title": "Dialogue", "icon": "bridge", "text": "Interroger ses certitudes. Entendre un autre monde. Chercher un passage commun." },
+  "quote": "Le dialogue devient fécond quand aucune conviction n'exige la disparition de l'autre.",
+  "question": "Quelle certitude puis-je aujourd'hui rendre hospitalière ?",
+  "article": "https://zephyr-avenel.blogspot.com/",
+  "previous": "06-parole-silence",
+  "next": "08-protection-ouverture",
+  "actions": { "article": "Explorer l'article", "previous": "Polarité précédente", "next": "Polarité suivante", "back": "Retour au parcours" }
+}

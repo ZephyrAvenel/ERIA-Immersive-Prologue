@@ -28,6 +28,7 @@ function serveDirectory(root: string) {
       ".json": "application/json; charset=utf-8",
       ".png": "image/png",
       ".svg": "image/svg+xml",
+      ".webp": "image/webp",
     };
     response.setHeader("Content-Type", contentTypes[extname(filePath)] ?? "application/octet-stream");
     createReadStream(filePath).pipe(response);
@@ -44,12 +45,16 @@ export default defineConfig({
       configureServer(server) {
         server.middlewares.use(`${base}examples`, serveDirectory(resolve("examples")));
         server.middlewares.use(`${base}schemas`, serveDirectory(resolve("schemas")));
+        server.middlewares.use(`${base}packs`, serveDirectory(resolve("packs")));
       },
       closeBundle() {
         cpSync(resolve("examples"), resolve("dist/examples"), {
           recursive: true,
         });
         cpSync(resolve("schemas"), resolve("dist/schemas"), {
+          recursive: true,
+        });
+        cpSync(resolve("packs"), resolve("dist/packs"), {
           recursive: true,
         });
       },

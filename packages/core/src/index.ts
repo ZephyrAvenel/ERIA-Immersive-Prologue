@@ -57,6 +57,65 @@ export interface ValidationResult {
 }
 
 export type NarrativePackValidator = (value: unknown) => ValidationResult;
+export type PolarityValidator = (value: unknown) => ValidationResult;
+
+export interface PolarityPole {
+  readonly title: string;
+  readonly icon: string;
+  readonly text: string;
+}
+
+export interface PolarityActions {
+  readonly article: string;
+  readonly next: string;
+  readonly previous: string;
+  readonly back: string;
+}
+
+export interface Polarity {
+  readonly id: string;
+  readonly title: string;
+  readonly subtitle: string;
+  readonly image: string;
+  readonly imageAlt: string;
+  readonly left: PolarityPole;
+  readonly right: PolarityPole;
+  readonly quote: string;
+  readonly question: string;
+  readonly article: string;
+  readonly previous: string | null;
+  readonly next: string | null;
+  readonly actions: PolarityActions;
+}
+
+export interface PolarityPackItem {
+  readonly id: string;
+  readonly source: string;
+}
+
+export interface PolarityPack {
+  readonly format: "ine-polarity-pack";
+  readonly id: string;
+  readonly title: string;
+  readonly subtitle: string;
+  readonly type: "contemplatif";
+  readonly version: string;
+  readonly author: string;
+  readonly language: string;
+  readonly estimatedDuration: number;
+  readonly entry: string;
+  readonly entryAction: string;
+  readonly polarities: readonly PolarityPackItem[];
+  readonly coverImage: string;
+  readonly coverImageAlt: string;
+  readonly closingImage: string;
+  readonly closingImageAlt: string;
+  readonly closingAction: string;
+  readonly closingBackAction: string;
+  readonly fallbackImage: string;
+  readonly fallbackImageAlt: string;
+  readonly landmarkLabel: string;
+}
 
 export type AssetKind = "images" | "audio" | "video" | "icons";
 export type ImageDisplayMode = "contain" | "cover" | "fill" | "immersive";
@@ -166,6 +225,86 @@ export async function loadNarrativePack(
       image: scene.image ? assets.image(scene.image) : undefined,
     })),
   };
+}
+
+export async function detectPackFormat(source: URL): Promise<string> {
+  const response = await fetch(source);
+  if (!response.ok) throw new Error("INE_PACK_REQUEST_FAILED");
+  const value: unknown = await response.json();
+  if (typeof value !== "object" || value === null || !("format" in value) || typeof value.format !== "string") {
+    throw new Error("INE_PACK_FORMAT_MISSING");
+  }
+  return value.format;
+}
+
+export async function loadPolarityPack(source: URL): Promise<PolarityPack> {
+  const response = await fetch(source);
+  if (!response.ok) throw new Error("INE_POLARITY_PACK_REQUEST_FAILED");
+  const value: unknown = await response.json();
+  if (
+    typeof value !== "object" ||
+    value === null ||
+    !("format" in value) ||
+    value.format !== "ine-polarity-pack" ||
+    !("id" in value) || typeof value.id !== "string" ||
+    !("title" in value) || typeof value.title !== "string" ||
+    !("subtitle" in value) || typeof value.subtitle !== "string" ||
+    !("type" in value) || value.type !== "contemplatif" ||
+    !("version" in value) || typeof value.version !== "string" ||
+    !("author" in value) || typeof value.author !== "string" ||
+    !("language" in value) || typeof value.language !== "string" ||
+    !("estimatedDuration" in value) || typeof value.estimatedDuration !== "number" ||
+    !("entry" in value) || typeof value.entry !== "string" ||
+    !("entryAction" in value) || typeof value.entryAction !== "string" ||
+    !("coverImage" in value) || typeof value.coverImage !== "string" ||
+    !("coverImageAlt" in value) || typeof value.coverImageAlt !== "string" ||
+    !("closingImage" in value) || typeof value.closingImage !== "string" ||
+    !("closingImageAlt" in value) || typeof value.closingImageAlt !== "string" ||
+    !("closingAction" in value) || typeof value.closingAction !== "string" ||
+    !("closingBackAction" in value) || typeof value.closingBackAction !== "string" ||
+    !("polarities" in value) ||
+    !Array.isArray(value.polarities) ||
+    value.polarities.length === 0 ||
+    !value.polarities.every(
+      (item) =>
+        typeof item === "object" &&
+        item !== null &&
+        "id" in item &&
+        typeof item.id === "string" &&
+        "source" in item &&
+        typeof item.source === "string",
+    ) ||
+    !("fallbackImage" in value) ||
+    typeof value.fallbackImage !== "string" ||
+    !("fallbackImageAlt" in value) ||
+    typeof value.fallbackImageAlt !== "string" ||
+    !("landmarkLabel" in value) ||
+    typeof value.landmarkLabel !== "string"
+  ) {
+    throw new Error("INE_POLARITY_PACK_INVALID");
+  }
+  const pack = value as PolarityPack;
+  if (!pack.polarities.some((item) => item.id === pack.entry)) {
+    throw new Error("INE_POLARITY_ENTRY_MISSING");
+  }
+  const assets = new AssetManager(source);
+  return {
+    ...pack,
+    coverImage: assets.image(pack.coverImage),
+    closingImage: assets.image(pack.closingImage),
+    fallbackImage: assets.image(pack.fallbackImage),
+    polarities: pack.polarities.map((item) => ({ ...item, source: assets.resolve(item.source) })),
+  };
+}
+
+export async function loadPolarity(source: URL, validate: PolarityValidator): Promise<Polarity> {
+  const response = await fetch(source);
+  if (!response.ok) throw new Error("INE_POLARITY_REQUEST_FAILED");
+  const value: unknown = await response.json();
+  const result = validate(value);
+  if (!result.valid) throw new Error("INE_POLARITY_INVALID");
+  const polarity = value as Polarity;
+  return { ...polarity, image: new AssetManager(source).image(polarity.image) };
 }
 
 export class NarrativeEngine {
