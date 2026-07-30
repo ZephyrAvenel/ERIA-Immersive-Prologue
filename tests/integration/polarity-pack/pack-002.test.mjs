@@ -65,6 +65,7 @@ test("pack registry discovers both packs without introducing cross-pack dependen
   const registry = await readProjectJson("packs", "index.json");
   assert.equal(registry.format, "ine-pack-registry");
   assert.equal(registry.version, "1.0");
+  assert.equal(registry.home, "les-gardiens-des-recits-vivants");
   assert.deepEqual(
     registry.packs.map(({ id }) => id),
     ["les-gardiens-des-recits-vivants", "pack-002"],

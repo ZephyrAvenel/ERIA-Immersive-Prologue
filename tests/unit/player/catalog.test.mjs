@@ -9,6 +9,7 @@ import {
 const registry = {
   format: "ine-pack-registry",
   version: "1.0",
+  home: "work-one",
   packs: [
     {
       id: "work-one",
@@ -26,6 +27,13 @@ test("pack registry rejects duplicate routes", () => {
         packs: [...registry.packs, { ...registry.packs[0], id: "work-two" }],
       }),
     /INE_PACK_REGISTRY_DUPLICATE/,
+  );
+});
+
+test("pack registry rejects a missing narrative home", () => {
+  assert.throws(
+    () => validatePackRegistry({ ...registry, home: "missing-work" }),
+    /INE_PACK_REGISTRY_HOME_MISSING/,
   );
 });
 

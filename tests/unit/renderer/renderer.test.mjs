@@ -112,11 +112,15 @@ test("Renderer displays the authored PACK-002 closing illustration", () =>
       image: "https://example.test/11-cloture.webp",
       imageAlt: "Le récit continue avec toi.",
       backLabel: "Revenir au parcours",
+      continueLabel: "Poursuivre votre exploration",
+      continueHref: "https://example.test/bibliotheque/",
       onBack() {},
     });
     assert.equal(findElement(target, "img").src, "https://example.test/11-cloture.webp");
     assert.equal(findElement(target, "img").alt, "Le récit continue avec toi.");
     assert.equal(findElement(target, "button").textContent, "Revenir au parcours");
+    assert.equal(findElement(target, "a").textContent, "Poursuivre votre exploration");
+    assert.equal(findElement(target, "a").href, "https://example.test/bibliotheque/");
     assert.equal(target.firstElementChild.focused, true);
   }));
 

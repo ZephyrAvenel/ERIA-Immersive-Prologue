@@ -17,5 +17,7 @@
   "unknownError": "Unknown player error",
   "libraryTitle": "Immersive works library",
   "libraryDescription": "Independent stories, one immersive space.",
-  "exploreWork": "Explore"
+  "exploreWork": "Explore",
+  "libraryAction": "Explore the works",
+  "continueExploration": "Continue exploring"
 }

@@ -30,12 +30,14 @@ packs/index.json --> library + static routes --> player
   registration, localization, local reading progress, input wiring, and
   deployment configuration. It does not own narrative business rules or content.
 
-The versioned pack registry contains only a stable id, a public slug, and a
-manifest path. The library reads presentation data from manifests, and the
-build generates real `/oeuvres/<slug>/index.html` entry pages for GitHub Pages.
-`player.config.json` is retained as a legacy deployment fallback; `?pack=` is
-the explicit preview override. Relative pack assets are resolved by the Core
-`AssetManager` from the pack location, not from the Player location.
+The versioned pack registry contains a narrative `home` id and, for each work,
+only a stable id, a public slug, and a manifest path. The root route loads the
+designated work, the library reads presentation data from manifests at
+`/bibliotheque/`, and the build generates real `/oeuvres/<slug>/index.html`
+entry pages for GitHub Pages. `player.config.json` is retained as a legacy
+deployment fallback; `?pack=` is the explicit preview override. Relative pack
+assets are resolved by the Core `AssetManager` from the pack location, not from
+the Player location.
 
 The registry owns deployment coordinates. A manifest owns the work identity,
 resources, and optional editorial metadata. A narrative path owns only scenes,
@@ -112,9 +114,10 @@ requests, and Pages deployment for successful pushes to `main`. Both use the
 committed npm lockfile through `npm ci`. Deployment is gated by type checking,
 unit tests, integration tests, coverage, production build, and browser tests.
 
-Vite also validates the registry and generates a static entry page for each
-published work. Those pages share one JavaScript and CSS bundle while carrying
-work-specific canonical and Open Graph metadata.
+Vite also validates the registry, generates a static entry page for each
+published work and preserves a dedicated `/bibliotheque/` page. The root page
+uses the designated prologue's static metadata. All pages share one JavaScript
+and CSS bundle while carrying route-specific canonical and Open Graph metadata.
 
 The automated test foundation is intentionally package-oriented: Core,
 Validators, Renderer, AssetManager, localization, and the Player browser shell

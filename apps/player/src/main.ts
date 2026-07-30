@@ -50,6 +50,7 @@ declare const __INE_BASE__: string;
 
 const applicationBaseUrl = new URL(__INE_BASE__, globalThis.location.origin);
 const registryUrl = new URL("packs/index.json", applicationBaseUrl);
+const libraryUrl = new URL("bibliotheque/", applicationBaseUrl);
 
 function prefersReducedMotion(): boolean {
   return globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
@@ -67,6 +68,28 @@ function updateShell(messages: LocaleMessages, packTitle?: string): void {
     document.body.prepend(skipLink);
   }
   skipLink.textContent = messages.skipToNarrative;
+}
+
+function updateLibraryNavigation(messages: LocaleMessages, visible: boolean): void {
+  document.querySelector(".site-navigation")?.remove();
+  if (!visible) return;
+
+  const navigation = document.createElement("nav");
+  navigation.className = "site-navigation";
+  navigation.setAttribute("aria-label", messages.libraryAction);
+  const link = document.createElement("a");
+  link.href = libraryUrl.href;
+  link.textContent = messages.libraryAction;
+  navigation.append(link);
+  document.body.append(navigation);
+}
+
+function createLibraryLink(label: string, className: string): HTMLAnchorElement {
+  const link = document.createElement("a");
+  link.className = className;
+  link.href = libraryUrl.href;
+  link.textContent = label;
+  return link;
 }
 
 function renderResumePrompt(
@@ -200,9 +223,16 @@ function requestedWorkSlug(): string | null {
   return match?.[1] ? decodeURIComponent(match[1]) : null;
 }
 
+function isLibraryRoute(): boolean {
+  const path = globalThis.location.pathname;
+  return path === libraryUrl.pathname || path === libraryUrl.pathname.replace(/\/$/, "");
+}
+
 async function loadPlayerConfiguration(): Promise<PlayerConfiguration | null> {
   const requestedPack = new URL(globalThis.location.href).searchParams.get("pack");
   if (requestedPack) return { packUrl: requestedPack };
+
+  if (isLibraryRoute()) return null;
 
   const workSlug = requestedWorkSlug();
   if (workSlug) {
@@ -212,7 +242,12 @@ async function loadPlayerConfiguration(): Promise<PlayerConfiguration | null> {
     return { packUrl: new URL(entry.manifest, registryUrl).href };
   }
 
-  if (globalThis.location.pathname === applicationBaseUrl.pathname) return null;
+  if (globalThis.location.pathname === applicationBaseUrl.pathname) {
+    const registry = await loadPackRegistry(registryUrl);
+    const entry = registry.packs.find(({ id }) => id === registry.home);
+    if (!entry) throw new Error("INE_PACK_REGISTRY_HOME_MISSING");
+    return { packUrl: new URL(entry.manifest, registryUrl).href };
+  }
 
   const response = await fetch(new URL("player.config.json", document.baseURI));
   if (!response.ok) {
@@ -237,6 +272,7 @@ async function renderLibrary(): Promise<void> {
   const messages = resolveLocale(navigator.language);
   const packs = await loadCatalog(registryUrl);
   updateShell(messages, messages.libraryTitle);
+  updateLibraryNavigation(messages, false);
   const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
   if (skipLink) {
     skipLink.href = "#works";
@@ -299,6 +335,7 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
   const progressStore = createBrowserReadingProgressStore();
   const intro = pack.presentation?.intro;
   updateShell(messages, pack.title);
+  updateLibraryNavigation(messages, true);
   let transitionInProgress = false;
 
   const saveCurrentProgress = (): void => {
@@ -328,11 +365,16 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
 
   const focusNavigationControl = (focusTarget: NavigationTarget): void => {
     const preferredTarget = mount.querySelector<HTMLButtonElement>(`[data-navigation="${focusTarget}"]`);
+    const continuation = mount.querySelector<HTMLAnchorElement>("[data-library-continuation]");
     const fallbackTarget = mount.querySelector<HTMLButtonElement>(
       `[data-navigation="${focusTarget === "previous" ? "next" : "previous"}"]`,
     );
-    const target = preferredTarget && !preferredTarget.disabled ? preferredTarget : fallbackTarget;
-    if (target && !target.disabled) target.focus();
+    const target = preferredTarget && !preferredTarget.disabled
+      ? preferredTarget
+      : focusTarget === "next" && continuation
+        ? continuation
+        : fallbackTarget;
+    if (target && (!("disabled" in target) || !target.disabled)) target.focus();
   };
 
   const focusFirstAvailableNavigationControl = (): void => {
@@ -365,6 +407,14 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
     next.disabled = transitionInProgress || !engine.canGoNext;
 
     controls.append(previous, next);
+    if (!engine.canGoNext) {
+      const continuation = createLibraryLink(
+        messages.continueExploration,
+        "journey-continuation",
+      );
+      continuation.dataset.libraryContinuation = "true";
+      controls.append(continuation);
+    }
     const sceneIndex = engine.currentSceneIndex;
     const sceneCount = engine.sceneCount;
     const state = {
@@ -484,6 +534,7 @@ async function startPolarityPack(packUrl: URL): Promise<void> {
   const pack: PolarityPack = await loadPolarityPack(packUrl);
   const messages = resolveLocale(pack.language);
   updateShell(messages, pack.title);
+  updateLibraryNavigation(messages, true);
   const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
   if (skipLink) skipLink.href = "#polarity";
   let loading = false;
@@ -494,6 +545,8 @@ async function startPolarityPack(packUrl: URL): Promise<void> {
       image: pack.closingImage,
       imageAlt: pack.closingImageAlt,
       backLabel: pack.closingBackAction,
+      continueLabel: messages.continueExploration,
+      continueHref: libraryUrl.href,
       onBack: () => void showJourney(),
     });
   };
