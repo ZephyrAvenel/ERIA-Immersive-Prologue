@@ -79,7 +79,25 @@ function updateLibraryNavigation(messages: LocaleMessages, visible: boolean): vo
   navigation.setAttribute("aria-label", messages.libraryAction);
   const link = document.createElement("a");
   link.href = libraryUrl.href;
-  link.textContent = messages.libraryAction;
+  link.setAttribute("aria-label", messages.libraryAction);
+  link.title = messages.libraryAction;
+
+  const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  icon.classList.add("site-navigation__icon");
+  icon.setAttribute("viewBox", "0 0 24 24");
+  icon.setAttribute("aria-hidden", "true");
+  icon.setAttribute("focusable", "false");
+  const book = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  book.setAttribute(
+    "d",
+    "M3.5 5.5c2.8-.8 5.6-.2 8.5 1.8v11c-2.9-2-5.7-2.6-8.5-1.8v-11Zm17 0c-2.8-.8-5.6-.2-8.5 1.8v11c2.9-2 5.7-2.6 8.5-1.8v-11Z",
+  );
+  icon.append(book);
+
+  const label = document.createElement("span");
+  label.className = "site-navigation__label";
+  label.textContent = messages.libraryAction;
+  link.append(icon, label);
   navigation.append(link);
   document.body.append(navigation);
 }
@@ -558,7 +576,10 @@ async function startPolarityPack(packUrl: URL): Promise<void> {
     loading = true;
     mount.setAttribute("aria-busy", "true");
     try {
-      const polarity = await loadPolarity(new URL(item.source), validatePolarity);
+      const loadedPolarity = await loadPolarity(new URL(item.source), validatePolarity);
+      const polarity = pack.articleUrl
+        ? { ...loadedPolarity, article: pack.articleUrl }
+        : loadedPolarity;
       const previousExists =
         polarity.previous !== null &&
         pack.polarities.some((candidate) => candidate.id === polarity.previous);

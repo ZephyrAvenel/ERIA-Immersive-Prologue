@@ -42,9 +42,16 @@ Un lanceur peut également passer temporairement `?pack=<url-du-manifeste>`.
 ## Manifeste
 
 `pack.json` porte les métadonnées du pack, l'étape d'entrée, le libellé d'entrée,
-la liste ordonnée des fichiers, la couverture, la clôture, le fallback visuel
-et le nom accessible du pont. Les chemins sont résolus relativement au
-manifeste.
+le lien d’approfondissement `articleUrl`, la liste ordonnée des fichiers, la
+couverture, la clôture, le fallback visuel et le nom accessible du pont. Les
+chemins sont résolus relativement au manifeste.
+
+`articleUrl` permet au pack de définir une destination commune pour l’action
+« Explorer l’article ». Lorsqu’il est présent, il prévaut sur le champ
+`article` de chaque polarité. Ce dernier reste disponible comme repli
+rétrocompatible et pour les parcours qui souhaitent une destination différente
+à chaque étape. Aucune URL éditoriale n’est inscrite dans le Player ou le
+Renderer.
 
 Chaque entrée de `polarities` associe un identifiant stable à un fichier JSON.
 L'identifiant `entry` doit exister dans cette liste.
@@ -57,7 +64,7 @@ Une polarité contient :
 - `image` et `imageAlt` ;
 - `left` et `right`, chacun avec `title`, `icon` et `text` ;
 - `quote` et `question` ;
-- `article` ;
+- `article`, utilisé comme lien par étape ou comme repli du manifeste ;
 - `previous` et `next`, chaîne ou `null` aux extrémités ;
 - `actions.article`, `actions.previous`, `actions.next` et `actions.back`.
 
