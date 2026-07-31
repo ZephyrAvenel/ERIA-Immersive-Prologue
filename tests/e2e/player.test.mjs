@@ -496,11 +496,17 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       `({
         title: document.querySelector('.prologue__title')?.textContent,
         libraryHref: document.querySelector('.site-navigation a')?.href,
+        libraryLabel: document.querySelector('.site-navigation a')?.getAttribute('aria-label'),
+        libraryTitle: document.querySelector('.site-navigation a')?.getAttribute('title'),
+        libraryIconHidden: document.querySelector('.site-navigation svg')?.getAttribute('aria-hidden'),
         noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
       })`,
     );
     assert.equal(entryState.title, "Le Seuil");
     assert.equal(entryState.libraryHref.endsWith("/bibliotheque/"), true);
+    assert.equal(entryState.libraryLabel, "Explorer les œuvres");
+    assert.equal(entryState.libraryTitle, "Explorer les œuvres");
+    assert.equal(entryState.libraryIconHidden, "true");
     assert.equal(entryState.noHorizontalOverflow, true);
 
     await loadUrl(page, libraryUrl);
@@ -718,6 +724,33 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       assert.equal(state.contentInsideViewport, true, `${viewport.width} content overflow`);
       assertSceneImageReady(state);
       assert.deepEqual(state.buttons, ["Précédent", "Suivant"]);
+      const libraryControl = await evaluate(
+        page,
+        `(() => {
+          const control = document.querySelector('.site-navigation a');
+          const title = document.querySelector('.player__work-title');
+          if (!control || !title) return null;
+          const controlRect = control.getBoundingClientRect();
+          const titleRect = title.getBoundingClientRect();
+          const overlapsTitle = !(
+            controlRect.right <= titleRect.left ||
+            controlRect.left >= titleRect.right ||
+            controlRect.bottom <= titleRect.top ||
+            controlRect.top >= titleRect.bottom
+          );
+          return {
+            width: controlRect.width,
+            height: controlRect.height,
+            opacity: Number.parseFloat(getComputedStyle(control).opacity),
+            overlapsTitle
+          };
+        })()`,
+      );
+      assert.ok(libraryControl, `${viewport.width} library control missing`);
+      assert.equal(libraryControl.width, 44, `${viewport.width} library control width`);
+      assert.equal(libraryControl.height, 44, `${viewport.width} library control height`);
+      assert.ok(libraryControl.opacity < 0.75, `${viewport.width} library control is too prominent`);
+      assert.equal(libraryControl.overlapsTitle, false, `${viewport.width} library control overlaps title`);
     }
 
     const polarityPackUrl = `${entryUrl}oeuvres/polarites-vivantes/`;
@@ -753,8 +786,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         imageAlt: document.querySelector('.polarity__image')?.getAttribute('alt'),
         imageReady: document.querySelector('.polarity__image')?.complete === true,
         hasArticle: document.querySelector('.polarity__action--article') instanceof HTMLAnchorElement,
+        articleHref: document.querySelector('.polarity__action--article')?.href,
         hasPrevious: document.querySelector('[data-polarity-action="previous"]') !== null,
         hasNext: document.querySelector('[data-polarity-action="next"]') !== null,
+        libraryControlSize: document.querySelector('.site-navigation a')?.getBoundingClientRect().width,
         noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
       }))()`,
     );
@@ -763,8 +798,13 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.ok(polarityState.imageAlt.length > 0);
     assert.equal(polarityState.imageReady, true);
     assert.equal(polarityState.hasArticle, true);
+    assert.equal(
+      polarityState.articleHref,
+      "https://zephyr-avenel.blogspot.com/2026/07/les-tensions-fecondes-des-polarites.html?m=1",
+    );
     assert.equal(polarityState.hasPrevious, false);
     assert.equal(polarityState.hasNext, true);
+    assert.equal(polarityState.libraryControlSize, 44);
     assert.equal(polarityState.noHorizontalOverflow, true);
     const mobilePolarityActions = await evaluate(
       page,

@@ -103,6 +103,7 @@ test("polarity pack loader validates its manifest and resolves independent conte
       estimatedDuration: 12,
       entry: "01-affirmation-don",
       entryAction: "Entrer",
+      articleUrl: "https://example.test/article",
       coverImage: "assets/00.webp",
       coverImageAlt: "Couverture",
       closingImage: "assets/11.webp",
@@ -140,6 +141,7 @@ test("polarity pack loader validates its manifest and resolves independent conte
     assert.equal(pack.fallbackImage, "https://example.test/packs/pack-002/assets/fallback.svg");
     assert.equal(pack.coverImage, "https://example.test/packs/pack-002/assets/00.webp");
     assert.equal(pack.closingImage, "https://example.test/packs/pack-002/assets/11.webp");
+    assert.equal(pack.articleUrl, "https://example.test/article");
     const polarity = await loadPolarity(new URL(pack.polarities[0].source), validatePolarity);
     assert.equal(polarity.image, "https://example.test/packs/pack-002/polarities/assets/image.svg");
   } finally {

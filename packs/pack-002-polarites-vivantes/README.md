@@ -14,9 +14,10 @@ Pour lancer ce pack seul, définir dans `apps/player/public/player.config.json` 
 { "packUrl": "packs/pack-002-polarites-vivantes/pack.json" }
 ```
 
-Le lien d'article actuellement utilisé est la racine publique du blog de
-l'auteur. Il pourra être remplacé par l'URL canonique de l'article sans modifier
-le moteur.
+Le manifeste définit `articleUrl`, l’URL canonique de l’article
+« Les tensions fécondes : des polarités à habiter ». Le Player utilise cette
+destination pour toutes les polarités sans contenir lui-même d’URL éditoriale.
+Le champ `article` des étapes reste un repli rétrocompatible.
 
 La convention d'illustration va de `00-couverture` à `11-cloture`. Les deux
 compositions de seuil peuvent contenir du texte intégré ; les textes des dix

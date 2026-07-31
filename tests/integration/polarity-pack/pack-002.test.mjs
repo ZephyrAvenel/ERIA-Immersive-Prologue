@@ -13,6 +13,10 @@ test("PACK-002 manifest declares ten independent contemplative polarities", asyn
   assert.equal(manifest.id, "pack-002");
   assert.equal(manifest.type, "contemplatif");
   assert.equal(manifest.entry, "01-affirmation-don");
+  assert.equal(
+    manifest.articleUrl,
+    "https://zephyr-avenel.blogspot.com/2026/07/les-tensions-fecondes-des-polarites.html?m=1",
+  );
   assert.equal(manifest.polarities.length, 10);
   assert.equal(new Set(manifest.polarities.map(({ id }) => id)).size, 10);
   assert.equal(JSON.stringify(manifest).includes("demo-pack"), false);
