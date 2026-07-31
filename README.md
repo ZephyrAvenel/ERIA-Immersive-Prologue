@@ -72,9 +72,12 @@ pack id, pack version, scene id, current scene index, update date, completion
 state, and a schema version. It never stores pack content, images, analytics,
 accounts, or personal data.
 
-When a valid saved scene exists, the Player offers an accessible choice to
-resume or restart. If storage is unavailable, corrupt, or references a removed
-scene, the Player falls back to the pack start scene without blocking reading.
+An authored introduction always remains the first screen of a visit. After the
+visitor crosses that threshold, a valid saved scene beyond the start scene
+offers an accessible choice to resume or restart. A saved start scene continues
+directly without a redundant prompt. If storage is unavailable, corrupt, or
+references a removed scene, the Player falls back to the pack start scene
+without blocking reading.
 
 ## Interface language
 

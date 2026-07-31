@@ -511,41 +511,44 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
   };
 
   const savedProgress = progressStore.load(pack.id);
-  if (savedProgress && savedProgress.packVersion === pack.version) {
-    const savedSceneIndex = resolveProgressSceneIndex(savedProgress, pack.scenes);
+  let resumableProgress = savedProgress;
+  let savedSceneIndex: number | null = null;
+  if (resumableProgress && resumableProgress.packVersion === pack.version) {
+    savedSceneIndex = resolveProgressSceneIndex(resumableProgress, pack.scenes);
     if (savedSceneIndex === null) {
       progressStore.clear(pack.id);
-    } else if (savedSceneIndex !== engine.currentSceneIndex) {
-      const choice = await renderResumePrompt(messages, savedSceneIndex, engine.sceneCount);
-      if (choice === "resume") {
-        engine.goToScene(savedProgress.sceneId);
-        await render();
-        saveCurrentProgress();
-        focusFirstAvailableNavigationControl();
-        return;
-      }
-      progressStore.clear(pack.id);
-      if (intro) {
-        await renderPrologue(intro, pack.title);
-        await render();
-        saveCurrentProgress();
-        focusFirstAvailableNavigationControl();
-        return;
-      }
+      resumableProgress = null;
     }
-  } else if (savedProgress) {
+  } else if (resumableProgress) {
+    progressStore.clear(pack.id);
+    resumableProgress = null;
+  }
+
+  if (intro) {
+    await renderPrologue(intro, pack.title);
+  }
+
+  if (
+    resumableProgress &&
+    savedSceneIndex !== null &&
+    savedSceneIndex !== engine.currentSceneIndex
+  ) {
+    const choice = await renderResumePrompt(messages, savedSceneIndex, engine.sceneCount);
+    if (choice === "resume") {
+      engine.goToScene(resumableProgress.sceneId);
+      await render();
+      saveCurrentProgress();
+      focusFirstAvailableNavigationControl();
+      return;
+    }
     progressStore.clear(pack.id);
   }
 
-  if (!savedProgress && intro) {
-    await renderPrologue(intro, pack.title);
-    await render();
+  await render();
+  if (intro) {
     saveCurrentProgress();
     focusFirstAvailableNavigationControl();
-    return;
   }
-
-  await render();
 }
 
 async function startPolarityPack(packUrl: URL): Promise<void> {
