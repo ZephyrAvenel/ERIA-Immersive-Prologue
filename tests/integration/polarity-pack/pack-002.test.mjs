@@ -37,7 +37,7 @@ test("all PACK-002 polarity JSON files validate and form a bounded path", async 
     assert.equal(polarity.next, index === 9 ? null : manifest.polarities[index + 1].id);
     if (polarity.previous) assert.equal(ids.has(polarity.previous), true);
     if (polarity.next) assert.equal(ids.has(polarity.next), true);
-    assert.equal(polarity.article.startsWith("https://zephyr-avenel.blogspot.com/"), true);
+    assert.notEqual(polarity.article, manifest.articleUrl);
     await access(join(packRoot, "polarities", polarity.image));
   }
 });

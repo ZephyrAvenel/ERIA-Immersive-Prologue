@@ -46,12 +46,11 @@ le lien d’approfondissement `articleUrl`, la liste ordonnée des fichiers, la
 couverture, la clôture, le fallback visuel et le nom accessible du pont. Les
 chemins sont résolus relativement au manifeste.
 
-`articleUrl` permet au pack de définir une destination commune pour l’action
-« Explorer l’article ». Lorsqu’il est présent, il prévaut sur le champ
-`article` de chaque polarité. Ce dernier reste disponible comme repli
-rétrocompatible et pour les parcours qui souhaitent une destination différente
-à chaque étape. Aucune URL éditoriale n’est inscrite dans le Player ou le
-Renderer.
+`articleUrl` est la source unique de l’action « Explorer l’article » pour toutes
+les étapes. Le Player ne reconstruit pas l’URL et n’utilise aucun repli provenant
+d’une polarité. Le champ historique `article` reste accepté dans le format des
+étapes, mais n’est pas utilisé pour cette action. Aucune URL éditoriale n’est
+inscrite dans le Player ou le Renderer.
 
 Chaque entrée de `polarities` associe un identifiant stable à un fichier JSON.
 L'identifiant `entry` doit exister dans cette liste.
@@ -64,7 +63,7 @@ Une polarité contient :
 - `image` et `imageAlt` ;
 - `left` et `right`, chacun avec `title`, `icon` et `text` ;
 - `quote` et `question` ;
-- `article`, utilisé comme lien par étape ou comme repli du manifeste ;
+- `article`, champ historique conservé dans le format mais ignoré par le Player ;
 - `previous` et `next`, chaîne ou `null` aux extrémités ;
 - `actions.article`, `actions.previous`, `actions.next` et `actions.back`.
 

@@ -110,7 +110,7 @@ export interface PolarityPack {
   readonly estimatedDuration: number;
   readonly entry: string;
   readonly entryAction: string;
-  readonly articleUrl?: string;
+  readonly articleUrl: string;
   readonly polarities: readonly PolarityPackItem[];
   readonly coverImage: string;
   readonly coverImageAlt: string;
@@ -263,7 +263,7 @@ export async function loadPolarityPack(source: URL): Promise<PolarityPack> {
     !("estimatedDuration" in value) || typeof value.estimatedDuration !== "number" ||
     !("entry" in value) || typeof value.entry !== "string" ||
     !("entryAction" in value) || typeof value.entryAction !== "string" ||
-    ("articleUrl" in value && (typeof value.articleUrl !== "string" || value.articleUrl.length === 0)) ||
+    !("articleUrl" in value) || typeof value.articleUrl !== "string" || value.articleUrl.length === 0 ||
     !("coverImage" in value) || typeof value.coverImage !== "string" ||
     !("coverImageAlt" in value) || typeof value.coverImageAlt !== "string" ||
     !("closingImage" in value) || typeof value.closingImage !== "string" ||

@@ -10,7 +10,7 @@ registre, ni la navigation interne.
 
 ## Article d’approfondissement
 
-Un pack contemplatif peut déclarer `articleUrl` dans son manifeste :
+Un pack contemplatif déclare `articleUrl` dans son manifeste :
 
 ```json
 {
@@ -18,10 +18,10 @@ Un pack contemplatif peut déclarer `articleUrl` dans son manifeste :
 }
 ```
 
-Le Player transmet cette destination au `PolarityRenderer`. Le champ `article`
-d’une polarité reste le repli compatible avec les packs existants et permet
-toujours un lien différent par étape. Le moteur ne contient aucune URL
-éditoriale.
+Le Player transmet exclusivement cette destination au `PolarityRenderer`.
+Le champ historique `article` d’une polarité n’est jamais utilisé pour l’action
+« Explorer l’article ». Le moteur ne reconstruit aucune URL et ne contient
+aucune URL éditoriale.
 
 ## Accès permanent à la bibliothèque
 
@@ -57,4 +57,3 @@ vérifient notamment :
 - l’URL canonique de l’article de PACK-002 ;
 - Le Seuil, Les Gardiens et Polarités Vivantes ;
 - les URL directes et la préférence de réduction des animations.
-
