@@ -98,6 +98,30 @@ Responsive vérifié :
 - Vérification navigateur intégrée Codex : OK pour bibliothèque, PACK-001,
   PACK-002, PACK-003, mobile, tablette et desktop.
 
+## Correction du check push
+
+Le workflow `Build / build (push)` a signalÃ© une divergence sur le scÃ©nario
+navigateur :
+
+- test : `Player loads, localizes, navigates, keeps focus, and remains responsive
+  in a real browser` ;
+- assertion : `livingCardState.imageReady === true` ;
+- ligne : `tests/e2e/player.test.mjs:924`.
+
+Cause racine : le test attendait uniquement l'apparition du titre de la premiÃ¨re
+Living Card avant de lire `img.complete`. Sur un run `push`, le chargement de
+`01-premier-pas.webp` pouvait encore Ãªtre en cours au moment de l'assertion,
+alors que l'interface Ã©tait correcte. Le workflow `pull_request` passait car le
+timing de chargement y Ã©tait favorable.
+
+Correction appliquÃ©e : le test attend maintenant explicitement que l'image de la
+premiÃ¨re Living Card soit `complete` et que sa source pointe vers
+`/01-premier-pas.webp` avant de lire l'Ã©tat `livingCardState`.
+
+Cette correction ne modifie pas le comportement utilisateur. Le cadrage Atlas
+dans la bibliothÃ¨que reste inchangÃ© (`object-position: center top`) et PACK-001 /
+PACK-002 restent au cadrage central.
+
 ## Limites
 
 Le correctif ne change pas la forme 16/10 des couvertures de bibliothèque. Il

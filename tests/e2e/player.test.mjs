@@ -905,6 +905,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       "Carte du Monde Commun",
     ];
     await waitForExpression(page, `document.querySelector('.living-card__title')?.textContent === ${JSON.stringify(livingCardTitles[0])}`);
+    await waitForExpression(
+      page,
+      "document.querySelector('.living-card__image')?.currentSrc.endsWith('/01-premier-pas.webp') === true && document.querySelector('.living-card__image')?.complete === true",
+    );
     let livingCardState = await evaluate(
       page,
       `(() => ({
