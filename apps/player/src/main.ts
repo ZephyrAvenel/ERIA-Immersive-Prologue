@@ -322,6 +322,7 @@ async function renderLibrary(): Promise<void> {
   for (const pack of packs) {
     const article = document.createElement("article");
     article.className = "work-card";
+    article.dataset.workSlug = pack.slug;
     const image = document.createElement("img");
     image.className = "work-card__image";
     image.src = pack.coverImage;

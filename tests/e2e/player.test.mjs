@@ -522,7 +522,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         title: document.querySelector('#library-title')?.textContent,
         cards: Array.from(document.querySelectorAll('.work-card')).map((card) => ({
           title: card.querySelector('h2')?.textContent,
+          slug: card.getAttribute('data-work-slug'),
           imageAlt: card.querySelector('img')?.getAttribute('alt'),
+          imagePosition: getComputedStyle(card.querySelector('img')).objectPosition,
           href: card.querySelector('a')?.getAttribute('href'),
           linkLabel: card.querySelector('a')?.getAttribute('aria-label')
         })),
@@ -541,6 +543,12 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[0].href.endsWith("/oeuvres/les-gardiens-des-recits-vivants/"), true);
     assert.equal(libraryState.cards[1].href.endsWith("/oeuvres/polarites-vivantes/"), true);
     assert.equal(libraryState.cards[2].href.endsWith("/oeuvres/atlas-recits-vivants/"), true);
+    assert.equal(libraryState.cards[0].slug, "les-gardiens-des-recits-vivants");
+    assert.equal(libraryState.cards[1].slug, "polarites-vivantes");
+    assert.equal(libraryState.cards[2].slug, "atlas-recits-vivants");
+    assert.equal(libraryState.cards[0].imagePosition, "50% 50%");
+    assert.equal(libraryState.cards[1].imagePosition, "50% 50%");
+    assert.equal(libraryState.cards[2].imagePosition, "50% 0%");
     assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);

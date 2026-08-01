@@ -1064,6 +1064,10 @@ button:disabled {
   background: #111827;
 }
 
+.work-card[data-work-slug="atlas-recits-vivants"] .work-card__image {
+  object-position: center top;
+}
+
 .work-card__content {
   display: grid;
   align-content: start;
