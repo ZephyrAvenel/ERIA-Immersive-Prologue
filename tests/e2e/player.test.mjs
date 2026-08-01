@@ -874,6 +874,29 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       await evaluate(page, "document.querySelector('.polarity-closing__image')?.complete === true"),
       true,
     );
+    const closingLayout = await evaluate(
+      page,
+      `(() => {
+        const image = document.querySelector('.polarity-closing__image');
+        const actions = Array.from(document.querySelectorAll('.polarity-closing__actions > *'));
+        const imageRect = image?.getBoundingClientRect();
+        const actionRects = actions.map((element) => {
+          const rect = element.getBoundingClientRect();
+          return { top: rect.top, bottom: rect.bottom, height: rect.height, width: rect.width };
+        });
+        return {
+          imageBottom: imageRect?.bottom,
+          firstActionTop: actionRects[0]?.top,
+          actionRects,
+          actionsPosition: getComputedStyle(document.querySelector('.polarity-closing__actions')).position,
+          noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
+        };
+      })()`,
+    );
+    assert.equal(closingLayout.noHorizontalOverflow, true);
+    assert.equal(closingLayout.actionsPosition, "static");
+    assert.equal(closingLayout.imageBottom <= closingLayout.firstActionTop + 1, true);
+    assert.equal(closingLayout.actionRects.every(({ height, width }) => height >= 44 && width >= 280), true);
     const closingContinuation = await evaluate(
       page,
       `({
