@@ -26,6 +26,10 @@ packs/
     │   └── monde-commun.json
     ├── assets/
     │   └── images/
+    │       ├── 00-couverture-atlas-recits-vivants.webp
+    │       ├── 01-premier-pas.webp
+    │       ├── ...
+    │       └── originals/
     └── README.md
 ```
 
@@ -76,7 +80,7 @@ du manifeste.
 `LivingCardRenderer` reçoit une carte validée et les libellés d'action fournis
 par le Player. Il affiche :
 
-- l'illustration verticale ;
+- l'illustration ;
 - le symbole ;
 - le titre et le sous-titre ;
 - la citation ;
@@ -93,13 +97,26 @@ utilise `fallbackImageAlt`.
 2. Déclarer son `id`, son image, ses textes, ses métadonnées et ses traductions.
 3. Renseigner `previous` et `next`.
 4. Ajouter l'entrée dans `pack.json.cards`.
-5. Ajouter une illustration dans `assets/images/`.
-6. Lancer `npm run test:integration` et `npm run test:e2e`.
+5. Ajouter le PNG source renommé dans `assets/images/originals/`.
+6. Générer le WebP correspondant dans `assets/images/`.
+7. Lancer `npm run test:integration` et `npm run test:e2e`.
 
-## Illustrations
+## Illustrations définitives
 
-Les images actuelles sont des placeholders SVG verticaux, sans texte intégré.
-Elles respectent la contrainte d'affichage et pourront être remplacées par des
-illustrations définitives, photographiques ou hyperréalistes, sans modifier le
-moteur.
+Les images définitives du PACK-003 sont conservées en deux niveaux :
 
+- `assets/images/originals/` contient les PNG source renommés selon la
+  nomenclature officielle ;
+- `assets/images/` contient les WebP optimisés chargés par le moteur.
+
+La couverture officielle est
+`00-couverture-atlas-recits-vivants.webp`. Les huit cartes utilisent les noms
+`01-premier-pas.webp` à `08-monde-commun.webp`.
+
+Les PNG originaux ne doivent pas être écrasés. Pour remplacer une illustration,
+ajouter d'abord le PNG renommé dans `originals/`, puis générer le WebP
+correspondant dans `assets/images/` sans recadrage destructif.
+
+La carte `08-monde-commun` est horizontale dans le pack fourni. Elle doit être
+conservée dans son cadrage d'origine ; le renderer l'affiche dans le cadre
+visuel existant et le fallback reste la couverture du pack.
