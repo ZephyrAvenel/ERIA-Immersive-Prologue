@@ -1,0 +1,35 @@
+{
+  "format": "ine-living-card-pack",
+  "id": "pack-003",
+  "title": "Atlas des Récits Vivants",
+  "subtitle": "Les cartes symboliques qui jalonnent le parcours immersif.",
+  "description": "Un atlas contemplatif de huit cartes fondatrices pour écouter, relier, habiter et transmettre les récits vivants.",
+  "type": "symbolique",
+  "version": "1.0.0",
+  "author": "Zéphyr Avenel",
+  "language": "fr",
+  "estimatedDuration": 8,
+  "entry": "premier-pas",
+  "entryAction": "Ouvrir l'Atlas",
+  "coverImage": "assets/images/00-atlas.svg",
+  "coverImageAlt": "Illustration symbolique de l'Atlas des Récits Vivants, une constellation de cartes verticales dans une lumière dorée.",
+  "fallbackImage": "assets/images/00-atlas.svg",
+  "fallbackImageAlt": "Illustration de remplacement de l'Atlas des Récits Vivants.",
+  "landmarkLabel": "Carte symbolique, citation, devise et métadonnées",
+  "actions": {
+    "continue": "Continuer",
+    "previous": "Carte précédente",
+    "back": "Retour à l'Atlas",
+    "finish": "Poursuivre l'exploration"
+  },
+  "cards": [
+    { "id": "premier-pas", "source": "cards/premier-pas.json" },
+    { "id": "equilibre-vivant", "source": "cards/equilibre-vivant.json" },
+    { "id": "passage", "source": "cards/passage.json" },
+    { "id": "miroir", "source": "cards/miroir.json" },
+    { "id": "conflit-createur", "source": "cards/conflit-createur.json" },
+    { "id": "traversee", "source": "cards/traversee.json" },
+    { "id": "racines", "source": "cards/racines.json" },
+    { "id": "monde-commun", "source": "cards/monde-commun.json" }
+  ]
+}

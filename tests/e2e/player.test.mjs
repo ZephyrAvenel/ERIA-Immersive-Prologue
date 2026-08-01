@@ -514,7 +514,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(entryState.noHorizontalOverflow, true);
 
     await loadUrl(page, libraryUrl);
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 2");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 3");
     const libraryState = await evaluate(
       page,
       `({
@@ -535,11 +535,12 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.title, expectedLibraryTitle);
     assert.deepEqual(
       libraryState.cards.map(({ title }) => title),
-      ["Les Gardiens des R\u00e9cits Vivants", "Polarit\u00e9s Vivantes"],
+      ["Les Gardiens des R\u00e9cits Vivants", "Polarit\u00e9s Vivantes", "Atlas des R\u00e9cits Vivants"],
     );
     assert.equal(libraryState.cards.every(({ imageAlt, linkLabel }) => imageAlt.length > 0 && linkLabel.length > 0), true);
     assert.equal(libraryState.cards[0].href.endsWith("/oeuvres/les-gardiens-des-recits-vivants/"), true);
     assert.equal(libraryState.cards[1].href.endsWith("/oeuvres/polarites-vivantes/"), true);
+    assert.equal(libraryState.cards[2].href.endsWith("/oeuvres/atlas-recits-vivants/"), true);
     assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);
@@ -876,6 +877,92 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(closingContinuation.href.endsWith("/bibliotheque/"), true);
     await evaluate(page, "document.querySelector('.polarity-closing__back')?.click()");
     await waitForExpression(page, "document.querySelector('.prologue__title')?.textContent === 'Polarités Vivantes'");
+
+    const atlasPackUrl = `${entryUrl}oeuvres/atlas-recits-vivants/`;
+    await loadUrl(page, atlasPackUrl);
+    await waitForExpression(page, "document.querySelector('.prologue__title')?.textContent === 'Atlas des Récits Vivants'");
+    await waitForExpression(
+      page,
+      "document.querySelector('.prologue__cover')?.currentSrc.endsWith('/00-atlas.svg') === true && document.querySelector('.prologue__cover')?.complete === true",
+    );
+    await evaluate(page, "document.querySelector('.prologue button')?.click()");
+    const livingCardTitles = [
+      "Carte du Premier Pas",
+      "Carte de l’Équilibre Vivant",
+      "Carte du Passage",
+      "Carte du Miroir",
+      "Carte du Conflit Créateur",
+      "Carte de la Traversée",
+      "Carte des Racines",
+      "Carte du Monde Commun",
+    ];
+    await waitForExpression(page, `document.querySelector('.living-card__title')?.textContent === ${JSON.stringify(livingCardTitles[0])}`);
+    let livingCardState = await evaluate(
+      page,
+      `(() => ({
+        imageReady: document.querySelector('.living-card__image')?.complete === true,
+        imageAlt: document.querySelector('.living-card__image')?.getAttribute('alt'),
+        symbol: document.querySelector('.living-card__symbol')?.textContent,
+        quote: document.querySelector('.living-card__quote')?.textContent,
+        motto: document.querySelector('.living-card__motto')?.textContent,
+        metadataCount: document.querySelectorAll('.living-card__metadata dt').length,
+        hasPrevious: document.querySelector('[data-card-action="previous"]') !== null,
+        hasContinue: document.querySelector('[data-card-action="continue"]') !== null,
+        hasBack: document.querySelector('[data-card-action="back"]') !== null,
+        libraryControlSize: document.querySelector('.site-navigation a')?.getBoundingClientRect().width,
+        noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
+      }))()`,
+    );
+    assert.equal(livingCardState.imageReady, true);
+    assert.ok(livingCardState.imageAlt.length > 0);
+    assert.equal(livingCardState.symbol, "graine");
+    assert.ok(livingCardState.quote.length > 0);
+    assert.equal(livingCardState.motto, "ÉCOUTER • RELIER • HABITER • TRANSMETTRE");
+    assert.equal(livingCardState.metadataCount, 2);
+    assert.equal(livingCardState.hasPrevious, false);
+    assert.equal(livingCardState.hasContinue, true);
+    assert.equal(livingCardState.hasBack, true);
+    assert.equal(livingCardState.libraryControlSize, 44);
+    assert.equal(livingCardState.noHorizontalOverflow, true);
+    for (let index = 1; index < livingCardTitles.length; index += 1) {
+      await evaluate(page, "document.querySelector('[data-card-action=\"continue\"]')?.click()");
+      await waitForExpression(page, `document.querySelector('.living-card__title')?.textContent === ${JSON.stringify(livingCardTitles[index])}`);
+    }
+    livingCardState = await evaluate(
+      page,
+      `({
+        hasPrevious: document.querySelector('[data-card-action="previous"]') !== null,
+        hasContinue: document.querySelector('[data-card-action="continue"]') !== null,
+        hasFinish: document.querySelector('[data-card-action="finish"]') !== null,
+        noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
+      })`,
+    );
+    assert.equal(livingCardState.hasPrevious, true);
+    assert.equal(livingCardState.hasContinue, false);
+    assert.equal(livingCardState.hasFinish, true);
+    assert.equal(livingCardState.noHorizontalOverflow, true);
+    await page.send("Emulation.setDeviceMetricsOverride", {
+      width: 360,
+      height: 800,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await loadUrl(page, atlasPackUrl);
+    await waitForExpression(page, "document.querySelector('.prologue__title')?.textContent === 'Atlas des Récits Vivants'");
+    await evaluate(page, "document.querySelector('.prologue button')?.click()");
+    await waitForExpression(page, "document.querySelector('.living-card__title')?.textContent === 'Carte du Premier Pas'");
+    const mobileLivingCardActions = await evaluate(
+      page,
+      `Array.from(document.querySelectorAll('.living-card__actions > *')).map((element) => {
+        const rect = element.getBoundingClientRect();
+        return { top: rect.top, bottom: rect.bottom, height: rect.height, width: rect.width };
+      })`,
+    );
+    assert.equal(mobileLivingCardActions.every(({ height, width }) => height >= 44 && width >= 280), true);
+    assert.equal(
+      mobileLivingCardActions.every((action, index) => index === 0 || action.top >= mobileLivingCardActions[index - 1].bottom),
+      true,
+    );
 
     await page.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],

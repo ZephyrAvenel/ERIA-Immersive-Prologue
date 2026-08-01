@@ -53,6 +53,13 @@ const POLARITY_PROPERTIES = new Set([
 ]);
 const POLARITY_POLE_PROPERTIES = new Set(["title", "icon", "text"]);
 const POLARITY_ACTION_PROPERTIES = new Set(["article", "next", "previous", "back"]);
+const LIVING_CARD_PROPERTIES = new Set([
+  "id", "type", "title", "subtitle", "image", "imageAlt", "symbol", "quote", "motto",
+  "metadata", "previous", "next", "locale",
+]);
+const LIVING_CARD_METADATA_PROPERTIES = new Set(["label", "value"]);
+const LIVING_CARD_LOCALE_PROPERTIES = new Set(["fr", "en"]);
+const LIVING_CARD_LOCALE_CONTENT_PROPERTIES = new Set(["title", "subtitle", "quote", "motto"]);
 
 function validateTransition(value: unknown, path: string, errors: string[]): void {
   if (!isRecord(value)) {
@@ -221,6 +228,59 @@ export function validatePolarity(value: unknown): ValidationResult {
     reportUnknownProperties(value.actions, POLARITY_ACTION_PROPERTIES, "polarity.actions", errors);
     for (const key of POLARITY_ACTION_PROPERTIES) {
       if (!hasString(value.actions, key)) errors.push(`INE_POLARITY_STRING_REQUIRED:polarity.actions.${key}`);
+    }
+  }
+  return { valid: errors.length === 0, errors };
+}
+
+export function validateLivingCard(value: unknown): ValidationResult {
+  const errors: string[] = [];
+  if (!isRecord(value)) return { valid: false, errors: ["INE_LIVING_CARD_OBJECT_REQUIRED"] };
+  reportUnknownProperties(value, LIVING_CARD_PROPERTIES, "livingCard", errors);
+  if (value.type !== "living-card") errors.push("INE_LIVING_CARD_TYPE_INVALID:livingCard.type");
+  for (const key of ["id", "title", "subtitle", "image", "imageAlt", "symbol", "quote", "motto"]) {
+    if (!hasString(value, key)) errors.push(`INE_LIVING_CARD_STRING_REQUIRED:livingCard.${key}`);
+  }
+  if (typeof value.id === "string" && !PACK_ID_PATTERN.test(value.id)) {
+    errors.push("INE_LIVING_CARD_ID_INVALID:livingCard.id");
+  }
+  for (const key of ["previous", "next"]) {
+    if (value[key] !== null && !hasString(value, key)) {
+      errors.push(`INE_LIVING_CARD_LINK_INVALID:livingCard.${key}`);
+    }
+  }
+  if (!Array.isArray(value.metadata)) {
+    errors.push("INE_LIVING_CARD_METADATA_REQUIRED:livingCard.metadata");
+  } else {
+    value.metadata.forEach((item, index) => {
+      if (!isRecord(item)) {
+        errors.push(`INE_LIVING_CARD_METADATA_OBJECT_REQUIRED:livingCard.metadata[${index}]`);
+        return;
+      }
+      reportUnknownProperties(item, LIVING_CARD_METADATA_PROPERTIES, `livingCard.metadata[${index}]`, errors);
+      for (const key of LIVING_CARD_METADATA_PROPERTIES) {
+        if (!hasString(item, key)) {
+          errors.push(`INE_LIVING_CARD_METADATA_STRING_REQUIRED:livingCard.metadata[${index}].${key}`);
+        }
+      }
+    });
+  }
+  if (!isRecord(value.locale)) {
+    errors.push("INE_LIVING_CARD_LOCALE_REQUIRED:livingCard.locale");
+  } else {
+    reportUnknownProperties(value.locale, LIVING_CARD_LOCALE_PROPERTIES, "livingCard.locale", errors);
+    for (const key of LIVING_CARD_LOCALE_PROPERTIES) {
+      const locale = value.locale[key];
+      if (!isRecord(locale)) {
+        errors.push(`INE_LIVING_CARD_LOCALE_OBJECT_REQUIRED:livingCard.locale.${key}`);
+        continue;
+      }
+      reportUnknownProperties(locale, LIVING_CARD_LOCALE_CONTENT_PROPERTIES, `livingCard.locale.${key}`, errors);
+      for (const contentKey of LIVING_CARD_LOCALE_CONTENT_PROPERTIES) {
+        if (locale[contentKey] !== undefined && !hasString(locale, contentKey)) {
+          errors.push(`INE_LIVING_CARD_LOCALE_STRING_INVALID:livingCard.locale.${key}.${contentKey}`);
+        }
+      }
     }
   }
   return { valid: errors.length === 0, errors };

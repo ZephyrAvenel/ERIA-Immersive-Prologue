@@ -62,6 +62,7 @@ export interface ValidationResult {
 
 export type NarrativePackValidator = (value: unknown) => ValidationResult;
 export type PolarityValidator = (value: unknown) => ValidationResult;
+export type LivingCardValidator = (value: unknown) => ValidationResult;
 
 export interface PolarityPole {
   readonly title: string;
@@ -121,6 +122,71 @@ export interface PolarityPack {
   readonly fallbackImage: string;
   readonly fallbackImageAlt: string;
   readonly landmarkLabel: string;
+}
+
+export interface LivingCardMetadataItem {
+  readonly label: string;
+  readonly value: string;
+}
+
+export interface LivingCardLocaleContent {
+  readonly title?: string;
+  readonly subtitle?: string;
+  readonly quote?: string;
+  readonly motto?: string;
+}
+
+export interface LivingCard {
+  readonly id: string;
+  readonly type: "living-card";
+  readonly title: string;
+  readonly subtitle: string;
+  readonly image: string;
+  readonly imageAlt: string;
+  readonly symbol: string;
+  readonly quote: string;
+  readonly motto: string;
+  readonly metadata: readonly LivingCardMetadataItem[];
+  readonly previous: string | null;
+  readonly next: string | null;
+  readonly locale: {
+    readonly fr: LivingCardLocaleContent;
+    readonly en: LivingCardLocaleContent;
+  };
+}
+
+export interface LivingCardPackItem {
+  readonly id: string;
+  readonly source: string;
+}
+
+export interface LivingCardPackActions {
+  readonly continue: string;
+  readonly previous: string;
+  readonly back: string;
+  readonly finish: string;
+}
+
+export interface LivingCardPack {
+  readonly format: "ine-living-card-pack";
+  readonly id: string;
+  readonly title: string;
+  readonly subtitle: string;
+  readonly description: string;
+  readonly type: "symbolique";
+  readonly version: string;
+  readonly author: string;
+  readonly language: string;
+  readonly estimatedDuration: number;
+  readonly entry: string;
+  readonly entryAction: string;
+  readonly cards: readonly LivingCardPackItem[];
+  readonly coverImage: string;
+  readonly coverImageAlt: string;
+  readonly fallbackImage: string;
+  readonly fallbackImageAlt: string;
+  readonly landmarkLabel: string;
+  readonly actions: LivingCardPackActions;
 }
 
 export type AssetKind = "images" | "audio" | "video" | "icons";
@@ -313,6 +379,80 @@ export async function loadPolarity(source: URL, validate: PolarityValidator): Pr
   if (!result.valid) throw new Error("INE_POLARITY_INVALID");
   const polarity = value as Polarity;
   return { ...polarity, image: new AssetManager(source).image(polarity.image) };
+}
+
+export async function loadLivingCardPack(source: URL): Promise<LivingCardPack> {
+  const response = await fetch(source);
+  if (!response.ok) throw new Error("INE_LIVING_CARD_PACK_REQUEST_FAILED");
+  const value: unknown = await response.json();
+  if (
+    typeof value !== "object" ||
+    value === null ||
+    !("format" in value) ||
+    value.format !== "ine-living-card-pack" ||
+    !("id" in value) || typeof value.id !== "string" ||
+    !("title" in value) || typeof value.title !== "string" ||
+    !("subtitle" in value) || typeof value.subtitle !== "string" ||
+    !("description" in value) || typeof value.description !== "string" ||
+    !("type" in value) || value.type !== "symbolique" ||
+    !("version" in value) || typeof value.version !== "string" ||
+    !("author" in value) || typeof value.author !== "string" ||
+    !("language" in value) || typeof value.language !== "string" ||
+    !("estimatedDuration" in value) || typeof value.estimatedDuration !== "number" ||
+    !("entry" in value) || typeof value.entry !== "string" ||
+    !("entryAction" in value) || typeof value.entryAction !== "string" ||
+    !("coverImage" in value) || typeof value.coverImage !== "string" ||
+    !("coverImageAlt" in value) || typeof value.coverImageAlt !== "string" ||
+    !("cards" in value) ||
+    !Array.isArray(value.cards) ||
+    value.cards.length === 0 ||
+    !value.cards.every(
+      (item) =>
+        typeof item === "object" &&
+        item !== null &&
+        "id" in item &&
+        typeof item.id === "string" &&
+        "source" in item &&
+        typeof item.source === "string",
+    ) ||
+    !("fallbackImage" in value) ||
+    typeof value.fallbackImage !== "string" ||
+    !("fallbackImageAlt" in value) ||
+    typeof value.fallbackImageAlt !== "string" ||
+    !("landmarkLabel" in value) ||
+    typeof value.landmarkLabel !== "string" ||
+    !("actions" in value) ||
+    typeof value.actions !== "object" ||
+    value.actions === null ||
+    !["continue", "previous", "back", "finish"].every(
+      (key) => key in (value.actions as Record<string, unknown>) &&
+        typeof (value.actions as Record<string, unknown>)[key] === "string" &&
+        ((value.actions as Record<string, unknown>)[key] as string).length > 0,
+    )
+  ) {
+    throw new Error("INE_LIVING_CARD_PACK_INVALID");
+  }
+  const pack = value as LivingCardPack;
+  if (!pack.cards.some((item) => item.id === pack.entry)) {
+    throw new Error("INE_LIVING_CARD_ENTRY_MISSING");
+  }
+  const assets = new AssetManager(source);
+  return {
+    ...pack,
+    coverImage: assets.image(pack.coverImage),
+    fallbackImage: assets.image(pack.fallbackImage),
+    cards: pack.cards.map((item) => ({ ...item, source: assets.resolve(item.source) })),
+  };
+}
+
+export async function loadLivingCard(source: URL, validate: LivingCardValidator): Promise<LivingCard> {
+  const response = await fetch(source);
+  if (!response.ok) throw new Error("INE_LIVING_CARD_REQUEST_FAILED");
+  const value: unknown = await response.json();
+  const result = validate(value);
+  if (!result.valid) throw new Error("INE_LIVING_CARD_INVALID");
+  const card = value as LivingCard;
+  return { ...card, image: new AssetManager(source).image(card.image) };
 }
 
 export class NarrativeEngine {

@@ -1,0 +1,26 @@
+{
+  "id": "passage",
+  "type": "living-card",
+  "title": "Carte du Passage",
+  "subtitle": "Franchir un seuil et accepter la transformation.",
+  "image": "../assets/images/03-passage.svg",
+  "imageAlt": "Un pont vertical traverse une brume dorée entre deux rives.",
+  "symbol": "pont",
+  "quote": "Franchir un passage, ce n’est pas quitter un monde : c’est apprendre à le traverser.",
+  "motto": "ÉCOUTER • RELIER • HABITER • TRANSMETTRE",
+  "metadata": [
+    { "label": "Famille", "value": "Atlas des Récits Vivants" },
+    { "label": "Geste", "value": "Franchir" }
+  ],
+  "previous": "equilibre-vivant",
+  "next": "miroir",
+  "locale": {
+    "fr": {},
+    "en": {
+      "title": "Card of Passage",
+      "subtitle": "Crossing a threshold and accepting transformation.",
+      "quote": "To cross a passage is not to leave a world: it is to learn how to move through it.",
+      "motto": "LISTEN • CONNECT • INHABIT • TRANSMIT"
+    }
+  }
+}

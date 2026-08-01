@@ -1,5 +1,6 @@
 import type {
   ImageDisplayMode,
+  LivingCard,
   NarrativePack,
   NarrativeScene,
   NormalizedSceneTransition,
@@ -358,6 +359,107 @@ export function PolarityRenderer(target: HTMLElement, state: RenderPolarityState
 }
 
 export const renderPolarity = PolarityRenderer;
+
+export interface RenderLivingCardState {
+  readonly card: LivingCard;
+  readonly fallbackImage: string;
+  readonly fallbackImageAlt: string;
+  readonly landmarkLabel: string;
+  readonly continueLabel: string;
+  readonly previousLabel: string;
+  readonly backLabel: string;
+  readonly finishLabel: string;
+  readonly onContinue?: () => void;
+  readonly onPrevious?: () => void;
+  readonly onFinish?: () => void;
+  readonly onBack: () => void;
+}
+
+export function LivingCardRenderer(target: HTMLElement, state: RenderLivingCardState): void {
+  const { card } = state;
+  const article = document.createElement("article");
+  article.id = "living-card";
+  article.className = "living-card";
+  article.tabIndex = -1;
+  article.setAttribute("aria-labelledby", "living-card-title");
+
+  const media = document.createElement("figure");
+  media.className = "living-card__media";
+  const image = document.createElement("img");
+  image.className = "living-card__image";
+  image.src = card.image;
+  image.alt = card.imageAlt;
+  image.addEventListener("error", () => {
+    if (image.src === state.fallbackImage) return;
+    image.src = state.fallbackImage;
+    image.alt = state.fallbackImageAlt;
+    media.dataset.fallback = "true";
+  }, { once: true });
+  media.append(image);
+
+  const content = document.createElement("div");
+  content.className = "living-card__content";
+  content.setAttribute("aria-label", state.landmarkLabel);
+
+  const symbol = document.createElement("p");
+  symbol.className = "living-card__symbol";
+  symbol.textContent = card.symbol;
+  const title = document.createElement("h1");
+  title.id = "living-card-title";
+  title.className = "living-card__title";
+  title.textContent = card.title;
+  const subtitle = document.createElement("p");
+  subtitle.className = "living-card__subtitle";
+  subtitle.textContent = card.subtitle;
+
+  const quote = document.createElement("blockquote");
+  quote.className = "living-card__quote";
+  quote.textContent = card.quote;
+  const motto = document.createElement("p");
+  motto.className = "living-card__motto";
+  motto.textContent = card.motto;
+
+  const metadata = document.createElement("dl");
+  metadata.className = "living-card__metadata";
+  for (const item of card.metadata) {
+    const term = document.createElement("dt");
+    term.textContent = item.label;
+    const value = document.createElement("dd");
+    value.textContent = item.value;
+    metadata.append(term, value);
+  }
+
+  const actions = document.createElement("nav");
+  actions.className = "living-card__actions";
+  if (state.onPrevious) {
+    const previous = document.createElement("button");
+    previous.type = "button";
+    previous.dataset.cardAction = "previous";
+    previous.textContent = state.previousLabel;
+    previous.addEventListener("click", state.onPrevious);
+    actions.append(previous);
+  }
+  const primary = document.createElement("button");
+  primary.type = "button";
+  primary.dataset.cardAction = state.onContinue ? "continue" : "finish";
+  primary.textContent = state.onContinue ? state.continueLabel : state.finishLabel;
+  primary.addEventListener("click", state.onContinue ?? state.onFinish ?? state.onBack);
+  actions.append(primary);
+
+  const back = document.createElement("button");
+  back.type = "button";
+  back.dataset.cardAction = "back";
+  back.textContent = state.backLabel;
+  back.addEventListener("click", state.onBack);
+  actions.append(back);
+
+  content.append(symbol, title, subtitle, quote, motto, metadata, actions);
+  article.append(media, content);
+  target.replaceChildren(article);
+  article.focus();
+}
+
+export const renderLivingCard = LivingCardRenderer;
 
 export interface RenderPolarityClosureState {
   readonly image: string;

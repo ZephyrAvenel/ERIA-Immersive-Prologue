@@ -2,10 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readProjectJson } from "../../helpers/fixtures.mjs";
 
-test("both published works expose the common library identity without deployment metadata", async () => {
+test("published works expose the common library identity without deployment metadata", async () => {
   const manifests = [
     await readProjectJson("examples", "demo-pack", "pack.json"),
     await readProjectJson("packs", "pack-002-polarites-vivantes", "pack.json"),
+    await readProjectJson("packs", "pack-003-atlas-recits-vivants", "pack.json"),
   ];
 
   for (const manifest of manifests) {
