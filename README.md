@@ -5,7 +5,7 @@ contains no story-specific logic: any pack that follows the published schemas
 can be loaded without changing the runtime.
 
 Cycle I provides the production foundation: an immersive player, core loading
-contract, renderers, validators, UI helpers, SDK entry point, two independent
+contract, renderers, validators, UI helpers, SDK entry point, three independent
 works, a manifest-driven library, dedicated public URLs, a PWA shell, and
 continuous delivery to GitHub Pages.
 
@@ -95,7 +95,7 @@ packages/sdk/      Public author-facing types and future SDK entry point
 packages/ui/       Accessible reusable UI primitives
 packages/validators/ Runtime Narrative Pack validation
 examples/demo-pack/ First artistic Narrative Pack and normalized assets
-packs/             Published pack registry and PACK-002
+packs/             Published pack registry, PACK-002, and PACK-003
 schemas/           Versioned JSON Schemas
 docs/              Architecture and Narrative Pack documentation
 tests/             Unit, integration, browser, accessibility, and fixture tests
@@ -115,6 +115,7 @@ See [the architecture guide](docs/ARCHITECTURE.md),
 [distribution architecture](docs/INE-DISTRIBUTION-ARCHITECTURE.md),
 [editorial model](docs/MODELE-EDITORIAL-OEUVRES-IMMERSIVES.md),
 [new immersive work guide](docs/CREER-UNE-OEUVRE-IMMERSIVE.md),
+[PACK-003 Atlas guide](docs/PACK-003-ATLAS-RECITS-VIVANTS.md),
 [Cycle I releases](CHANGELOG.md),
 [Narrative Pack specification](docs/NARRATIVE_PACKS.md), and
 [testing guide](docs/TESTING.md).
@@ -138,8 +139,9 @@ Locally, set `CHROME_PATH` when Chrome is not discoverable or when the desktop
 environment restricts browser automation. The browser scenario covers scene
 intro threshold, transitions, navigation locking, reading progress
 resume/restart, unavailable storage, focus restoration, the library, direct
-routes for both published packs, the prologue-to-library journey, responsive
+routes for all published packs, the prologue-to-library journey, responsive
 layout without standard-scene scrolling, mobile polarity controls, and
+Living Card navigation, mobile controls, and
 `prefers-reduced-motion`.
 
 ## Deployment

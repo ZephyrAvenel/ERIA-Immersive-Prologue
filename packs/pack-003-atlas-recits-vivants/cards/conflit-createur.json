@@ -1,0 +1,26 @@
+{
+  "id": "conflit-createur",
+  "type": "living-card",
+  "title": "Carte du Conflit Créateur",
+  "subtitle": "Traverser la tension sans rompre le dialogue.",
+  "image": "../assets/images/05-conflit-createur.svg",
+  "imageAlt": "Une flamme maîtrisée éclaire un passage sombre.",
+  "symbol": "feu maîtrisé",
+  "quote": "Une tension devient créatrice lorsque le lien demeure plus fort que la rupture.",
+  "motto": "ÉCOUTER • RELIER • HABITER • TRANSMETTRE",
+  "metadata": [
+    { "label": "Famille", "value": "Atlas des Récits Vivants" },
+    { "label": "Geste", "value": "Dialoguer" }
+  ],
+  "previous": "miroir",
+  "next": "traversee",
+  "locale": {
+    "fr": {},
+    "en": {
+      "title": "Card of Creative Conflict",
+      "subtitle": "Crossing tension without breaking dialogue.",
+      "quote": "Tension becomes creative when the bond remains stronger than rupture.",
+      "motto": "LISTEN • CONNECT • INHABIT • TRANSMIT"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "racines",
+  "type": "living-card",
+  "title": "Carte des Racines",
+  "subtitle": "Retrouver son ancrage.",
+  "image": "../assets/images/07-racines.svg",
+  "imageAlt": "Un arbre vertical laisse apparaître ses racines profondes.",
+  "symbol": "arbre aux racines profondes",
+  "quote": "Plus les racines sont vivantes, plus l’ouverture devient possible.",
+  "motto": "ÉCOUTER • RELIER • HABITER • TRANSMETTRE",
+  "metadata": [
+    { "label": "Famille", "value": "Atlas des Récits Vivants" },
+    { "label": "Geste", "value": "S'ancrer" }
+  ],
+  "previous": "traversee",
+  "next": "monde-commun",
+  "locale": {
+    "fr": {},
+    "en": {
+      "title": "Card of Roots",
+      "subtitle": "Finding one’s grounding again.",
+      "quote": "The more living the roots are, the more openness becomes possible.",
+      "motto": "LISTEN • CONNECT • INHABIT • TRANSMIT"
+    }
+  }
+}

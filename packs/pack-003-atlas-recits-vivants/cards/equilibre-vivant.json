@@ -1,0 +1,26 @@
+{
+  "id": "equilibre-vivant",
+  "type": "living-card",
+  "title": "Carte de l’Équilibre Vivant",
+  "subtitle": "L’équilibre naît de la relation.",
+  "image": "../assets/images/02-equilibre-vivant.svg",
+  "imageAlt": "Des pierres lumineuses en équilibre dans une lumière naturelle.",
+  "symbol": "pierres en équilibre",
+  "quote": "L’équilibre n’est pas l’immobilité : il est l’art de répondre au mouvement.",
+  "motto": "ÉCOUTER • RELIER • HABITER • TRANSMETTRE",
+  "metadata": [
+    { "label": "Famille", "value": "Atlas des Récits Vivants" },
+    { "label": "Geste", "value": "Répondre" }
+  ],
+  "previous": "premier-pas",
+  "next": "passage",
+  "locale": {
+    "fr": {},
+    "en": {
+      "title": "Card of Living Balance",
+      "subtitle": "Balance is born from relationship.",
+      "quote": "Balance is not stillness: it is the art of responding to movement.",
+      "motto": "LISTEN • CONNECT • INHABIT • TRANSMIT"
+    }
+  }
+}

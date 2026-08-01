@@ -6,12 +6,14 @@ import {
   detectPackFormat,
   getSceneTransition,
   getTransitionDirection,
+  loadLivingCard,
+  loadLivingCardPack,
   loadNarrativePack,
   loadPolarity,
   loadPolarityPack,
   normalizeSceneTransition,
 } from "../../../.test-build/packages/core/src/index.js";
-import { validateNarrativePack, validatePolarity } from "../../../.test-build/packages/validators/src/index.js";
+import { validateLivingCard, validateNarrativePack, validatePolarity } from "../../../.test-build/packages/validators/src/index.js";
 
 function createPack() {
   return {
@@ -183,6 +185,62 @@ test("polarity pack loader requires the canonical manifest article URL", async (
       () => loadPolarityPack(new URL("https://example.test/pack.json")),
       /INE_POLARITY_PACK_INVALID/,
     );
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+});
+
+test("living card pack loader validates its manifest and resolves independent cards", async () => {
+  const responses = [
+    { format: "ine-living-card-pack" },
+    {
+      format: "ine-living-card-pack",
+      id: "pack-003",
+      title: "Atlas",
+      subtitle: "Cartes symboliques.",
+      description: "Un atlas.",
+      type: "symbolique",
+      version: "1.0.0",
+      author: "Auteur",
+      language: "fr",
+      estimatedDuration: 8,
+      entry: "premier-pas",
+      entryAction: "Ouvrir",
+      coverImage: "assets/cover.svg",
+      coverImageAlt: "Couverture",
+      fallbackImage: "assets/fallback.svg",
+      fallbackImageAlt: "Fallback",
+      landmarkLabel: "Carte vivante",
+      actions: { continue: "Continuer", previous: "Précédente", back: "Retour", finish: "Finir" },
+      cards: [{ id: "premier-pas", source: "cards/premier-pas.json" }],
+    },
+    {
+      id: "premier-pas",
+      type: "living-card",
+      title: "Carte",
+      subtitle: "Sous-titre",
+      image: "../assets/card.svg",
+      imageAlt: "Image",
+      symbol: "graine",
+      quote: "Citation",
+      motto: "Devise",
+      metadata: [{ label: "Famille", value: "Atlas" }],
+      previous: null,
+      next: null,
+      locale: { fr: {}, en: { title: "Card" } },
+    },
+  ];
+  const previousFetch = globalThis.fetch;
+  globalThis.fetch = async () => ({ ok: true, json: async () => responses.shift() });
+  try {
+    const source = new URL("https://example.test/packs/pack-003/pack.json");
+    assert.equal(await detectPackFormat(source), "ine-living-card-pack");
+    const pack = await loadLivingCardPack(source);
+    assert.equal(pack.cards[0].source, "https://example.test/packs/pack-003/cards/premier-pas.json");
+    assert.equal(pack.coverImage, "https://example.test/packs/pack-003/assets/cover.svg");
+    assert.equal(pack.fallbackImage, "https://example.test/packs/pack-003/assets/fallback.svg");
+    const card = await loadLivingCard(new URL(pack.cards[0].source), validateLivingCard);
+    assert.equal(card.image, "https://example.test/packs/pack-003/assets/card.svg");
   } finally {
     globalThis.fetch = previousFetch;
   }
