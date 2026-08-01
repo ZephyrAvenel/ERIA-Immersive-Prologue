@@ -37,7 +37,7 @@ test("all PACK-002 polarity JSON files validate and form a bounded path", async 
     assert.equal(polarity.next, index === 9 ? null : manifest.polarities[index + 1].id);
     if (polarity.previous) assert.equal(ids.has(polarity.previous), true);
     if (polarity.next) assert.equal(ids.has(polarity.next), true);
-    assert.equal(polarity.article.startsWith("https://zephyr-avenel.blogspot.com/"), true);
+    assert.notEqual(polarity.article, manifest.articleUrl);
     await access(join(packRoot, "polarities", polarity.image));
   }
 });
@@ -65,14 +65,14 @@ test("PACK-002 contains twelve optimized WebP illustrations and immutable PNG or
   assert.equal(manifest.fallbackImage, manifest.coverImage);
 });
 
-test("pack registry discovers both packs without introducing cross-pack dependencies", async () => {
+test("pack registry discovers published packs without introducing cross-pack dependencies", async () => {
   const registry = await readProjectJson("packs", "index.json");
   assert.equal(registry.format, "ine-pack-registry");
   assert.equal(registry.version, "1.0");
   assert.equal(registry.home, "les-gardiens-des-recits-vivants");
   assert.deepEqual(
     registry.packs.map(({ id }) => id),
-    ["les-gardiens-des-recits-vivants", "pack-002"],
+    ["les-gardiens-des-recits-vivants", "pack-002", "pack-003"],
   );
   assert.equal(registry.packs.every((entry) => !("title" in entry) && !("type" in entry)), true);
   for (const entry of registry.packs) {

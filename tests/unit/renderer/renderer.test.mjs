@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   renderPlayer,
   renderPlayerWithTransition,
+  renderLivingCard,
   renderPolarity,
   renderPolarityClosure,
 } from "../../../.test-build/packages/renderer/src/index.js";
@@ -66,6 +67,24 @@ function createPolarity() {
   };
 }
 
+function createLivingCard() {
+  return {
+    id: "premier-pas",
+    type: "living-card",
+    title: "Carte du Premier Pas",
+    subtitle: "Oser entrer dans le récit.",
+    image: "https://example.test/card.svg",
+    imageAlt: "Une graine lumineuse.",
+    symbol: "graine",
+    quote: "Tout récit vivant commence.",
+    motto: "ÉCOUTER • RELIER • HABITER • TRANSMETTRE",
+    metadata: [{ label: "Famille", value: "Atlas" }],
+    previous: null,
+    next: "equilibre-vivant",
+    locale: { fr: {}, en: { title: "Card of the First Step" } },
+  };
+}
+
 test("PolarityRenderer renders authored JSON content and accessible navigation", () =>
   withFakeDocument(() => {
     const target = new FakeElement("main");
@@ -122,6 +141,53 @@ test("Renderer displays the authored PACK-002 closing illustration", () =>
     assert.equal(findElement(target, "a").textContent, "Poursuivre votre exploration");
     assert.equal(findElement(target, "a").href, "https://example.test/bibliotheque/");
     assert.equal(target.firstElementChild.focused, true);
+  }));
+
+test("LivingCardRenderer renders authored JSON content and accessible navigation", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    renderLivingCard(target, {
+      card: createLivingCard(),
+      fallbackImage: "https://example.test/fallback.svg",
+      fallbackImageAlt: "Image de remplacement",
+      landmarkLabel: "Carte vivante",
+      continueLabel: "Continuer",
+      previousLabel: "Précédente",
+      backLabel: "Retour",
+      finishLabel: "Terminer",
+      onContinue() {},
+      onBack() {},
+    });
+
+    assert.equal(findElement(target, ".living-card__title").textContent, "Carte du Premier Pas");
+    assert.equal(findElement(target, ".living-card__symbol").textContent, "graine");
+    assert.equal(findElement(target, ".living-card__quote").textContent, "Tout récit vivant commence.");
+    assert.equal(findElement(target, ".living-card__motto").textContent, "ÉCOUTER • RELIER • HABITER • TRANSMETTRE");
+    assert.equal(findElement(target, ".living-card__content").getAttribute("aria-label"), "Carte vivante");
+    assert.equal(findElement(target, "img").alt, "Une graine lumineuse.");
+    assert.equal(findElements(target, "button").length, 2);
+    assert.equal(target.firstElementChild.focused, true);
+  }));
+
+test("LivingCardRenderer replaces a failed illustration with the pack fallback", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    renderLivingCard(target, {
+      card: createLivingCard(),
+      fallbackImage: "https://example.test/fallback.svg",
+      fallbackImageAlt: "Image symbolique de remplacement",
+      landmarkLabel: "Carte vivante",
+      continueLabel: "Continuer",
+      previousLabel: "Précédente",
+      backLabel: "Retour",
+      finishLabel: "Terminer",
+      onBack() {},
+    });
+    const image = findElement(target, "img");
+    image.dispatchEvent({ type: "error" });
+    assert.equal(image.src, "https://example.test/fallback.svg");
+    assert.equal(image.alt, "Image symbolique de remplacement");
+    assert.equal(findElement(target, ".living-card__media").dataset.fallback, "true");
   }));
 
 function installControlledAnimations() {

@@ -1,0 +1,26 @@
+{
+  "id": "premier-pas",
+  "type": "living-card",
+  "title": "Carte du Premier Pas",
+  "subtitle": "Oser entrer dans le récit.",
+  "image": "../assets/images/01-premier-pas.svg",
+  "imageAlt": "Une graine lumineuse posée au seuil d'un chemin vertical.",
+  "symbol": "graine",
+  "quote": "Tout récit vivant commence lorsque quelqu’un accepte d’entrer.",
+  "motto": "ÉCOUTER • RELIER • HABITER • TRANSMETTRE",
+  "metadata": [
+    { "label": "Famille", "value": "Atlas des Récits Vivants" },
+    { "label": "Geste", "value": "Entrer" }
+  ],
+  "previous": null,
+  "next": "equilibre-vivant",
+  "locale": {
+    "fr": {},
+    "en": {
+      "title": "Card of the First Step",
+      "subtitle": "Daring to enter the story.",
+      "quote": "Every living story begins when someone agrees to enter.",
+      "motto": "LISTEN • CONNECT • INHABIT • TRANSMIT"
+    }
+  }
+}

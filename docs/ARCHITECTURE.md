@@ -92,10 +92,13 @@ completed
 The storage key is `ine:progress:v1:<pack-id>`. The pack id comes from the
 Narrative Pack manifest and is independent from the title. The Player resolves
 stored progress by `sceneId`, so a changed index does not prevent resume when
-the scene still exists. If storage is corrupt, unavailable, or points to a
-removed scene, the Player ignores it and renders the initial scene. Core exposes
-only deterministic scene lookup/selection by id; it never reads or writes
-browser storage.
+the scene still exists. An authored introduction is rendered before progress is
+considered, so persistence cannot replace an editorial threshold. Once the
+threshold is crossed, a scene beyond the start scene triggers the explicit
+resume/restart choice. A saved start scene does not add a redundant prompt. If
+storage is corrupt, unavailable, or points to a removed scene, the Player
+ignores it and renders the initial scene. Core exposes only deterministic scene
+lookup/selection by id; it never reads or writes browser storage.
 
 Future input and ambience features should attach at the Player boundary:
 keyboard, swipe, gamepad, transitions, intro variants, audio, video, animation,

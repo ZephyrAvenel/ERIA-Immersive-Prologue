@@ -3,9 +3,12 @@ import {
   NarrativeEngine,
   detectPackFormat,
   getTransitionDirection,
+  loadLivingCard,
+  loadLivingCardPack,
   loadNarrativePack,
   loadPolarity,
   loadPolarityPack,
+  type LivingCardPack,
   type NarrativeIntro,
   type NormalizedSceneTransition,
   type PolarityPack,
@@ -14,11 +17,12 @@ import {
 import {
   renderPlayer,
   renderPlayerWithTransition,
+  renderLivingCard,
   renderPolarity,
   renderPolarityClosure,
 } from "@ine/renderer";
 import { createButton } from "@ine/ui";
-import { validateNarrativePack, validatePolarity } from "@ine/validators";
+import { validateLivingCard, validateNarrativePack, validatePolarity } from "@ine/validators";
 import { interpolate, resolveLocale, type LocaleMessages } from "./localization";
 import {
   createBrowserReadingProgressStore,
@@ -511,41 +515,44 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
   };
 
   const savedProgress = progressStore.load(pack.id);
-  if (savedProgress && savedProgress.packVersion === pack.version) {
-    const savedSceneIndex = resolveProgressSceneIndex(savedProgress, pack.scenes);
+  let resumableProgress = savedProgress;
+  let savedSceneIndex: number | null = null;
+  if (resumableProgress && resumableProgress.packVersion === pack.version) {
+    savedSceneIndex = resolveProgressSceneIndex(resumableProgress, pack.scenes);
     if (savedSceneIndex === null) {
       progressStore.clear(pack.id);
-    } else if (savedSceneIndex !== engine.currentSceneIndex) {
-      const choice = await renderResumePrompt(messages, savedSceneIndex, engine.sceneCount);
-      if (choice === "resume") {
-        engine.goToScene(savedProgress.sceneId);
-        await render();
-        saveCurrentProgress();
-        focusFirstAvailableNavigationControl();
-        return;
-      }
-      progressStore.clear(pack.id);
-      if (intro) {
-        await renderPrologue(intro, pack.title);
-        await render();
-        saveCurrentProgress();
-        focusFirstAvailableNavigationControl();
-        return;
-      }
+      resumableProgress = null;
     }
-  } else if (savedProgress) {
+  } else if (resumableProgress) {
+    progressStore.clear(pack.id);
+    resumableProgress = null;
+  }
+
+  if (intro) {
+    await renderPrologue(intro, pack.title);
+  }
+
+  if (
+    resumableProgress &&
+    savedSceneIndex !== null &&
+    savedSceneIndex !== engine.currentSceneIndex
+  ) {
+    const choice = await renderResumePrompt(messages, savedSceneIndex, engine.sceneCount);
+    if (choice === "resume") {
+      engine.goToScene(resumableProgress.sceneId);
+      await render();
+      saveCurrentProgress();
+      focusFirstAvailableNavigationControl();
+      return;
+    }
     progressStore.clear(pack.id);
   }
 
-  if (!savedProgress && intro) {
-    await renderPrologue(intro, pack.title);
-    await render();
+  await render();
+  if (intro) {
     saveCurrentProgress();
     focusFirstAvailableNavigationControl();
-    return;
   }
-
-  await render();
 }
 
 async function startPolarityPack(packUrl: URL): Promise<void> {
@@ -577,9 +584,7 @@ async function startPolarityPack(packUrl: URL): Promise<void> {
     mount.setAttribute("aria-busy", "true");
     try {
       const loadedPolarity = await loadPolarity(new URL(item.source), validatePolarity);
-      const polarity = pack.articleUrl
-        ? { ...loadedPolarity, article: pack.articleUrl }
-        : loadedPolarity;
+      const polarity = { ...loadedPolarity, article: pack.articleUrl };
       const previousExists =
         polarity.previous !== null &&
         pack.polarities.some((candidate) => candidate.id === polarity.previous);
@@ -625,6 +630,73 @@ async function startPolarityPack(packUrl: URL): Promise<void> {
   await showJourney();
 }
 
+async function startLivingCardPack(packUrl: URL): Promise<void> {
+  const pack: LivingCardPack = await loadLivingCardPack(packUrl);
+  const messages = resolveLocale(pack.language);
+  updateShell(messages, pack.title);
+  updateLibraryNavigation(messages, true);
+  const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
+  if (skipLink) skipLink.href = "#living-card";
+  let loading = false;
+
+  const showCard = async (id: string): Promise<void> => {
+    if (loading) return;
+    const item = pack.cards.find((candidate) => candidate.id === id);
+    if (!item) throw new Error("INE_LIVING_CARD_NOT_FOUND");
+    loading = true;
+    mount.setAttribute("aria-busy", "true");
+    try {
+      const card = await loadLivingCard(new URL(item.source), validateLivingCard);
+      const previousExists =
+        card.previous !== null &&
+        pack.cards.some((candidate) => candidate.id === card.previous);
+      const nextExists =
+        card.next !== null &&
+        pack.cards.some((candidate) => candidate.id === card.next);
+      renderLivingCard(mount, {
+        card,
+        fallbackImage: pack.fallbackImage,
+        fallbackImageAlt: pack.fallbackImageAlt,
+        landmarkLabel: pack.landmarkLabel,
+        continueLabel: pack.actions.continue,
+        previousLabel: pack.actions.previous,
+        backLabel: pack.actions.back,
+        finishLabel: pack.actions.finish,
+        onPrevious: previousExists && card.previous
+          ? () => void showCard(card.previous as string)
+          : undefined,
+        onContinue: nextExists && card.next
+          ? () => void showCard(card.next as string)
+          : undefined,
+        onFinish: () => {
+          globalThis.location.href = libraryUrl.href;
+        },
+        onBack: () => void showJourney(),
+      });
+      globalThis.history.replaceState(null, "", `#card=${encodeURIComponent(card.id)}`);
+    } finally {
+      loading = false;
+      mount.removeAttribute("aria-busy");
+    }
+  };
+
+  const showJourney = async (): Promise<void> => {
+    globalThis.history.replaceState(null, "", globalThis.location.pathname);
+    await renderPrologue(
+      {
+        lines: [pack.subtitle],
+        title: pack.title,
+        actionLabel: pack.entryAction,
+      },
+      pack.title,
+      { image: pack.coverImage, imageAlt: pack.coverImageAlt },
+    );
+    await showCard(pack.entry);
+  };
+
+  await showJourney();
+}
+
 async function start(): Promise<void> {
   const configuration = await loadPlayerConfiguration();
   if (!configuration) {
@@ -639,6 +711,10 @@ async function start(): Promise<void> {
   }
   if (format === "ine-polarity-pack") {
     await startPolarityPack(packUrl);
+    return;
+  }
+  if (format === "ine-living-card-pack") {
+    await startLivingCardPack(packUrl);
     return;
   }
   throw new Error("INE_PACK_FORMAT_UNSUPPORTED");

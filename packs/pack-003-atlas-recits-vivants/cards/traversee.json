@@ -1,0 +1,26 @@
+{
+  "id": "traversee",
+  "type": "living-card",
+  "title": "Carte de la Traversée",
+  "subtitle": "Continuer malgré l’incertitude.",
+  "image": "../assets/images/06-traversee.svg",
+  "imageAlt": "Une rivière verticale traverse un paysage incertain et lumineux.",
+  "symbol": "rivière, courant, océan",
+  "quote": "Traverser, c’est avancer sans tout voir, mais sans cesser d’habiter le chemin.",
+  "motto": "ÉCOUTER • RELIER • HABITER • TRANSMETTRE",
+  "metadata": [
+    { "label": "Famille", "value": "Atlas des Récits Vivants" },
+    { "label": "Geste", "value": "Avancer" }
+  ],
+  "previous": "conflit-createur",
+  "next": "racines",
+  "locale": {
+    "fr": {},
+    "en": {
+      "title": "Card of the Crossing",
+      "subtitle": "Continuing despite uncertainty.",
+      "quote": "To cross is to move forward without seeing everything, while still inhabiting the path.",
+      "motto": "LISTEN • CONNECT • INHABIT • TRANSMIT"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "miroir",
+  "type": "living-card",
+  "title": "Carte du Miroir",
+  "subtitle": "Ce que le récit révèle de soi.",
+  "image": "../assets/images/04-miroir.svg",
+  "imageAlt": "Un reflet circulaire apparaît à la surface d'une eau calme.",
+  "symbol": "miroir ou reflet dans l’eau",
+  "quote": "Le récit le plus vivant est souvent celui qui nous révèle à nous-mêmes.",
+  "motto": "ÉCOUTER • RELIER • HABITER • TRANSMETTRE",
+  "metadata": [
+    { "label": "Famille", "value": "Atlas des Récits Vivants" },
+    { "label": "Geste", "value": "Reconnaître" }
+  ],
+  "previous": "passage",
+  "next": "conflit-createur",
+  "locale": {
+    "fr": {},
+    "en": {
+      "title": "Card of the Mirror",
+      "subtitle": "What the story reveals of the self.",
+      "quote": "The most living story is often the one that reveals us to ourselves.",
+      "motto": "LISTEN • CONNECT • INHABIT • TRANSMIT"
+    }
+  }
+}

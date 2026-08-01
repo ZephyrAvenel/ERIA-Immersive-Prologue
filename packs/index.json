@@ -12,6 +12,11 @@
       "id": "pack-002",
       "slug": "polarites-vivantes",
       "manifest": "pack-002-polarites-vivantes/pack.json"
+    },
+    {
+      "id": "pack-003",
+      "slug": "atlas-recits-vivants",
+      "manifest": "pack-003-atlas-recits-vivants/pack.json"
     }
   ]
 }

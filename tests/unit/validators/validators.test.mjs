@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readdir } from "node:fs/promises";
 import test from "node:test";
-import { validateNarrativePack, validatePolarity } from "../../../.test-build/packages/validators/src/index.js";
+import { validateLivingCard, validateNarrativePack, validatePolarity } from "../../../.test-build/packages/validators/src/index.js";
 import { readJsonFixture, readProjectJson } from "../../helpers/fixtures.mjs";
 
 const expectedInvalidCodes = {
@@ -167,4 +167,51 @@ test("validator rejects incomplete or unexpected polarity content", () => {
   assert.ok(result.errors.includes("INE_POLARITY_POLE_REQUIRED:polarity.right"));
   assert.ok(result.errors.includes("INE_POLARITY_STRING_REQUIRED:polarity.actions.back"));
   assert.ok(result.errors.includes("INE_VALIDATION_UNKNOWN_PROPERTY:polarity.unexpected"));
+});
+
+test("validator accepts a reusable living card with bilingual metadata", () => {
+  const result = validateLivingCard({
+    id: "premier-pas",
+    type: "living-card",
+    title: "Carte du Premier Pas",
+    subtitle: "Oser entrer dans le récit.",
+    image: "assets/image.svg",
+    imageAlt: "Une graine.",
+    symbol: "graine",
+    quote: "Tout récit vivant commence.",
+    motto: "ÉCOUTER • RELIER • HABITER • TRANSMETTRE",
+    metadata: [{ label: "Famille", value: "Atlas" }],
+    previous: null,
+    next: "equilibre-vivant",
+    locale: { fr: {}, en: { title: "Card of the First Step" } },
+  });
+  assert.deepEqual(result, { valid: true, errors: [] });
+});
+
+test("validator rejects incomplete or unexpected living card content", () => {
+  const result = validateLivingCard({
+    id: "Bad Id",
+    type: "card",
+    title: "Carte",
+    subtitle: "",
+    image: "image.svg",
+    imageAlt: "Image",
+    symbol: "symbole",
+    quote: "Citation",
+    motto: "Devise",
+    metadata: [{ label: "Famille" }],
+    previous: null,
+    next: 12,
+    locale: { fr: [], en: { title: "" } },
+    unexpected: true,
+  });
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.includes("INE_LIVING_CARD_TYPE_INVALID:livingCard.type"));
+  assert.ok(result.errors.includes("INE_LIVING_CARD_ID_INVALID:livingCard.id"));
+  assert.ok(result.errors.includes("INE_LIVING_CARD_STRING_REQUIRED:livingCard.subtitle"));
+  assert.ok(result.errors.includes("INE_LIVING_CARD_LINK_INVALID:livingCard.next"));
+  assert.ok(result.errors.includes("INE_LIVING_CARD_METADATA_STRING_REQUIRED:livingCard.metadata[0].value"));
+  assert.ok(result.errors.includes("INE_LIVING_CARD_LOCALE_OBJECT_REQUIRED:livingCard.locale.fr"));
+  assert.ok(result.errors.includes("INE_LIVING_CARD_LOCALE_STRING_INVALID:livingCard.locale.en.title"));
+  assert.ok(result.errors.includes("INE_VALIDATION_UNKNOWN_PROPERTY:livingCard.unexpected"));
 });

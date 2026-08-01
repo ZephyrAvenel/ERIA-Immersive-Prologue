@@ -64,7 +64,7 @@ Player for:
 - successful pack loading;
 - absence of console errors and critical failed requests;
 - full nine-scene PACK-001 navigation;
-- manifest-driven library rendering and direct routes for both packs;
+- manifest-driven library rendering and direct routes for published packs;
 - French interface copy for the current pack;
 - public work identity without visible technical engine labels;
 - introductory threshold rendering and entry without page reload;
@@ -81,7 +81,9 @@ Player for:
 - keyboard focus behavior;
 - elementary accessibility signals such as headings, alt text, named buttons,
   semantic scene structure, and an accessible progress indication.
-- complete PACK-002 polarity navigation and its authored closing step.
+- complete PACK-002 polarity navigation and its authored closing step;
+- complete PACK-003 Living Card navigation, fallback coverage, and mobile
+  action layout.
 
 In CI, Chrome must be available. Locally, set `CHROME_PATH` when you want to
 force browser execution from a specific executable. If Chrome is not explicitly

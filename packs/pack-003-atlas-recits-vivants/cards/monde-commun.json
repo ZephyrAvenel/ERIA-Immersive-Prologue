@@ -1,0 +1,26 @@
+{
+  "id": "monde-commun",
+  "type": "living-card",
+  "title": "Carte du Monde Commun",
+  "subtitle": "Construire un espace partagé sans effacer les différences.",
+  "image": "../assets/images/08-monde-commun.svg",
+  "imageAlt": "Une boussole lumineuse s'oriente vers un horizon commun.",
+  "symbol": "boussole orientée vers un horizon commun",
+  "quote": "Un monde commun ne nie pas les différences : il leur donne un lieu habitable.",
+  "motto": "ÉCOUTER • RELIER • HABITER • TRANSMETTRE",
+  "metadata": [
+    { "label": "Famille", "value": "Atlas des Récits Vivants" },
+    { "label": "Geste", "value": "Partager" }
+  ],
+  "previous": "racines",
+  "next": null,
+  "locale": {
+    "fr": {},
+    "en": {
+      "title": "Card of the Common World",
+      "subtitle": "Building a shared space without erasing differences.",
+      "quote": "A common world does not deny differences: it gives them a place to live.",
+      "motto": "LISTEN • CONNECT • INHABIT • TRANSMIT"
+    }
+  }
+}
