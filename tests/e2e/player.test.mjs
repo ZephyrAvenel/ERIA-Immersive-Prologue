@@ -883,7 +883,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await waitForExpression(page, "document.querySelector('.prologue__title')?.textContent === 'Atlas des Récits Vivants'");
     await waitForExpression(
       page,
-      "document.querySelector('.prologue__cover')?.currentSrc.endsWith('/00-atlas.svg') === true && document.querySelector('.prologue__cover')?.complete === true",
+      "document.querySelector('.prologue__cover')?.currentSrc.endsWith('/00-couverture-atlas-recits-vivants.webp') === true && document.querySelector('.prologue__cover')?.complete === true",
     );
     await evaluate(page, "document.querySelector('.prologue button')?.click()");
     const livingCardTitles = [
