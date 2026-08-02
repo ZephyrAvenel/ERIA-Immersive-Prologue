@@ -1036,28 +1036,40 @@ button:disabled {
 }
 
 @media (max-width: 48rem) {
+  .player[data-pack-id="pack-004"] {
+    height: auto;
+    min-height: 100dvh;
+  }
+
   .player[data-pack-id="pack-004"] .scene {
     grid-template-rows: auto auto;
+    align-content: start;
   }
 
   .player[data-pack-id="pack-004"] .scene__media {
+    min-height: clamp(14rem, 42dvh, 24rem);
     overflow: visible;
   }
 
   .player[data-pack-id="pack-004"] .scene__image {
     width: 100%;
-    height: auto;
-    max-height: min(42dvh, 24rem);
+    height: clamp(14rem, 42dvh, 24rem);
+    max-height: none;
     object-fit: contain;
     object-position: center;
   }
 
   .player[data-pack-id="pack-004"] .scene__media[data-image-state="loading"]::before,
   .player[data-pack-id="pack-004"] .scene__media[data-image-state="error"]::before {
-    min-height: min(42dvh, 24rem);
+    min-height: clamp(14rem, 42dvh, 24rem);
+  }
+
+  .player[data-pack-id="pack-004"] .player__footer {
+    grid-template-columns: 1fr;
   }
 
   .player[data-pack-id="pack-004"] .player-controls {
+    width: 100%;
     flex-direction: column;
     align-items: stretch;
   }
