@@ -1105,18 +1105,16 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         assert.equal(state.controlsInsideViewport, true);
         assert.equal(state.contentInsideViewport, true);
         assert.equal(state.titleBottomBeforeText, true);
+        assert.equal(state.objectFit, "contain");
+        assert.equal(state.displayMode, "contain");
+        assert.equal(state.imageVisible, true);
+        assert.equal(state.currentSrc.endsWith(".webp"), true);
+        assert.equal(state.mediaHeight >= 176, true);
+        assert.equal(state.imageHeight >= 176, true);
+        assert.equal(state.imageHeight <= 290, true);
+        assert.equal(state.mediaBottomBeforeTitle, true);
         if (sceneNumber === 3) {
-          assert.equal(state.currentSrc, "");
-          assert.equal(state.imageVisible, false);
-        } else {
-          assert.equal(state.objectFit, "contain");
-          assert.equal(state.displayMode, "contain");
-          assert.equal(state.imageVisible, true);
-          assert.equal(state.currentSrc.endsWith(".webp"), true);
-          assert.equal(state.mediaHeight >= 176, true);
-          assert.equal(state.imageHeight >= 176, true);
-          assert.equal(state.imageHeight <= 290, true);
-          assert.equal(state.mediaBottomBeforeTitle, true);
+          assert.equal(state.currentSrc.endsWith("/02-les-attentes-invisibles.webp"), true);
         }
       }
       if (sceneNumber < 12) {
