@@ -1,0 +1,104 @@
+{
+  "$schema": "../../schemas/narrative-pack.schema.json",
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "pack-005",
+  "title": "Les récits qui révèlent… ou qui enferment",
+  "subtitle": "Le pouvoir des attentes sur nos vies",
+  "description": "Un parcours immersif sur les attentes, les regards et les récits qui peuvent révéler les possibles ou enfermer les identités.",
+  "coverImage": "assets/images/00-couverture-recits-qui-revelent-ou-enferment.webp",
+  "coverImageAlt": "Une personne face à deux chemins, l’un ouvert et lumineux, l’autre fermé par un mur sombre, symbolisant les récits qui révèlent ou enferment.",
+  "language": "fr",
+  "startScene": "scene-00",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 650,
+      "easing": "ease-in-out"
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene-00",
+      "title": "Les récits qui révèlent… ou qui enferment",
+      "text": "Chaque être humain porte en lui des possibilités encore invisibles.\n\nLes récits que nous choisissons de raconter peuvent devenir des portes qui s’ouvrent… ou des murs qui se referment.\n\nAujourd’hui, nous vous invitons à explorer le pouvoir discret des attentes.",
+      "image": "assets/images/00-couverture-recits-qui-revelent-ou-enferment.webp",
+      "imageAlt": "Une personne face à deux chemins, l’un ouvert et lumineux, l’autre fermé par un mur sombre, symbolisant les récits qui révèlent ou enferment."
+    },
+    {
+      "id": "scene-01",
+      "title": "Le premier regard",
+      "text": "Avant toute parole…\n\nAvant toute explication…\n\nIl existe un premier regard.\n\nLorsque nous rencontrons quelqu’un, nous commençons immédiatement à construire un récit.\n\nNous interprétons son attitude.\n\nSon visage.\n\nSa façon de parler.\n\nSon passé.\n\nSes réussites.\n\nSes erreurs.\n\nNous croyons simplement observer.\n\nEn réalité, nous commençons déjà à raconter une histoire.\n\nEt cette histoire influencera souvent notre manière d’agir.",
+      "image": "assets/images/01-le-premier-regard.webp",
+      "imageAlt": "Une personne observant une autre silhouette sur un chemin, tandis que des fragments de récits apparaissent dans le ciel."
+    },
+    {
+      "id": "scene-02",
+      "title": "Les attentes invisibles",
+      "text": "Les attentes ne sont presque jamais exprimées clairement.\n\nElles se cachent dans des milliers de petits gestes.\n\nUn sourire.\n\nUn silence.\n\nQuelques secondes d’écoute supplémentaires.\n\nUne explication plus détaillée.\n\nUne seconde chance.\n\nOu, au contraire…\n\nUne impatience.\n\nUne interruption.\n\nUn regard qui semble déjà avoir rendu son verdict.\n\nCes différences paraissent infimes.\n\nPourtant, elles façonnent progressivement les relations humaines."
+    },
+    {
+      "id": "scene-03",
+      "title": "Une expérience célèbre",
+      "text": "Dans les années 1960, le psychologue Robert Rosenthal mène une expérience devenue célèbre.\n\nDes enseignants reçoivent une liste d’élèves présentés comme ayant un fort potentiel intellectuel.\n\nEn réalité, ces élèves ont été choisis au hasard.\n\nQuelques mois plus tard, plusieurs de ces enfants montrent effectivement une progression supérieure à la moyenne, particulièrement parmi les plus jeunes.\n\nDepuis, cette expérience a été discutée, nuancée et réévaluée par la recherche.\n\nMais une idée demeure largement reconnue :\n\nNos attentes influencent souvent notre manière d’accompagner les autres.\n\nEt cette différence peut produire des effets bien réels.",
+      "image": "assets/images/03-une-experience-celebre.webp",
+      "imageAlt": "Un enseignant dans une classe présentant une liste d’élèves, symbolisant l’influence des attentes sur l’accompagnement."
+    },
+    {
+      "id": "scene-04",
+      "title": "Les chemins qui s’ouvrent",
+      "text": "Croire au potentiel de quelqu’un ne signifie pas nier ses difficultés.\n\nCela signifie lui laisser la possibilité de grandir.\n\nCelui qui croit en un enfant lui laisse davantage de temps.\n\nCelui qui croit en un collègue lui confie davantage de responsabilités.\n\nCelui qui croit en un ami continue parfois à voir une lumière lorsque celui-ci ne la voit plus lui-même.\n\nLa confiance ne garantit pas la réussite.\n\nMais elle crée souvent les conditions dans lesquelles celle-ci peut apparaître.",
+      "image": "assets/images/04-les-chemins-qui-souvrent.webp",
+      "imageAlt": "Un adulte accompagne un enfant vers plusieurs chemins ouverts, symbolisant la confiance et les possibilités."
+    },
+    {
+      "id": "scene-05",
+      "title": "Lorsque le récit devient une cage",
+      "text": "L’effet inverse existe également.\n\nLorsque nous décidons qu’une personne « est comme cela », nous cessons progressivement de remarquer tout ce qui pourrait contredire cette idée.\n\nLes erreurs deviennent des preuves.\n\nLes réussites deviennent des exceptions.\n\nLe récit se referme.\n\nLa personne finit parfois par intégrer ce regard extérieur.\n\nAinsi naissent de nombreuses prisons invisibles.",
+      "image": "assets/images/05-lorsque-le-recit-devient-une-cage.webp",
+      "imageAlt": "Une personne au centre d’une cage invisible faite d’étiquettes, de verdicts et de jugements."
+    },
+    {
+      "id": "scene-06",
+      "title": "Les récits empêchés",
+      "text": "Certaines phrases semblent anodines.\n\n« Tu n’es pas fait pour cela. »\n\n« Tu es toujours comme ça. »\n\n« Tu ne changeras jamais. »\n\nRépétées suffisamment longtemps, elles deviennent parfois une partie de l’identité.\n\nLe récit n’accompagne plus la personne.\n\nIl la remplace.\n\nL’être humain cesse alors d’explorer ses possibles.\n\nIl habite une histoire écrite par d’autres.",
+      "image": "assets/images/06-les-recits-empeches.webp",
+      "imageAlt": "Une personne avance dans un corridor de murs couverts de phrases enfermantes."
+    },
+    {
+      "id": "scene-07",
+      "title": "Les récits vivants",
+      "text": "À l’inverse, un récit vivant ne prétend pas connaître l’avenir.\n\nIl reconnaît simplement que chaque être humain reste en devenir.\n\nIl ne dit pas :\n\n« Tu réussiras forcément. »\n\nIl dit plutôt :\n\n« Je ne sais pas encore jusqu’où tu peux aller. »\n\nCette différence paraît subtile.\n\nElle change pourtant profondément la relation.\n\nCar elle laisse une place à l’inattendu.",
+      "image": "assets/images/07-les-recits-vivants.webp",
+      "imageAlt": "Une personne devant un chemin lumineux ouvert, entourée de signes de confiance et de devenir."
+    },
+    {
+      "id": "scene-08",
+      "title": "Le récit que je porte sur moi-même",
+      "text": "Le regard des autres compte.\n\nMais il existe un récit encore plus puissant.\n\nCelui que nous entretenons intérieurement.\n\n« Je suis incapable. »\n\n« Je ne mérite pas de réussir. »\n\n« Il est trop tard pour moi. »\n\nCes paroles silencieuses deviennent parfois les murs de notre propre prison.\n\nÀ l’inverse, reconnaître que nous pouvons encore apprendre, évoluer ou recommencer ouvre de nouveaux possibles.",
+      "image": "assets/images/08-le-recit-que-je-porte-sur-moi-meme.webp",
+      "imageAlt": "Une personne entre un espace intérieur sombre et un horizon lumineux, symbolisant le récit que l’on porte sur soi-même."
+    },
+    {
+      "id": "scene-09",
+      "title": "Les passeurs de récits",
+      "text": "Parents.\n\nEnseignants.\n\nÉducateurs.\n\nManagers.\n\nAmis.\n\nCollègues.\n\nNous devenons parfois, sans le savoir, les gardiens des récits des autres.\n\nNous ne décidons pas de leur avenir.\n\nMais nous participons au climat dans lequel leur avenir se construit.\n\nChaque rencontre peut renforcer une peur…\n\nOu réveiller une possibilité.",
+      "image": "assets/images/09-les-passeurs-de-recits.webp",
+      "imageAlt": "Une personne entourée de parents, enseignants, éducateurs, managers et collègues, entre peur et possibilité."
+    },
+    {
+      "id": "scene-10",
+      "title": "Une responsabilité partagée",
+      "text": "Aucun regard ne peut remplacer le travail personnel.\n\nAucune attente positive ne supprime les difficultés de la vie.\n\nMais chacun peut choisir de ne pas enfermer autrui dans une identité définitive.\n\nReconnaître le potentiel d’une personne ne consiste pas à lui promettre le succès.\n\nCela consiste à lui laisser l’espace nécessaire pour devenir davantage qu’elle n’est aujourd’hui.\n\nLes récits les plus féconds ne dictent pas un destin.\n\nIls rendent le devenir possible.",
+      "image": "assets/images/10-une-responsabilite-partagee.webp",
+      "imageAlt": "Plusieurs personnes ouvrent un passage et retirent des chaînes, symbolisant la responsabilité partagée."
+    },
+    {
+      "id": "scene-11",
+      "title": "Quel récit faisons-nous grandir ?",
+      "text": "Chaque être humain est plus vaste que les récits qui prétendent le définir.\n\nLes attentes peuvent ouvrir des chemins.\n\nLes jugements peuvent les refermer.\n\nEntre ces deux possibilités se joue une part essentielle de notre responsabilité envers les autres… et envers nous-mêmes.\n\nPeut-être que la véritable question n’est pas :\n\n« Qui suis-je ? »\n\nMais plutôt :\n\n« Quel récit suis-je en train de faire grandir, chez les autres comme en moi ? »",
+      "image": "assets/images/11-quel-recit-faisons-nous-grandir.webp",
+      "imageAlt": "Une personne face à deux chemins, entre jugements et possibles, posant la question du récit à faire grandir."
+    }
+  ]
+}

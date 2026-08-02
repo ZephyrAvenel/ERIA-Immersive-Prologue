@@ -22,6 +22,11 @@
       "id": "pack-004",
       "slug": "voie-du-milieu",
       "manifest": "pack-004-voie-du-milieu/pack.json"
+    },
+    {
+      "id": "pack-005",
+      "slug": "recits-qui-revelent-ou-enferment",
+      "manifest": "pack-005-recits-qui-revelent-ou-enferment/pack.json"
     }
   ]
 }
