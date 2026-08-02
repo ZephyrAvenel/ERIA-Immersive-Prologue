@@ -21,7 +21,9 @@ Source fournie :
 
 `https://drive.google.com/drive/folders/1XnpYIlat7pLJqozGDA9s3P-H8pjaViZ1`
 
-Le dossier public Google Drive a été inspecté via la vue embarquée Drive. Il expose **12 fichiers PNG**, alors que la mission annonçait **13 images**.
+Le dossier public Google Drive a été inspecté via la vue embarquée Drive. Il exposait initialement **12 fichiers PNG**, alors que la mission annonçait **13 images**.
+
+Une image complémentaire a ensuite été fournie pour `scene-06` — **Tu as changé.** — et intégrée dans le même pack.
 
 Une planche de contrôle visuelle a été produite :
 
@@ -37,6 +39,7 @@ Une planche de contrôle visuelle a été produite :
 | `file_00000000613481f4a21c55fcc42f73f6.png` | `03-l-appel-interieur.png` | 1536×1024 | 2 623 084 | 271 254 |
 | `file_00000000eee8824393ee35c75e6c82df.png` | `04-entrer-dans-le-cocon.png` | 1536×1024 | 2 658 270 | 288 516 |
 | `file_000000005c008243bd0c9dbd850a064c.png` | `05-resister-a-l-ancien-recit.png` | 1448×1086 | 2 646 835 | 305 506 |
+| Image jointe INE-024 complémentaire | `06-tu-as-change.png` | 1280×853 | 1 715 020 | 198 558 |
 | `file_000000006cf881f4a149909ad1806205.png` | `07-les-ailes-invisibles.png` | 1672×941 | 2 632 670 | 317 058 |
 | `file_00000000e0e08246957b08fb368d8079.png` | `08-les-relations-qui-evoluent.png` | 1536×1024 | 2 698 756 | 289 252 |
 | `file_00000000741c8243b3e9feb24ec75600.png` | `09-devenir-pleinement-soi.png` | 1536×1024 | 2 546 019 | 277 946 |
@@ -44,28 +47,30 @@ Une planche de contrôle visuelle a été produite :
 | `file_00000000f2a881f486eab1609d3a28fe.png` | `11-epilogue-le-voyage-continue.png` | 1536×1024 | 2 722 853 | 317 848 |
 | `file_000000000e9481f9bbe8ac420cb23ce5.png` | `12-cloture-un-cycle-des-infinis-possibles.png` | 1536×1024 | 2 666 179 | 321 020 |
 
-Poids total PNG : **31 135 157 octets**  
-Poids total WebP : **3 429 544 octets**
+Poids total PNG : **32 850 177 octets**  
+Poids total WebP : **3 628 102 octets**
 
 ## Écart constaté
 
-L’image attendue pour :
+Lors de l’intégration initiale, l’image attendue pour :
 
 `06 — Scène 6 — “Tu as changé.”`
 
-n’est pas présente dans le dossier Drive public.
+n’était pas présente dans le dossier Drive public.
 
-Décision retenue :
+Décision initiale :
 
 - conserver la scène 06 dans le parcours ;
 - ne pas inventer ni réutiliser une image non officielle ;
 - laisser `scene-06` sans champ `image` dans `pack.json`, ce que le renderer narratif supporte déjà ;
 - documenter explicitement l’écart dans ce rapport et dans le README du pack.
 
-Si l’image officielle est fournie ultérieurement, elle devra être ajoutée sous :
+Correction complémentaire :
 
-- `assets/images/originals/06-tu-as-change.png` ;
-- `assets/images/06-tu-as-change.webp`.
+- l’image officielle jointe à la mission a été vérifiée visuellement ;
+- le PNG original a été conservé sous `assets/images/originals/06-tu-as-change.png` ;
+- le WebP optimisé a été généré sous `assets/images/06-tu-as-change.webp` ;
+- `scene-06` pointe maintenant vers cette image.
 
 ## Fichiers créés
 
@@ -129,4 +134,4 @@ PACK-001, PACK-002, PACK-003, PACK-004 et PACK-005 ne sont pas modifiés dans le
 
 ## Recommandation
 
-Fournir ultérieurement l’image officielle manquante `06-tu-as-change.png` si l’intention reste d’avoir 13 images réelles pour 13 étapes visuelles. Le pack reste fonctionnel sans cette image, mais le cycle visuel annoncé serait alors complet.
+Le cycle visuel est désormais complet : les 13 étapes disposent d’une image officielle ou d’une couverture/clôture officielle. Toute évolution future devra préserver cette nomenclature canonique.

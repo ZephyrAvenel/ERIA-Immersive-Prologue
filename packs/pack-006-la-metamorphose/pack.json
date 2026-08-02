@@ -63,7 +63,9 @@
     {
       "id": "scene-06",
       "title": "Tu as changé.",
-      "text": "Oui.\n\nC’est ce que fait le vivant.\n\nIl change de forme pour rester fidèle à ce qui grandit en lui.\n\nGrandir n’est pas une trahison.\n\nLe papillon ne renie pas la chenille.\n\nIl l’accomplit.\n\nCe que certains appellent une rupture est parfois une continuité plus profonde.\n\nCe que certains appellent une perte est parfois la naissance d’une présence plus vraie."
+      "text": "Oui.\n\nC’est ce que fait le vivant.\n\nIl change de forme pour rester fidèle à ce qui grandit en lui.\n\nGrandir n’est pas une trahison.\n\nLe papillon ne renie pas la chenille.\n\nIl l’accomplit.\n\nCe que certains appellent une rupture est parfois une continuité plus profonde.\n\nCe que certains appellent une perte est parfois la naissance d’une présence plus vraie.",
+      "image": "assets/images/06-tu-as-change.webp",
+      "imageAlt": "Une figure lumineuse aux ailes de papillon avance vers l’horizon tandis que l’ancien récit l’accuse d’avoir changé."
     },
     {
       "id": "scene-07",

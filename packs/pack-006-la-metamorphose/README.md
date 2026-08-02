@@ -49,7 +49,7 @@ Route publique attendue :
 | 03 | L’appel intérieur | `03-l-appel-interieur.webp` |
 | 04 | Entrer dans le cocon | `04-entrer-dans-le-cocon.webp` |
 | 05 | Résister à l’ancien récit | `05-resister-a-l-ancien-recit.webp` |
-| 06 | Tu as changé. | Image dédiée absente du dossier Drive fourni |
+| 06 | Tu as changé. | `06-tu-as-change.webp` |
 | 07 | Les ailes invisibles | `07-les-ailes-invisibles.webp` |
 | 08 | Les relations qui évoluent | `08-les-relations-qui-evoluent.webp` |
 | 09 | Devenir pleinement soi | `09-devenir-pleinement-soi.webp` |
@@ -82,12 +82,7 @@ Pour remplacer une illustration :
 3. mettre à jour le champ `image` et le champ `imageAlt` de la scène concernée dans `pack.json` ;
 4. relancer les tests d’intégration du pack et le build.
 
-Si une image officielle pour `scene-06` — **Tu as changé.** — est fournie ultérieurement, elle devra suivre le nom :
-
-```text
-06-tu-as-change.png
-06-tu-as-change.webp
-```
+L’image officielle de `scene-06` — **Tu as changé.** — a été ajoutée après la première intégration INE-024 sous `06-tu-as-change.png` et `06-tu-as-change.webp`.
 
 ## Compatibilité INE
 

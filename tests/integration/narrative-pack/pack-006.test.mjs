@@ -25,17 +25,17 @@ test("PACK-006 manifest declares thirteen independent narrative steps", async ()
   assert.equal(JSON.stringify(manifest).includes("pack-005"), false);
 });
 
-test("PACK-006 uses optimized WebP images and preserves the image gap documented for scene 6", async () => {
+test("PACK-006 uses optimized WebP images for every narrative step", async () => {
   const manifest = await readProjectJson(packRoot, "pack.json");
   assert.equal(manifest.coverImage, "assets/images/00-couverture-la-metamorphose.webp");
   assert.equal(manifest.coverImageAlt.length > 0, true);
 
-  const missingSourceImageScene = manifest.scenes.find(({ id }) => id === "scene-06");
-  assert.equal(missingSourceImageScene.title, "Tu as changé.");
-  assert.equal("image" in missingSourceImageScene, false);
-  assert.equal("imageAlt" in missingSourceImageScene, false);
+  const transformationScene = manifest.scenes.find(({ id }) => id === "scene-06");
+  assert.equal(transformationScene.title, "Tu as changé.");
+  assert.equal(transformationScene.image, "assets/images/06-tu-as-change.webp");
+  assert.equal(transformationScene.imageAlt.length > 0, true);
 
-  for (const scene of manifest.scenes.filter((entry) => entry.image)) {
+  for (const scene of manifest.scenes) {
     assert.equal(scene.image.endsWith(".webp"), true, scene.id);
     assert.equal(typeof scene.imageAlt, "string", scene.id);
     assert.equal(scene.imageAlt.length > 0, true, scene.id);
@@ -56,6 +56,7 @@ test("PACK-006 preserves PNG originals and uses the expected image naming conven
     "03-l-appel-interieur.webp",
     "04-entrer-dans-le-cocon.webp",
     "05-resister-a-l-ancien-recit.webp",
+    "06-tu-as-change.webp",
     "07-les-ailes-invisibles.webp",
     "08-les-relations-qui-evoluent.webp",
     "09-devenir-pleinement-soi.webp",
