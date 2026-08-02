@@ -17,6 +17,11 @@
       "id": "pack-003",
       "slug": "atlas-recits-vivants",
       "manifest": "pack-003-atlas-recits-vivants/pack.json"
+    },
+    {
+      "id": "pack-004",
+      "slug": "voie-du-milieu",
+      "manifest": "pack-004-voie-du-milieu/pack.json"
     }
   ]
 }

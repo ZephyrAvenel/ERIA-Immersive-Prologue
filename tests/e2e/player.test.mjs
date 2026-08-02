@@ -514,7 +514,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(entryState.noHorizontalOverflow, true);
 
     await loadUrl(page, libraryUrl);
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 3");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 4");
     const libraryState = await evaluate(
       page,
       `({
@@ -537,18 +537,26 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.title, expectedLibraryTitle);
     assert.deepEqual(
       libraryState.cards.map(({ title }) => title),
-      ["Les Gardiens des R\u00e9cits Vivants", "Polarit\u00e9s Vivantes", "Atlas des R\u00e9cits Vivants"],
+      [
+        "Les Gardiens des R\u00e9cits Vivants",
+        "Polarit\u00e9s Vivantes",
+        "Atlas des R\u00e9cits Vivants",
+        "La Voie du Milieu",
+      ],
     );
     assert.equal(libraryState.cards.every(({ imageAlt, linkLabel }) => imageAlt.length > 0 && linkLabel.length > 0), true);
     assert.equal(libraryState.cards[0].href.endsWith("/oeuvres/les-gardiens-des-recits-vivants/"), true);
     assert.equal(libraryState.cards[1].href.endsWith("/oeuvres/polarites-vivantes/"), true);
     assert.equal(libraryState.cards[2].href.endsWith("/oeuvres/atlas-recits-vivants/"), true);
+    assert.equal(libraryState.cards[3].href.endsWith("/oeuvres/voie-du-milieu/"), true);
     assert.equal(libraryState.cards[0].slug, "les-gardiens-des-recits-vivants");
     assert.equal(libraryState.cards[1].slug, "polarites-vivantes");
     assert.equal(libraryState.cards[2].slug, "atlas-recits-vivants");
+    assert.equal(libraryState.cards[3].slug, "voie-du-milieu");
     assert.equal(libraryState.cards[0].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[1].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[2].imagePosition, "50% 0%");
+    assert.equal(libraryState.cards[3].imagePosition, "50% 50%");
     assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);

@@ -1,0 +1,99 @@
+{
+  "$schema": "../../schemas/narrative-pack.schema.json",
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "pack-004",
+  "title": "La Voie du Milieu",
+  "subtitle": "Habiter les tensions plutôt que choisir un camp.",
+  "description": "Un parcours immersif pour apprendre à habiter les tensions sans réduire le monde à deux camps.",
+  "coverImage": "assets/images/00-couverture-voie-du-milieu.webp",
+  "coverImageAlt": "Couverture La Voie du Milieu, un voyageur face à deux chemins entre montagnes.",
+  "language": "fr",
+  "startScene": "scene-00",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 650,
+      "easing": "ease-in-out"
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene-00",
+      "title": "La Voie du Milieu",
+      "text": "Chaque époque construit ses oppositions.\n\nCertaines deviennent nécessaires.\n\nD’autres enferment peu à peu notre regard.\n\nEt si la liberté ne consistait pas à choisir entre deux récits, mais à apprendre à les regarder autrement ?\n\nBienvenue dans ce nouveau parcours.",
+      "image": "assets/images/00-couverture-voie-du-milieu.webp",
+      "imageAlt": "Couverture La Voie du Milieu, un voyageur face à deux chemins entre montagnes."
+    },
+    {
+      "id": "scene-01",
+      "title": "Le seuil",
+      "text": "Deux portes.\n\nDeux promesses.\n\nDeux chemins.\n\nChacun affirme conduire vers la vérité.\n\nChacun invite à laisser l’autre derrière soi.\n\nDepuis toujours, les êtres humains avancent ainsi :\n\nentre deux certitudes,\nentre deux peurs,\nentre deux espérances.\n\nPourtant, avant même de choisir, une question apparaît :\n\nEt si la liberté n’était pas derrière l’une de ces portes ?",
+      "image": "assets/images/01-le-seuil.webp",
+      "imageAlt": "Deux portes monumentales symbolisant deux chemins opposés."
+    },
+    {
+      "id": "scene-02",
+      "title": "Le monde des oppositions",
+      "text": "Notre regard aime organiser le monde en couples opposés.\n\nProtection et ouverture.\n\nMémoire et avenir.\n\nTradition et innovation.\n\nOrdre et liberté.\n\nCes polarités sont naturelles.\n\nElles deviennent problématiques seulement lorsqu’elles cessent de dialoguer.\n\nÀ cet instant, la complexité disparaît.\n\nIl ne reste plus que deux camps.",
+      "image": "assets/images/02-monde-des-oppositions.webp",
+      "imageAlt": "Paysage divisé entre un monde sombre et un monde lumineux, représentant les oppositions."
+    },
+    {
+      "id": "scene-03",
+      "title": "Les récits qui enferment",
+      "text": "Chaque camp construit son histoire.\n\nIl possède ses héros.\n\nSes blessures.\n\nSes peurs.\n\nSes preuves.\n\nProgressivement, chacun ne voit plus qu’une partie du paysage.\n\nLes récits deviennent alors des forteresses.\n\nIls protègent.\n\nMais ils empêchent également de rencontrer l’autre.\n\nLe danger n’est pas la différence.\n\nLe danger est l’impossibilité du dialogue.",
+      "image": "assets/images/03-recits-qui-enferment.webp",
+      "imageAlt": "Deux citadelles opposées symbolisant les récits qui enferment."
+    },
+    {
+      "id": "scene-04",
+      "title": "Entre deux récits, un choix ?",
+      "text": "Lorsque deux récits cherchent à s’annuler mutuellement, quelque chose se brise.\n\nLes ponts disparaissent.\n\nLa confiance s’efface.\n\nLes nuances deviennent suspectes.\n\nLes êtres humains continuent de vivre côte à côte.\n\nMais ils n’habitent plus le même monde.\n\nChaque victoire laisse un peu plus de solitude.\n\nEt si aucun des chemins ne menait vraiment à la vérité entière ?",
+      "image": "assets/images/04-entre-deux-recits-un-choix.webp",
+      "imageAlt": "Un voyageur entre deux chemins, l’un lumineux, l’autre sombre."
+    },
+    {
+      "id": "scene-05",
+      "title": "La voie du milieu",
+      "text": "Puis survient une découverte.\n\nLa voie du milieu n’est pas un compromis.\n\nElle n’est pas une moyenne.\n\nElle n’est pas une hésitation.\n\nElle apparaît lorsque nous cessons de vouloir supprimer l’une des polarités.\n\nLe chemin ne relie pas deux camps.\n\nIl révèle un troisième espace.\n\nCelui où les différences peuvent demeurer sans devenir des ennemies.",
+      "image": "assets/images/05-la-voie-du-milieu.webp",
+      "imageAlt": "Un chemin central apparaissant entre deux paysages opposés."
+    },
+    {
+      "id": "scene-06",
+      "title": "La présence au-delà des récits",
+      "text": "Habiter la voie du milieu demande du courage.\n\nCelui d’écouter sans abandonner ses convictions.\n\nCelui d’affirmer sans écraser.\n\nCelui d’accueillir sans renoncer.\n\nLa voie du milieu ne cherche pas l’équilibre parfait.\n\nElle cultive un équilibre vivant.\n\nUn équilibre qui évolue avec les situations, les rencontres et le temps.\n\nElle ne supprime pas les différences.\n\nElle leur donne une place.",
+      "image": "assets/images/06-presence-au-dela-des-recits.webp",
+      "imageAlt": "Un voyageur face à un horizon commun au-delà des récits."
+    },
+    {
+      "id": "scene-07",
+      "title": "Le choix qui façonne le monde",
+      "text": "Chaque jour, nous avons le choix.\n\nEntretenir les divisions.\n\nOu tisser des passerelles.\n\nJuger avant de comprendre.\n\nOu écouter avant de répondre.\n\nTransformer une opposition en mur.\n\nOu chercher l’horizon qu’elle révèle.\n\nLe monde de demain dépend aussi des récits que nous choisissons d’habiter.",
+      "image": "assets/images/07-le-choix-qui-faconne-le-monde.webp",
+      "imageAlt": "Un voyageur devant un monde traversé par une lumière centrale."
+    },
+    {
+      "id": "scene-08",
+      "title": "Au seuil d’un monde vivant",
+      "text": "Certaines personnes deviennent des passeurs.\n\nElles ne possèdent pas la vérité.\n\nElles entretiennent les conditions du dialogue.\n\nElles rappellent que les ponts sont parfois plus précieux que les murailles.\n\nÊtre gardien des passages ne signifie pas empêcher les conflits.\n\nCela signifie empêcher que les conflits détruisent définitivement notre capacité à nous rencontrer.\n\nLes récits vivants relient.\n\nLes récits empêchés divisent.\n\nÀ nous de choisir ce que nous voulons faire vivre.",
+      "image": "assets/images/08-au-seuil-dun-monde-vivant.webp",
+      "imageAlt": "Un seuil ouvert vers un monde vivant, entre récits vivants et récits empêchés."
+    },
+    {
+      "id": "scene-09",
+      "title": "Et demain ?",
+      "text": "Le voyage touche à sa fin.\n\nMais la voie du milieu ne s’achève jamais.\n\nChaque rencontre.\n\nChaque désaccord.\n\nChaque choix.\n\nChaque parole.\n\nDevient l’occasion de faire vivre un récit plutôt qu’un enfermement.\n\nNous ne pouvons empêcher les tensions d’exister.\n\nNous pouvons apprendre à les habiter.\n\nChaque passe relie.\n\nChaque choix construit.\n\nChaque présence transforme.",
+      "image": "assets/images/09-et-demain.webp",
+      "imageAlt": "Un voyageur regardant l’avenir depuis une terrasse lumineuse."
+    },
+    {
+      "id": "scene-10",
+      "title": "Les récits vivants continuent…",
+      "text": "Le chemin parcouru demeure derrière nous.\n\nDevant nous s’ouvrent d’autres horizons.\n\nLa voie du milieu n’est pas un lieu où l’on arrive.\n\nC’est une manière de marcher.\n\nÀ chaque époque.\n\nÀ chaque génération.\n\nÀ chaque rencontre.\n\nLe monde se transforme à travers les récits que nous entretenons.\n\nPuissions-nous choisir ceux qui relient plutôt que ceux qui séparent.\n\nPuissions-nous préserver les passages qui rendent encore possible un monde commun.\n\nLe voyage s’achève.\n\nLe chemin, lui, continue.",
+      "image": "assets/images/10-les-recits-vivants-continuent.webp",
+      "imageAlt": "Un voyageur face à un horizon ouvert, accompagné du message Les récits vivants continuent."
+    }
+  ]
+}
