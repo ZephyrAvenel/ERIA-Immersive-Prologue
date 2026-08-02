@@ -24,15 +24,15 @@ test("PACK-005 manifest declares twelve independent narrative steps", async () =
   assert.equal(JSON.stringify(manifest).includes("pack-004"), false);
 });
 
-test("PACK-005 uses optimized WebP images while preserving the image gap for scene 2", async () => {
+test("PACK-005 uses optimized WebP images including the scene 2 dedicated illustration", async () => {
   const manifest = await readProjectJson(packRoot, "pack.json");
   assert.equal(manifest.coverImage, "assets/images/00-couverture-recits-qui-revelent-ou-enferment.webp");
   assert.equal(manifest.coverImageAlt.length > 0, true);
 
-  const sceneWithoutImage = manifest.scenes.find(({ id }) => id === "scene-02");
-  assert.equal(sceneWithoutImage.title, "Les attentes invisibles");
-  assert.equal("image" in sceneWithoutImage, false);
-  assert.equal("imageAlt" in sceneWithoutImage, false);
+  const attentesInvisibles = manifest.scenes.find(({ id }) => id === "scene-02");
+  assert.equal(attentesInvisibles.title, "Les attentes invisibles");
+  assert.equal(attentesInvisibles.image, "assets/images/02-les-attentes-invisibles.webp");
+  assert.equal(attentesInvisibles.imageAlt.length > 0, true);
 
   for (const scene of manifest.scenes.filter((entry) => entry.image)) {
     assert.equal(scene.image.endsWith(".webp"), true, scene.id);
@@ -52,6 +52,7 @@ test("PACK-005 preserves PNG originals and uses the expected image naming conven
     "00-couverture-alt-pack-005.webp",
     "00-couverture-recits-qui-revelent-ou-enferment.webp",
     "01-le-premier-regard.webp",
+    "02-les-attentes-invisibles.webp",
     "03-une-experience-celebre.webp",
     "04-les-chemins-qui-souvrent.webp",
     "05-lorsque-le-recit-devient-une-cage.webp",

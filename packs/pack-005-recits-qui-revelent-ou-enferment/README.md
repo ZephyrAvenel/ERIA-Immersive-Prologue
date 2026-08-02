@@ -51,6 +51,7 @@ Mapping retenu :
 | Couverture principale | `00-couverture-recits-qui-revelent-ou-enferment.webp` |
 | Couverture alternative conservée | `00-couverture-alt-pack-005.webp` |
 | Le premier regard | `01-le-premier-regard.webp` |
+| Les attentes invisibles | `02-les-attentes-invisibles.webp` |
 | Une expérience célèbre | `03-une-experience-celebre.webp` |
 | Les chemins qui s’ouvrent | `04-les-chemins-qui-souvrent.webp` |
 | Lorsque le récit devient une cage | `05-lorsque-le-recit-devient-une-cage.webp` |
@@ -63,9 +64,12 @@ Mapping retenu :
 
 ## Note sur “Les attentes invisibles”
 
-Le dossier fourni contient deux couvertures et aucune image explicitement dédiée à la scène “Les attentes invisibles”.
+Lors de l’intégration INE-022, le dossier initial contenait deux couvertures et aucune image explicitement dédiée à la scène “Les attentes invisibles”.
 
-La scène est conservée dans le parcours, sans image, afin de ne pas inventer de visuel ni réutiliser artificiellement une autre illustration. Le renderer générique sait afficher une scène narrative sans bloc média.
+La mission INE-023 ajoute l’image officielle de cette scène sous les noms :
+
+- `assets/images/originals/02-les-attentes-invisibles.png`
+- `assets/images/02-les-attentes-invisibles.webp`
 
 ## Remplacer une image
 
