@@ -1007,6 +1007,52 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       true,
     );
 
+    const middleWayPackUrl = `${entryUrl}oeuvres/voie-du-milieu/`;
+    await page.send("Emulation.setDeviceMetricsOverride", {
+      width: 360,
+      height: 800,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await loadUrl(page, middleWayPackUrl);
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 11");
+    const middleWayCheckpoints = new Map([
+      [4, "Les r\u00e9cits qui enferment"],
+      [5, "Entre deux r\u00e9cits, un choix ?"],
+      [7, "La pr\u00e9sence au-del\u00e0 des r\u00e9cits"],
+      [9, "Au seuil d\u2019un monde vivant"],
+      [11, "Les r\u00e9cits vivants continuent\u2026"],
+    ]);
+    for (let sceneNumber = 1; sceneNumber <= 11; sceneNumber += 1) {
+      const state = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 11`);
+      if (middleWayCheckpoints.has(sceneNumber)) {
+        assert.equal(state.packIdData, "pack-004");
+        assert.equal(state.sceneTitle, middleWayCheckpoints.get(sceneNumber));
+        assert.equal(state.objectFit, "contain");
+        assert.equal(state.displayMode, "contain");
+        assert.equal(state.imageVisible, true);
+        assert.equal(state.noHorizontalOverflow, true);
+        assert.equal(state.controlsInsideViewport, true);
+        assert.equal(state.contentInsideViewport, true);
+        assert.equal(state.currentSrc.endsWith(".webp"), true);
+      }
+      if (sceneNumber < 11) {
+        await clickLocalizedNext(page, `Sc\u00e8ne ${sceneNumber + 1} / 11`);
+      }
+    }
+    const middleWayFinalActions = await evaluate(
+      page,
+      `Array.from(document.querySelectorAll('.player-controls > *')).map((element) => {
+        const rect = element.getBoundingClientRect();
+        return { top: rect.top, bottom: rect.bottom, height: rect.height, width: rect.width };
+      })`,
+    );
+    assert.equal(middleWayFinalActions.every(({ height, width }) => height >= 44 && width >= 280), true);
+    assert.equal(
+      middleWayFinalActions.every((action, index) => index === 0 || action.top >= middleWayFinalActions[index - 1].bottom),
+      true,
+    );
+
     await page.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],
     });
