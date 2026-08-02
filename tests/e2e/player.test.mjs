@@ -361,6 +361,12 @@ async function readPlayerState(client) {
       const mediaRect = media?.getBoundingClientRect();
       const controlsRect = controls?.getBoundingClientRect();
       const contentRect = content?.getBoundingClientRect();
+      const title = document.querySelector('.scene__title');
+      const text = document.querySelector('.scene__text');
+      const titleRect = title?.getBoundingClientRect();
+      const textRect = text?.getBoundingClientRect();
+      const titleStyle = title ? getComputedStyle(title) : null;
+      const textStyle = text ? getComputedStyle(text) : null;
       return {
         busy: document.querySelector('#app')?.getAttribute('aria-busy'),
         transitionName: document.querySelector('#app')?.getAttribute('data-transition'),
@@ -391,6 +397,13 @@ async function readPlayerState(client) {
         naturalHeight: image?.naturalHeight ?? 0,
         imageHeight: imageRect?.height ?? 0,
         mediaHeight: mediaRect?.height ?? 0,
+        titleTop: titleRect?.top ?? 0,
+        titleFontSize: titleStyle?.fontSize ?? null,
+        textTop: textRect?.top ?? 0,
+        textFontSize: textStyle?.fontSize ?? null,
+        textLineHeight: textStyle?.lineHeight ?? null,
+        mediaBottomBeforeTitle: Boolean(mediaRect && titleRect && mediaRect.bottom <= titleRect.top),
+        titleBottomBeforeText: Boolean(titleRect && textRect && titleRect.bottom <= textRect.top),
         imageVisible: Boolean(imageRect && imageRect.width > 0 && imageRect.height > 0),
         sceneBorderWidth: scene ? getComputedStyle(scene).borderWidth : null,
         noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth,
@@ -1039,10 +1052,11 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         assert.equal(state.controlsInsideViewport, true);
         assert.equal(state.contentInsideViewport, true);
         assert.equal(state.currentSrc.endsWith(".webp"), true);
-        if (sceneNumber === 9 || sceneNumber === 11) {
-          assert.equal(state.mediaHeight >= 320, true);
-          assert.equal(state.imageHeight >= 320, true);
-        }
+        assert.equal(state.mediaHeight >= 240, true);
+        assert.equal(state.imageHeight >= 240, true);
+        assert.equal(state.imageHeight <= 310, true);
+        assert.equal(state.mediaBottomBeforeTitle, true);
+        assert.equal(state.titleBottomBeforeText, true);
       }
       if (sceneNumber < 11) {
         await clickLocalizedNext(page, `Sc\u00e8ne ${sceneNumber + 1} / 11`);
