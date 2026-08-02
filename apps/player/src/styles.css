@@ -1094,6 +1094,65 @@ button:disabled {
   .player[data-pack-id="pack-004"] .player-controls .journey-continuation {
     width: 100%;
   }
+
+  .player[data-pack-id="pack-005"] {
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .player[data-pack-id="pack-005"] .scene {
+    grid-template-rows: auto auto;
+    align-content: start;
+    gap: clamp(0.55rem, 1.35dvh, 0.85rem);
+  }
+
+  .player[data-pack-id="pack-005"] .scene__media {
+    min-height: clamp(11rem, 32dvh, 18rem);
+    overflow: visible;
+  }
+
+  .player[data-pack-id="pack-005"] .scene__image {
+    width: 100%;
+    height: clamp(11rem, 32dvh, 18rem);
+    max-height: none;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .player[data-pack-id="pack-005"] .scene__media[data-image-state="loading"]::before,
+  .player[data-pack-id="pack-005"] .scene__media[data-image-state="error"]::before {
+    min-height: clamp(11rem, 32dvh, 18rem);
+  }
+
+  .player[data-pack-id="pack-005"] .scene__content {
+    padding-inline: 0;
+  }
+
+  .player[data-pack-id="pack-005"] .scene__title {
+    margin-bottom: clamp(0.28rem, 0.75dvh, 0.45rem);
+    font-size: clamp(1.65rem, 6.6vw, 2.45rem);
+    line-height: 1.04;
+  }
+
+  .player[data-pack-id="pack-005"] .scene__text {
+    font-size: clamp(0.96rem, 3.65vw, 1.1rem);
+    line-height: 1.4;
+  }
+
+  .player[data-pack-id="pack-005"] .player__footer {
+    grid-template-columns: 1fr;
+  }
+
+  .player[data-pack-id="pack-005"] .player-controls {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .player[data-pack-id="pack-005"] .player-controls button,
+  .player[data-pack-id="pack-005"] .player-controls .journey-continuation {
+    width: 100%;
+  }
 }
 
 .library {

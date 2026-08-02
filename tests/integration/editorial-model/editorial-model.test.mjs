@@ -7,6 +7,8 @@ test("published works expose the common library identity without deployment meta
     await readProjectJson("examples", "demo-pack", "pack.json"),
     await readProjectJson("packs", "pack-002-polarites-vivantes", "pack.json"),
     await readProjectJson("packs", "pack-003-atlas-recits-vivants", "pack.json"),
+    await readProjectJson("packs", "pack-004-voie-du-milieu", "pack.json"),
+    await readProjectJson("packs", "pack-005-recits-qui-revelent-ou-enferment", "pack.json"),
   ];
 
   for (const manifest of manifests) {
