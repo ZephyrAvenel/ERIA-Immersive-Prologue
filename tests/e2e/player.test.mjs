@@ -531,7 +531,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(entryState.noHorizontalOverflow, true);
 
     await loadUrl(page, libraryUrl);
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 5");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 6");
     const libraryState = await evaluate(
       page,
       `({
@@ -560,6 +560,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         "Atlas des R\u00e9cits Vivants",
         "La Voie du Milieu",
         "Les r\u00e9cits qui r\u00e9v\u00e8lent\u2026 ou qui enferment",
+        "La M\u00e9tamorphose",
       ],
     );
     assert.equal(libraryState.cards.every(({ imageAlt, linkLabel }) => imageAlt.length > 0 && linkLabel.length > 0), true);
@@ -568,16 +569,19 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[2].href.endsWith("/oeuvres/atlas-recits-vivants/"), true);
     assert.equal(libraryState.cards[3].href.endsWith("/oeuvres/voie-du-milieu/"), true);
     assert.equal(libraryState.cards[4].href.endsWith("/oeuvres/recits-qui-revelent-ou-enferment/"), true);
+    assert.equal(libraryState.cards[5].href.endsWith("/oeuvres/la-metamorphose/"), true);
     assert.equal(libraryState.cards[0].slug, "les-gardiens-des-recits-vivants");
     assert.equal(libraryState.cards[1].slug, "polarites-vivantes");
     assert.equal(libraryState.cards[2].slug, "atlas-recits-vivants");
     assert.equal(libraryState.cards[3].slug, "voie-du-milieu");
     assert.equal(libraryState.cards[4].slug, "recits-qui-revelent-ou-enferment");
+    assert.equal(libraryState.cards[5].slug, "la-metamorphose");
     assert.equal(libraryState.cards[0].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[1].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[2].imagePosition, "50% 0%");
     assert.equal(libraryState.cards[3].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[4].imagePosition, "50% 50%");
+    assert.equal(libraryState.cards[5].imagePosition, "50% 50%");
     assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);
@@ -1134,7 +1138,64 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       true,
     );
     await evaluate(page, "document.querySelector('.site-navigation a')?.click()");
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 5");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 6");
+
+    const metamorphosisPackUrl = `${entryUrl}oeuvres/la-metamorphose/`;
+    await page.send("Emulation.setDeviceMetricsOverride", {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await loadUrl(page, metamorphosisPackUrl);
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 13");
+    const metamorphosisCheckpoints = new Map([
+      [1, "La M\u00e9tamorphose"],
+      [2, "Le monde des chenilles"],
+      [6, "R\u00e9sister \u00e0 l\u2019ancien r\u00e9cit"],
+      [7, "Tu as chang\u00e9."],
+      [8, "Les ailes invisibles"],
+      [13, "Un cycle, des infinis possibles"],
+    ]);
+    for (let sceneNumber = 1; sceneNumber <= 13; sceneNumber += 1) {
+      const state = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 13`);
+      if (metamorphosisCheckpoints.has(sceneNumber)) {
+        assert.equal(state.packIdData, "pack-006");
+        assert.equal(state.sceneTitle, metamorphosisCheckpoints.get(sceneNumber));
+        assert.equal(state.noHorizontalOverflow, true);
+        assert.equal(state.controlsInsideViewport, true);
+        assert.equal(state.contentInsideViewport, true);
+        assert.equal(state.titleBottomBeforeText, true);
+        if (sceneNumber === 7) {
+          assert.equal(state.imageVisible, false);
+          assert.equal(state.currentSrc, "");
+        } else {
+          assert.equal(state.objectFit, "contain");
+          assert.equal(state.displayMode, "contain");
+          assert.equal(state.imageVisible, true);
+          assert.equal(state.currentSrc.endsWith(".webp"), true);
+          assert.equal(state.mediaHeight >= 176, true);
+          assert.equal(state.imageHeight >= 176, true);
+          assert.equal(state.imageHeight <= 290, true);
+          assert.equal(state.mediaBottomBeforeTitle, true);
+        }
+      }
+      if (sceneNumber < 13) {
+        await clickLocalizedNext(page, `Sc\u00e8ne ${sceneNumber + 1} / 13`);
+      }
+    }
+    const metamorphosisFinalActions = await evaluate(
+      page,
+      `Array.from(document.querySelectorAll('.player-controls > *')).map((element) => {
+        const rect = element.getBoundingClientRect();
+        return { top: rect.top, bottom: rect.bottom, height: rect.height, width: rect.width };
+      })`,
+    );
+    assert.equal(metamorphosisFinalActions.every(({ height, width }) => height >= 44 && width >= 280), true);
+    assert.equal(
+      metamorphosisFinalActions.every((action, index) => index === 0 || action.top >= metamorphosisFinalActions[index - 1].bottom),
+      true,
+    );
 
     await page.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],
