@@ -1044,16 +1044,17 @@ button:disabled {
   .player[data-pack-id="pack-004"] .scene {
     grid-template-rows: auto auto;
     align-content: start;
+    gap: clamp(0.55rem, 1.4dvh, 0.85rem);
   }
 
   .player[data-pack-id="pack-004"] .scene__media {
-    min-height: clamp(14rem, 42dvh, 24rem);
+    min-height: clamp(12rem, 34dvh, 19rem);
     overflow: visible;
   }
 
   .player[data-pack-id="pack-004"] .scene__image {
     width: 100%;
-    height: clamp(14rem, 42dvh, 24rem);
+    height: clamp(12rem, 34dvh, 19rem);
     max-height: none;
     object-fit: contain;
     object-position: center;
@@ -1061,7 +1062,22 @@ button:disabled {
 
   .player[data-pack-id="pack-004"] .scene__media[data-image-state="loading"]::before,
   .player[data-pack-id="pack-004"] .scene__media[data-image-state="error"]::before {
-    min-height: clamp(14rem, 42dvh, 24rem);
+    min-height: clamp(12rem, 34dvh, 19rem);
+  }
+
+  .player[data-pack-id="pack-004"] .scene__content {
+    padding-inline: 0;
+  }
+
+  .player[data-pack-id="pack-004"] .scene__title {
+    margin-bottom: clamp(0.28rem, 0.8dvh, 0.45rem);
+    font-size: clamp(1.75rem, 7vw, 2.55rem);
+    line-height: 1.03;
+  }
+
+  .player[data-pack-id="pack-004"] .scene__text {
+    font-size: clamp(0.98rem, 3.75vw, 1.12rem);
+    line-height: 1.42;
   }
 
   .player[data-pack-id="pack-004"] .player__footer {
