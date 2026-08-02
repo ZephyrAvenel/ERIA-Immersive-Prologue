@@ -1170,9 +1170,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         assert.equal(state.displayMode, "contain");
         assert.equal(state.imageVisible, true);
         assert.equal(state.currentSrc.endsWith(".webp"), true);
-        assert.equal(state.mediaHeight >= 176, true);
-        assert.equal(state.imageHeight >= 176, true);
-        assert.equal(state.imageHeight <= 290, true);
+        assert.equal(state.mediaHeight >= 216, true);
+        assert.equal(state.imageHeight >= 216, true);
+        assert.equal(state.imageHeight <= 352, true);
         assert.equal(state.mediaBottomBeforeTitle, true);
         if (sceneNumber === 7) {
           assert.equal(state.currentSrc.endsWith("/06-tu-as-change.webp"), true);
