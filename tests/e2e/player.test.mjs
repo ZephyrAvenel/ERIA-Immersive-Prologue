@@ -352,11 +352,13 @@ async function readPlayerState(client) {
       const scene = document.querySelector('.scene');
       const controls = document.querySelector('.player-controls');
       const content = document.querySelector('.scene__content');
+      const media = document.querySelector('.scene__media');
       const focusable = Array.from(document.querySelectorAll('a[href], button')).map((element) => ({
         text: element.textContent,
         disabled: element.disabled === true
       }));
       const imageRect = image?.getBoundingClientRect();
+      const mediaRect = media?.getBoundingClientRect();
       const controlsRect = controls?.getBoundingClientRect();
       const contentRect = content?.getBoundingClientRect();
       return {
@@ -387,6 +389,8 @@ async function readPlayerState(client) {
         currentSrc: image?.currentSrc ?? '',
         naturalWidth: image?.naturalWidth ?? 0,
         naturalHeight: image?.naturalHeight ?? 0,
+        imageHeight: imageRect?.height ?? 0,
+        mediaHeight: mediaRect?.height ?? 0,
         imageVisible: Boolean(imageRect && imageRect.width > 0 && imageRect.height > 0),
         sceneBorderWidth: scene ? getComputedStyle(scene).borderWidth : null,
         noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth,
@@ -1035,6 +1039,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         assert.equal(state.controlsInsideViewport, true);
         assert.equal(state.contentInsideViewport, true);
         assert.equal(state.currentSrc.endsWith(".webp"), true);
+        if (sceneNumber === 9 || sceneNumber === 11) {
+          assert.equal(state.mediaHeight >= 320, true);
+          assert.equal(state.imageHeight >= 320, true);
+        }
       }
       if (sceneNumber < 11) {
         await clickLocalizedNext(page, `Sc\u00e8ne ${sceneNumber + 1} / 11`);
