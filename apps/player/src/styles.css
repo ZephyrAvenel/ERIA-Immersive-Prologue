@@ -1157,22 +1157,24 @@ button:disabled {
   .player[data-pack-id="pack-006"] {
     height: auto;
     min-height: 100dvh;
+    padding-block: clamp(0.55rem, 1.6dvh, 1rem);
+    gap: clamp(0.35rem, 1dvh, 0.65rem);
   }
 
   .player[data-pack-id="pack-006"] .scene {
     grid-template-rows: auto auto;
     align-content: start;
-    gap: clamp(0.55rem, 1.35dvh, 0.85rem);
+    gap: clamp(0.38rem, 1dvh, 0.65rem);
   }
 
   .player[data-pack-id="pack-006"] .scene__media {
-    min-height: clamp(11rem, 32dvh, 18rem);
+    min-height: clamp(13.5rem, 39dvh, 22rem);
     overflow: visible;
   }
 
   .player[data-pack-id="pack-006"] .scene__image {
     width: 100%;
-    height: clamp(11rem, 32dvh, 18rem);
+    height: clamp(13.5rem, 39dvh, 22rem);
     max-height: none;
     object-fit: contain;
     object-position: center;
@@ -1180,7 +1182,7 @@ button:disabled {
 
   .player[data-pack-id="pack-006"] .scene__media[data-image-state="loading"]::before,
   .player[data-pack-id="pack-006"] .scene__media[data-image-state="error"]::before {
-    min-height: clamp(11rem, 32dvh, 18rem);
+    min-height: clamp(13.5rem, 39dvh, 22rem);
   }
 
   .player[data-pack-id="pack-006"] .scene__content {
@@ -1188,14 +1190,15 @@ button:disabled {
   }
 
   .player[data-pack-id="pack-006"] .scene__title {
-    margin-bottom: clamp(0.28rem, 0.75dvh, 0.45rem);
-    font-size: clamp(1.65rem, 6.6vw, 2.45rem);
-    line-height: 1.04;
+    margin-bottom: clamp(0.32rem, 0.8dvh, 0.55rem);
+    font-size: clamp(2.05rem, 8.4vw, 3rem);
+    line-height: 0.98;
   }
 
   .player[data-pack-id="pack-006"] .scene__text {
-    font-size: clamp(0.96rem, 3.65vw, 1.1rem);
-    line-height: 1.4;
+    max-width: 72ch;
+    font-size: clamp(1.06rem, 4.05vw, 1.22rem);
+    line-height: 1.46;
   }
 
   .player[data-pack-id="pack-006"] .player__footer {
