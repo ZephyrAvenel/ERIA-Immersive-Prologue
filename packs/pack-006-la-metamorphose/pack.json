@@ -1,0 +1,113 @@
+{
+  "$schema": "../../schemas/narrative-pack.schema.json",
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "pack-006",
+  "title": "La Métamorphose",
+  "subtitle": "Quand devenir soi ressemble, aux yeux des autres, à devenir quelqu’un d’autre.",
+  "description": "Un parcours immersif sur la transformation intérieure, les récits qui nous définissent, la fidélité à soi et la capacité du vivant à devenir sans se trahir.",
+  "coverImage": "assets/images/00-couverture-la-metamorphose.webp",
+  "coverImageAlt": "Couverture de La Métamorphose, un cocon lumineux suspendu face à un paysage de montagne au soleil couchant.",
+  "language": "fr",
+  "startScene": "scene-00",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 650,
+      "easing": "ease-in-out"
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene-00",
+      "title": "La Métamorphose",
+      "text": "Grandir n’est pas trahir.\n\nIl arrive qu’une vie commence dans un récit trop étroit.\n\nOn nous y donne une place.\n\nUn rôle.\n\nUne forme attendue.\n\nPourtant, le vivant ne cesse jamais d’appeler depuis l’intérieur.\n\nCe parcours invite à traverser la transformation non comme une rupture sèche, mais comme une fidélité profonde à ce qui demande à naître.",
+      "image": "assets/images/00-couverture-la-metamorphose.webp",
+      "imageAlt": "Couverture de La Métamorphose, un cocon lumineux suspendu face à un paysage de montagne au soleil couchant."
+    },
+    {
+      "id": "scene-01",
+      "title": "Le monde des chenilles",
+      "text": "On apprend très tôt ce qu’il faut être.\n\nLes chemins sont balisés.\n\nLes rôles semblent déjà distribués.\n\nChacun avance dans le monde qu’il connaît, porté par les attentes, les habitudes et les récits transmis.\n\nMais même dans le monde des chenilles, quelque chose veille en silence.\n\nLa chenille ignore peut-être encore ses ailes.\n\nLe vivant, lui, ne les a jamais oubliées.",
+      "image": "assets/images/01-le-monde-des-chenilles.webp",
+      "imageAlt": "Des chenilles avancent dans un paysage lumineux, symbolisant les rôles appris et les ailes encore invisibles."
+    },
+    {
+      "id": "scene-02",
+      "title": "Les regards qui nous définissent",
+      "text": "Les autres nous racontent avant même que nous ayons trouvé nos propres mots.\n\nLe discret.\n\nLe fort.\n\nLe gentil.\n\nLe fragile.\n\nLe responsable.\n\nLe rebelle.\n\nCes noms peuvent aider à exister.\n\nMais ils peuvent aussi devenir des miroirs trop étroits.\n\nÀ force d’être répétés, certains regards cessent de nous reconnaître.\n\nIls commencent à nous enfermer.",
+      "image": "assets/images/02-les-regards-qui-nous-definissent.webp",
+      "imageAlt": "Un personnage traverse une galerie de miroirs et d’étiquettes, symbolisant les regards qui définissent l’identité."
+    },
+    {
+      "id": "scene-03",
+      "title": "L’appel intérieur",
+      "text": "Puis quelque chose change.\n\nCe n’est pas toujours spectaculaire.\n\nParfois, c’est une fatigue.\n\nParfois, une question.\n\nParfois, un silence devenu impossible à ignorer.\n\nEst-ce vraiment moi ?\n\nL’appel intérieur ne détruit pas l’ancienne histoire.\n\nIl révèle simplement qu’elle n’est peut-être plus assez vaste pour contenir la vie qui grandit.",
+      "image": "assets/images/03-l-appel-interieur.webp",
+      "imageAlt": "Une silhouette se tient face à deux chemins dans une lumière dorée, portée par un appel intérieur."
+    },
+    {
+      "id": "scene-04",
+      "title": "Entrer dans le cocon",
+      "text": "La transformation commence souvent loin des regards.\n\nElle demande un espace intérieur.\n\nUn retrait.\n\nUne écoute plus profonde.\n\nLe cocon n’est pas une fuite.\n\nCe n’est pas une disparition.\n\nC’est un atelier du vivant.\n\nOn n’y devient pas quelqu’un d’autre.\n\nOn y laisse se réorganiser ce qui cherchait depuis longtemps une forme plus juste.",
+      "image": "assets/images/04-entrer-dans-le-cocon.webp",
+      "imageAlt": "Une personne méditative entre dans un cocon lumineux, symbole d’un atelier intérieur de transformation."
+    },
+    {
+      "id": "scene-05",
+      "title": "Résister à l’ancien récit",
+      "text": "Lorsque nous changeons, l’ancien récit résiste.\n\nIl parle à travers les habitudes.\n\nLes peurs.\n\nLes rôles.\n\nLes attentes.\n\nIl voudrait parfois nous ramener là où tout semblait compréhensible.\n\nCertains regrettent l’ancienne version de nous.\n\nD’autres craignent ce que notre transformation modifie dans leur propre histoire.\n\nMais ce qui grandit en nous ne demande pas de mépriser l’ancien monde.\n\nIl demande seulement de ne plus lui obéir entièrement.",
+      "image": "assets/images/05-resister-a-l-ancien-recit.webp",
+      "imageAlt": "Une figure lumineuse résiste à des fils et silhouettes représentant l’ancien récit."
+    },
+    {
+      "id": "scene-06",
+      "title": "Tu as changé.",
+      "text": "Oui.\n\nC’est ce que fait le vivant.\n\nIl change de forme pour rester fidèle à ce qui grandit en lui.\n\nGrandir n’est pas une trahison.\n\nLe papillon ne renie pas la chenille.\n\nIl l’accomplit.\n\nCe que certains appellent une rupture est parfois une continuité plus profonde.\n\nCe que certains appellent une perte est parfois la naissance d’une présence plus vraie.",
+      "image": "assets/images/06-tu-as-change.webp",
+      "imageAlt": "Une figure lumineuse aux ailes de papillon avance vers l’horizon tandis que l’ancien récit l’accuse d’avoir changé."
+    },
+    {
+      "id": "scene-07",
+      "title": "Les ailes invisibles",
+      "text": "Certaines possibilités étaient déjà là.\n\nLe courage.\n\nLa douceur.\n\nLa liberté.\n\nLa créativité.\n\nLa paix.\n\nElles ne demandaient pas à être inventées.\n\nElles attendaient seulement les conditions pour se déployer.\n\nLes ailes invisibles ne sont pas des promesses abstraites.\n\nElles sont les formes patientes du vivant en nous.",
+      "image": "assets/images/07-les-ailes-invisibles.webp",
+      "imageAlt": "Une personne devant un horizon doré laisse apparaître des ailes de lumière portant courage, douceur et liberté."
+    },
+    {
+      "id": "scene-08",
+      "title": "Les relations qui évoluent",
+      "text": "Quand nous changeons, les relations changent aussi.\n\nCertaines apprennent à voler avec nous.\n\nElles ajustent leur rythme.\n\nElles découvrent une manière nouvelle d’aimer, d’écouter, de comprendre.\n\nD’autres restent attachées au monde ancien.\n\nCe n’est pas toujours par malveillance.\n\nParfois, elles ne savent simplement pas encore comment habiter la transformation.\n\nIl ne s’agit pas de juger.\n\nIl s’agit de reconnaître que tous les liens ne grandissent pas au même rythme.",
+      "image": "assets/images/08-les-relations-qui-evoluent.webp",
+      "imageAlt": "Des silhouettes cheminent avec une personne transformée dans un paysage traversé par des papillons."
+    },
+    {
+      "id": "scene-09",
+      "title": "Devenir pleinement soi",
+      "text": "Devenir soi n’est pas devenir quelqu’un d’autre.\n\nC’est cesser peu à peu d’habiter des rôles qui ne nous correspondent plus.\n\nC’est retirer certains masques sans mépriser les années où ils nous ont protégés.\n\nC’est apprendre à reconnaître la part de nous qui attendait un espace pour respirer.\n\nLa métamorphose ne cherche pas à effacer le passé.\n\nElle cherche à lui donner une suite plus vivante.",
+      "image": "assets/images/09-devenir-pleinement-soi.webp",
+      "imageAlt": "Une personne avance vers la lumière avec des papillons, laissant derrière elle des couches et des rôles anciens."
+    },
+    {
+      "id": "scene-10",
+      "title": "Veiller ensemble sur les récits vivants",
+      "text": "La transformation n’est pas seulement individuelle.\n\nElle modifie notre manière d’être ensemble.\n\nElle nous apprend à accueillir les passages des autres.\n\nÀ ne pas réduire quelqu’un à ce qu’il a été.\n\nÀ ne pas confondre fidélité et immobilité.\n\nVeiller sur les récits vivants, c’est créer des liens où chacun peut continuer de devenir.\n\nDes liens plus justes.\n\nPlus attentifs.\n\nPlus capables d’accompagner la vie au lieu de la figer.",
+      "image": "assets/images/10-veiller-ensemble-sur-les-recits-vivants.webp",
+      "imageAlt": "Un groupe veille autour d’un feu dans un paysage ouvert, symbole des récits vivants partagés."
+    },
+    {
+      "id": "scene-11",
+      "title": "Épilogue — Le voyage continue",
+      "text": "La métamorphose n’est pas un événement unique.\n\nElle n’est pas une porte que l’on franchit une seule fois.\n\nC’est une manière d’habiter la vie.\n\nÀ certains moments, nous entrons dans le cocon.\n\nÀ d’autres, nous apprenons à déployer nos ailes.\n\nPuis vient le temps de marcher avec d’autres présences en transformation.\n\nLe voyage continue parce que le vivant ne cesse jamais d’inventer sa fidélité.",
+      "image": "assets/images/11-epilogue-le-voyage-continue.webp",
+      "imageAlt": "Des voyageurs avancent vers l’horizon au soleil couchant, accompagnés par le message que le voyage continue."
+    },
+    {
+      "id": "scene-12",
+      "title": "Un cycle, des infinis possibles",
+      "text": "Un cycle s’achève.\n\nD’autres commencent déjà.\n\nLes récits vivants ne demandent pas que nous restions identiques pour être fidèles.\n\nIls nous invitent à grandir sans nous trahir.\n\nÀ transmettre sans figer.\n\nÀ changer sans renier.\n\nChaque métamorphose ouvre un passage.\n\nChaque passage peut devenir un monde.\n\nEt chaque monde, à son tour, peut apprendre à accueillir les formes nouvelles du vivant.",
+      "image": "assets/images/12-cloture-un-cycle-des-infinis-possibles.webp",
+      "imageAlt": "Une assemblée contemple un soleil couchant et le message Un cycle, des infinis possibles."
+    }
+  ]
+}

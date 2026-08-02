@@ -27,6 +27,11 @@
       "id": "pack-005",
       "slug": "recits-qui-revelent-ou-enferment",
       "manifest": "pack-005-recits-qui-revelent-ou-enferment/pack.json"
+    },
+    {
+      "id": "pack-006",
+      "slug": "la-metamorphose",
+      "manifest": "pack-006-la-metamorphose/pack.json"
     }
   ]
 }
