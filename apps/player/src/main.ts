@@ -310,12 +310,22 @@ async function renderLibrary(): Promise<void> {
 
   const header = document.createElement("header");
   header.className = "library__header";
+  const heroEyebrow = document.createElement("p");
+  heroEyebrow.className = "library__eyebrow";
+  heroEyebrow.textContent = messages.libraryTitle;
   const title = document.createElement("h1");
   title.id = "library-title";
-  title.textContent = messages.libraryTitle;
+  title.textContent = messages.libraryHeroTitle;
+  const signature = document.createElement("p");
+  signature.className = "library__signature";
+  signature.textContent = messages.libraryHeroSignature;
+  const orientation = document.createElement("p");
+  orientation.className = "library__orientation";
+  orientation.textContent = messages.libraryHeroDescription;
   const description = document.createElement("p");
+  description.className = "library__prompt";
   description.textContent = messages.libraryDescription;
-  header.append(title, description);
+  header.append(heroEyebrow, title, signature, orientation, description);
 
   const grid = document.createElement("div");
   grid.className = "library__grid";
