@@ -19,6 +19,9 @@ export interface LocaleMessages {
   readonly errorMessage: string;
   readonly unknownError: string;
   readonly libraryTitle: string;
+  readonly libraryHeroTitle: string;
+  readonly libraryHeroSignature: string;
+  readonly libraryHeroDescription: string;
   readonly libraryDescription: string;
   readonly exploreWork: string;
   readonly libraryAction: string;

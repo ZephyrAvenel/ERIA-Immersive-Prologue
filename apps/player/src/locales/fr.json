@@ -16,7 +16,10 @@
   "errorMessage": "Le lecteur ne peut pas ouvrir ce pack narratif.",
   "unknownError": "Erreur inconnue du lecteur",
   "libraryTitle": "Bibliothèque des œuvres immersives",
-  "libraryDescription": "Des récits indépendants, un même espace d’immersion.",
+  "libraryHeroTitle": "Un monde narratif habitable",
+  "libraryHeroSignature": "Les Récits Vivants ne sont pas seulement des histoires à lire. Ce sont des mondes à explorer, des passages à traverser et des expériences qui invitent chacun à habiter autrement le réel.",
+  "libraryHeroDescription": "Chaque œuvre est une porte d’entrée. Chaque pack est un chemin. Chaque carte devient un repère. L’INE rassemble ces parcours en un territoire narratif vivant, que chacun peut traverser à son rythme.",
+  "libraryDescription": "Choisissez une porte d’entrée. Chaque parcours ouvre une manière différente d’explorer les Récits Vivants.",
   "exploreWork": "Explorer",
   "libraryAction": "Explorer les œuvres",
   "continueExploration": "Poursuivre votre exploration"

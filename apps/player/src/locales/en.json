@@ -16,7 +16,10 @@
   "errorMessage": "The player could not open this Narrative Pack.",
   "unknownError": "Unknown player error",
   "libraryTitle": "Immersive works library",
-  "libraryDescription": "Independent stories, one immersive space.",
+  "libraryHeroTitle": "A habitable narrative world",
+  "libraryHeroSignature": "Living Stories are not only stories to read. They are worlds to explore, passages to cross, and experiences that invite each person to inhabit reality differently.",
+  "libraryHeroDescription": "Each work is an entryway. Each pack is a path. Each card becomes a landmark. INE gathers these journeys into a living narrative territory that everyone can cross at their own pace.",
+  "libraryDescription": "Choose an entryway. Each journey opens a different way to explore the Living Stories.",
   "exploreWork": "Explore",
   "libraryAction": "Explore the works",
   "continueExploration": "Continue exploring"

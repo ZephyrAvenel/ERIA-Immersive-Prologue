@@ -537,6 +537,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       `({
         language: navigator.language,
         title: document.querySelector('#library-title')?.textContent,
+        eyebrow: document.querySelector('.library__eyebrow')?.textContent,
+        signature: document.querySelector('.library__signature')?.textContent,
+        orientation: document.querySelector('.library__orientation')?.textContent,
+        prompt: document.querySelector('.library__prompt')?.textContent,
         cards: Array.from(document.querySelectorAll('.work-card')).map((card) => ({
           title: card.querySelector('h2')?.textContent,
           slug: card.getAttribute('data-work-slug'),
@@ -549,9 +553,20 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       })`,
     );
     const expectedLibraryTitle = libraryState.language.toLowerCase().startsWith("fr")
-      ? "Biblioth\u00e8que des \u0153uvres immersives"
-      : "Immersive works library";
+      ? "Un monde narratif habitable"
+      : "A habitable narrative world";
     assert.equal(libraryState.title, expectedLibraryTitle);
+    assert.equal(libraryState.eyebrow, libraryState.language.toLowerCase().startsWith("fr")
+      ? "Biblioth\u00e8que des \u0153uvres immersives"
+      : "Immersive works library");
+    assert.equal(
+      libraryState.signature,
+      libraryState.language.toLowerCase().startsWith("fr")
+        ? "Les R\u00e9cits Vivants ne sont pas seulement des histoires \u00e0 lire. Ce sont des mondes \u00e0 explorer, des passages \u00e0 traverser et des exp\u00e9riences qui invitent chacun \u00e0 habiter autrement le r\u00e9el."
+        : "Living Stories are not only stories to read. They are worlds to explore, passages to cross, and experiences that invite each person to inhabit reality differently.",
+    );
+    assert.equal(libraryState.orientation.includes("porte d\u2019entr\u00e9e") || libraryState.orientation.includes("entryway"), true);
+    assert.equal(libraryState.prompt.includes("R\u00e9cits Vivants") || libraryState.prompt.includes("Living Stories"), true);
     assert.deepEqual(
       libraryState.cards.map(({ title }) => title),
       [

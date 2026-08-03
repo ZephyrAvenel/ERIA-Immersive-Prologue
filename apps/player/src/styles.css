@@ -1293,19 +1293,45 @@ button:disabled {
   margin: 0 auto clamp(2.5rem, 6vw, 5rem);
 }
 
+.library__eyebrow {
+  margin: 0 0 0.65rem;
+  color: #fbbf24;
+  font-size: clamp(0.78rem, 1.7vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
 .library__header h1 {
-  max-width: 18ch;
-  margin: 0 0 1rem;
-  font-size: clamp(2.4rem, 7vw, 5.6rem);
+  max-width: 20ch;
+  margin: 0 0 clamp(0.9rem, 2vw, 1.35rem);
+  font-size: clamp(2.35rem, 6.4vw, 5.3rem);
   line-height: 0.98;
   letter-spacing: -0.04em;
 }
 
 .library__header p {
-  max-width: 42rem;
+  max-width: 56rem;
   margin: 0;
   color: #cbd5e1;
   font-size: clamp(1.05rem, 2vw, 1.3rem);
+}
+
+.library__signature {
+  font-size: clamp(1.08rem, 2.1vw, 1.45rem);
+  line-height: 1.5;
+}
+
+.library__orientation {
+  margin-top: clamp(1rem, 2.2vw, 1.4rem) !important;
+  color: #e2e8f0 !important;
+  line-height: 1.55;
+}
+
+.library__prompt {
+  margin-top: clamp(1rem, 2vw, 1.35rem) !important;
+  color: #f8fafc !important;
+  font-weight: 700;
 }
 
 .library__grid {
