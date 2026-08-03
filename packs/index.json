@@ -32,6 +32,11 @@
       "id": "pack-006",
       "slug": "la-metamorphose",
       "manifest": "pack-006-la-metamorphose/pack.json"
+    },
+    {
+      "id": "pack-007",
+      "slug": "jouer-pour-devenir",
+      "manifest": "pack-007-jouer-pour-devenir/pack.json"
     }
   ]
 }

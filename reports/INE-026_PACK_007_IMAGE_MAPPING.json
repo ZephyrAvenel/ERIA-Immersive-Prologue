@@ -1,0 +1,118 @@
+{
+  "pngTotalBytes": 35196522,
+  "webpTotalBytes": 4138366,
+  "mapping": [
+    {
+      "source": "00 — Couverture.png",
+      "officialPng": "00-couverture-jouer-pour-devenir.png",
+      "officialWebp": "00-couverture-jouer-pour-devenir.webp",
+      "pngBytes": 2535918,
+      "webpBytes": 283532,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "01 — Le premier terrain d’exploration.png",
+      "officialPng": "01-premier-terrain-exploration.png",
+      "officialWebp": "01-premier-terrain-exploration.webp",
+      "pngBytes": 2402509,
+      "webpBytes": 275238,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "02 — Quand l’imagination transforme la réalité.png",
+      "officialPng": "02-imagination-transforme-realite.png",
+      "officialWebp": "02-imagination-transforme-realite.webp",
+      "pngBytes": 2561801,
+      "webpBytes": 287990,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "03 — Le droit d’essayer.png",
+      "officialPng": "03-droit-dessayer.png",
+      "officialWebp": "03-droit-dessayer.webp",
+      "pngBytes": 2494573,
+      "webpBytes": 300586,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "04 — Jouer avec les autres.png",
+      "officialPng": "04-jouer-avec-les-autres.png",
+      "officialWebp": "04-jouer-avec-les-autres.webp",
+      "pngBytes": 2421915,
+      "webpBytes": 274324,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "05 — Les récits que nous construisons.png",
+      "officialPng": "05-recits-que-nous-construisons.png",
+      "officialWebp": "05-recits-que-nous-construisons.webp",
+      "pngBytes": 2429565,
+      "webpBytes": 286526,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "06 — Les récits empêchés.png",
+      "officialPng": "06-recits-empeches.png",
+      "officialWebp": "06-recits-empeches.webp",
+      "pngBytes": 2429981,
+      "webpBytes": 232554,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "07 — Retrouver le jeu à l’âge adulte.png",
+      "officialPng": "07-retrouver-le-jeu-age-adulte.png",
+      "officialWebp": "07-retrouver-le-jeu-age-adulte.webp",
+      "pngBytes": 2463498,
+      "webpBytes": 278644,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "08.png",
+      "officialPng": "08-jeu-comme-ecologie-du-vivant.png",
+      "officialWebp": "08-jeu-comme-ecologie-du-vivant.webp",
+      "pngBytes": 2680276,
+      "webpBytes": 343336,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "09.png",
+      "officialPng": "09-apprendre-explorer-creer-devenir.png",
+      "officialWebp": "09-apprendre-explorer-creer-devenir.webp",
+      "pngBytes": 2498856,
+      "webpBytes": 305164,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "10.png",
+      "officialPng": "10-jeu-tisse-liens-entre-temps.png",
+      "officialWebp": "10-jeu-tisse-liens-entre-temps.webp",
+      "pngBytes": 2423894,
+      "webpBytes": 284214,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "11.png",
+      "officialPng": "11-continuer-a-jouer.png",
+      "officialWebp": "11-continuer-a-jouer.webp",
+      "pngBytes": 2827107,
+      "webpBytes": 370748,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "12.png",
+      "officialPng": "12-et-apres.png",
+      "officialWebp": "12-et-apres.webp",
+      "pngBytes": 2442190,
+      "webpBytes": 296330,
+      "dimensions": "1536x1024"
+    },
+    {
+      "source": "13.png",
+      "officialPng": "13-le-jeu-continue-avec-vous.png",
+      "officialWebp": "13-le-jeu-continue-avec-vous.webp",
+      "pngBytes": 2584439,
+      "webpBytes": 319180,
+      "dimensions": "1536x1024"
+    }
+  ]
+}
