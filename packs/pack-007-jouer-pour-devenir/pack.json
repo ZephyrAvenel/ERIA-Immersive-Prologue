@@ -1,0 +1,120 @@
+{
+  "$schema": "../../schemas/narrative-pack.schema.json",
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "pack-007",
+  "title": "Jouer pour devenir",
+  "subtitle": "Quand le jeu ouvre des chemins que l’enseignement seul ne peut pas révéler.",
+  "description": "Un parcours immersif sur le jeu comme première manière d’apprendre, d’imaginer, d’essayer, de coopérer et de devenir.",
+  "coverImage": "assets/images/00-couverture-jouer-pour-devenir.webp",
+  "coverImageAlt": "Couverture de Jouer pour devenir, un enfant face à un paysage d’aventure où le jeu ouvre des chemins d’apprentissage.",
+  "language": "fr",
+  "startScene": "scene-00",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 650,
+      "easing": "ease-in-out"
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene-00",
+      "title": "Jouer pour devenir",
+      "text": "Il suffit parfois d’un carton, d’une corde ou d’une poignée de cailloux pour qu’un monde entier apparaisse.\n\nL’adulte voit des objets ordinaires.\n\nL’enfant y voit un navire, une cabane, une montagne à gravir, un laboratoire secret ou un royaume à protéger.\n\nCe parcours rappelle que le jeu n’est pas une simple distraction : il est l’une des premières façons d’habiter le monde.",
+      "image": "assets/images/00-couverture-jouer-pour-devenir.webp",
+      "imageAlt": "Couverture de Jouer pour devenir, un enfant face à un paysage d’aventure où le jeu ouvre des chemins d’apprentissage."
+    },
+    {
+      "id": "scene-01",
+      "title": "Le premier terrain d’exploration",
+      "text": "Le jeu est souvent la première rencontre entre l’enfant et le monde.\n\nIl ne reçoit pas un mode d’emploi.\n\nIl expérimente.\n\nIl pousse, tire, observe et recommence.\n\nChaque tentative transforme sa compréhension de la réalité.\n\nCe n’est pas seulement son intelligence qui grandit : c’est sa manière d’habiter le monde.",
+      "image": "assets/images/01-premier-terrain-exploration.webp",
+      "imageAlt": "Un enfant explore un terrain d’aventure lumineux, symbole du jeu comme première rencontre avec le monde."
+    },
+    {
+      "id": "scene-02",
+      "title": "Quand l’imagination transforme la réalité",
+      "text": "Un carton n’est jamais seulement un carton.\n\nIl devient un château, une fusée, une maison, une forêt ou une machine extraordinaire.\n\nL’imagination ne consiste pas à fuir le réel.\n\nElle révèle que le réel contient davantage de possibilités que ce que l’on croyait.",
+      "image": "assets/images/02-imagination-transforme-realite.webp",
+      "imageAlt": "Un enfant transforme un objet ordinaire en monde imaginaire, révélant les possibilités cachées du réel."
+    },
+    {
+      "id": "scene-03",
+      "title": "Le droit d’essayer",
+      "text": "Le jeu possède une qualité rare : il autorise l’erreur.\n\nLorsqu’un enfant tombe en apprenant à marcher, personne ne conclut qu’il est incapable.\n\nNous savons qu’il apprend.\n\nLe jeu rappelle que l’erreur est souvent le chemin normal de l’apprentissage.\n\nCelui qui n’ose plus essayer cesse progressivement d’apprendre.",
+      "image": "assets/images/03-droit-dessayer.webp",
+      "imageAlt": "Un enfant avance sur un passage ludique, entouré de signes d’essai, d’erreur et d’apprentissage."
+    },
+    {
+      "id": "scene-04",
+      "title": "Jouer avec les autres",
+      "text": "Le jeu construit la relation.\n\nPartager, attendre son tour, inventer des règles, les modifier ensemble, résoudre les conflits, faire confiance : autant de compétences sociales qui ne peuvent être pleinement apprises dans les livres.\n\nLe jeu devient une école vivante de la coopération.",
+      "image": "assets/images/04-jouer-avec-les-autres.webp",
+      "imageAlt": "Des enfants jouent ensemble autour d’un espace commun, symbole de coopération et de règles partagées."
+    },
+    {
+      "id": "scene-05",
+      "title": "Les récits que nous construisons",
+      "text": "Chaque jeu raconte une histoire.\n\nLe héros, l’explorateur, le gardien, le scientifique, le bâtisseur : l’enfant expérimente des identités.\n\nIl découvre qu’il peut devenir autrement.\n\nCes récits intérieurs participent à la construction de sa personnalité et ouvrent des futurs possibles.",
+      "image": "assets/images/05-recits-que-nous-construisons.webp",
+      "imageAlt": "Des enfants inventent une histoire autour d’une lumière, entourés de figures symboliques et de rôles possibles."
+    },
+    {
+      "id": "scene-06",
+      "title": "Les récits empêchés",
+      "text": "Certains environnements réduisent progressivement cette liberté.\n\nTout est prévu.\n\nTout est évalué.\n\nTout possède une bonne réponse.\n\nL’imagination devient secondaire.\n\nL’erreur devient une faute.\n\nLe plaisir devient suspect.\n\nPetit à petit, l’enfant apprend moins à explorer qu’à exécuter.",
+      "image": "assets/images/06-recits-empeches.webp",
+      "imageAlt": "Un enfant dans un espace sombre et très cadré regarde une fenêtre lumineuse, symbole des récits empêchés."
+    },
+    {
+      "id": "scene-07",
+      "title": "Retrouver le jeu à l’âge adulte",
+      "text": "Beaucoup d’adultes pensent avoir cessé de jouer.\n\nEn réalité, ils ont souvent cessé de s’autoriser à explorer.\n\nCréer, écrire, peindre, jardiner, fabriquer, improviser, apprendre un instrument, marcher sans objectif précis : toutes ces activités réveillent une disposition fondamentale.\n\nJouer n’est pas rester enfant.\n\nC’est rester vivant.",
+      "image": "assets/images/07-retrouver-le-jeu-age-adulte.webp",
+      "imageAlt": "Un adulte retrouve un espace créatif et lumineux, symbole du jeu comme exploration toujours vivante."
+    },
+    {
+      "id": "scene-08",
+      "title": "Le jeu comme écologie du vivant",
+      "text": "Une société qui laisse une place au jeu protège davantage que des loisirs.\n\nElle protège la curiosité, la créativité, la coopération et la capacité d’inventer des réponses nouvelles face aux défis futurs.\n\nLe jeu devient une véritable écologie de l’apprentissage.\n\nIl ne prépare pas seulement à réussir des examens.\n\nIl prépare à vivre.",
+      "image": "assets/images/08-jeu-comme-ecologie-du-vivant.webp",
+      "imageAlt": "Des enfants jouent dans un paysage naturel et lumineux, symbole du jeu comme écologie de l’apprentissage."
+    },
+    {
+      "id": "scene-09",
+      "title": "Apprendre, explorer, créer, recommencer et devenir",
+      "text": "Apprendre n’est pas seulement accumuler des connaissances.\n\nC’est entrer dans une relation active avec le monde.\n\nExplorer, créer, recommencer, transformer : le jeu fait de l’apprentissage un mouvement vivant.\n\nChaque tentative ouvre une possibilité nouvelle.",
+      "image": "assets/images/09-apprendre-explorer-creer-devenir.webp",
+      "imageAlt": "Un enfant avance dans un monde de jeu et de construction, symbole d’apprentissage, d’exploration et de devenir."
+    },
+    {
+      "id": "scene-10",
+      "title": "Le jeu tisse des liens entre les temps",
+      "text": "Le jeu relie l’enfance et l’âge adulte.\n\nIl relie les générations, les gestes anciens et les inventions nouvelles.\n\nCe que l’enfant découvre en jouant peut devenir plus tard une manière de créer, d’aimer, de travailler, de transmettre.\n\nLe jeu n’est pas derrière nous.\n\nIl circule dans nos manières d’habiter la vie.",
+      "image": "assets/images/10-jeu-tisse-liens-entre-temps.webp",
+      "imageAlt": "Des générations réunies autour d’un jeu contemplent un horizon, symbole des liens entre les temps."
+    },
+    {
+      "id": "scene-11",
+      "title": "Continuer à jouer",
+      "text": "Continuer à jouer, ce n’est pas refuser de grandir.\n\nC’est préserver le goût d’explorer.\n\nC’est garder vivante la capacité d’imaginer d’autres chemins.\n\nLe jeu n’est pas l’opposé du sérieux.\n\nIl est souvent la forme la plus profonde de l’apprentissage.",
+      "image": "assets/images/11-continuer-a-jouer.webp",
+      "imageAlt": "Un enfant et un vaste paysage invitent à continuer à jouer, créer et apprendre autrement."
+    },
+    {
+      "id": "scene-12",
+      "title": "Et après ?",
+      "text": "Le jeu n’a pas de fin.\n\nIl ouvre des passages.\n\nIl nous invite à emporter dans le monde réel ce que nous avons découvert : la curiosité, le lien, l’essai, la coopération, l’imagination et la joie de devenir.\n\nChaque jour peut devenir une nouvelle invitation à jouer pour apprendre autrement.",
+      "image": "assets/images/12-et-apres.webp",
+      "imageAlt": "Des enfants regardent un horizon après le jeu, symbole du passage vers le monde réel et la joie de devenir."
+    },
+    {
+      "id": "scene-13",
+      "title": "Le jeu continue avec vous",
+      "text": "Merci d’avoir cheminé dans ce pack.\n\nQue ce que vous avez vécu ici nourrisse vos pas dans le monde réel.\n\nLes récits vivants sont partout autour de vous.\n\nSoyez le récit que vous souhaitez habiter.\n\nLe jeu continue avec vous.",
+      "image": "assets/images/13-le-jeu-continue-avec-vous.webp",
+      "imageAlt": "Clôture du parcours Jouer pour devenir, avec des enfants face à un horizon lumineux où le jeu continue."
+    }
+  ]
+}

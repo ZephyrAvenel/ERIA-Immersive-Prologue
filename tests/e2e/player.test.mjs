@@ -531,7 +531,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(entryState.noHorizontalOverflow, true);
 
     await loadUrl(page, libraryUrl);
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 6");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 7");
     const libraryState = await evaluate(
       page,
       `({
@@ -561,6 +561,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         "La Voie du Milieu",
         "Les r\u00e9cits qui r\u00e9v\u00e8lent\u2026 ou qui enferment",
         "La M\u00e9tamorphose",
+        "Jouer pour devenir",
       ],
     );
     assert.equal(libraryState.cards.every(({ imageAlt, linkLabel }) => imageAlt.length > 0 && linkLabel.length > 0), true);
@@ -570,18 +571,21 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[3].href.endsWith("/oeuvres/voie-du-milieu/"), true);
     assert.equal(libraryState.cards[4].href.endsWith("/oeuvres/recits-qui-revelent-ou-enferment/"), true);
     assert.equal(libraryState.cards[5].href.endsWith("/oeuvres/la-metamorphose/"), true);
+    assert.equal(libraryState.cards[6].href.endsWith("/oeuvres/jouer-pour-devenir/"), true);
     assert.equal(libraryState.cards[0].slug, "les-gardiens-des-recits-vivants");
     assert.equal(libraryState.cards[1].slug, "polarites-vivantes");
     assert.equal(libraryState.cards[2].slug, "atlas-recits-vivants");
     assert.equal(libraryState.cards[3].slug, "voie-du-milieu");
     assert.equal(libraryState.cards[4].slug, "recits-qui-revelent-ou-enferment");
     assert.equal(libraryState.cards[5].slug, "la-metamorphose");
+    assert.equal(libraryState.cards[6].slug, "jouer-pour-devenir");
     assert.equal(libraryState.cards[0].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[1].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[2].imagePosition, "50% 0%");
     assert.equal(libraryState.cards[3].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[4].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[5].imagePosition, "50% 50%");
+    assert.equal(libraryState.cards[6].imagePosition, "50% 50%");
     assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);
@@ -1138,7 +1142,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       true,
     );
     await evaluate(page, "document.querySelector('.site-navigation a')?.click()");
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 6");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 7");
 
     const metamorphosisPackUrl = `${entryUrl}oeuvres/la-metamorphose/`;
     await page.send("Emulation.setDeviceMetricsOverride", {
@@ -1192,6 +1196,61 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(metamorphosisFinalActions.every(({ height, width }) => height >= 44 && width >= 280), true);
     assert.equal(
       metamorphosisFinalActions.every((action, index) => index === 0 || action.top >= metamorphosisFinalActions[index - 1].bottom),
+      true,
+    );
+
+    const playToBecomePackUrl = `${entryUrl}oeuvres/jouer-pour-devenir/`;
+    await page.send("Emulation.setDeviceMetricsOverride", {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await loadUrl(page, playToBecomePackUrl);
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 14");
+    const playToBecomeCheckpoints = new Map([
+      [1, "Jouer pour devenir"],
+      [2, "Le premier terrain d\u2019exploration"],
+      [4, "Le droit d\u2019essayer"],
+      [7, "Les r\u00e9cits emp\u00each\u00e9s"],
+      [10, "Apprendre, explorer, cr\u00e9er, recommencer et devenir"],
+      [14, "Le jeu continue avec vous"],
+    ]);
+    for (let sceneNumber = 1; sceneNumber <= 14; sceneNumber += 1) {
+      const state = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 14`);
+      if (playToBecomeCheckpoints.has(sceneNumber)) {
+        assert.equal(state.packIdData, "pack-007");
+        assert.equal(state.sceneTitle, playToBecomeCheckpoints.get(sceneNumber));
+        assert.equal(state.noHorizontalOverflow, true);
+        assert.equal(state.controlsInsideViewport, true);
+        assert.equal(state.contentInsideViewport, true);
+        assert.equal(state.titleBottomBeforeText, true);
+        assert.equal(state.objectFit, "contain");
+        assert.equal(state.displayMode, "contain");
+        assert.equal(state.imageVisible, true);
+        assert.equal(state.currentSrc.endsWith(".webp"), true);
+        assert.equal(state.mediaHeight >= 216, true);
+        assert.equal(state.imageHeight >= 216, true);
+        assert.equal(state.imageHeight <= 352, true);
+        assert.equal(state.mediaBottomBeforeTitle, true);
+        if (sceneNumber === 14) {
+          assert.equal(state.currentSrc.endsWith("/13-le-jeu-continue-avec-vous.webp"), true);
+        }
+      }
+      if (sceneNumber < 14) {
+        await clickLocalizedNext(page, `Sc\u00e8ne ${sceneNumber + 1} / 14`);
+      }
+    }
+    const playToBecomeFinalActions = await evaluate(
+      page,
+      `Array.from(document.querySelectorAll('.player-controls > *')).map((element) => {
+        const rect = element.getBoundingClientRect();
+        return { top: rect.top, bottom: rect.bottom, height: rect.height, width: rect.width };
+      })`,
+    );
+    assert.equal(playToBecomeFinalActions.every(({ height, width }) => height >= 44 && width >= 280), true);
+    assert.equal(
+      playToBecomeFinalActions.every((action, index) => index === 0 || action.top >= playToBecomeFinalActions[index - 1].bottom),
       true,
     );
 
