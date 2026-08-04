@@ -1,0 +1,106 @@
+{
+  "$schema": "../../schemas/narrative-pack.schema.json",
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "pack-008",
+  "title": "Le Veilleur",
+  "subtitle": "Du prophète au veilleur",
+  "description": "Un parcours contemplatif pour passer de la voix qui annonce à la présence qui veille sur les récits, les passages et le monde commun.",
+  "coverImage": "assets/images/00-couverture-le-veilleur.webp",
+  "coverImageAlt": "Couverture du pack Le Veilleur, une silhouette contemplative face à une vallée lumineuse.",
+  "language": "fr",
+  "startScene": "scene-00",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 650,
+      "easing": "ease-in-out"
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene-00",
+      "title": "Le Veilleur",
+      "text": "Lorsque le monde parle trop fort, certains n’ajoutent pas une voix de plus.\n\nIls apprennent à écouter.\n\nIls deviennent veilleurs.\n\nCe parcours invite à passer de la parole qui annonce à la présence qui demeure.",
+      "image": "assets/images/00-couverture-le-veilleur.webp",
+      "imageAlt": "Couverture du pack Le Veilleur, une silhouette contemplative face à une vallée lumineuse."
+    },
+    {
+      "id": "scene-01",
+      "title": "La Voix",
+      "text": "Toute civilisation écoute certaines voix.\n\nAvant les livres, avant les écrans, avant les réseaux, il y avait déjà des voix.\n\nElles transmettaient les peurs, les espoirs, les lois, les légendes et les chemins.\n\nUne voix pouvait rassembler un peuple.\n\nElle pouvait aussi le diviser.\n\nCar une voix ne porte jamais seulement des mots.\n\nElle porte une manière d’habiter le monde.",
+      "image": "assets/images/01-la-voix.webp",
+      "imageAlt": "Une figure silencieuse contemple une vallée au lever du jour, symbole de la voix qui porte une civilisation."
+    },
+    {
+      "id": "scene-02",
+      "title": "Le Prophète",
+      "text": "Le prophète se tient souvent au bord de son époque.\n\nIl voit ce que les autres ne veulent pas voir.\n\nIl avertit lorsque le monde se détourne de lui-même.\n\nIl rappelle qu’une civilisation peut perdre son âme en croyant seulement gagner du temps.\n\nMais la parole prophétique porte un risque.\n\nElle peut devenir cri.\n\nElle peut devenir verdict.\n\nElle peut enfermer le monde dans l’urgence de sa propre annonce.",
+      "image": "assets/images/02-le-prophete.webp",
+      "imageAlt": "Un prophète au bord d’une montagne regarde une vallée lumineuse, annonçant et avertissant."
+    },
+    {
+      "id": "scene-03",
+      "title": "Le Poète",
+      "text": "Le poète ne prédit pas toujours.\n\nIl dévoile.\n\nIl donne une forme à ce qui n’avait pas encore de nom.\n\nIl entend les tremblements sous les certitudes.\n\nIl révèle la beauté cachée dans les marges.\n\nLà où le monde dit : cela ne sert à rien,\n\nle poète répond : cela fait signe.\n\nIl ne possède pas la vérité.\n\nIl ouvre un passage vers ce qui attend d’être reconnu.",
+      "image": "assets/images/03-le-poete.webp",
+      "imageAlt": "Un poète assis face à une vallée au soleil couchant révèle l’invisible par l’écoute."
+    },
+    {
+      "id": "scene-04",
+      "title": "Le Bruit du monde",
+      "text": "Puis vient le bruit.\n\nLes voix se multiplient.\n\nLes écrans s’allument.\n\nLes opinions se heurtent.\n\nLes alertes succèdent aux alertes.\n\nChacun veut être entendu.\n\nChacun veut convaincre.\n\nChacun veut nommer le réel avant les autres.\n\nMais lorsque tout parle en même temps, quelque chose disparaît :\n\nl’écoute, la nuance, le silence intérieur, la possibilité de comprendre avant de répondre.",
+      "image": "assets/images/04-le-bruit-du-monde.webp",
+      "imageAlt": "Une vallée saturée de lumières et de voix symbolise le bruit du monde et la disparition de l’écoute."
+    },
+    {
+      "id": "scene-05",
+      "title": "Le Silence",
+      "text": "Le silence n’est pas une absence.\n\nIl est un seuil.\n\nC’est là que la parole cesse d’être une réaction.\n\nC’est là que le regard se dépose.\n\nC’est là que l’écoute devient possible.\n\nDans le silence, on n’abandonne pas le monde.\n\nOn cesse simplement de l’interrompre.\n\nAvant de parler justement, il faut parfois apprendre à demeurer.",
+      "image": "assets/images/05-le-silence.webp",
+      "imageAlt": "Une figure assise en silence face à une vallée paisible, seuil d’écoute avant toute parole."
+    },
+    {
+      "id": "scene-06",
+      "title": "Le Veilleur",
+      "text": "Le veilleur n’est pas au-dessus du monde.\n\nIl est auprès de lui.\n\nIl ne cherche pas à posséder la lumière.\n\nIl veille à ce qu’elle ne s’éteigne pas.\n\nIl garde les passages ouverts.\n\nIl observe les récits qui se ferment.\n\nIl écoute les blessures qui cherchent encore une parole.\n\nSa force n’est pas de parler plus fort.\n\nSa force est de rester présent quand le dialogue devient fragile.",
+      "image": "assets/images/06-le-veilleur.webp",
+      "imageAlt": "Un veilleur demeure présent face à la vallée, attentif à la lumière et aux passages."
+    },
+    {
+      "id": "scene-07",
+      "title": "Les Récits Vivants",
+      "text": "Certains récits enferment.\n\nIls disent : il n’y a qu’un seul camp.\n\nIl n’y a qu’une seule vérité.\n\nIl n’y a plus rien à comprendre.\n\nD’autres récits respirent.\n\nIls relient sans confondre.\n\nIls distinguent sans détruire.\n\nIls accueillent la complexité sans renoncer à la clarté.\n\nLes récits vivants cherchent à préserver la possibilité d’un monde commun.",
+      "image": "assets/images/07-les-recits-vivants.webp",
+      "imageAlt": "Un paysage ouvert représente les récits vivants, ceux qui relient plutôt qu’ils ne séparent."
+    },
+    {
+      "id": "scene-08",
+      "title": "Le Monde commun",
+      "text": "Le monde commun n’est pas un monde uniforme.\n\nIl n’exige pas que tous pensent la même chose.\n\nIl n’efface pas les différences.\n\nIl ne supprime pas les désaccords.\n\nIl demande seulement que les chemins restent encore visibles les uns pour les autres.\n\nUn pont.\n\nUne rive.\n\nUne parole.\n\nUne table.\n\nUne écoute.\n\nChaque passage préservé est une victoire discrète contre l’effondrement du lien.",
+      "image": "assets/images/08-le-monde-commun.webp",
+      "imageAlt": "Des chemins, des ponts et des présences composent un monde commun sans effacer les différences."
+    },
+    {
+      "id": "scene-09",
+      "title": "La Plume et l’IA",
+      "text": "Les outils changent.\n\nLa plume.\n\nL’imprimerie.\n\nL’écran.\n\nL’intelligence artificielle.\n\nChaque époque invente de nouvelles manières d’écrire, de transmettre et d’imaginer.\n\nMais une question demeure :\n\nque faisons-nous grandir avec ces outils ?\n\nUn outil peut accélérer le bruit.\n\nIl peut aussi ouvrir des chemins.\n\nLa responsabilité reste humaine.",
+      "image": "assets/images/09-la-plume-et-l-ia.webp",
+      "imageAlt": "Une personne écrit à la plume auprès d’une présence lumineuse évoquant l’intelligence artificielle."
+    },
+    {
+      "id": "scene-10",
+      "title": "Transmettre",
+      "text": "Transmettre ne signifie pas imposer une forme.\n\nC’est confier une lumière.\n\nUne attention.\n\nUn chemin à poursuivre.\n\nLe veilleur n’est pas une figure lointaine.\n\nIl peut apparaître dans chaque geste d’attention :\n\nécouter avant de répondre,\n\nrelier avant de juger,\n\npréserver un passage,\n\nraconter autrement.\n\nCe qui est reçu vivant peut continuer à grandir.",
+      "image": "assets/images/10-transmettre.webp",
+      "imageAlt": "Un geste de transmission dans une vallée lumineuse confie une lumière plutôt qu’une forme imposée."
+    },
+    {
+      "id": "scene-11",
+      "title": "Devenir veilleur",
+      "text": "Le veilleur n’est pas un maître des autres.\n\nIl demeure présent au monde,\n\nattentif aux récits,\n\naux fragilités\n\net aux chemins qui cherchent à naître.\n\nNe cherchez pas seulement la voix qui parle.\n\nDevenez la présence qui veille.\n\nÀ chacun de protéger les récits qui relient.\n\nÀ chacun de préserver les chemins du monde commun.\n\nÀ chacun, à sa manière, de devenir veilleur.",
+      "image": "assets/images/11-cloture-devenir-veilleur.webp",
+      "imageAlt": "Clôture Devenir veilleur, une figure marche avec d’autres vers un horizon de transmission et de présence."
+    }
+  ]
+}

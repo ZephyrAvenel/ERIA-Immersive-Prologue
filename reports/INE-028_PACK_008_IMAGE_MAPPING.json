@@ -1,0 +1,102 @@
+{
+  "pngTotalBytes": 29702388,
+  "webpTotalBytes": 2678352,
+  "mapping": [
+    {
+      "source": "00.png",
+      "officialPng": "00-couverture-le-veilleur.png",
+      "officialWebp": "00-couverture-le-veilleur.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2454767,
+      "webpBytes": 200318
+    },
+    {
+      "source": "01.png",
+      "officialPng": "01-la-voix.png",
+      "officialWebp": "01-la-voix.webp",
+      "dimensions": "1448x1086",
+      "pngBytes": 2363457,
+      "webpBytes": 202734
+    },
+    {
+      "source": "02.png",
+      "officialPng": "02-le-prophete.png",
+      "officialWebp": "02-le-prophete.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2454020,
+      "webpBytes": 184026
+    },
+    {
+      "source": "03.png",
+      "officialPng": "03-le-poete.png",
+      "officialWebp": "03-le-poete.webp",
+      "dimensions": "1448x1086",
+      "pngBytes": 2430117,
+      "webpBytes": 218854
+    },
+    {
+      "source": "04.png",
+      "officialPng": "04-le-bruit-du-monde.png",
+      "officialWebp": "04-le-bruit-du-monde.webp",
+      "dimensions": "1448x1086",
+      "pngBytes": 2440839,
+      "webpBytes": 227030
+    },
+    {
+      "source": "05.png",
+      "officialPng": "05-le-silence.png",
+      "officialWebp": "05-le-silence.webp",
+      "dimensions": "1448x1086",
+      "pngBytes": 2339560,
+      "webpBytes": 196366
+    },
+    {
+      "source": "06.png",
+      "officialPng": "06-le-veilleur.png",
+      "officialWebp": "06-le-veilleur.webp",
+      "dimensions": "1448x1086",
+      "pngBytes": 2393381,
+      "webpBytes": 209662
+    },
+    {
+      "source": "07.png",
+      "officialPng": "07-les-recits-vivants.png",
+      "officialWebp": "07-les-recits-vivants.webp",
+      "dimensions": "1448x1086",
+      "pngBytes": 2478683,
+      "webpBytes": 227516
+    },
+    {
+      "source": "08.png",
+      "officialPng": "08-le-monde-commun.png",
+      "officialWebp": "08-le-monde-commun.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2802107,
+      "webpBytes": 281450
+    },
+    {
+      "source": "09.png",
+      "officialPng": "09-la-plume-et-l-ia.png",
+      "officialWebp": "09-la-plume-et-l-ia.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2594653,
+      "webpBytes": 251536
+    },
+    {
+      "source": "010.png",
+      "officialPng": "10-transmettre.png",
+      "officialWebp": "10-transmettre.webp",
+      "dimensions": "1672x941",
+      "pngBytes": 2441917,
+      "webpBytes": 234548
+    },
+    {
+      "source": "011.png",
+      "officialPng": "11-cloture-devenir-veilleur.png",
+      "officialWebp": "11-cloture-devenir-veilleur.webp",
+      "dimensions": "1448x1086",
+      "pngBytes": 2508887,
+      "webpBytes": 244312
+    }
+  ]
+}

@@ -531,7 +531,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(entryState.noHorizontalOverflow, true);
 
     await loadUrl(page, libraryUrl);
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 7");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 8");
     const libraryState = await evaluate(
       page,
       `({
@@ -577,6 +577,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         "Les r\u00e9cits qui r\u00e9v\u00e8lent\u2026 ou qui enferment",
         "La M\u00e9tamorphose",
         "Jouer pour devenir",
+        "Le Veilleur",
       ],
     );
     assert.equal(libraryState.cards.every(({ imageAlt, linkLabel }) => imageAlt.length > 0 && linkLabel.length > 0), true);
@@ -587,6 +588,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[4].href.endsWith("/oeuvres/recits-qui-revelent-ou-enferment/"), true);
     assert.equal(libraryState.cards[5].href.endsWith("/oeuvres/la-metamorphose/"), true);
     assert.equal(libraryState.cards[6].href.endsWith("/oeuvres/jouer-pour-devenir/"), true);
+    assert.equal(libraryState.cards[7].href.endsWith("/oeuvres/le-veilleur/"), true);
     assert.equal(libraryState.cards[0].slug, "les-gardiens-des-recits-vivants");
     assert.equal(libraryState.cards[1].slug, "polarites-vivantes");
     assert.equal(libraryState.cards[2].slug, "atlas-recits-vivants");
@@ -594,6 +596,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[4].slug, "recits-qui-revelent-ou-enferment");
     assert.equal(libraryState.cards[5].slug, "la-metamorphose");
     assert.equal(libraryState.cards[6].slug, "jouer-pour-devenir");
+    assert.equal(libraryState.cards[7].slug, "le-veilleur");
     assert.equal(libraryState.cards[0].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[1].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[2].imagePosition, "50% 0%");
@@ -601,6 +604,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[4].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[5].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[6].imagePosition, "50% 50%");
+    assert.equal(libraryState.cards[7].imagePosition, "50% 50%");
     assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);
@@ -1157,7 +1161,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       true,
     );
     await evaluate(page, "document.querySelector('.site-navigation a')?.click()");
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 7");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 8");
 
     const metamorphosisPackUrl = `${entryUrl}oeuvres/la-metamorphose/`;
     await page.send("Emulation.setDeviceMetricsOverride", {
@@ -1266,6 +1270,64 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(playToBecomeFinalActions.every(({ height, width }) => height >= 44 && width >= 280), true);
     assert.equal(
       playToBecomeFinalActions.every((action, index) => index === 0 || action.top >= playToBecomeFinalActions[index - 1].bottom),
+      true,
+    );
+
+    const watcherPackUrl = `${entryUrl}oeuvres/le-veilleur/`;
+    await page.send("Emulation.setDeviceMetricsOverride", {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await loadUrl(page, watcherPackUrl);
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 12");
+    const watcherCheckpoints = new Map([
+      [1, "Le Veilleur"],
+      [2, "La Voix"],
+      [5, "Le Bruit du monde"],
+      [7, "Le Veilleur"],
+      [10, "La Plume et l\u2019IA"],
+      [12, "Devenir veilleur"],
+    ]);
+    for (let sceneNumber = 1; sceneNumber <= 12; sceneNumber += 1) {
+      const state = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 12`);
+      if (watcherCheckpoints.has(sceneNumber)) {
+        assert.equal(state.packIdData, "pack-008");
+        assert.equal(state.sceneTitle, watcherCheckpoints.get(sceneNumber));
+        assert.equal(state.noHorizontalOverflow, true);
+        assert.equal(state.controlsInsideViewport, true);
+        assert.equal(state.contentInsideViewport, true);
+        assert.equal(state.titleBottomBeforeText, true);
+        assert.equal(state.objectFit, "contain");
+        assert.equal(state.displayMode, "contain");
+        assert.equal(state.imageVisible, true);
+        assert.equal(state.currentSrc.endsWith(".webp"), true);
+        assert.equal(state.mediaHeight >= 208, true);
+        assert.equal(state.imageHeight >= 208, true);
+        assert.equal(state.imageHeight <= 344, true);
+        assert.equal(state.mediaBottomBeforeTitle, true);
+        if (sceneNumber === 11) {
+          assert.equal(state.currentSrc.endsWith("/10-transmettre.webp"), true);
+        }
+        if (sceneNumber === 12) {
+          assert.equal(state.currentSrc.endsWith("/11-cloture-devenir-veilleur.webp"), true);
+        }
+      }
+      if (sceneNumber < 12) {
+        await clickLocalizedNext(page, `Sc\u00e8ne ${sceneNumber + 1} / 12`);
+      }
+    }
+    const watcherFinalActions = await evaluate(
+      page,
+      `Array.from(document.querySelectorAll('.player-controls > *')).map((element) => {
+        const rect = element.getBoundingClientRect();
+        return { top: rect.top, bottom: rect.bottom, height: rect.height, width: rect.width };
+      })`,
+    );
+    assert.equal(watcherFinalActions.every(({ height, width }) => height >= 44 && width >= 280), true);
+    assert.equal(
+      watcherFinalActions.every((action, index) => index === 0 || action.top >= watcherFinalActions[index - 1].bottom),
       true,
     );
 
