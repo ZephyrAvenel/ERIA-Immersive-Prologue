@@ -37,6 +37,11 @@
       "id": "pack-007",
       "slug": "jouer-pour-devenir",
       "manifest": "pack-007-jouer-pour-devenir/pack.json"
+    },
+    {
+      "id": "pack-008",
+      "slug": "le-veilleur",
+      "manifest": "pack-008-le-veilleur/pack.json"
     }
   ]
 }

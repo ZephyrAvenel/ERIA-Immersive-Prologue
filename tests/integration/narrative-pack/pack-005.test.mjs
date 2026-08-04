@@ -80,7 +80,7 @@ test("PACK-005 is registered as the fifth immersive work", async () => {
   const registry = await readProjectJson("packs", "index.json");
   assert.deepEqual(
     registry.packs.map(({ id }) => id),
-    ["les-gardiens-des-recits-vivants", "pack-002", "pack-003", "pack-004", "pack-005", "pack-006", "pack-007"],
+    ["les-gardiens-des-recits-vivants", "pack-002", "pack-003", "pack-004", "pack-005", "pack-006", "pack-007", "pack-008"],
   );
   const entry = registry.packs.find(({ id }) => id === "pack-005");
   assert.equal(entry.slug, "recits-qui-revelent-ou-enferment");

@@ -91,6 +91,7 @@ test("PACK-007 is registered as the seventh immersive work", async () => {
       "pack-005",
       "pack-006",
       "pack-007",
+      "pack-008",
     ],
   );
   const entry = registry.packs.find(({ id }) => id === "pack-007");
