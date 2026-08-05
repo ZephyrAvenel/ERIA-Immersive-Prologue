@@ -1477,9 +1477,49 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       const textState = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 12 \u2014 Lire`);
       assert.equal(textState.layoutPhaseData, "text");
       assert.equal(textState.imageVisible, false);
-      assert.equal(textState.sceneText.length > 120, true);
-      assert.equal(textState.noHorizontalOverflow, true);
-      assert.equal(textState.controlsInsideViewport, true);
+      assert.equal(textState.sceneText.length > 120, true, `PACK-010 scene ${sceneNumber} read page should expose narrative text`);
+      assert.equal(textState.noHorizontalOverflow, true, `PACK-010 scene ${sceneNumber} read page should not overflow horizontally`);
+      assert.equal(
+        textState.nextDisabled,
+        sceneNumber === 12,
+        `PACK-010 scene ${sceneNumber} read page should keep navigation state coherent`,
+      );
+      const readControlsState = await evaluate(
+        page,
+        `(() => {
+          const controls = document.querySelector('.player-controls');
+          controls?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+          const rect = controls?.getBoundingClientRect();
+          const buttons = Array.from(document.querySelectorAll('.player-controls button')).map((button) => ({
+            text: (button.textContent || '').trim(),
+            disabled: button.disabled
+          }));
+          return {
+            controlsPresent: Boolean(controls),
+            controlsInsideViewportAfterScroll: Boolean(
+              rect &&
+              rect.left >= -1 &&
+              rect.right <= document.documentElement.clientWidth + 1 &&
+              rect.top >= -1 &&
+              rect.bottom <= document.documentElement.clientHeight + 1
+            ),
+            buttonsNamed: buttons.every(({ text }) => text.length > 0),
+            nextDisabled: buttons.at(-1)?.disabled === true
+          };
+        })()`,
+      );
+      assert.equal(readControlsState.controlsPresent, true, `PACK-010 scene ${sceneNumber} read page should render controls`);
+      assert.equal(
+        readControlsState.controlsInsideViewportAfterScroll,
+        true,
+        `PACK-010 scene ${sceneNumber} read page controls should be reachable after scroll`,
+      );
+      assert.equal(readControlsState.buttonsNamed, true, `PACK-010 scene ${sceneNumber} read page controls should be named`);
+      assert.equal(
+        readControlsState.nextDisabled,
+        sceneNumber === 12,
+        `PACK-010 scene ${sceneNumber} read page next button should match final/non-final state`,
+      );
     }
     const commonWorldFinal = await readStablePlayerState(page, "Sc\u00e8ne 12 / 12 \u2014 Lire");
     assert.equal(commonWorldFinal.sceneTitle, "Cl\u00f4ture \u2014 Faire monde");
