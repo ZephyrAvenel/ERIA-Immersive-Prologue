@@ -42,6 +42,11 @@
       "id": "pack-008",
       "slug": "le-veilleur",
       "manifest": "pack-008-le-veilleur/pack.json"
+    },
+    {
+      "id": "pack-009-trouver-sa-juste-place",
+      "slug": "trouver-sa-juste-place",
+      "manifest": "pack-009-trouver-sa-juste-place/pack.json"
     }
   ]
 }

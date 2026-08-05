@@ -1,0 +1,111 @@
+{
+  "$schema": "../../schemas/narrative-pack.schema.json",
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "pack-009-trouver-sa-juste-place",
+  "title": "Trouver sa juste place",
+  "subtitle": "Habiter sa place sans dominer, sans s’effacer.",
+  "description": "Un parcours contemplatif pour apprendre à habiter sa place sans dominer, sans s’effacer, et devenir pleinement présent au monde commun.",
+  "coverImage": "assets/images/00-couverture-trouver-sa-juste-place.webp",
+  "coverImageAlt": "Couverture Trouver sa juste place, une personne face à une vallée lumineuse et à plusieurs chemins possibles.",
+  "layout": "image-then-text",
+  "language": "fr",
+  "startScene": "scene-00",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 650,
+      "easing": "ease-in-out"
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene-00",
+      "title": "Trouver sa juste place",
+      "text": "Habiter sa place sans dominer, sans s’effacer.\n\nToute existence commence au milieu d’une histoire qui a commencé avant nous. Ce parcours invite à reconnaître les rôles reçus, les regards qui nous mesurent, les distances justes, les gestes qui transforment et les récits qui permettent d’habiter le monde sans prendre toute la place ni disparaître.",
+      "image": "assets/images/00-couverture-trouver-sa-juste-place.webp",
+      "imageAlt": "Couverture Trouver sa juste place, une personne face à une vallée lumineuse et à plusieurs chemins possibles.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-01",
+      "title": "Les rôles que nous recevons",
+      "text": "Avant même de prononcer nos premiers mots, le monde commence déjà à raconter une histoire sur nous.\n\nNous sommes le fils de…\nLa fille de…\nLe plus grand.\nLe plus petit.\nLe discret.\nLe responsable.\nLe rêveur.\nLe fragile.\nLe fort.\nLe gentil.\n\nCes récits ne sont pas toujours faux.\n\nIls deviennent pourtant problématiques lorsqu’ils cessent d’être des descriptions pour devenir des prisons invisibles.\n\nNous finissons parfois par confondre notre identité avec les attentes des autres.\n\nLa première liberté consiste alors à reconnaître que ces récits existent.\n\nNon pour les rejeter.\n\nMais pour pouvoir enfin choisir lesquels continuer à écrire.",
+      "image": "assets/images/01-les-roles-que-nous-recevons.webp",
+      "imageAlt": "Une personne avance entre des rôles et des attentes inscrits sur des panneaux, symbole des récits reçus.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-02",
+      "title": "Le besoin d’être validé",
+      "text": "Nous croyons souvent chercher l’amour.\n\nMais nous cherchons parfois surtout une confirmation.\n\nLe regard des autres devient une mesure.\n\nChaque compliment nous rassure.\n\nChaque silence nous inquiète.\n\nChaque critique semble remettre en question notre valeur entière.\n\nPetit à petit, notre centre de gravité quitte notre cœur pour se déplacer dans le regard des autres.\n\nPourtant, aucune validation extérieure ne peut durablement remplacer une présence intérieure.\n\nLa véritable sécurité naît lorsque nous découvrons que notre valeur n’est pas accordée par le monde.\n\nElle est révélée par la manière dont nous choisissons d’habiter notre vie.",
+      "image": "assets/images/02-le-besoin-d-etre-valide.webp",
+      "imageAlt": "Une personne regarde son reflet au bord d’un lac, évoquant le besoin d’être validé par le regard extérieur.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-03",
+      "title": "Déposer les personnages",
+      "text": "Au fil du temps, nous apprenons à porter des masques.\n\nLe courageux.\n\nLe parfait.\n\nLe sauveur.\n\nCelui qui ne dérange jamais.\n\nCes personnages ont souvent été utiles.\n\nIls nous ont permis de survivre.\n\nD’être acceptés.\n\nDe traverser certaines périodes difficiles.\n\nMais aucun masque n’est fait pour être porté toute une vie.\n\nGrandir, ce n’est pas devenir quelqu’un d’autre.\n\nC’est retrouver celui qui existait déjà derrière les personnages.",
+      "image": "assets/images/03-deposer-les-personnages.webp",
+      "imageAlt": "Une personne s’éloigne de silhouettes et de costumes suspendus, symbole des personnages déposés.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-04",
+      "title": "La juste distance",
+      "text": "Les relations vivantes ne demandent pas que chacun disparaisse dans l’autre.\n\nElles demandent au contraire que chacun puisse exister pleinement.\n\nÊtre proche ne signifie pas se confondre.\n\nÊtre libre ne signifie pas abandonner.\n\nLa juste place apparaît souvent dans cet espace délicat où chacun peut respirer sans quitter la relation.\n\nCe n’est pas une séparation.\n\nC’est une rencontre rendue possible par le respect des différences.",
+      "image": "assets/images/04-la-juste-distance.webp",
+      "imageAlt": "Deux arbres enracinés créent un passage lumineux, symbole de la juste distance dans la relation.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-05",
+      "title": "La place se construit",
+      "text": "Nous passons beaucoup de temps à chercher notre place.\n\nComme si elle existait déjà quelque part.\n\nComme si quelqu’un devait nous la donner.\n\nPourtant, une place devient réelle lorsqu’elle commence à produire quelque chose de vivant autour d’elle.\n\nUne écoute.\n\nUne présence.\n\nUne création.\n\nUn geste.\n\nUne transmission.\n\nLa place ne précède pas toujours l’engagement.\n\nTrès souvent, elle en est la conséquence.",
+      "image": "assets/images/05-la-place-se-construit.webp",
+      "imageAlt": "Des personnes construisent un pont près d’une rivière, représentant une place qui se construit par l’engagement.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-06",
+      "title": "Les gestes qui transforment",
+      "text": "Le monde ne change pas uniquement grâce aux grandes idées.\n\nIl change aussi grâce aux gestes modestes qui se répètent.\n\nUne parole attentive.\n\nUne aide discrète.\n\nUne graine plantée.\n\nUne promesse tenue.\n\nUne main tendue.\n\nChaque acte contribue silencieusement à façonner le paysage humain dans lequel d’autres vivront demain.\n\nLe sens naît souvent de cette fidélité quotidienne.",
+      "image": "assets/images/06-les-gestes-qui-transforment.webp",
+      "imageAlt": "Une personne plante une graine dans une vallée dorée, symbole des gestes modestes qui transforment le monde.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-07",
+      "title": "Habiter un monde commun",
+      "text": "Trouver sa place ne consiste pas à prendre plus de place que les autres.\n\nUne société devient vivante lorsque chacun peut y apporter quelque chose d’unique.\n\nNos différences ne sont pas des obstacles.\n\nElles deviennent des ressources lorsqu’elles dialoguent.\n\nLe monde commun ne demande pas que nous devenions identiques.\n\nIl demande que nous apprenions à faire coexister nos singularités.",
+      "image": "assets/images/07-habiter-un-monde-commun.webp",
+      "imageAlt": "Plusieurs personnes cheminent dans une vallée ouverte, chacune apportant une présence singulière au monde commun.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-08",
+      "title": "Réécrire son récit",
+      "text": "Nous héritons d’une histoire.\n\nMais nous ne sommes pas condamnés à la répéter.\n\nChaque expérience.\n\nChaque rencontre.\n\nChaque épreuve.\n\nPeut devenir une occasion d’écrire une nouvelle page.\n\nLe passé ne disparaît pas.\n\nIl devient une matière première.\n\nNous ne réécrivons pas notre histoire contre elle.\n\nNous l’écrivons à partir d’elle.",
+      "image": "assets/images/08-reecrire-son-recit.webp",
+      "imageAlt": "Une personne écrit face à une vallée lumineuse, symbolisant la possibilité de réécrire son récit.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-09",
+      "title": "Les récits vivants",
+      "text": "Aucun être humain ne construit seul son histoire.\n\nNos récits se croisent.\n\nS’influencent.\n\nSe transforment mutuellement.\n\nLorsque nous apprenons à écouter avant de répondre, à comprendre avant de juger, à relier avant de séparer, une autre manière d’habiter le monde devient possible.\n\nLes récits vivants ne cherchent pas à vaincre.\n\nIls cherchent à rendre la vie plus habitable.",
+      "image": "assets/images/09-les-recits-vivants.webp",
+      "imageAlt": "Un cercle de personnes réuni autour d’une lumière commune évoque les récits vivants qui relient.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-10",
+      "title": "Devenir présence",
+      "text": "À mesure que les rôles tombent, quelque chose apparaît.\n\nUne présence plus simple.\n\nMoins spectaculaire.\n\nMais plus vraie.\n\nNous découvrons alors que notre place ne dépend plus seulement de ce que nous faisons.\n\nElle dépend de la manière dont nous sommes présents aux autres, aux lieux, au vivant.\n\nTrouver sa juste place n’est jamais un point d’arrivée.\n\nC’est une pratique.\n\nChaque jour, nous pouvons choisir de revenir vers ce qui nous rend plus vivants.\n\nNous pouvons quitter les récits qui enferment.\n\nCultiver ceux qui relient.\n\nTransformer les blessures en passages.\n\nFaire de notre histoire une source de présence plutôt qu’un poids à porter.\n\nLa juste place n’est pas devenir le centre du monde.\n\nC’est permettre au monde de devenir un peu plus vivant grâce à notre présence.",
+      "image": "assets/images/10-devenir-presence.webp",
+      "imageAlt": "Une personne marche vers un horizon partagé, image de clôture sur la juste place comme présence vivante.",
+      "imageDisplayMode": "contain"
+    }
+  ]
+}

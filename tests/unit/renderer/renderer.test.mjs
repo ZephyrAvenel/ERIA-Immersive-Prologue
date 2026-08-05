@@ -235,6 +235,18 @@ test("Renderer creates public scene content from trusted state", () =>
     assert.equal(findElement(target, ".scene__text").textContent, "Text with <strong>markup</strong> kept as text.");
   }));
 
+test("Renderer exposes optional image-then-text layout state as data attributes", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    renderPlayer(target, createState({ layout: "image-then-text", layoutPhase: "image" }));
+
+    const player = findElement(target, ".player");
+    const scene = findElement(target, ".scene");
+    assert.equal(player.dataset.layout, "image-then-text");
+    assert.equal(player.dataset.layoutPhase, "image");
+    assert.equal(scene.dataset.layoutPhase, "image");
+  }));
+
 test("Renderer renders images with alternative text and contain as default display mode", () =>
   withFakeDocument(() => {
     const target = new FakeElement("main");

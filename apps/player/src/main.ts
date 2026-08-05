@@ -45,6 +45,7 @@ if (!app) {
 const mount = app;
 type NavigationTarget = "previous" | "next";
 type ResumeChoice = "resume" | "restart";
+type NarrativeLayoutPhase = "image" | "text";
 
 interface PlayerConfiguration {
   readonly packUrl: string;
@@ -370,6 +371,24 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
   updateShell(messages, pack.title);
   updateLibraryNavigation(messages, true);
   let transitionInProgress = false;
+  const usesImageThenText = pack.layout === "image-then-text";
+  let layoutPhase: NarrativeLayoutPhase = usesImageThenText ? "image" : "text";
+
+  const canNavigatePrevious = (): boolean =>
+    usesImageThenText ? layoutPhase === "text" || engine.canGoPrevious : engine.canGoPrevious;
+
+  const canNavigateNext = (): boolean =>
+    usesImageThenText ? layoutPhase === "image" || engine.canGoNext : engine.canGoNext;
+
+  const progressTextForCurrentState = (): string => {
+    const baseProgress = interpolate(messages.progressText, {
+      current: engine.currentSceneIndex + 1,
+      total: engine.sceneCount,
+    });
+    if (!usesImageThenText) return baseProgress;
+    const phase = layoutPhase === "image" ? messages.contemplatePhase : messages.readPhase;
+    return `${baseProgress} — ${phase}`;
+  };
 
   const saveCurrentProgress = (): void => {
     progressStore.save(
@@ -386,8 +405,8 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
   const updateControlAvailability = (): void => {
     const previous = mount.querySelector<HTMLButtonElement>('[data-navigation="previous"]');
     const next = mount.querySelector<HTMLButtonElement>('[data-navigation="next"]');
-    if (previous) previous.disabled = transitionInProgress || !engine.canGoPrevious;
-    if (next) next.disabled = transitionInProgress || !engine.canGoNext;
+    if (previous) previous.disabled = transitionInProgress || !canNavigatePrevious();
+    if (next) next.disabled = transitionInProgress || !canNavigateNext();
   };
 
   const disableCurrentControls = (): void => {
@@ -431,16 +450,17 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
       void navigate("previous");
     });
     previous.dataset.navigation = "previous";
-    previous.disabled = transitionInProgress || !engine.canGoPrevious;
+    previous.disabled = transitionInProgress || !canNavigatePrevious();
 
-    const next = createButton(messages.next, () => {
+    const nextLabel = usesImageThenText && layoutPhase === "image" ? messages.readScene : messages.next;
+    const next = createButton(nextLabel, () => {
       void navigate("next");
     });
     next.dataset.navigation = "next";
-    next.disabled = transitionInProgress || !engine.canGoNext;
+    next.disabled = transitionInProgress || !canNavigateNext();
 
     controls.append(previous, next);
-    if (!engine.canGoNext) {
+    if (!engine.canGoNext && (!usesImageThenText || layoutPhase === "text")) {
       const continuation = createLibraryLink(
         messages.continueExploration,
         "journey-continuation",
@@ -456,14 +476,13 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
       sceneIndex,
       sceneCount,
       controls,
+      layout: pack.layout,
+      layoutPhase: usesImageThenText ? layoutPhase : undefined,
       messages: {
         engineTitle: messages.engineTitle,
         packLabel: messages.packLabel,
         progressLabel: messages.progressLabel,
-        progressText: interpolate(messages.progressText, {
-          current: sceneIndex + 1,
-          total: sceneCount,
-        }),
+        progressText: progressTextForCurrentState(),
       },
     };
 
@@ -483,11 +502,17 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
 
   const navigate = async (target: NavigationTarget): Promise<void> => {
     if (transitionInProgress) return;
-    if (target === "previous" && !engine.canGoPrevious) return;
-    if (target === "next" && !engine.canGoNext) return;
+    if (target === "previous" && !canNavigatePrevious()) return;
+    if (target === "next" && !canNavigateNext()) return;
 
     const previousIndex = engine.currentSceneIndex;
-    const targetIndex = target === "next" ? previousIndex + 1 : previousIndex - 1;
+    const targetIndex = usesImageThenText && target === "previous" && layoutPhase === "text"
+      ? previousIndex
+      : usesImageThenText && target === "next" && layoutPhase === "image"
+        ? previousIndex
+        : target === "next"
+          ? previousIndex + 1
+          : previousIndex - 1;
     const transition = engine.transitionForSceneIndex(targetIndex);
     let navigationSucceeded = false;
 
@@ -495,8 +520,17 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
     disableCurrentControls();
     mount.setAttribute("aria-busy", "true");
     try {
-      if (target === "next") engine.next();
-      else engine.previous();
+      if (usesImageThenText && target === "next" && layoutPhase === "image") {
+        layoutPhase = "text";
+      } else if (usesImageThenText && target === "previous" && layoutPhase === "text") {
+        layoutPhase = "image";
+      } else if (target === "next") {
+        engine.next();
+        if (usesImageThenText) layoutPhase = "image";
+      } else {
+        engine.previous();
+        if (usesImageThenText) layoutPhase = "text";
+      }
       await render(target, transition, getTransitionDirection(previousIndex, engine.currentSceneIndex));
       navigationSucceeded = true;
     } catch {
@@ -510,11 +544,10 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
           engineTitle: messages.engineTitle,
           packLabel: messages.packLabel,
           progressLabel: messages.progressLabel,
-          progressText: interpolate(messages.progressText, {
-            current: engine.currentSceneIndex + 1,
-            total: engine.sceneCount,
-          }),
+          progressText: progressTextForCurrentState(),
         },
+        layout: pack.layout,
+        layoutPhase: usesImageThenText ? layoutPhase : undefined,
       });
     } finally {
       transitionInProgress = false;

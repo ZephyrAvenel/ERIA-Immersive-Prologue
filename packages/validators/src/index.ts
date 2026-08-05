@@ -34,6 +34,7 @@ const PACK_PROPERTIES = new Set([
   "description",
   "coverImage",
   "coverImageAlt",
+  "layout",
   "language",
   "startScene",
   "presentation",
@@ -44,6 +45,7 @@ const INTRO_PROPERTIES = new Set(["lines", "title", "actionLabel"]);
 const SCENE_PROPERTIES = new Set(["id", "title", "text", "image", "imageAlt", "imageDisplayMode", "transition"]);
 const TRANSITION_PROPERTIES = new Set(["type", "durationMs", "easing"]);
 const PACK_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const NARRATIVE_PACK_LAYOUTS = new Set(["image-then-text"]);
 const IMAGE_DISPLAY_MODES = new Set(["contain", "cover", "fill", "immersive"]);
 const ALLOWED_TRANSITION_TYPES = new Set<string>(TRANSITION_TYPES);
 const ALLOWED_TRANSITION_EASINGS = new Set<string>(TRANSITION_EASINGS);
@@ -130,6 +132,12 @@ export function validateNarrativePack(value: unknown): ValidationResult {
   }
   if (typeof value.language === "string" && value.language.length < 2) {
     errors.push("INE_VALIDATION_LANGUAGE_INVALID");
+  }
+  if (
+    value.layout !== undefined &&
+    (typeof value.layout !== "string" || !NARRATIVE_PACK_LAYOUTS.has(value.layout))
+  ) {
+    errors.push("INE_VALIDATION_LAYOUT_INVALID");
   }
   if (value.presentation !== undefined) {
     if (!isRecord(value.presentation)) {

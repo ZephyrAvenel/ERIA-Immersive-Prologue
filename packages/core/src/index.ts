@@ -30,6 +30,8 @@ export interface NarrativePresentation {
   readonly intro?: NarrativeIntro;
 }
 
+export type NarrativePackLayout = "image-then-text";
+
 export interface NarrativeScene {
   readonly id: string;
   readonly title: string;
@@ -49,6 +51,7 @@ export interface NarrativePack {
   readonly description?: string;
   readonly coverImage?: string;
   readonly coverImageAlt?: string;
+  readonly layout?: NarrativePackLayout;
   readonly language: string;
   readonly startScene: string;
   readonly presentation?: NarrativePresentation;

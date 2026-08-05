@@ -71,6 +71,36 @@ test("JSON Schema and runtime validator agree on required root and scene fields"
   assert.equal(schema.$defs.scene.additionalProperties, false);
 });
 
+test("runtime validator and JSON Schema expose the optional image-then-text layout", async () => {
+  const schema = await readProjectJson("schemas", "narrative-pack.schema.json");
+  assert.deepEqual(schema.properties.layout.enum, ["image-then-text"]);
+
+  const result = validateNarrativePack({
+    format: "ine-narrative-pack",
+    version: "1.0",
+    id: "image-then-text-layout",
+    title: "Image then text",
+    language: "fr",
+    layout: "image-then-text",
+    startScene: "start",
+    scenes: [{ id: "start", title: "Start", text: "Text." }],
+  });
+  assert.equal(result.valid, true, result.errors.join(", "));
+
+  const invalid = validateNarrativePack({
+    format: "ine-narrative-pack",
+    version: "1.0",
+    id: "invalid-layout",
+    title: "Invalid layout",
+    language: "fr",
+    layout: "text-only",
+    startScene: "start",
+    scenes: [{ id: "start", title: "Start", text: "Text." }],
+  });
+  assert.equal(invalid.valid, false);
+  assert.equal(invalid.errors.includes("INE_VALIDATION_LAYOUT_INVALID"), true);
+});
+
 test("runtime validator and JSON Schema expose the same transition contract", async () => {
   const schema = await readProjectJson("schemas", "narrative-pack.schema.json");
   assert.deepEqual(schema.$defs.transition.required, ["type"]);

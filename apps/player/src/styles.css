@@ -770,6 +770,43 @@ button:disabled {
   line-height: 1.58;
 }
 
+.player[data-layout="image-then-text"] {
+  height: auto;
+  min-height: 100dvh;
+}
+
+.player[data-layout="image-then-text"][data-layout-phase="image"] .scene {
+  grid-template-rows: minmax(0, 1fr);
+  align-content: stretch;
+}
+
+.player[data-layout="image-then-text"][data-layout-phase="image"] .scene__content,
+.player[data-layout="image-then-text"][data-layout-phase="text"] .scene__media {
+  display: none;
+}
+
+.player[data-layout="image-then-text"][data-layout-phase="image"] .scene__media {
+  min-height: min(72dvh, 46rem);
+  overflow: visible;
+}
+
+.player[data-layout="image-then-text"][data-layout-phase="image"] .scene__image {
+  height: min(72dvh, 46rem);
+  object-fit: contain;
+  object-position: center;
+}
+
+.player[data-layout="image-then-text"][data-layout-phase="text"] .scene {
+  grid-template-rows: auto;
+  align-content: start;
+  justify-items: center;
+}
+
+.player[data-layout="image-then-text"][data-layout-phase="text"] .scene__content {
+  width: min(100%, 58rem);
+  align-self: start;
+}
+
 .player__footer {
   align-items: center;
 }
@@ -1337,6 +1374,74 @@ button:disabled {
 
   .player[data-pack-id="pack-008"] .player-controls button,
   .player[data-pack-id="pack-008"] .player-controls .journey-continuation {
+    width: 100%;
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"] {
+    height: auto;
+    min-height: 100dvh;
+    padding-block: clamp(0.55rem, 1.6dvh, 1rem);
+    gap: clamp(0.4rem, 1dvh, 0.7rem);
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"][data-layout-phase="image"] .scene {
+    grid-template-rows: minmax(0, 1fr);
+    align-content: stretch;
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"][data-layout-phase="image"] .scene__media {
+    min-height: clamp(20rem, 68dvh, 36rem);
+    overflow: visible;
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"][data-layout-phase="image"] .scene__image {
+    width: 100%;
+    height: clamp(20rem, 68dvh, 36rem);
+    max-height: none;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"] .scene__media[data-image-state="loading"]::before,
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"] .scene__media[data-image-state="error"]::before {
+    min-height: clamp(20rem, 68dvh, 36rem);
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"][data-layout-phase="text"] .scene {
+    grid-template-rows: auto;
+    align-content: start;
+    justify-items: center;
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"] .scene__content {
+    width: min(100%, 58rem);
+    padding-inline: 0;
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"] .scene__title {
+    margin-bottom: clamp(0.55rem, 1.5dvh, 0.85rem);
+    font-size: clamp(2.05rem, 8.2vw, 3rem);
+    line-height: 1;
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"] .scene__text {
+    max-width: 72ch;
+    font-size: clamp(1.06rem, 4.05vw, 1.22rem);
+    line-height: 1.5;
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"] .player__footer {
+    grid-template-columns: 1fr;
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"] .player-controls {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"] .player-controls button,
+  .player[data-pack-id="pack-009-trouver-sa-juste-place"] .player-controls .journey-continuation {
     width: 100%;
   }
 }

@@ -16,6 +16,10 @@
     "description": { "type": "string", "minLength": 1 },
     "coverImage": { "type": "string", "minLength": 1 },
     "coverImageAlt": { "type": "string" },
+    "layout": {
+      "type": "string",
+      "enum": ["image-then-text"]
+    },
     "language": { "type": "string", "minLength": 2 },
     "startScene": { "type": "string", "minLength": 1 },
     "presentation": {

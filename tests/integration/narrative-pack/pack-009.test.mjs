@@ -5,70 +5,67 @@ import test from "node:test";
 import { validateNarrativePack } from "../../../.test-build/packages/validators/src/index.js";
 import { readProjectJson } from "../../helpers/fixtures.mjs";
 
-const packRoot = join("packs", "pack-008-le-veilleur");
+const packRoot = join("packs", "pack-009-trouver-sa-juste-place");
 
-test("PACK-008 manifest declares twelve independent narrative steps", async () => {
+test("PACK-009 manifest declares eleven image-then-text narrative entries", async () => {
   const manifest = await readProjectJson(packRoot, "pack.json");
   const result = validateNarrativePack(manifest);
   assert.equal(result.valid, true, result.errors.join(", "));
   assert.equal(manifest.format, "ine-narrative-pack");
-  assert.equal(manifest.id, "pack-008");
-  assert.equal(manifest.title, "Le Veilleur");
-  assert.equal(manifest.subtitle, "Du prophète au veilleur");
+  assert.equal(manifest.id, "pack-009-trouver-sa-juste-place");
+  assert.equal(manifest.title, "Trouver sa juste place");
+  assert.equal(manifest.subtitle, "Habiter sa place sans dominer, sans s’effacer.");
+  assert.equal(manifest.layout, "image-then-text");
   assert.equal(manifest.startScene, "scene-00");
-  assert.equal(manifest.scenes.length, 12);
-  assert.equal(new Set(manifest.scenes.map(({ id }) => id)).size, 12);
-  for (let packNumber = 1; packNumber <= 7; packNumber += 1) {
+  assert.equal(manifest.scenes.length, 11);
+  assert.equal(new Set(manifest.scenes.map(({ id }) => id)).size, 11);
+  for (let packNumber = 1; packNumber <= 8; packNumber += 1) {
     assert.equal(JSON.stringify(manifest).includes(`pack-00${packNumber}`), false);
   }
 });
 
-test("PACK-008 uses optimized WebP images for every narrative step", async () => {
+test("PACK-009 uses optimized WebP images for every image-then-text step", async () => {
   const manifest = await readProjectJson(packRoot, "pack.json");
-  assert.equal(manifest.coverImage, "assets/images/00-couverture-le-veilleur.webp");
+  assert.equal(manifest.coverImage, "assets/images/00-couverture-trouver-sa-juste-place.webp");
   assert.equal(manifest.coverImageAlt.length > 0, true);
 
-  const aiScene = manifest.scenes.find(({ id }) => id === "scene-09");
-  assert.equal(aiScene.title, "La Plume et l’IA");
-  assert.equal(aiScene.image, "assets/images/09-la-plume-et-l-ia.webp");
-  assert.equal(aiScene.imageAlt.length > 0, true);
+  const finalScene = manifest.scenes.find(({ id }) => id === "scene-10");
+  assert.equal(finalScene.title, "Devenir présence");
+  assert.equal(finalScene.image, "assets/images/10-devenir-presence.webp");
+  assert.equal(finalScene.imageAlt.length > 0, true);
 
   for (const scene of manifest.scenes) {
     assert.equal(scene.image.endsWith(".webp"), true, scene.id);
+    assert.equal(scene.imageDisplayMode, "contain", scene.id);
     assert.equal(typeof scene.imageAlt, "string", scene.id);
     assert.equal(scene.imageAlt.length > 0, true, scene.id);
     await access(join(packRoot, scene.image));
   }
 });
 
-test("PACK-008 preserves PNG originals and maps 010 and 011 explicitly", async () => {
+test("PACK-009 preserves PNG originals and uses the required naming convention", async () => {
   const imageDirectory = join(packRoot, "assets", "images");
   const originalsDirectory = join(imageDirectory, "originals");
   const webpImages = (await readdir(imageDirectory)).filter((name) => name.endsWith(".webp")).sort();
   const originalPngImages = (await readdir(originalsDirectory)).filter((name) => name.endsWith(".png")).sort();
 
   assert.deepEqual(webpImages, [
-    "00-couverture-le-veilleur.webp",
-    "01-la-voix.webp",
-    "02-le-prophete.webp",
-    "03-le-poete.webp",
-    "04-le-bruit-du-monde.webp",
-    "05-le-silence.webp",
-    "06-le-veilleur.webp",
-    "07-les-recits-vivants.webp",
-    "08-le-monde-commun.webp",
-    "09-la-plume-et-l-ia.webp",
-    "10-transmettre.webp",
-    "11-cloture-devenir-veilleur.webp",
+    "00-couverture-trouver-sa-juste-place.webp",
+    "01-les-roles-que-nous-recevons.webp",
+    "02-le-besoin-d-etre-valide.webp",
+    "03-deposer-les-personnages.webp",
+    "04-la-juste-distance.webp",
+    "05-la-place-se-construit.webp",
+    "06-les-gestes-qui-transforment.webp",
+    "07-habiter-un-monde-commun.webp",
+    "08-reecrire-son-recit.webp",
+    "09-les-recits-vivants.webp",
+    "10-devenir-presence.webp",
   ]);
   assert.deepEqual(
     originalPngImages.map((name) => name.replace(".png", ".webp")),
     webpImages,
   );
-  assert.equal(originalPngImages.includes("010.png"), false);
-  assert.equal(originalPngImages.includes("011.png"), false);
-  assert.equal(originalPngImages.includes("10-transmettre.png"), true);
-  assert.equal(originalPngImages.includes("11-cloture-devenir-veilleur.png"), true);
 
   for (const image of webpImages) {
     const bytes = await readFile(join(imageDirectory, image));
@@ -78,7 +75,7 @@ test("PACK-008 preserves PNG originals and maps 010 and 011 explicitly", async (
   }
 });
 
-test("PACK-008 is registered as the eighth immersive work", async () => {
+test("PACK-009 is registered as the ninth immersive work", async () => {
   const registry = await readProjectJson("packs", "index.json");
   assert.deepEqual(
     registry.packs.map(({ id }) => id),
@@ -94,7 +91,7 @@ test("PACK-008 is registered as the eighth immersive work", async () => {
       "pack-009-trouver-sa-juste-place",
     ],
   );
-  const entry = registry.packs.find(({ id }) => id === "pack-008");
-  assert.equal(entry.slug, "le-veilleur");
-  assert.equal(entry.manifest, "pack-008-le-veilleur/pack.json");
+  const entry = registry.packs.find(({ id }) => id === "pack-009-trouver-sa-juste-place");
+  assert.equal(entry.slug, "trouver-sa-juste-place");
+  assert.equal(entry.manifest, "pack-009-trouver-sa-juste-place/pack.json");
 });
