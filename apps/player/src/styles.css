@@ -1529,6 +1529,10 @@ button:disabled {
   object-position: center top;
 }
 
+.work-card[data-work-slug="trouver-sa-juste-place"] .work-card__image {
+  object-position: center top;
+}
+
 .work-card__content {
   display: grid;
   align-content: start;
