@@ -1,0 +1,153 @@
+{
+  "zip": "C:\\Users\\LeoBe\\Downloads\\Pack-narratif-monde-commun.zip",
+  "png_count": 12,
+  "dangerous_paths": [],
+  "total_png_bytes": 32124495,
+  "total_webp_bytes": 3854182,
+  "images": [
+    {
+      "source": "Pack-narratif-monde-commun/00-monde-commun.png",
+      "official_png": "00-couverture-le-monde-commun.png",
+      "official_webp": "00-couverture-le-monde-commun.webp",
+      "title": "Couverture ? Le Monde commun",
+      "png_width": 1536,
+      "png_height": 1024,
+      "png_bytes": 3178349,
+      "webp_width": 1536,
+      "webp_height": 1024,
+      "webp_bytes": 429286
+    },
+    {
+      "source": "Pack-narratif-monde-commun/01-monde-commun.png",
+      "official_png": "01-des-chemins-differents.png",
+      "official_webp": "01-des-chemins-differents.webp",
+      "title": "Des chemins diff?rents",
+      "png_width": 1448,
+      "png_height": 1086,
+      "png_bytes": 2767689,
+      "webp_width": 1448,
+      "webp_height": 1086,
+      "webp_bytes": 371164
+    },
+    {
+      "source": "Pack-narratif-monde-commun/02-monde-commun.png",
+      "official_png": "02-la-tentation-du-camp.png",
+      "official_webp": "02-la-tentation-du-camp.webp",
+      "title": "La tentation du camp",
+      "png_width": 1448,
+      "png_height": 1086,
+      "png_bytes": 2502005,
+      "webp_width": 1448,
+      "webp_height": 1086,
+      "webp_bytes": 274648
+    },
+    {
+      "source": "Pack-narratif-monde-commun/03-monde-commun.png",
+      "official_png": "03-ce-qui-nous-separe.png",
+      "official_webp": "03-ce-qui-nous-separe.webp",
+      "title": "Ce qui nous s?pare",
+      "png_width": 1448,
+      "png_height": 1086,
+      "png_bytes": 2691970,
+      "webp_width": 1448,
+      "webp_height": 1086,
+      "webp_bytes": 334620
+    },
+    {
+      "source": "Pack-narratif-monde-commun/04-monde-commun.png",
+      "official_png": "04-ce-qui-nous-relie-encore.png",
+      "official_webp": "04-ce-qui-nous-relie-encore.webp",
+      "title": "Ce qui nous relie encore",
+      "png_width": 1448,
+      "png_height": 1086,
+      "png_bytes": 2226778,
+      "webp_width": 1448,
+      "webp_height": 1086,
+      "webp_bytes": 208298
+    },
+    {
+      "source": "Pack-narratif-monde-commun/05-monde-commun.png",
+      "official_png": "05-le-desaccord-vivant.png",
+      "official_webp": "05-le-desaccord-vivant.webp",
+      "title": "Le d?saccord vivant",
+      "png_width": 1122,
+      "png_height": 1402,
+      "png_bytes": 2485595,
+      "webp_width": 1122,
+      "webp_height": 1402,
+      "webp_bytes": 275432
+    },
+    {
+      "source": "Pack-narratif-monde-commun/06-monde-commun.png",
+      "official_png": "06-l-ecoute-comme-seuil.png",
+      "official_webp": "06-l-ecoute-comme-seuil.webp",
+      "title": "L??coute comme seuil",
+      "png_width": 1122,
+      "png_height": 1402,
+      "png_bytes": 2432371,
+      "webp_width": 1122,
+      "webp_height": 1402,
+      "webp_bytes": 258932
+    },
+    {
+      "source": "Pack-narratif-monde-commun/07-monde-commun.png",
+      "official_png": "07-construire-sans-uniformiser.png",
+      "official_webp": "07-construire-sans-uniformiser.webp",
+      "title": "Construire sans uniformiser",
+      "png_width": 1122,
+      "png_height": 1402,
+      "png_bytes": 2879223,
+      "webp_width": 1122,
+      "webp_height": 1402,
+      "webp_bytes": 393196
+    },
+    {
+      "source": "Pack-narratif-monde-commun/08-monde-commun.png",
+      "official_png": "08-les-lieux-qui-tiennent-le-lien.png",
+      "official_webp": "08-les-lieux-qui-tiennent-le-lien.webp",
+      "title": "Les lieux qui tiennent le lien",
+      "png_width": 1122,
+      "png_height": 1402,
+      "png_bytes": 2745346,
+      "webp_width": 1122,
+      "webp_height": 1402,
+      "webp_bytes": 349666
+    },
+    {
+      "source": "Pack-narratif-monde-commun/09-monde-commun.png",
+      "official_png": "09-les-recits-qui-reparent.png",
+      "official_webp": "09-les-recits-qui-reparent.webp",
+      "title": "Les r?cits qui r?parent",
+      "png_width": 1122,
+      "png_height": 1402,
+      "png_bytes": 2600146,
+      "webp_width": 1122,
+      "webp_height": 1402,
+      "webp_bytes": 306116
+    },
+    {
+      "source": "Pack-narratif-monde-commun/10-monde-commun.png",
+      "official_png": "10-veiller-ensemble.png",
+      "official_webp": "10-veiller-ensemble.webp",
+      "title": "Veiller ensemble",
+      "png_width": 1024,
+      "png_height": 1536,
+      "png_bytes": 2774898,
+      "webp_width": 1024,
+      "webp_height": 1536,
+      "webp_bytes": 319264
+    },
+    {
+      "source": "Pack-narratif-monde-commun/11-monde-commun.png",
+      "official_png": "11-faire-monde.png",
+      "official_webp": "11-faire-monde.webp",
+      "title": "Cl?ture ? Faire monde",
+      "png_width": 1024,
+      "png_height": 1536,
+      "png_bytes": 2840125,
+      "webp_width": 1024,
+      "webp_height": 1536,
+      "webp_bytes": 333560
+    }
+  ]
+}
