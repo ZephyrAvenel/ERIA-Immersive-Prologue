@@ -620,7 +620,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[5].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[6].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[7].imagePosition, "50% 50%");
-    assert.equal(libraryState.cards[8].imagePosition, "50% 50%");
+    assert.equal(libraryState.cards[8].imagePosition, "50% 0%");
     assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);
