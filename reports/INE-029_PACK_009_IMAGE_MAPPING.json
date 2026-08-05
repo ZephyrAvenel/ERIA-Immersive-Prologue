@@ -1,0 +1,184 @@
+{
+  "zip": "C:\\Users\\LeoBe\\Downloads\\Pack narratif _  juste place.zip",
+  "pngCount": 11,
+  "totalPngBytes": 26740565,
+  "totalWebpBytes": 2654364,
+  "images": [
+    {
+      "source": "file_00000000076c81f48773b4ba3a62bfbb.png",
+      "canonicalPng": "00-couverture-trouver-sa-juste-place.png",
+      "canonicalWebp": "00-couverture-trouver-sa-juste-place.webp",
+      "label": "Couverture — Trouver sa juste place",
+      "pngBytes": 2257800,
+      "webpBytes": 206814,
+      "pngDimensions": [
+        1054,
+        1492
+      ],
+      "webpDimensions": [
+        1054,
+        1492
+      ]
+    },
+    {
+      "source": "file_0000000005e881f49957a70fa0337fa0.png",
+      "canonicalPng": "01-les-roles-que-nous-recevons.png",
+      "canonicalWebp": "01-les-roles-que-nous-recevons.webp",
+      "label": "Les rôles que nous recevons",
+      "pngBytes": 2339312,
+      "webpBytes": 222446,
+      "pngDimensions": [
+        1086,
+        1448
+      ],
+      "webpDimensions": [
+        1086,
+        1448
+      ]
+    },
+    {
+      "source": "file_00000000e3c081f4a459ecae231193f9.png",
+      "canonicalPng": "02-le-besoin-d-etre-valide.png",
+      "canonicalWebp": "02-le-besoin-d-etre-valide.webp",
+      "label": "Le besoin d’être validé",
+      "pngBytes": 2145894,
+      "webpBytes": 159350,
+      "pngDimensions": [
+        1122,
+        1402
+      ],
+      "webpDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "source": "file_00000000e38081f4914674c0129ec7a8.png",
+      "canonicalPng": "03-deposer-les-personnages.png",
+      "canonicalWebp": "03-deposer-les-personnages.webp",
+      "label": "Déposer les personnages",
+      "pngBytes": 2409931,
+      "webpBytes": 223160,
+      "pngDimensions": [
+        1122,
+        1402
+      ],
+      "webpDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "source": "file_0000000044f481f4bbf630f1151d091e.png",
+      "canonicalPng": "04-la-juste-distance.png",
+      "canonicalWebp": "04-la-juste-distance.webp",
+      "label": "La juste distance",
+      "pngBytes": 2655704,
+      "webpBytes": 282640,
+      "pngDimensions": [
+        1122,
+        1402
+      ],
+      "webpDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "source": "file_00000000a3b881f48609ab25a6e14322.png",
+      "canonicalPng": "05-la-place-se-construit.png",
+      "canonicalWebp": "05-la-place-se-construit.webp",
+      "label": "La place se construit",
+      "pngBytes": 2660340,
+      "webpBytes": 287988,
+      "pngDimensions": [
+        1122,
+        1402
+      ],
+      "webpDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "source": "file_000000004fbc8246b7956ef7dec0e5df.png",
+      "canonicalPng": "06-les-gestes-qui-transforment.png",
+      "canonicalWebp": "06-les-gestes-qui-transforment.webp",
+      "label": "Les gestes qui transforment",
+      "pngBytes": 2332706,
+      "webpBytes": 230522,
+      "pngDimensions": [
+        1122,
+        1402
+      ],
+      "webpDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "source": "file_00000000da508246bf088631145344d2.png",
+      "canonicalPng": "07-habiter-un-monde-commun.png",
+      "canonicalWebp": "07-habiter-un-monde-commun.webp",
+      "label": "Habiter un monde commun",
+      "pngBytes": 2527574,
+      "webpBytes": 258422,
+      "pngDimensions": [
+        1402,
+        1122
+      ],
+      "webpDimensions": [
+        1402,
+        1122
+      ]
+    },
+    {
+      "source": "file_00000000a68081f49f4d88b50ae03477.png",
+      "canonicalPng": "08-reecrire-son-recit.png",
+      "canonicalWebp": "08-reecrire-son-recit.webp",
+      "label": "Réécrire son récit",
+      "pngBytes": 2397346,
+      "webpBytes": 229812,
+      "pngDimensions": [
+        1402,
+        1122
+      ],
+      "webpDimensions": [
+        1402,
+        1122
+      ]
+    },
+    {
+      "source": "file_00000000506481f4b7d6a4fedf60ccd9.png",
+      "canonicalPng": "09-les-recits-vivants.png",
+      "canonicalWebp": "09-les-recits-vivants.webp",
+      "label": "Les récits vivants",
+      "pngBytes": 2529813,
+      "webpBytes": 285180,
+      "pngDimensions": [
+        1122,
+        1402
+      ],
+      "webpDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "source": "file_000000008cf881f4a13ff451e4651299.png",
+      "canonicalPng": "10-devenir-presence.png",
+      "canonicalWebp": "10-devenir-presence.webp",
+      "label": "Devenir présence / clôture",
+      "pngBytes": 2484145,
+      "webpBytes": 268030,
+      "pngDimensions": [
+        1402,
+        1122
+      ],
+      "webpDimensions": [
+        1402,
+        1122
+      ]
+    }
+  ]
+}

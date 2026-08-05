@@ -9,6 +9,9 @@ export interface LocaleMessages {
   readonly navigationLabel: string;
   readonly previous: string;
   readonly next: string;
+  readonly readScene: string;
+  readonly contemplatePhase: string;
+  readonly readPhase: string;
   readonly progressLabel: string;
   readonly progressText: string;
   readonly resumeTitle: string;

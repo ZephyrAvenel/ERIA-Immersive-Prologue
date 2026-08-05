@@ -72,7 +72,7 @@ test("pack registry discovers published packs without introducing cross-pack dep
   assert.equal(registry.home, "les-gardiens-des-recits-vivants");
   assert.deepEqual(
     registry.packs.map(({ id }) => id),
-    ["les-gardiens-des-recits-vivants", "pack-002", "pack-003", "pack-004", "pack-005", "pack-006", "pack-007", "pack-008"],
+    ["les-gardiens-des-recits-vivants", "pack-002", "pack-003", "pack-004", "pack-005", "pack-006", "pack-007", "pack-008", "pack-009-trouver-sa-juste-place"],
   );
   assert.equal(registry.packs.every((entry) => !("title" in entry) && !("type" in entry)), true);
   for (const entry of registry.packs) {

@@ -2,6 +2,7 @@ import type {
   ImageDisplayMode,
   LivingCard,
   NarrativePack,
+  NarrativePackLayout,
   NarrativeScene,
   NormalizedSceneTransition,
   Polarity,
@@ -22,6 +23,8 @@ export interface RenderPlayerState {
   readonly sceneCount: number;
   readonly controls: HTMLElement;
   readonly messages: RendererMessages;
+  readonly layout?: NarrativePackLayout;
+  readonly layoutPhase?: "image" | "text";
   readonly primaryNavigation?: HTMLElement;
 }
 
@@ -121,6 +124,8 @@ function createPlayerElement(state: RenderPlayerState): HTMLElement {
   player.className = "player";
   player.dataset.engineTitle = state.messages.engineTitle;
   player.dataset.packId = state.pack.id;
+  if (state.layout) player.dataset.layout = state.layout;
+  if (state.layoutPhase) player.dataset.layoutPhase = state.layoutPhase;
 
   const header = document.createElement("header");
   header.className = "player__header";
@@ -137,6 +142,7 @@ function createPlayerElement(state: RenderPlayerState): HTMLElement {
   article.id = "scene";
   article.className = "scene";
   article.tabIndex = -1;
+  if (state.layoutPhase) article.dataset.layoutPhase = state.layoutPhase;
 
   if (state.scene.image) {
     const media = document.createElement("figure");

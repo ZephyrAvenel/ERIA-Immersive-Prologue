@@ -376,6 +376,9 @@ async function readPlayerState(client) {
         documentTitle: document.title,
         engineTitleData: player?.getAttribute('data-engine-title'),
         packIdData: player?.getAttribute('data-pack-id'),
+        layoutData: player?.getAttribute('data-layout'),
+        layoutPhaseData: player?.getAttribute('data-layout-phase'),
+        sceneLayoutPhaseData: scene?.getAttribute('data-layout-phase'),
         hasVisibleEngineBrand: document.querySelector('.player__brand') !== null,
         hasVisiblePackLabel: document.querySelector('.player__pack-label') !== null,
         packTitle: document.querySelector('.player__work-title')?.textContent,
@@ -434,6 +437,15 @@ async function readStablePlayerState(client, expectedProgress) {
 
 async function clickLocalizedNext(client, expectedProgress) {
   await evaluate(client, "Array.from(document.querySelectorAll('button')).find((button) => button.textContent === 'Suivant')?.click()");
+  if (expectedProgress) {
+    await waitForPlayerReady(client, expectedProgress);
+  } else {
+    await waitForPlayerReady(client);
+  }
+}
+
+async function clickNavigationNext(client, expectedProgress) {
+  await evaluate(client, "document.querySelector('[data-navigation=\"next\"]')?.click()");
   if (expectedProgress) {
     await waitForPlayerReady(client, expectedProgress);
   } else {
@@ -531,7 +543,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(entryState.noHorizontalOverflow, true);
 
     await loadUrl(page, libraryUrl);
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 8");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 9");
     const libraryState = await evaluate(
       page,
       `({
@@ -578,6 +590,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         "La M\u00e9tamorphose",
         "Jouer pour devenir",
         "Le Veilleur",
+        "Trouver sa juste place",
       ],
     );
     assert.equal(libraryState.cards.every(({ imageAlt, linkLabel }) => imageAlt.length > 0 && linkLabel.length > 0), true);
@@ -589,6 +602,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[5].href.endsWith("/oeuvres/la-metamorphose/"), true);
     assert.equal(libraryState.cards[6].href.endsWith("/oeuvres/jouer-pour-devenir/"), true);
     assert.equal(libraryState.cards[7].href.endsWith("/oeuvres/le-veilleur/"), true);
+    assert.equal(libraryState.cards[8].href.endsWith("/oeuvres/trouver-sa-juste-place/"), true);
     assert.equal(libraryState.cards[0].slug, "les-gardiens-des-recits-vivants");
     assert.equal(libraryState.cards[1].slug, "polarites-vivantes");
     assert.equal(libraryState.cards[2].slug, "atlas-recits-vivants");
@@ -597,6 +611,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[5].slug, "la-metamorphose");
     assert.equal(libraryState.cards[6].slug, "jouer-pour-devenir");
     assert.equal(libraryState.cards[7].slug, "le-veilleur");
+    assert.equal(libraryState.cards[8].slug, "trouver-sa-juste-place");
     assert.equal(libraryState.cards[0].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[1].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[2].imagePosition, "50% 0%");
@@ -605,6 +620,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[5].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[6].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[7].imagePosition, "50% 50%");
+    assert.equal(libraryState.cards[8].imagePosition, "50% 50%");
     assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);
@@ -1161,7 +1177,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       true,
     );
     await evaluate(page, "document.querySelector('.site-navigation a')?.click()");
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 8");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 9");
 
     const metamorphosisPackUrl = `${entryUrl}oeuvres/la-metamorphose/`;
     await page.send("Emulation.setDeviceMetricsOverride", {
@@ -1328,6 +1344,75 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(watcherFinalActions.every(({ height, width }) => height >= 44 && width >= 280), true);
     assert.equal(
       watcherFinalActions.every((action, index) => index === 0 || action.top >= watcherFinalActions[index - 1].bottom),
+      true,
+    );
+
+    const justPlacePackUrl = `${entryUrl}oeuvres/trouver-sa-juste-place/`;
+    await page.send("Emulation.setDeviceMetricsOverride", {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await loadUrl(page, justPlacePackUrl);
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 11 \u2014 Contempler");
+    const justPlaceFirstImage = await readStablePlayerState(page, "Sc\u00e8ne 1 / 11 \u2014 Contempler");
+    assert.equal(justPlaceFirstImage.packIdData, "pack-009-trouver-sa-juste-place");
+    assert.equal(justPlaceFirstImage.layoutData, "image-then-text");
+    assert.equal(justPlaceFirstImage.layoutPhaseData, "image");
+    assert.equal(justPlaceFirstImage.sceneLayoutPhaseData, "image");
+    assert.equal(justPlaceFirstImage.sceneTitle, "Trouver sa juste place");
+    assert.equal(justPlaceFirstImage.buttons.join("|"), "Pr\u00e9c\u00e9dent|Lire");
+    assert.equal(justPlaceFirstImage.previousDisabled, true);
+    assert.equal(justPlaceFirstImage.nextDisabled, false);
+    assert.equal(justPlaceFirstImage.objectFit, "contain");
+    assert.equal(justPlaceFirstImage.currentSrc.endsWith("/00-couverture-trouver-sa-juste-place.webp"), true);
+    assert.equal(justPlaceFirstImage.imageVisible, true);
+    assert.equal(justPlaceFirstImage.imageHeight >= 500, true);
+    assert.equal(justPlaceFirstImage.noHorizontalOverflow, true);
+    assert.equal(justPlaceFirstImage.controlsInsideViewport, true);
+
+    await clickNavigationNext(page, "Sc\u00e8ne 1 / 11 \u2014 Lire");
+    const justPlaceFirstText = await readStablePlayerState(page, "Sc\u00e8ne 1 / 11 \u2014 Lire");
+    assert.equal(justPlaceFirstText.layoutPhaseData, "text");
+    assert.equal(justPlaceFirstText.sceneLayoutPhaseData, "text");
+    assert.equal(justPlaceFirstText.buttons.join("|"), "Pr\u00e9c\u00e9dent|Suivant");
+    assert.equal(justPlaceFirstText.previousDisabled, false);
+    assert.equal(justPlaceFirstText.sceneText.includes("Toute existence commence"), true);
+    assert.equal(justPlaceFirstText.imageVisible, false);
+    assert.equal(justPlaceFirstText.contentInsideViewport, true);
+    assert.equal(justPlaceFirstText.noHorizontalOverflow, true);
+
+    await evaluate(page, "document.querySelector('[data-navigation=\"previous\"]')?.click()");
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 11 \u2014 Contempler");
+    const justPlaceBackToImage = await readStablePlayerState(page, "Sc\u00e8ne 1 / 11 \u2014 Contempler");
+    assert.equal(justPlaceBackToImage.layoutPhaseData, "image");
+    assert.equal(justPlaceBackToImage.previousDisabled, true);
+
+    await clickNavigationNext(page, "Sc\u00e8ne 1 / 11 \u2014 Lire");
+    for (let sceneNumber = 2; sceneNumber <= 11; sceneNumber += 1) {
+      await clickNavigationNext(page, `Sc\u00e8ne ${sceneNumber} / 11 \u2014 Contempler`);
+      const imageState = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 11 \u2014 Contempler`);
+      assert.equal(imageState.layoutPhaseData, "image");
+      assert.equal(imageState.objectFit, "contain");
+      assert.equal(imageState.imageVisible, true);
+      assert.equal(imageState.currentSrc.endsWith(".webp"), true);
+      assert.equal(imageState.noHorizontalOverflow, true);
+      assert.equal(imageState.controlsInsideViewport, true);
+
+      await clickNavigationNext(page, `Sc\u00e8ne ${sceneNumber} / 11 \u2014 Lire`);
+      const textState = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 11 \u2014 Lire`);
+      assert.equal(textState.layoutPhaseData, "text");
+      assert.equal(textState.imageVisible, false);
+      assert.equal(textState.sceneText.length > 80, true);
+      assert.equal(textState.contentInsideViewport, true);
+      assert.equal(textState.noHorizontalOverflow, true);
+    }
+    const justPlaceFinal = await readStablePlayerState(page, "Sc\u00e8ne 11 / 11 \u2014 Lire");
+    assert.equal(justPlaceFinal.sceneTitle, "Devenir pr\u00e9sence");
+    assert.equal(justPlaceFinal.nextDisabled, true);
+    assert.equal(
+      await evaluate(page, "document.querySelector('[data-library-continuation]')?.href.endsWith('/bibliotheque/')"),
       true,
     );
 
