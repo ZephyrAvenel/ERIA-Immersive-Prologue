@@ -1453,8 +1453,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(commonWorldFirstText.previousDisabled, false);
     assert.equal(commonWorldFirstText.sceneText.includes("comment habiter nos diff\u00e9rences sans rompre le lien"), true);
     assert.equal(commonWorldFirstText.imageVisible, false);
-    assert.equal(commonWorldFirstText.contentInsideViewport, true);
     assert.equal(commonWorldFirstText.noHorizontalOverflow, true);
+    assert.equal(commonWorldFirstText.controlsInsideViewport, true);
 
     await evaluate(page, "document.querySelector('[data-navigation=\"previous\"]')?.click()");
     await waitForPlayerReady(page, "Sc\u00e8ne 1 / 12 \u2014 Contempler");
@@ -1478,8 +1478,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       assert.equal(textState.layoutPhaseData, "text");
       assert.equal(textState.imageVisible, false);
       assert.equal(textState.sceneText.length > 120, true);
-      assert.equal(textState.contentInsideViewport, true);
       assert.equal(textState.noHorizontalOverflow, true);
+      assert.equal(textState.controlsInsideViewport, true);
     }
     const commonWorldFinal = await readStablePlayerState(page, "Sc\u00e8ne 12 / 12 \u2014 Lire");
     assert.equal(commonWorldFinal.sceneTitle, "Cl\u00f4ture \u2014 Faire monde");
