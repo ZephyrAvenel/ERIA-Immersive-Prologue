@@ -1,0 +1,119 @@
+{
+  "$schema": "../../schemas/narrative-pack.schema.json",
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "pack-010-le-monde-commun",
+  "title": "Le Monde commun",
+  "subtitle": "Habiter nos différences sans rompre le lien.",
+  "description": "Un parcours contemplatif sur la possibilité de construire un monde habitable entre des chemins différents, sans nier les tensions, sans effacer les singularités, et sans rompre le lien.",
+  "coverImage": "assets/images/00-couverture-le-monde-commun.webp",
+  "coverImageAlt": "Couverture Le Monde commun, plusieurs chemins convergent dans un même paysage habitable.",
+  "layout": "image-then-text",
+  "language": "fr",
+  "startScene": "scene-00",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 650,
+      "easing": "ease-in-out"
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene-00",
+      "title": "Couverture — Le Monde commun",
+      "text": "Le monde commun ne commence pas lorsque tout le monde pense la même chose.\n\nIl commence lorsque plusieurs chemins peuvent encore se reconnaître dans un même paysage.\n\nNous venons d’histoires différentes.\n\nNous portons des blessures différentes.\n\nNous avons appris à nommer le monde depuis des lieux, des familles, des cultures, des peurs et des espérances qui ne se ressemblent pas toujours.\n\nPourtant, quelque chose demeure à construire entre nous.\n\nNon pas un espace où chacun renonce à sa singularité.\n\nMais un lieu où les singularités ne deviennent pas immédiatement des frontières.\n\nLe monde commun n’est pas donné.\n\nIl se cherche.\n\nIl se travaille.\n\nIl se protège.\n\nIl naît chaque fois qu’un être humain refuse de transformer la différence en menace, le désaccord en rupture, la blessure en condamnation définitive.\n\nCe parcours invite à traverser cette question :\n\ncomment habiter nos différences sans rompre le lien ?",
+      "image": "assets/images/00-couverture-le-monde-commun.webp",
+      "imageAlt": "Couverture Le Monde commun, plusieurs chemins convergent dans un même paysage habitable.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-01",
+      "title": "Des chemins différents",
+      "text": "Nous n’arrivons jamais du même lieu.\n\nMême lorsque nous partageons une langue, une époque ou un territoire, nous ne venons pas exactement du même monde.\n\nChacun avance avec une mémoire.\n\nUne histoire familiale.\n\nDes fidélités invisibles.\n\nDes blessures parfois muettes.\n\nDes paysages intérieurs que les autres ne voient pas toujours.\n\nCe que l’un appelle évidence peut être, pour l’autre, une inquiétude.\n\nCe que l’un vit comme liberté peut être, pour l’autre, une perte de repères.\n\nCe que l’un nomme progrès peut réveiller, chez un autre, la peur d’être oublié.\n\nComprendre cela ne signifie pas tout accepter.\n\nMais cela permet de commencer autrement.\n\nLe monde commun exige d’abord cette humilité :\n\npersonne ne voit le réel depuis tous les chemins à la fois.\n\nNous avons besoin les uns des autres non parce que nous sommes identiques, mais parce que chacun porte une part du paysage que les autres ne peuvent pas voir seuls.",
+      "image": "assets/images/01-des-chemins-differents.webp",
+      "imageAlt": "Des chemins différents traversent une vallée et rappellent que chacun porte une part du paysage commun.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-02",
+      "title": "La tentation du camp",
+      "text": "Lorsque la peur grandit, le monde se simplifie.\n\nIl devient plus facile de séparer que de comprendre.\n\nPlus facile de désigner un camp que d’écouter une histoire.\n\nPlus facile de dire “eux” que de se demander ce qui, en nous, refuse encore la rencontre.\n\nLe camp rassure.\n\nIl donne une place claire.\n\nIl dit qui a raison.\n\nQui menace.\n\nQui appartient.\n\nQui doit être tenu à distance.\n\nMais cette clarté a un prix.\n\nPeu à peu, les visages deviennent des catégories.\n\nLes paroles deviennent des armes.\n\nLes désaccords deviennent des preuves d’hostilité.\n\nLe monde cesse alors d’être un espace à habiter ensemble.\n\nIl devient un territoire à défendre contre l’autre.\n\nLa tentation du camp ne vient pas toujours de la haine.\n\nElle vient souvent de la fatigue, de la blessure, du besoin de sécurité.\n\nMais si nous lui abandonnons entièrement notre regard, elle finit par nous prendre ce qu’elle prétend protéger :\n\nla possibilité de faire monde.",
+      "image": "assets/images/02-la-tentation-du-camp.webp",
+      "imageAlt": "Deux groupes séparés par une faille illustrent la tentation du camp et le risque de rupture.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-03",
+      "title": "Ce qui nous sépare",
+      "text": "Ce qui nous sépare n’est pas toujours visible.\n\nIl y a les opinions, bien sûr.\n\nLes croyances.\n\nLes appartenances.\n\nLes choix de vie.\n\nMais derrière ces différences apparentes se trouvent souvent des couches plus profondes.\n\nDes humiliations anciennes.\n\nDes paroles jamais réparées.\n\nDes loyautés familiales.\n\nDes peurs transmises.\n\nDes récits collectifs qui continuent d’agir en silence.\n\nNous croyons parfois nous opposer à une idée.\n\nMais nous répondons aussi à une blessure.\n\nNous croyons défendre une vérité.\n\nMais nous protégeons parfois un endroit fragile de notre histoire.\n\nReconnaître cela ne supprime pas le conflit.\n\nCela l’humanise.\n\nCela rappelle qu’un désaccord n’est jamais seulement un affrontement entre arguments.\n\nIl est souvent la rencontre difficile de plusieurs mémoires qui cherchent à ne pas disparaître.\n\nLe monde commun ne nie pas ce qui sépare.\n\nIl commence par le regarder sans mentir.\n\nCar on ne construit pas un pont en faisant semblant qu’il n’y a pas de rive.",
+      "image": "assets/images/03-ce-qui-nous-separe.webp",
+      "imageAlt": "Deux rives séparées par une fracture symbolisent les blessures et mémoires qui éloignent les êtres.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-04",
+      "title": "Ce qui nous relie encore",
+      "text": "Même lorsque tout semble se fragmenter, il reste parfois quelque chose.\n\nUne parole qui n’a pas encore été retirée.\n\nUne table où l’on peut encore s’asseoir.\n\nUn geste qui ne résout pas tout, mais qui empêche la rupture de devenir totale.\n\nUn silence partagé.\n\nUn souvenir commun.\n\nUne inquiétude semblable, même lorsqu’elle ne prend pas les mêmes mots.\n\nCe qui relie encore est souvent discret.\n\nCela ne fait pas toujours événement.\n\nCela ne triomphe pas.\n\nCela ne convainc pas immédiatement.\n\nMais cela maintient ouvert un passage.\n\nLe monde commun dépend de ces passages fragiles.\n\nIls sont parfois minuscules : saluer, écouter, ne pas humilier, ne pas réduire l’autre à sa pire parole, laisser une porte entrouverte.\n\nDans une époque qui pousse à rompre vite, ces gestes peuvent sembler faibles.\n\nIls sont pourtant une force profonde.\n\nCar tant qu’un passage demeure, le récit n’est pas terminé.\n\nEt tant que le récit n’est pas terminé, une autre rencontre reste possible.",
+      "image": "assets/images/04-ce-qui-nous-relie-encore.webp",
+      "imageAlt": "Une table et une lumière commune maintiennent un passage fragile entre des personnes différentes.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-05",
+      "title": "Le désaccord vivant",
+      "text": "Un désaccord n’est pas toujours une menace.\n\nIl peut être une épreuve.\n\nIl peut être une limite.\n\nIl peut être un signal.\n\nIl peut aussi devenir un lieu de transformation.\n\nMais pour cela, il doit rester vivant.\n\nUn désaccord vivant ne cherche pas à écraser l’autre.\n\nIl ne renonce pas non plus à ce qui compte.\n\nIl accepte la tension sans transformer immédiatement la tension en guerre.\n\nIl permet de dire :\n\nje ne vois pas comme toi,\n\nje ne comprends pas encore,\n\nje ne peux pas te suivre jusque-là,\n\nmais je refuse de te réduire à ce désaccord.\n\nLe monde commun n’est pas l’absence de conflit.\n\nUn monde sans conflit serait peut-être un monde où plus personne n’ose parler vraiment.\n\nLe problème n’est pas que nous ne soyons pas d’accord.\n\nLe problème commence lorsque le désaccord interdit toute reconnaissance.\n\nLorsque l’autre n’est plus un interlocuteur, mais seulement un obstacle.\n\nPréserver un désaccord vivant, c’est maintenir une chose rare :\n\nla possibilité de rester en relation sans devenir identiques.",
+      "image": "assets/images/05-le-desaccord-vivant.webp",
+      "imageAlt": "Deux présences séparées par une tension lumineuse représentent un désaccord qui reste vivant.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-06",
+      "title": "L’écoute comme seuil",
+      "text": "Écouter ne signifie pas se soumettre.\n\nÉcouter ne signifie pas renoncer à penser.\n\nÉcouter ne signifie pas donner raison.\n\nÉcouter, c’est d’abord accepter que quelque chose existe avant notre réponse.\n\nUne voix.\n\nUne peur.\n\nUne expérience.\n\nUne part du réel que nous n’avions peut-être pas encore entendue.\n\nL’écoute est un seuil parce qu’elle nous oblige à suspendre un instant notre volonté de conclure.\n\nElle crée un espace entre l’impulsion et la parole.\n\nEntre le jugement et la compréhension.\n\nEntre la réaction et la responsabilité.\n\nCe seuil est difficile.\n\nCar écouter vraiment peut déplacer nos certitudes.\n\nCela peut nous faire découvrir que notre récit n’était pas faux, mais incomplet.\n\nLe monde commun a besoin de cette écoute-là.\n\nNon pas une écoute molle, qui accepte tout.\n\nMais une écoute courageuse, capable d’accueillir la complexité sans perdre le discernement.\n\nParfois, le premier acte de paix n’est pas de parler mieux.\n\nC’est de laisser l’autre apparaître autrement que dans le récit que nous avions déjà construit sur lui.",
+      "image": "assets/images/06-l-ecoute-comme-seuil.webp",
+      "imageAlt": "Un seuil ouvert sur une lumière calme symbolise l’écoute comme passage vers la compréhension.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-07",
+      "title": "Construire sans uniformiser",
+      "text": "Construire un monde commun ne signifie pas produire un monde uniforme.\n\nL’unité n’est pas l’effacement des différences.\n\nLa paix n’est pas le silence forcé des singularités.\n\nUne société vivante n’a pas besoin que chacun pense, aime, prie, crée, habite ou espère de la même manière.\n\nElle a besoin que ces différences puissent coexister sans se détruire.\n\nC’est une tâche délicate.\n\nCar certaines différences enrichissent.\n\nD’autres inquiètent.\n\nCertaines demandent à être entendues.\n\nD’autres doivent être discutées, limitées, parfois refusées lorsqu’elles détruisent la dignité d’autrui.\n\nLe monde commun n’est donc pas un relativisme où tout se vaut.\n\nIl est une exigence plus haute :\n\nchercher comment tenir ensemble la liberté, la justice, la dignité et la pluralité.\n\nConstruire sans uniformiser, c’est accepter qu’un monde habitable ne ressemble pas à une seule voix.\n\nIl ressemble davantage à une polyphonie.\n\nChaque voix doit trouver sa justesse.\n\nMais aucune ne doit prétendre devenir tout le chant.",
+      "image": "assets/images/07-construire-sans-uniformiser.webp",
+      "imageAlt": "Un village vivant et varié représente la construction d’un monde commun sans uniformiser les singularités.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-08",
+      "title": "Les lieux qui tiennent le lien",
+      "text": "Le monde commun a besoin de lieux.\n\nPas seulement de principes.\n\nPas seulement de discours.\n\nDes lieux réels, où les êtres peuvent se rencontrer autrement que comme des opinions opposées.\n\nUne école.\n\nUne bibliothèque.\n\nUne place.\n\nUn jardin.\n\nUn atelier.\n\nUne table.\n\nUn chemin.\n\nUn feu autour duquel la parole peut revenir.\n\nCes lieux ne sont pas neutres.\n\nIls façonnent notre manière d’être ensemble.\n\nUn lieu peut isoler.\n\nIl peut hiérarchiser.\n\nIl peut exclure.\n\nMais il peut aussi ouvrir, accueillir, relier, transmettre.\n\nCertains lieux empêchent le monde de se défaire parce qu’ils rendent la rencontre possible.\n\nIls donnent une forme concrète à l’attention.\n\nIls permettent à des histoires différentes de coexister dans un même espace sans devoir immédiatement se vaincre.\n\nHabiter le monde commun, c’est aussi prendre soin de ces lieux-là.\n\nCar lorsque les lieux de rencontre disparaissent, les récits se durcissent.\n\nEt lorsque les récits se durcissent, chacun finit par croire qu’il est seul dans son monde.",
+      "image": "assets/images/08-les-lieux-qui-tiennent-le-lien.webp",
+      "imageAlt": "Un lieu chaleureux rassemble plusieurs personnes autour d’une table et d’une lumière partagée.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-09",
+      "title": "Les récits qui réparent",
+      "text": "Tous les récits ne réparent pas.\n\nCertains enferment.\n\nIls répètent la blessure.\n\nIls désignent toujours les mêmes coupables.\n\nIls figent les êtres dans un rôle définitif.\n\nIls transforment le passé en prison et l’avenir en menace.\n\nMais d’autres récits rouvrent un passage.\n\nNon parce qu’ils effacent ce qui a eu lieu.\n\nNon parce qu’ils demandent d’oublier.\n\nMais parce qu’ils permettent de raconter autrement.\n\nUn récit qui répare ne nie pas la douleur.\n\nIl lui donne une forme qui ne détruit plus tout le paysage.\n\nIl permet de reconnaître les responsabilités sans réduire une vie entière à une faute.\n\nIl permet de dire : cela a blessé, cela a séparé, cela a marqué.\n\nMais cela ne condamne pas toute possibilité de transformation.\n\nLes récits vivants ne cherchent pas à fabriquer une harmonie artificielle.\n\nIls cherchent à rendre le réel habitable.\n\nIls nous aident à porter ce qui a été brisé sans transmettre seulement la fracture.",
+      "image": "assets/images/09-les-recits-qui-reparent.webp",
+      "imageAlt": "Des personnes réunies autour d’un récit lumineux évoquent les histoires capables de réparer sans effacer.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-10",
+      "title": "Veiller ensemble",
+      "text": "Le monde commun n’est jamais acquis.\n\nIl peut se perdre dans une parole trop violente.\n\nDans une humiliation répétée.\n\nDans une indifférence qui dure trop longtemps.\n\nDans un silence où plus personne ne croit utile de tendre la main.\n\nC’est pourquoi il faut veiller.\n\nVeiller ne signifie pas surveiller les autres depuis une hauteur.\n\nVeiller signifie rester attentif à ce qui permet encore le lien.\n\nUne conversation fragile.\n\nUne confiance naissante.\n\nUne institution abîmée.\n\nUn lieu menacé.\n\nUne parole qui pourrait réparer au lieu d’enfermer.\n\nVeiller ensemble, c’est comprendre que personne ne porte seul le monde commun.\n\nIl dépend de gestes modestes, répétés, parfois invisibles.\n\nIl dépend de celles et ceux qui refusent d’ajouter du mépris au désaccord.\n\nDe celles et ceux qui protègent les passages.\n\nDe celles et ceux qui savent qu’un monde habitable ne se décrète pas.\n\nIl se cultive.\n\nIl se relève.\n\nIl se transmet.",
+      "image": "assets/images/10-veiller-ensemble.webp",
+      "imageAlt": "Plusieurs veilleurs dans un paysage crépusculaire protègent les passages du monde commun.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-11",
+      "title": "Clôture — Faire monde",
+      "text": "Nous ne sommes pas appelés à devenir identiques.\n\nNous sommes appelés à apprendre comment nos différences peuvent encore composer un monde.\n\nCe monde ne sera jamais parfait.\n\nIl restera traversé de tensions, de désaccords, de mémoires blessées, de conflits parfois nécessaires.\n\nMais il peut devenir plus habitable si nous cessons de croire que le lien exige l’effacement de l’autre.\n\nFaire monde, ce n’est pas tout accepter.\n\nCe n’est pas tout confondre.\n\nCe n’est pas renoncer à la vérité, à la justice ou à la dignité.\n\nC’est chercher une manière de les habiter sans détruire la possibilité d’une rencontre.\n\nChaque fois qu’un passage reste ouvert, le monde commun respire encore.\n\nChaque fois qu’une parole refuse d’humilier, quelque chose tient.\n\nChaque fois qu’une différence n’est pas transformée en mur, un avenir devient possible.\n\nLe monde commun commence peut-être là :\n\ndans cette décision fragile et courageuse de ne pas laisser nos blessures écrire seules l’histoire de demain.",
+      "image": "assets/images/11-faire-monde.webp",
+      "imageAlt": "Une scène de clôture montre plusieurs chemins et présences qui composent un monde commun.",
+      "imageDisplayMode": "contain"
+    }
+  ]
+}

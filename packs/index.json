@@ -47,6 +47,11 @@
       "id": "pack-009-trouver-sa-juste-place",
       "slug": "trouver-sa-juste-place",
       "manifest": "pack-009-trouver-sa-juste-place/pack.json"
+    },
+    {
+      "id": "pack-010-le-monde-commun",
+      "slug": "le-monde-commun",
+      "manifest": "pack-010-le-monde-commun/pack.json"
     }
   ]
 }

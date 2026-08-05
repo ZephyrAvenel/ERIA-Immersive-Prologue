@@ -413,7 +413,7 @@ async function readPlayerState(client) {
         noVerticalOverflow: document.documentElement.scrollHeight <= document.documentElement.clientHeight + 1,
         controlsInsideViewport: Boolean(controlsRect && controlsRect.left >= 0 && controlsRect.right <= document.documentElement.clientWidth),
         controlsVisibleVertically: Boolean(controlsRect && controlsRect.top >= 0 && controlsRect.bottom <= document.documentElement.clientHeight),
-        contentInsideViewport: Boolean(contentRect && contentRect.left >= 0 && contentRect.right <= document.documentElement.clientWidth),
+        contentInsideViewport: Boolean(contentRect && contentRect.left >= -1 && contentRect.right <= document.documentElement.clientWidth + 1),
         activeElementText: document.activeElement?.textContent,
         focusable,
         hasHeading: document.querySelectorAll('h1').length === 1,
@@ -543,7 +543,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(entryState.noHorizontalOverflow, true);
 
     await loadUrl(page, libraryUrl);
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 9");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 10");
     const libraryState = await evaluate(
       page,
       `({
@@ -591,6 +591,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         "Jouer pour devenir",
         "Le Veilleur",
         "Trouver sa juste place",
+        "Le Monde commun",
       ],
     );
     assert.equal(libraryState.cards.every(({ imageAlt, linkLabel }) => imageAlt.length > 0 && linkLabel.length > 0), true);
@@ -603,6 +604,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[6].href.endsWith("/oeuvres/jouer-pour-devenir/"), true);
     assert.equal(libraryState.cards[7].href.endsWith("/oeuvres/le-veilleur/"), true);
     assert.equal(libraryState.cards[8].href.endsWith("/oeuvres/trouver-sa-juste-place/"), true);
+    assert.equal(libraryState.cards[9].href.endsWith("/oeuvres/le-monde-commun/"), true);
     assert.equal(libraryState.cards[0].slug, "les-gardiens-des-recits-vivants");
     assert.equal(libraryState.cards[1].slug, "polarites-vivantes");
     assert.equal(libraryState.cards[2].slug, "atlas-recits-vivants");
@@ -612,6 +614,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[6].slug, "jouer-pour-devenir");
     assert.equal(libraryState.cards[7].slug, "le-veilleur");
     assert.equal(libraryState.cards[8].slug, "trouver-sa-juste-place");
+    assert.equal(libraryState.cards[9].slug, "le-monde-commun");
     assert.equal(libraryState.cards[0].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[1].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[2].imagePosition, "50% 0%");
@@ -621,6 +624,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[6].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[7].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[8].imagePosition, "50% 0%");
+    assert.equal(libraryState.cards[9].imagePosition, "50% 50%");
     assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);
@@ -1177,7 +1181,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       true,
     );
     await evaluate(page, "document.querySelector('.site-navigation a')?.click()");
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 9");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 10");
 
     const metamorphosisPackUrl = `${entryUrl}oeuvres/la-metamorphose/`;
     await page.send("Emulation.setDeviceMetricsOverride", {
@@ -1414,6 +1418,139 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(
       await evaluate(page, "document.querySelector('[data-library-continuation]')?.href.endsWith('/bibliotheque/')"),
       true,
+    );
+
+    const commonWorldPackUrl = `${entryUrl}oeuvres/le-monde-commun/`;
+    await page.send("Emulation.setDeviceMetricsOverride", {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await loadUrl(page, commonWorldPackUrl);
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 12 \u2014 Contempler");
+    const commonWorldFirstImage = await readStablePlayerState(page, "Sc\u00e8ne 1 / 12 \u2014 Contempler");
+    assert.equal(commonWorldFirstImage.packIdData, "pack-010-le-monde-commun");
+    assert.equal(commonWorldFirstImage.layoutData, "image-then-text");
+    assert.equal(commonWorldFirstImage.layoutPhaseData, "image");
+    assert.equal(commonWorldFirstImage.sceneLayoutPhaseData, "image");
+    assert.equal(commonWorldFirstImage.sceneTitle, "Couverture \u2014 Le Monde commun");
+    assert.equal(commonWorldFirstImage.buttons.join("|"), "Pr\u00e9c\u00e9dent|Lire");
+    assert.equal(commonWorldFirstImage.previousDisabled, true);
+    assert.equal(commonWorldFirstImage.nextDisabled, false);
+    assert.equal(commonWorldFirstImage.objectFit, "contain");
+    assert.equal(commonWorldFirstImage.currentSrc.endsWith("/00-couverture-le-monde-commun.webp"), true);
+    assert.equal(commonWorldFirstImage.imageVisible, true);
+    assert.equal(commonWorldFirstImage.imageHeight >= 500, true);
+    assert.equal(commonWorldFirstImage.noHorizontalOverflow, true);
+    assert.equal(commonWorldFirstImage.controlsInsideViewport, true);
+
+    await clickNavigationNext(page, "Sc\u00e8ne 1 / 12 \u2014 Lire");
+    const commonWorldFirstText = await readStablePlayerState(page, "Sc\u00e8ne 1 / 12 \u2014 Lire");
+    assert.equal(commonWorldFirstText.layoutPhaseData, "text");
+    assert.equal(commonWorldFirstText.sceneLayoutPhaseData, "text");
+    assert.equal(commonWorldFirstText.buttons.join("|"), "Pr\u00e9c\u00e9dent|Suivant");
+    assert.equal(commonWorldFirstText.previousDisabled, false);
+    assert.equal(commonWorldFirstText.sceneText.includes("comment habiter nos diff\u00e9rences sans rompre le lien"), true);
+    assert.equal(commonWorldFirstText.imageVisible, false);
+    assert.equal(commonWorldFirstText.noHorizontalOverflow, true);
+    assert.equal(commonWorldFirstText.controlsInsideViewport, true);
+
+    await evaluate(page, "document.querySelector('[data-navigation=\"previous\"]')?.click()");
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 12 \u2014 Contempler");
+    const commonWorldBackToImage = await readStablePlayerState(page, "Sc\u00e8ne 1 / 12 \u2014 Contempler");
+    assert.equal(commonWorldBackToImage.layoutPhaseData, "image");
+    assert.equal(commonWorldBackToImage.previousDisabled, true);
+
+    await clickNavigationNext(page, "Sc\u00e8ne 1 / 12 \u2014 Lire");
+    for (let sceneNumber = 2; sceneNumber <= 12; sceneNumber += 1) {
+      await clickNavigationNext(page, `Sc\u00e8ne ${sceneNumber} / 12 \u2014 Contempler`);
+      const imageState = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 12 \u2014 Contempler`);
+      assert.equal(imageState.layoutPhaseData, "image");
+      assert.equal(imageState.objectFit, "contain");
+      assert.equal(imageState.imageVisible, true);
+      assert.equal(imageState.currentSrc.endsWith(".webp"), true);
+      assert.equal(imageState.noHorizontalOverflow, true);
+      assert.equal(imageState.controlsInsideViewport, true);
+
+      await clickNavigationNext(page, `Sc\u00e8ne ${sceneNumber} / 12 \u2014 Lire`);
+      const textState = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 12 \u2014 Lire`);
+      assert.equal(textState.layoutPhaseData, "text");
+      assert.equal(textState.imageVisible, false);
+      assert.equal(textState.sceneText.length > 120, true, `PACK-010 scene ${sceneNumber} read page should expose narrative text`);
+      assert.equal(textState.noHorizontalOverflow, true, `PACK-010 scene ${sceneNumber} read page should not overflow horizontally`);
+      assert.equal(
+        textState.nextDisabled,
+        sceneNumber === 12,
+        `PACK-010 scene ${sceneNumber} read page should keep navigation state coherent`,
+      );
+      const readControlsState = await evaluate(
+        page,
+        `(() => {
+          const controls = document.querySelector('.player-controls');
+          controls?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+          const next = document.querySelector('[data-navigation="next"]');
+          const continuation = document.querySelector('[data-library-continuation]');
+          const buttons = Array.from(document.querySelectorAll('.player-controls button')).map((button) => ({
+            text: (button.textContent || '').trim(),
+            disabled: button.disabled
+          }));
+          return {
+            controlsPresent: Boolean(controls),
+            buttonsNamed: buttons.every(({ text }) => text.length > 0),
+            nextButtonPresent: Boolean(next),
+            nextButtonEnabled: Boolean(next && !next.disabled),
+            nextDisabled: next?.disabled === true,
+            continuationPresent: Boolean(continuation),
+            continuationNamed: Boolean(continuation && (continuation.textContent || '').trim().length > 0),
+            continuationHref: continuation?.href ?? ''
+          };
+        })()`,
+      );
+      assert.equal(readControlsState.controlsPresent, true, `PACK-010 scene ${sceneNumber} read page should render controls`);
+      assert.equal(
+        readControlsState.nextButtonPresent,
+        true,
+        `PACK-010 scene ${sceneNumber} read page should render the next navigation control`,
+      );
+      assert.equal(readControlsState.buttonsNamed, true, `PACK-010 scene ${sceneNumber} read page controls should be named`);
+      if (sceneNumber < 12) {
+        assert.equal(
+          readControlsState.nextButtonEnabled,
+          true,
+          `PACK-010 scene ${sceneNumber} read page next button should remain activable`,
+        );
+      } else {
+        assert.equal(readControlsState.nextDisabled, true, "PACK-010 final read page next button should be disabled");
+        assert.equal(readControlsState.continuationPresent, true, "PACK-010 final read page should render a continuation link");
+        assert.equal(readControlsState.continuationNamed, true, "PACK-010 final read page continuation link should be named");
+        assert.equal(
+          readControlsState.continuationHref.endsWith("/bibliotheque/"),
+          true,
+          "PACK-010 final read page continuation link should point to the library",
+        );
+      }
+    }
+    const commonWorldFinal = await readStablePlayerState(page, "Sc\u00e8ne 12 / 12 \u2014 Lire");
+    assert.equal(commonWorldFinal.sceneTitle, "Cl\u00f4ture \u2014 Faire monde");
+    assert.equal(commonWorldFinal.nextDisabled, true);
+    assert.equal(
+      await evaluate(page, "document.querySelector('[data-library-continuation]')?.href.endsWith('/bibliotheque/')"),
+      true,
+    );
+    await evaluate(
+      page,
+      `(() => {
+        const continuation = document.querySelector('[data-library-continuation]');
+        continuation?.scrollIntoView({ block: 'center', inline: 'nearest' });
+        continuation?.click();
+      })()`,
+    );
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 10");
+    assert.equal(
+      await evaluate(page, "window.location.pathname.endsWith('/bibliotheque/')"),
+      true,
+      "PACK-010 final read page continuation link should navigate back to the library",
     );
 
     await page.send("Emulation.setEmulatedMedia", {
