@@ -1489,37 +1489,47 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         `(() => {
           const controls = document.querySelector('.player-controls');
           controls?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-          const rect = controls?.getBoundingClientRect();
+          const next = document.querySelector('[data-navigation="next"]');
+          const continuation = document.querySelector('[data-library-continuation]');
           const buttons = Array.from(document.querySelectorAll('.player-controls button')).map((button) => ({
             text: (button.textContent || '').trim(),
             disabled: button.disabled
           }));
           return {
             controlsPresent: Boolean(controls),
-            controlsInsideViewportAfterScroll: Boolean(
-              rect &&
-              rect.left >= -1 &&
-              rect.right <= document.documentElement.clientWidth + 1 &&
-              rect.top >= -1 &&
-              rect.bottom <= document.documentElement.clientHeight + 1
-            ),
             buttonsNamed: buttons.every(({ text }) => text.length > 0),
-            nextDisabled: buttons.at(-1)?.disabled === true
+            nextButtonPresent: Boolean(next),
+            nextButtonEnabled: Boolean(next && !next.disabled),
+            nextDisabled: next?.disabled === true,
+            continuationPresent: Boolean(continuation),
+            continuationNamed: Boolean(continuation && (continuation.textContent || '').trim().length > 0),
+            continuationHref: continuation?.href ?? ''
           };
         })()`,
       );
       assert.equal(readControlsState.controlsPresent, true, `PACK-010 scene ${sceneNumber} read page should render controls`);
       assert.equal(
-        readControlsState.controlsInsideViewportAfterScroll,
+        readControlsState.nextButtonPresent,
         true,
-        `PACK-010 scene ${sceneNumber} read page controls should be reachable after scroll`,
+        `PACK-010 scene ${sceneNumber} read page should render the next navigation control`,
       );
       assert.equal(readControlsState.buttonsNamed, true, `PACK-010 scene ${sceneNumber} read page controls should be named`);
-      assert.equal(
-        readControlsState.nextDisabled,
-        sceneNumber === 12,
-        `PACK-010 scene ${sceneNumber} read page next button should match final/non-final state`,
-      );
+      if (sceneNumber < 12) {
+        assert.equal(
+          readControlsState.nextButtonEnabled,
+          true,
+          `PACK-010 scene ${sceneNumber} read page next button should remain activable`,
+        );
+      } else {
+        assert.equal(readControlsState.nextDisabled, true, "PACK-010 final read page next button should be disabled");
+        assert.equal(readControlsState.continuationPresent, true, "PACK-010 final read page should render a continuation link");
+        assert.equal(readControlsState.continuationNamed, true, "PACK-010 final read page continuation link should be named");
+        assert.equal(
+          readControlsState.continuationHref.endsWith("/bibliotheque/"),
+          true,
+          "PACK-010 final read page continuation link should point to the library",
+        );
+      }
     }
     const commonWorldFinal = await readStablePlayerState(page, "Sc\u00e8ne 12 / 12 \u2014 Lire");
     assert.equal(commonWorldFinal.sceneTitle, "Cl\u00f4ture \u2014 Faire monde");
@@ -1527,6 +1537,20 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(
       await evaluate(page, "document.querySelector('[data-library-continuation]')?.href.endsWith('/bibliotheque/')"),
       true,
+    );
+    await evaluate(
+      page,
+      `(() => {
+        const continuation = document.querySelector('[data-library-continuation]');
+        continuation?.scrollIntoView({ block: 'center', inline: 'nearest' });
+        continuation?.click();
+      })()`,
+    );
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 10");
+    assert.equal(
+      await evaluate(page, "window.location.pathname.endsWith('/bibliotheque/')"),
+      true,
+      "PACK-010 final read page continuation link should navigate back to the library",
     );
 
     await page.send("Emulation.setEmulatedMedia", {
