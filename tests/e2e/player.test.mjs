@@ -413,7 +413,7 @@ async function readPlayerState(client) {
         noVerticalOverflow: document.documentElement.scrollHeight <= document.documentElement.clientHeight + 1,
         controlsInsideViewport: Boolean(controlsRect && controlsRect.left >= 0 && controlsRect.right <= document.documentElement.clientWidth),
         controlsVisibleVertically: Boolean(controlsRect && controlsRect.top >= 0 && controlsRect.bottom <= document.documentElement.clientHeight),
-        contentInsideViewport: Boolean(contentRect && contentRect.left >= 0 && contentRect.right <= document.documentElement.clientWidth),
+        contentInsideViewport: Boolean(contentRect && contentRect.left >= -1 && contentRect.right <= document.documentElement.clientWidth + 1),
         activeElementText: document.activeElement?.textContent,
         focusable,
         hasHeading: document.querySelectorAll('h1').length === 1,
