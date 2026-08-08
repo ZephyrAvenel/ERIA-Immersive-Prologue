@@ -1,0 +1,127 @@
+{
+  "$schema": "../../schemas/narrative-pack.schema.json",
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "pack-012-celle-que-je-navais-pas-encore-rencontree",
+  "title": "Celle que je n’avais pas encore rencontrée",
+  "subtitle": "Un récit vivant",
+  "description": "Une novella photographique immersive sur la fascination, l’émancipation et la découverte d’une possibilité de soi révélée par la rencontre indirecte avec une autre femme.",
+  "coverImage": "assets/images/pack-012-cover.webp",
+  "coverImageAlt": "Couverture du récit Celle que je n’avais pas encore rencontrée, une femme face à son reflet dans une rue nocturne.",
+  "layout": "image-then-text",
+  "language": "fr",
+  "startScene": "scene-00",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 650,
+      "easing": "ease-in-out"
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene-00",
+      "title": "Couverture — Celle que je n’avais pas encore rencontrée",
+      "text": "Un récit vivant.",
+      "image": "assets/images/pack-012-cover.webp",
+      "imageAlt": "Couverture du récit Celle que je n’avais pas encore rencontrée, une femme face à son reflet dans une rue nocturne.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-01",
+      "title": "La vie déjà écrite",
+      "text": "Il n’y avait rien qui n’allait vraiment.\n\nC’était peut-être cela, le plus difficile à expliquer.\n\nLes jours avaient une forme. Les objets avaient leur place. Les habitudes s’enchaînaient avec cette douceur particulière des choses que l’on n’a plus besoin de décider.\n\nElle savait où elle serait demain.\n\nElle savait probablement ce qu’elle ferait la semaine suivante.\n\nAutour d’elle, personne n’aurait parlé d’une vie malheureuse.\n\nElle non plus.\n\nEt pourtant, certains soirs, lorsqu’elle restait quelques instants devant la fenêtre après que la lumière avait commencé à décliner, une sensation revenait.\n\nPas une pensée.\n\nPas encore un désir.\n\nPlutôt un léger décalage.\n\nComme si la vie qu’elle habitait avait été dessinée avec soin, mais qu’une pièce du dessin manquait.\n\nElle regardait les fenêtres s’allumer de l’autre côté de la rue.\n\nD’autres vies.\n\nD’autres histoires.\n\nPuis elle retournait aux siennes.\n\nElle ignorait encore que certaines transformations commencent ainsi :\n\nnon par le refus de ce que nous sommes,\n\nmais par la sensation presque imperceptible que nous ne sommes peut-être pas seulement cela.",
+      "image": "assets/images/pack-012-01-vie-deja-ecrite.webp",
+      "imageAlt": "Une femme se tient dans un appartement familier devant une fenêtre au soleil déclinant, symbole d’une vie déjà écrite.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-02",
+      "title": "La fenêtre sur une autre vie",
+      "text": "Elle l’avait aperçue presque par hasard.\n\nUne photographie.\n\nPuis une autre.\n\nUne silhouette dans une rue nocturne.\n\nIl n’y avait probablement rien d’extraordinaire dans cette femme.\n\nMais quelque chose dans sa manière de se tenir semblait dire qu’elle n’attendait de personne l’autorisation d’être là.\n\nElle regarda longtemps l’image.\n\nCe n’était pas sa beauté qui l’arrêtait.\n\nNi ses vêtements.\n\nNi même la ville derrière elle.\n\nC’était autre chose.\n\nUne manière d’occuper l’espace.\n\nUne liberté qu’elle ne savait pas nommer.\n\nElle referma le magazine.\n\nPuis le rouvrit quelques minutes plus tard.\n\nElle ne savait rien de cette femme.\n\nElle ignorait sa vie, ses peurs, ses contradictions.\n\nElle ne connaissait qu’une image.\n\nMais parfois une image suffit.\n\nNon pour nous montrer qui devenir.\n\nPour entrouvrir une fenêtre.\n\nEt derrière cette fenêtre venait d’apparaître une question qu’elle n’avait jamais formulée :\n\nEt si une autre manière de vivre était possible ?",
+      "image": "assets/images/pack-012-02-fenetre-autre-vie.webp",
+      "imageAlt": "Une femme regarde une photographie ou une image dans son intérieur, comme une fenêtre ouverte sur une autre manière de vivre.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-03",
+      "title": "La fascination",
+      "text": "Au début, elle crut qu’elle voulait lui ressembler.\n\nElle conserva les photographies.\n\nChercha d’autres images.\n\nNota des lieux.\n\nDes vêtements.\n\nDes gestes.\n\nDes phrases.\n\nSon mur devint peu à peu la cartographie d’une existence qui n’était pas la sienne.\n\nElle observait cette inconnue comme on observe parfois une porte que l’on n’ose pas encore ouvrir.\n\nElle imaginait sa liberté.\n\nSon audace.\n\nSa manière de traverser une ville sans avoir à expliquer où elle allait.\n\nElle inventait probablement beaucoup.\n\nMais cela importait moins qu’elle ne le croyait.\n\nCar la fascination parle rarement seulement de celui ou celle que nous regardons.\n\nElle parle aussi de nous.\n\nDe ce qui nous manque.\n\nDe ce qui nous appelle.\n\nDe ce qui cherche une forme.\n\nElle croyait collectionner les traces d’une autre femme.\n\nSans le savoir, elle commençait à dresser la carte de ses propres possibles.",
+      "image": "assets/images/pack-012-03-fascination.webp",
+      "imageAlt": "Un mur couvert de photographies, notes et fragments compose la cartographie d’une fascination pour une inconnue.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-04",
+      "title": "Le déplacement",
+      "text": "Un soir, elle sortit.\n\nSans raison suffisante.\n\nSans programme précis.\n\nElle aurait pu rester.\n\nElle resta d’ailleurs plusieurs secondes sur le seuil, comme si son corps connaissait mieux qu’elle l’importance minuscule de ce geste.\n\nPuis elle descendit dans la rue.\n\nElle choisit un quartier où personne ne la connaissait.\n\nCette idée lui procura une sensation étrange.\n\nIci, personne ne savait ce qu’elle faisait habituellement.\n\nPersonne ne connaissait la version d’elle-même qu’elle avait patiemment appris à présenter.\n\nPersonne ne pouvait lui rappeler qui elle était censée être.\n\nElle marcha.\n\nLa ville semblait différente lorsqu’elle n’avait aucune destination.\n\nElle comprit alors quelque chose de très simple :\n\npour découvrir une autre manière d’être, il faut parfois déplacer le décor qui nous renvoie constamment à l’ancienne.\n\nElle n’était pas devenue quelqu’un d’autre.\n\nElle avait seulement quitté, pour quelques heures, les lieux qui savaient déjà son nom.\n\nEt cela suffisait pour qu’un espace apparaisse.",
+      "image": "assets/images/pack-012-04-deplacement.webp",
+      "imageAlt": "Une femme marche seule dans une rue nocturne inconnue, quittant les lieux qui savaient déjà son nom.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-05",
+      "title": "Perdre son ancien nom",
+      "text": "Dans les toilettes d’un bar, elle resta longtemps devant le miroir.\n\nAutour d’elle, des mots avaient été griffonnés, collés, laissés par des inconnus.\n\nQui es-tu ?\n\nLibre ?\n\nAutre ?\n\nElle sourit.\n\nToute sa vie, elle avait su répondre.\n\nUn prénom.\n\nUn métier.\n\nDes relations.\n\nDes habitudes.\n\nDes rôles.\n\nUne succession de définitions suffisamment précises pour donner l’impression qu’une personne pouvait tenir entièrement dans quelques phrases.\n\nMais ici, loin des regards familiers, ces réponses semblaient soudain incomplètes.\n\nElle pensa :\n\nEt si je ne répondais pas tout de suite ?\n\nNe plus savoir exactement qui l’on est peut faire peur.\n\nMais il existe une autre manière de traverser cette incertitude.\n\nNon comme une disparition.\n\nComme une suspension.\n\nPendant quelques heures, elle décida de ne plus répondre aux anciennes définitions.\n\nElle ne perdait pas son identité.\n\nElle desserrait simplement son contour.",
+      "image": "assets/images/pack-012-05-perdre-ancien-nom.webp",
+      "imageAlt": "Une femme face à un miroir de bar entouré de mots questionne son ancien nom et ses définitions familières.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-06",
+      "title": "Essayer une autre peau",
+      "text": "Elle essaya une robe qu’elle n’aurait jamais choisie auparavant.\n\nPuis des boucles d’oreilles.\n\nElle détacha ses cheveux.\n\nElle se regarda.\n\nSon premier réflexe fut presque de rire.\n\nCe n’était pas elle.\n\nOu plutôt :\n\nce n’était pas celle qu’elle avait l’habitude de voir.\n\nElle pensa à l’inconnue des photographies.\n\nPendant quelques secondes, elle chercha inconsciemment à reproduire son allure.\n\nPuis elle s’arrêta.\n\nQuelque chose sonnait faux.\n\nAlors elle changea un détail.\n\nPuis un autre.\n\nElle conserva ce qui lui plaisait.\n\nAbandonna ce qui ressemblait trop à un costume.\n\nEt progressivement, l’expérience changea de nature.\n\nElle ne cherchait plus :\n\nComment ferait-elle ?\n\nUne autre question apparaissait :\n\nQu’est-ce que moi, j’ai envie d’essayer ?\n\nLe miroir ne lui donnait aucune réponse.\n\nIl lui offrait mieux :\n\nun espace d’expérimentation.\n\nPeut-être que se découvrir commence parfois ainsi.\n\nEn s’autorisant, pour un soir, à essayer quelque chose que notre ancienne histoire n’avait pas prévu.",
+      "image": "assets/images/pack-012-06-autre-peau.webp",
+      "imageAlt": "Une femme essaie une nouvelle allure devant un miroir, entre costume emprunté et expérimentation personnelle.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-07",
+      "title": "Traverser l’inconnu",
+      "text": "Elle entra.\n\nLa musique était trop forte.\n\nLes conversations se croisaient.\n\nDes inconnus riaient comme si chacun savait exactement ce qu’il faisait là.\n\nElle eut immédiatement envie de repartir.\n\nPersonne ne la retenait.\n\nPersonne ne l’attendait non plus.\n\nElle resta.\n\nQuelques minutes seulement, se dit-elle.\n\nPuis davantage.\n\nElle observa.\n\nÉcouta.\n\nRépondit à une question.\n\nEngagea une conversation.\n\nRit sans vérifier si son rire convenait à l’image que les autres avaient d’elle.\n\nCela semblait dérisoire.\n\nEt pourtant, quelque chose se déplaçait.\n\nLa liberté qu’elle avait imaginée comme une grande rupture ressemblait beaucoup plus à cela :\n\ndes gestes minuscules accomplis sans garantie.\n\nRester.\n\nParler.\n\nRefuser.\n\nAccepter.\n\nChanger d’avis.\n\nNe pas être comprise immédiatement.\n\nDécouvrir qu’il n’arrive rien lorsque l’on cesse, quelques instants, de correspondre exactement à ce que l’on était hier.\n\nElle comprit que l’inconnu n’était pas un endroit.\n\nC’était l’espace qui apparaît lorsque l’on ne connaît pas encore la personne que l’on sera dans la minute suivante.",
+      "image": "assets/images/pack-012-07-traverser-inconnu.webp",
+      "imageAlt": "Une femme entre dans un lieu animé et nocturne, traversant l’inconnu par de petits gestes sans garantie.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-08",
+      "title": "Découvrir que l’autre était un miroir",
+      "text": "Plus tard, elle retourna devant le miroir.\n\nCette fois, elle ne pensa pas immédiatement à l’autre femme.\n\nElle regarda son propre visage.\n\nQuelque chose avait changé.\n\nPas ses traits.\n\nPas vraiment son apparence.\n\nSon regard.\n\nElle repensa à toutes ces photographies qu’elle avait conservées.\n\nÀ cette fascination qu’elle avait prise pour un désir de devenir quelqu’un d’autre.\n\nEt soudain, elle comprit.\n\nCe qu’elle admirait chez cette inconnue n’était peut-être pas ce que cette femme possédait.\n\nC’était ce que sa présence réveillait.\n\nL’audace.\n\nLe mouvement.\n\nLa possibilité de choisir.\n\nUne manière de ne pas demander continuellement la permission d’exister.\n\nElle avait cru regarder un modèle.\n\nElle regardait un miroir.\n\nPas un miroir qui reproduisait son visage.\n\nUn miroir qui révélait une possibilité.\n\nElle murmura presque :\n\nCe que j’admirais chez elle était déjà en moi.\n\nIl fallait simplement une rencontre pour qu’elle puisse enfin le reconnaître.",
+      "image": "assets/images/pack-012-08-autre-miroir.webp",
+      "imageAlt": "Une femme face à son miroir découvre que l’autre n’était pas un modèle mais un révélateur de possibles.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-09",
+      "title": "Ne pas devenir l’autre",
+      "text": "Le lendemain, elle regarda le mur de sa chambre.\n\nLes photographies étaient toujours là.\n\nMais elles avaient changé de sens.\n\nPendant quelque temps, elles avaient représenté une destination.\n\nMaintenant, elles ressemblaient davantage aux balises d’un passage.\n\nElle en décrocha une.\n\nPuis une autre.\n\nSans colère.\n\nSans reniement.\n\nElle n’avait rien à reprocher à cette femme qu’elle ne connaissait presque pas.\n\nAu contraire.\n\nElle lui devait quelque chose d’étrange et de précieux :\n\navoir rendu visible une possibilité.\n\nMais un passeur n’est pas une destination.\n\nElle ne voulait plus vivre dans la silhouette d’une autre.\n\nElle ne voulait pas reproduire ses vêtements, ses gestes ou la vie qu’elle lui avait imaginée.\n\nElle voulait découvrir ce qui, dans tout cela, lui appartenait réellement.\n\nElle conserva quelques photographies.\n\nPas comme des modèles.\n\nComme les traces d’un moment où quelqu’un, sans le savoir, lui avait indiqué une porte.\n\nPuis elle prit une feuille blanche.\n\nCette fois, il n’y avait aucune image à copier.",
+      "image": "assets/images/pack-012-09-ne-pas-devenir-autre.webp",
+      "imageAlt": "Une femme retire des photographies d’un mur, comprenant qu’un passeur n’est pas une destination.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-10",
+      "title": "Revenir autrement",
+      "text": "Elle était revenue.\n\nLa même pièce.\n\nLes mêmes livres.\n\nLa même tasse posée sur la table.\n\nLes mêmes toits derrière la fenêtre.\n\nRien n’avait été détruit.\n\nRien n’avait besoin de l’être.\n\nPendant longtemps, elle avait imaginé que changer signifiait partir.\n\nRompre.\n\nEffacer.\n\nRecommencer ailleurs.\n\nElle découvrait une transformation plus difficile à raconter.\n\nRevenir dans les mêmes lieux sans les habiter exactement de la même manière.\n\nElle ouvrit la fenêtre.\n\nL’air du matin entra dans la pièce.\n\nElle pensa à la femme qu’elle avait été quelques jours auparavant, immobile derrière une autre fenêtre.\n\nElle ne la méprisait pas.\n\nElle ne voulait pas l’effacer.\n\nCette femme avait simplement vécu avec les possibilités qu’elle connaissait alors.\n\nDésormais, il y en avait davantage.\n\nSur le rebord de la fenêtre, une phrase disait :\n\nRevenir n’est pas redevenir.\n\nElle sourit.\n\nC’était exactement cela.\n\nOn peut retrouver son histoire sans reprendre exactement la place que l’on y occupait.",
+      "image": "assets/images/pack-012-10-revenir-autrement.webp",
+      "imageAlt": "Une femme ouvre une fenêtre au matin, revenue dans le même lieu mais prête à l’habiter autrement.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-11",
+      "title": "Habiter son propre récit",
+      "text": "Elle sortit tôt.\n\nLa ville n’avait presque rien de commun avec celle qu’elle avait traversée la nuit.\n\nLes rues étaient calmes.\n\nLa lumière glissait sur les façades encore humides.\n\nElle marcha sans chercher personne.\n\nC’était peut-être cela, la différence.\n\nAu début, chaque pas semblait orienté vers une autre vie.\n\nMaintenant, elle n’avait plus besoin de savoir exactement où cette marche la conduirait.\n\nElle n’avait pas découvert une identité définitive.\n\nElle avait découvert qu’une identité pouvait rester vivante.\n\nQu’elle pouvait accueillir ce qui avait été reçu sans en devenir prisonnière.\n\nRencontrer d’autres manières d’exister sans devoir les imiter.\n\nChanger sans renier tout ce qui précédait.\n\nChoisir.\n\nRéviser.\n\nEssayer.\n\nRecommencer.\n\nElle avait longtemps demandé :\n\nQui dois-je être ?\n\nLa question lui paraissait désormais trop étroite.\n\nUne autre l’accompagnait tandis qu’elle avançait dans la lumière :\n\nComment ai-je envie d’habiter ma vie ?\n\nElle ne possédait pas encore la réponse.\n\nMais, pour la première fois, la réponse pouvait être la sienne.",
+      "image": "assets/images/pack-012-11-habiter-propre-recit.webp",
+      "imageAlt": "Une femme marche dans la lumière du matin, sans chercher un modèle, prête à habiter son propre récit.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-12",
+      "title": "Clôture — Épilogue",
+      "text": "Il existe des rencontres qui ne nous donnent pas quelqu’un à suivre.\n\nElles nous rendent quelque chose de nous-mêmes.\n\nNous croyons parfois admirer chez l’autre une vie que nous n’aurons jamais, une liberté qui ne nous appartient pas, une manière d’être réservée à ceux qui seraient plus audacieux, plus sûrs, plus libres que nous.\n\nPuis quelque chose se déplace.\n\nNous découvrons que cette fascination était peut-être une reconnaissance.\n\nL’autre n’était pas nécessairement le modèle de la personne que nous devions devenir.\n\nIl était un passeur.\n\nQuelqu’un dont l’existence avait rendu perceptible une possibilité que nous portions sans encore savoir la nommer.\n\nAlors vient le moment de remercier intérieurement le miroir et de poursuivre sans lui.\n\nCar devenir soi ne signifie ni revenir à une identité originelle qui aurait toujours été là, intacte, ni inventer entièrement quelqu’un de nouveau.\n\nNous sommes faits de ce que nous avons reçu.\n\nDe ce que nous avons traversé.\n\nDe ceux que nous avons rencontrés.\n\nEt de ce que, parmi tout cela, nous choisissons finalement d’habiter.\n\nPeut-être est-ce ainsi qu’une identité redevient vivante.\n\nNon lorsqu’elle trouve enfin sa définition.\n\nMais lorsqu’elle cesse d’être une réponse définitive.",
+      "image": "assets/images/pack-012-closing.webp",
+      "imageAlt": "Image de clôture avec une silhouette dans la lumière et le texte : Je croyais chercher quelqu’un d’autre. J’apprenais à me rencontrer.",
+      "imageDisplayMode": "contain"
+    }
+  ]
+}

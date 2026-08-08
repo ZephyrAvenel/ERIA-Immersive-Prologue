@@ -57,6 +57,11 @@
       "id": "pack-011-la-joie-lucide",
       "slug": "la-joie-lucide",
       "manifest": "pack-011-la-joie-lucide/pack.json"
+    },
+    {
+      "id": "pack-012-celle-que-je-navais-pas-encore-rencontree",
+      "slug": "celle-que-je-navais-pas-encore-rencontree",
+      "manifest": "pack-012-celle-que-je-navais-pas-encore-rencontree/pack.json"
     }
   ]
 }
