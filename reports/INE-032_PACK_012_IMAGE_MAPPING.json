@@ -1,0 +1,112 @@
+{
+  "zip": "C:\\Users\\LeoBe\\OneDrive\\Bureau\\Pack narratif 012 _ Celle que je n-avais-pas-encore-rencontrée.zip",
+  "pngCount": 13,
+  "pngTotalBytes": 28599055,
+  "webpTotalBytes": 1742436,
+  "images": [
+    {
+      "source": "file_00000000baa481f4a15106b6cc4a3ef8.png",
+      "original": "pack-012-cover.png",
+      "webp": "pack-012-cover.webp",
+      "dimensions": "1023x1537",
+      "pngBytes": 2271553,
+      "webpBytes": 185260
+    },
+    {
+      "source": "file_000000002f5881f4817d3cfe77c51ae6.png",
+      "original": "pack-012-01-vie-deja-ecrite.png",
+      "webp": "pack-012-01-vie-deja-ecrite.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2137598,
+      "webpBytes": 98002
+    },
+    {
+      "source": "file_00000000f01081f4949321059be2ea13.png",
+      "original": "pack-012-02-fenetre-autre-vie.png",
+      "webp": "pack-012-02-fenetre-autre-vie.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2148996,
+      "webpBytes": 105532
+    },
+    {
+      "source": "file_00000000e04081f49e0ac2640352d69e.png",
+      "original": "pack-012-03-fascination.png",
+      "webp": "pack-012-03-fascination.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2315729,
+      "webpBytes": 138446
+    },
+    {
+      "source": "file_00000000967481f4b84d38a9aa76915c.png",
+      "original": "pack-012-04-deplacement.png",
+      "webp": "pack-012-04-deplacement.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2328051,
+      "webpBytes": 136052
+    },
+    {
+      "source": "file_00000000206081f4a68bc97b3071ab02.png",
+      "original": "pack-012-05-perdre-ancien-nom.png",
+      "webp": "pack-012-05-perdre-ancien-nom.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2224704,
+      "webpBytes": 130450
+    },
+    {
+      "source": "file_00000000bf2c81f4811f62d147d82a33.png",
+      "original": "pack-012-06-autre-peau.png",
+      "webp": "pack-012-06-autre-peau.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2159922,
+      "webpBytes": 129478
+    },
+    {
+      "source": "file_000000005f74820aafa455155b8165b5.png",
+      "original": "pack-012-07-traverser-inconnu.png",
+      "webp": "pack-012-07-traverser-inconnu.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 1970938,
+      "webpBytes": 91522
+    },
+    {
+      "source": "file_00000000589081f4a83ed4861b3519f8.png",
+      "original": "pack-012-08-autre-miroir.png",
+      "webp": "pack-012-08-autre-miroir.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2211214,
+      "webpBytes": 148008
+    },
+    {
+      "source": "image9.png",
+      "original": "pack-012-09-ne-pas-devenir-autre.png",
+      "webp": "pack-012-09-ne-pas-devenir-autre.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2304571,
+      "webpBytes": 130886
+    },
+    {
+      "source": "file_00000000748c81f493f1758209899f72.png",
+      "original": "pack-012-10-revenir-autrement.png",
+      "webp": "pack-012-10-revenir-autrement.webp",
+      "dimensions": "1672x941",
+      "pngBytes": 1870608,
+      "webpBytes": 95492
+    },
+    {
+      "source": "file_00000000ef2c81f4ae8242451195866d.png",
+      "original": "pack-012-11-habiter-propre-recit.png",
+      "webp": "pack-012-11-habiter-propre-recit.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2357743,
+      "webpBytes": 166354
+    },
+    {
+      "source": "file_00000000b8bc81f482526d80b280c087.png",
+      "original": "pack-012-closing.png",
+      "webp": "pack-012-closing.webp",
+      "dimensions": "1536x1024",
+      "pngBytes": 2297428,
+      "webpBytes": 186954
+    }
+  ]
+}
