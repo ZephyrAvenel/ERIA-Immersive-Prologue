@@ -1,0 +1,150 @@
+{
+  "$schema": "../../schemas/narrative-pack.schema.json",
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "pack-013-la-chaise",
+  "title": "La Chaise",
+  "subtitle": "Quelle place une relation nous donne-t-elle vraiment ?",
+  "description": "Un parcours pour observer les places que nous recevons, demandons, habitons ou quittons — et découvrir comment des relations plus réciproques peuvent se construire.",
+  "coverImage": "assets/images/00-couverture-la-chaise.webp",
+  "coverImageAlt": "Une chaise vide au premier plan, un homme debout et un groupe réuni autour d’une table dans une pièce sombre.",
+  "layout": "image-then-text",
+  "language": "fr",
+  "startScene": "scene-00",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 420,
+      "easing": "ease-in-out"
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene-00",
+      "title": "La Chaise",
+      "text": "Il y a les places que l'on nous donne.\r\n\r\nCelles que nous demandons.\r\n\r\nCelles auxquelles nous nous accrochons.\r\n\r\nEt celles que nous finissons par choisir.\r\n\r\nUne chaise paraît être un objet ordinaire.\r\n\r\nPourtant, autour d'une table, elle dit déjà quelque chose : qui est attendu,\r\nqui appartient, qui peut s'approcher, qui reste à distance.\r\n\r\nCette traversée ne cherchera pas à désigner les « bonnes » et les\r\n« mauvaises » relations.\r\n\r\nElle propose quelque chose de plus simple :\r\n\r\nregarder la place que nous occupons — et nous demander si nous pouvons\r\nréellement l'habiter.",
+      "image": "assets/images/00-couverture-la-chaise.webp",
+      "imageAlt": "Une chaise vide au premier plan, un homme debout et un groupe réuni autour d’une table dans une pièce sombre.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-01",
+      "title": "La Table — Entrer",
+      "text": "Nous arrivons rarement dans une relation comme dans une pièce vide.\r\n\r\nQuelque chose existe déjà.\r\n\r\nDes habitudes.\r\nDes souvenirs.\r\nDes affinités.\r\nDes silences.\r\nDes rôles que personne n'a nécessairement choisis.\r\n\r\nUne famille, une amitié, un groupe ou une communauté possède ainsi sa\r\npropre manière de faire circuler la parole, l'attention et la reconnaissance.\r\n\r\nLorsque nous nous en approchons, nous ne voyons pas immédiatement cette\r\narchitecture.\r\n\r\nNous voyons simplement une table.\r\n\r\nEt nous avançons.\r\n\r\nPourtant, une première question est déjà là :\r\n\r\nEntrer dans la pièce signifie-t-il avoir une place à la table ?",
+      "image": "assets/images/01-la-table.webp",
+      "imageAlt": "Un homme s’approche d’une table déjà occupée dans une pièce chaleureuse et sombre.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-02",
+      "title": "Une place parmi les autres — Appartenir",
+      "text": "Nous avons besoin d'appartenir.\r\n\r\nD'être reconnu quelque part.\r\n\r\nDe pouvoir dire « nous » sans devoir abandonner entièrement le « je ».\r\n\r\nMais appartenir n'est pas se confondre.\r\n\r\nUne relation devient habitable lorsque notre présence n'exige pas que nous\r\nressemblions exactement aux autres.\r\n\r\nNous pouvons nous rapprocher sans disparaître.\r\n\r\nÊtre différents sans devenir étrangers.\r\n\r\nChanger sans perdre automatiquement notre place.\r\n\r\nPeut-être est-ce cela, une première forme d'appartenance :\r\n\r\npouvoir être parmi les autres sans devoir cesser d'être soi.",
+      "image": "assets/images/02-une-place-parmi-les-autres.webp",
+      "imageAlt": "Un homme assis parmi les autres autour d’une table, dans une atmosphère de discussion attentive.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-03",
+      "title": "La chaise que l’on nous donne — Recevoir",
+      "text": "La reconnaissance relationnelle se cache souvent dans de petits gestes.\r\n\r\nQuelqu'un nous écoute.\r\n\r\nRemarque notre absence.\r\n\r\nDemande notre avis.\r\n\r\nAccepte qu'un désaccord ne signifie pas une rupture.\r\n\r\nS'ajuste lorsque nous exprimons une limite.\r\n\r\nRien de spectaculaire.\r\n\r\nPersonne n'a besoin de deviner tous nos besoins.\r\n\r\nMais quelque chose nous est silencieusement transmis :\r\n\r\n« Ta présence peut compter ici. »\r\n\r\nLa chaise n'est alors plus seulement un siège.\r\n\r\nElle devient une reconnaissance.",
+      "image": "assets/images/03-la-chaise-que-l-on-nous-donne.webp",
+      "imageAlt": "Une personne déplace ou offre une chaise près d’une table, signe discret de reconnaissance.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-04",
+      "title": "Rester debout — Ressentir",
+      "text": "Certaines relations ne nous excluent jamais vraiment.\r\n\r\nMais elles ne nous accueillent jamais complètement non plus.\r\n\r\nNous restons suffisamment proches pour espérer.\r\n\r\nSuffisamment loin pour devoir recommencer.\r\n\r\nAlors nous faisons un pas supplémentaire.\r\n\r\nNous relançons.\r\n\r\nNous expliquons.\r\n\r\nNous attendons.\r\n\r\nNous nous adaptons.\r\n\r\nAucun de ces gestes n'est problématique en lui-même.\r\n\r\nMais lorsqu'ils viennent presque toujours du même côté, une question apparaît :\r\n\r\nsuis-je en train de participer à une relation — ou de maintenir seul ma\r\nplace dans cette relation ?",
+      "image": "assets/images/04-rester-debout.webp",
+      "imageAlt": "Un homme reste debout à distance d’une table où plusieurs personnes sont assises.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-05",
+      "title": "Demander une chaise — Exprimer",
+      "text": "Demander sa place n'est pas un échec.\r\n\r\nNous ne pouvons pas attendre des autres qu'ils devinent tout ce dont nous\r\navons besoin.\r\n\r\nUne relation vivante comporte des incompréhensions, des maladresses et\r\ndes ajustements.\r\n\r\nLa question importante n'est donc pas :\r\n\r\n« Ai-je dû demander ? »\r\n\r\nMais :\r\n\r\n« Que devient ma parole lorsque je demande ? »\r\n\r\nPeut-elle être entendue ?\r\n\r\nDiscutée ?\r\n\r\nContestée sans être disqualifiée ?\r\n\r\nPeut-elle modifier quelque chose ?\r\n\r\nUne relation ne se révèle pas seulement dans ce qu'elle nous donne spontanément.\r\n\r\nElle se révèle aussi dans ce qu'elle fait de notre parole lorsque nous\r\nexprimons un besoin.",
+      "image": "assets/images/05-demander-une-chaise.webp",
+      "imageAlt": "Un homme s’adresse au groupe près d’une chaise vide, comme s’il formulait une demande de place.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-06",
+      "title": "La chaise assignée — Voir",
+      "text": "Parfois, nous avons bien une place.\r\n\r\nMais cette place semble accompagnée d'une condition invisible.\r\n\r\nÊtre celui qui apaise.\r\n\r\nCelle qui écoute.\r\n\r\nCelui qui revient toujours.\r\n\r\nCelle qui prend soin.\r\n\r\nCelui qui ne contredit pas.\r\n\r\nÀ force d'habitude, le rôle finit par ressembler à notre identité.\r\n\r\nEt lorsque nous changeons, la relation peut soudain devenir inconfortable.\r\n\r\nUne question difficile apparaît alors :\r\n\r\nest-ce moi que cette relation accueille — ou la fonction que j'y remplis ?",
+      "image": "assets/images/06-la-chaise-assignee.webp",
+      "imageAlt": "Un homme occupe une place précise à une table, comme inscrit dans un rôle déjà défini.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-07",
+      "title": "Se rétrécir — Discerner",
+      "text": "Pour conserver certaines places, nous apprenons parfois à prendre moins\r\nd'espace.\r\n\r\nDire un peu moins.\r\n\r\nDemander un peu moins.\r\n\r\nMontrer un peu moins.\r\n\r\nChanger un peu moins.\r\n\r\nCe mouvement peut être si progressif que nous ne le remarquons presque pas.\r\n\r\nJusqu'au jour où une question devient impossible à éviter :\r\n\r\nsi je dois devenir plus petit pour rester ici, qui est réellement assis\r\nsur cette chaise ?\r\n\r\nMoi ?\r\n\r\nOu la version de moi que cette relation sait encore accueillir ?",
+      "image": "assets/images/07-se-retrecir.webp",
+      "imageAlt": "Un homme se tient replié à l’écart, tandis qu’un groupe continue de rire autour d’une table.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-08",
+      "title": "Voir le dessous — Observer",
+      "text": "Une relation possède aussi un dessous.\r\n\r\nSous les paroles et les intentions déclarées circulent des habitudes,\r\ndes attentes, des fidélités, des peurs, des pouvoirs et des formes de\r\nréciprocité.\r\n\r\nQui fait généralement le premier pas ?\r\n\r\nQui peut dire non ?\r\n\r\nQui s'ajuste ?\r\n\r\nQui bénéficie du doute ?\r\n\r\nQui doit expliquer davantage ?\r\n\r\nQui peut changer sans mettre toute la relation en danger ?\r\n\r\nObserver cela ne signifie pas chercher un coupable.\r\n\r\nCela signifie apprendre à distinguer ce que la relation raconte\r\nd'elle-même de ce qu'elle produit réellement.\r\n\r\nEt parfois, voir cette différence change déjà notre manière de l'habiter.\n\nALLER PLUS LOIN — LE DESSOUS\n\nVoir ce qui agit sous ce qui se raconte.",
+      "image": "assets/images/08-voir-le-dessous.webp",
+      "imageAlt": "Un homme observe une table et une chaise, attentif à ce qui se joue sous la surface de la relation.",
+      "imageDisplayMode": "contain",
+      "links": [
+        {
+          "label": "Explorer « Le Dessous »",
+          "href": "https://zephyr-avenel.blogspot.com/2026/08/le-dessous.html",
+          "description": "Voir ce qui agit sous ce qui se raconte."
+        }
+      ]
+    },
+    {
+      "id": "scene-09",
+      "title": "La chaise vide — Traverser",
+      "text": "Comprendre ne nous oblige pas immédiatement à partir.\r\n\r\nUne relation peut parfois évoluer.\r\n\r\nUne limite peut être posée.\r\n\r\nUne conversation peut devenir possible.\r\n\r\nUne distance peut être nécessaire.\r\n\r\nCertaines choses peuvent être réparées.\r\n\r\nD'autres non.\r\n\r\nLe discernement ne consiste pas à connaître immédiatement la bonne décision.\r\n\r\nIl commence lorsque nous retrouvons la possibilité d'en avoir une.\r\n\r\nRester devient alors un choix possible parmi d'autres — et non plus une\r\nobligation intérieure.",
+      "image": "assets/images/09-la-chaise-vide.webp",
+      "imageAlt": "Une chaise vide se tient entre un homme et une table, ouvrant un temps de discernement.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-10",
+      "title": "Se lever — Choisir",
+      "text": "Se lever ne signifie pas toujours rompre.\r\n\r\nCela peut simplement vouloir dire :\r\n\r\nne plus convaincre ;\r\n\r\nne plus poursuivre systématiquement ;\r\n\r\nne plus compenser seul ce qui manque ;\r\n\r\nne plus occuper automatiquement l'ancien rôle.\r\n\r\nEt laisser alors apparaître quelque chose que nos efforts empêchaient\r\npeut-être de voir :\r\n\r\nce que devient la relation lorsque nous cessons de la porter à la place\r\ndes autres.",
+      "image": "assets/images/10-se-lever.webp",
+      "imageAlt": "Un homme se lève et quitte la table vers une ouverture lumineuse.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-11",
+      "title": "Entre les tables — Traverser le vide",
+      "text": "Entre une ancienne manière d'appartenir et une nouvelle, il existe parfois\r\nun espace sans chaise.\r\n\r\nCet espace peut sembler vide.\r\n\r\nIl peut même donner envie de revenir vers ce qui était connu simplement\r\nparce que c'était connu.\r\n\r\nPourtant, le vide n'est pas toujours une absence.\r\n\r\nIl peut devenir un passage.\r\n\r\nL'endroit où nous découvrons que notre existence ne dépend pas immédiatement\r\nd'une place attribuée par quelqu'un d'autre.\r\n\r\nAvant de trouver une autre table, nous pouvons apprendre à marcher sans table.",
+      "image": "assets/images/11-entre-les-tables.webp",
+      "imageAlt": "Un homme marche seul dehors, entre une ancienne table derrière lui et l’horizon ouvert devant lui.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-12",
+      "title": "La table réciproque — Rencontrer",
+      "text": "La réciprocité n'est pas une comptabilité parfaite.\r\n\r\nNous ne donnons jamais exactement autant, exactement au même moment.\r\n\r\nMais quelque chose circule.\r\n\r\nL'un s'approche.\r\n\r\nUn autre se tourne vers lui.\r\n\r\nUne chaise se déplace.\r\n\r\nUne parole reçoit une réponse.\r\n\r\nUne limite peut produire un ajustement.\r\n\r\nUn désaccord peut transformer la relation sans nécessairement la détruire.\r\n\r\nNous ne demandons alors plus seulement :\r\n\r\n« Ai-je une place ? »\r\n\r\nUne autre question devient possible :\r\n\r\n« Comment faisons-nous de la place les uns aux autres ? »",
+      "image": "assets/images/12-la-table-reciproque.webp",
+      "imageAlt": "Un homme rejoint une table extérieure tandis que plusieurs personnes déplacent leurs chaises pour lui faire une place.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-13",
+      "title": "Construire la table — Co-créer",
+      "text": "Nous passons une partie de notre existence à chercher notre place.\r\n\r\nMais vient parfois le moment où une autre possibilité apparaît :\r\n\r\nne plus seulement chercher une chaise — construire ensemble la table.\r\n\r\nUne relation habitable n'est pas un espace où tout le monde pense pareil.\r\n\r\nC'est un espace suffisamment solide pour supporter les différences.\r\n\r\nSuffisamment ouvert pour accueillir de nouvelles voix.\r\n\r\nSuffisamment vivant pour pouvoir être transformé par ceux qui l'habitent.\r\n\r\nAlors les places ne sont plus seulement distribuées.\r\n\r\nElles se discutent.\r\n\r\nElles bougent.\r\n\r\nElles se créent.\r\n\r\nNous ne sommes plus seulement invités.\r\n\r\nNous devenons responsables, ensemble, de l'espace que nous construisons.",
+      "image": "assets/images/13-construire-la-table.webp",
+      "imageAlt": "Plusieurs personnes construisent ensemble une grande table en bois sous un arbre.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-14",
+      "title": "La chaise libre — Habiter",
+      "text": "Au commencement, une chaise vide pouvait signifier :\r\n\r\nje ne sais pas si j'ai une place.\r\n\r\nPuis nous avons rencontré les places reçues, demandées, assignées,\r\ndéfendues et quittées.\r\n\r\nMaintenant, la chaise est encore vide.\r\n\r\nMais son sens a changé.\r\n\r\nElle n'attend pas quelqu'un qui devra prouver qu'il mérite de s'asseoir.\r\n\r\nElle demeure libre parce qu'un monde commun a besoin de conserver une\r\nplace pour celui qui n'est pas encore arrivé.\r\n\r\nPeut-être qu'une relation habitable commence là :\r\n\r\nlorsque personne n'a besoin de disparaître pour rester,\r\n\r\nlorsque les places peuvent évoluer avec ceux qui les habitent,\r\n\r\net lorsque chacun peut contribuer à faire de la place aux autres.\r\n\r\nIl reste une chaise.\r\n\r\nPour quelqu'un qui n'est pas encore arrivé.\r\n\r\nBouton final :\r\nTerminer la traversée",
+      "image": "assets/images/14-la-chaise-libre.webp",
+      "imageAlt": "Une chaise vide au premier plan devant une table habitée sous un arbre, ouverte sur un paysage lumineux.",
+      "imageDisplayMode": "contain"
+    }
+  ]
+}
