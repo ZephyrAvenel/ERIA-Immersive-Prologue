@@ -90,6 +90,7 @@ test("PACK-009 is registered as the ninth immersive work", async () => {
       "pack-008",
       "pack-009-trouver-sa-juste-place",
       "pack-010-le-monde-commun",
+      "pack-011-la-joie-lucide",
     ],
   );
   const entry = registry.packs.find(({ id }) => id === "pack-009-trouver-sa-juste-place");

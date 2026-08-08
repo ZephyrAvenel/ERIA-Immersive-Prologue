@@ -52,6 +52,11 @@
       "id": "pack-010-le-monde-commun",
       "slug": "le-monde-commun",
       "manifest": "pack-010-le-monde-commun/pack.json"
+    },
+    {
+      "id": "pack-011-la-joie-lucide",
+      "slug": "la-joie-lucide",
+      "manifest": "pack-011-la-joie-lucide/pack.json"
     }
   ]
 }

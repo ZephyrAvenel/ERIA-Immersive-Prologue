@@ -5,66 +5,63 @@ import test from "node:test";
 import { validateNarrativePack } from "../../../.test-build/packages/validators/src/index.js";
 import { readProjectJson } from "../../helpers/fixtures.mjs";
 
-const packRoot = join("packs", "pack-007-jouer-pour-devenir");
+const packRoot = join("packs", "pack-011-la-joie-lucide");
 
-test("PACK-007 manifest declares fourteen independent narrative steps", async () => {
+test("PACK-011 manifest declares twelve image-then-text entries", async () => {
   const manifest = await readProjectJson(packRoot, "pack.json");
   const result = validateNarrativePack(manifest);
   assert.equal(result.valid, true, result.errors.join(", "));
   assert.equal(manifest.format, "ine-narrative-pack");
-  assert.equal(manifest.id, "pack-007");
-  assert.equal(manifest.title, "Jouer pour devenir");
-  assert.equal(manifest.subtitle, "Quand le jeu ouvre des chemins que l’enseignement seul ne peut pas révéler.");
+  assert.equal(manifest.id, "pack-011-la-joie-lucide");
+  assert.equal(manifest.title, "La Joie lucide");
+  assert.equal(manifest.subtitle, "Voir la houle. Ne pas manquer les dauphins.");
+  assert.equal(manifest.layout, "image-then-text");
   assert.equal(manifest.startScene, "scene-00");
-  assert.equal(manifest.scenes.length, 14);
-  assert.equal(new Set(manifest.scenes.map(({ id }) => id)).size, 14);
-  assert.equal(JSON.stringify(manifest).includes("pack-001"), false);
-  assert.equal(JSON.stringify(manifest).includes("pack-002"), false);
-  assert.equal(JSON.stringify(manifest).includes("pack-003"), false);
-  assert.equal(JSON.stringify(manifest).includes("pack-004"), false);
-  assert.equal(JSON.stringify(manifest).includes("pack-005"), false);
-  assert.equal(JSON.stringify(manifest).includes("pack-006"), false);
+  assert.equal(manifest.scenes.length, 12);
+  assert.equal(new Set(manifest.scenes.map(({ id }) => id)).size, 12);
+  assert.equal(manifest.scenes.at(1).title, "La Houle");
+  assert.equal(manifest.scenes.at(-1).title, "Le Nouveau Récit");
+  assert.equal(manifest.scenes.slice(1).every(({ text }) => text.includes("LE SEUIL")), true);
 });
 
-test("PACK-007 uses optimized WebP images for every narrative step", async () => {
+test("PACK-011 uses optimized WebP images for every Contempler/Lire step", async () => {
   const manifest = await readProjectJson(packRoot, "pack.json");
-  assert.equal(manifest.coverImage, "assets/images/00-couverture-jouer-pour-devenir.webp");
+  assert.equal(manifest.coverImage, "assets/images/00-couverture-la-joie-lucide.webp");
   assert.equal(manifest.coverImageAlt.length > 0, true);
 
-  const finalScene = manifest.scenes.find(({ id }) => id === "scene-13");
-  assert.equal(finalScene.title, "Le jeu continue avec vous");
-  assert.equal(finalScene.image, "assets/images/13-le-jeu-continue-avec-vous.webp");
+  const finalScene = manifest.scenes.find(({ id }) => id === "scene-11");
+  assert.equal(finalScene.title, "Le Nouveau Récit");
+  assert.equal(finalScene.image, "assets/images/11-le-nouveau-recit.webp");
   assert.equal(finalScene.imageAlt.length > 0, true);
 
   for (const scene of manifest.scenes) {
     assert.equal(scene.image.endsWith(".webp"), true, scene.id);
+    assert.equal(scene.imageDisplayMode, "contain", scene.id);
     assert.equal(typeof scene.imageAlt, "string", scene.id);
     assert.equal(scene.imageAlt.length > 0, true, scene.id);
     await access(join(packRoot, scene.image));
   }
 });
 
-test("PACK-007 preserves PNG originals and uses the expected image naming convention", async () => {
+test("PACK-011 preserves PNG originals and uses the project naming convention", async () => {
   const imageDirectory = join(packRoot, "assets", "images");
   const originalsDirectory = join(imageDirectory, "originals");
   const webpImages = (await readdir(imageDirectory)).filter((name) => name.endsWith(".webp")).sort();
   const originalPngImages = (await readdir(originalsDirectory)).filter((name) => name.endsWith(".png")).sort();
 
   assert.deepEqual(webpImages, [
-    "00-couverture-jouer-pour-devenir.webp",
-    "01-premier-terrain-exploration.webp",
-    "02-imagination-transforme-realite.webp",
-    "03-droit-dessayer.webp",
-    "04-jouer-avec-les-autres.webp",
-    "05-recits-que-nous-construisons.webp",
-    "06-recits-empeches.webp",
-    "07-retrouver-le-jeu-age-adulte.webp",
-    "08-jeu-comme-ecologie-du-vivant.webp",
-    "09-apprendre-explorer-creer-devenir.webp",
-    "10-jeu-tisse-liens-entre-temps.webp",
-    "11-continuer-a-jouer.webp",
-    "12-et-apres.webp",
-    "13-le-jeu-continue-avec-vous.webp",
+    "00-couverture-la-joie-lucide.webp",
+    "01-la-houle.webp",
+    "02-le-droit-a-la-joie.webp",
+    "03-la-fausse-lumiere.webp",
+    "04-le-regard-capture.webp",
+    "05-les-deux-verites.webp",
+    "06-les-dauphins-dans-la-houle.webp",
+    "07-la-frontiere-sensible.webp",
+    "08-la-joie-indocile.webp",
+    "09-la-joie-qui-circule.webp",
+    "10-la-joie-lucide.webp",
+    "11-le-nouveau-recit.webp",
   ]);
   assert.deepEqual(
     originalPngImages.map((name) => name.replace(".png", ".webp")),
@@ -79,7 +76,7 @@ test("PACK-007 preserves PNG originals and uses the expected image naming conven
   }
 });
 
-test("PACK-007 is registered as the seventh immersive work", async () => {
+test("PACK-011 is registered as the eleventh immersive work", async () => {
   const registry = await readProjectJson("packs", "index.json");
   assert.deepEqual(
     registry.packs.map(({ id }) => id),
@@ -97,7 +94,7 @@ test("PACK-007 is registered as the seventh immersive work", async () => {
       "pack-011-la-joie-lucide",
     ],
   );
-  const entry = registry.packs.find(({ id }) => id === "pack-007");
-  assert.equal(entry.slug, "jouer-pour-devenir");
-  assert.equal(entry.manifest, "pack-007-jouer-pour-devenir/pack.json");
+  const entry = registry.packs.find(({ id }) => id === "pack-011-la-joie-lucide");
+  assert.equal(entry.slug, "la-joie-lucide");
+  assert.equal(entry.manifest, "pack-011-la-joie-lucide/pack.json");
 });

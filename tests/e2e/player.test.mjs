@@ -543,7 +543,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(entryState.noHorizontalOverflow, true);
 
     await loadUrl(page, libraryUrl);
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 10");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 11");
     const libraryState = await evaluate(
       page,
       `({
@@ -592,6 +592,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         "Le Veilleur",
         "Trouver sa juste place",
         "Le Monde commun",
+        "La Joie lucide",
       ],
     );
     assert.equal(libraryState.cards.every(({ imageAlt, linkLabel }) => imageAlt.length > 0 && linkLabel.length > 0), true);
@@ -605,6 +606,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[7].href.endsWith("/oeuvres/le-veilleur/"), true);
     assert.equal(libraryState.cards[8].href.endsWith("/oeuvres/trouver-sa-juste-place/"), true);
     assert.equal(libraryState.cards[9].href.endsWith("/oeuvres/le-monde-commun/"), true);
+    assert.equal(libraryState.cards[10].href.endsWith("/oeuvres/la-joie-lucide/"), true);
     assert.equal(libraryState.cards[0].slug, "les-gardiens-des-recits-vivants");
     assert.equal(libraryState.cards[1].slug, "polarites-vivantes");
     assert.equal(libraryState.cards[2].slug, "atlas-recits-vivants");
@@ -615,6 +617,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[7].slug, "le-veilleur");
     assert.equal(libraryState.cards[8].slug, "trouver-sa-juste-place");
     assert.equal(libraryState.cards[9].slug, "le-monde-commun");
+    assert.equal(libraryState.cards[10].slug, "la-joie-lucide");
     assert.equal(libraryState.cards[0].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[1].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[2].imagePosition, "50% 0%");
@@ -625,6 +628,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[7].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[8].imagePosition, "50% 0%");
     assert.equal(libraryState.cards[9].imagePosition, "50% 50%");
+    assert.equal(libraryState.cards[10].imagePosition, "50% 50%");
     assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);
@@ -1181,7 +1185,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       true,
     );
     await evaluate(page, "document.querySelector('.site-navigation a')?.click()");
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 10");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 11");
 
     const metamorphosisPackUrl = `${entryUrl}oeuvres/la-metamorphose/`;
     await page.send("Emulation.setDeviceMetricsOverride", {
@@ -1546,12 +1550,84 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         continuation?.click();
       })()`,
     );
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 10");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 11");
     assert.equal(
       await evaluate(page, "window.location.pathname.endsWith('/bibliotheque/')"),
       true,
       "PACK-010 final read page continuation link should navigate back to the library",
     );
+
+    const lucidJoyPackUrl = `${entryUrl}oeuvres/la-joie-lucide/`;
+    await page.send("Emulation.setDeviceMetricsOverride", {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await loadUrl(page, lucidJoyPackUrl);
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 12 \u2014 Contempler");
+    const lucidJoyFirstImage = await readStablePlayerState(page, "Sc\u00e8ne 1 / 12 \u2014 Contempler");
+    assert.equal(lucidJoyFirstImage.packIdData, "pack-011-la-joie-lucide");
+    assert.equal(lucidJoyFirstImage.layoutData, "image-then-text");
+    assert.equal(lucidJoyFirstImage.layoutPhaseData, "image");
+    assert.equal(lucidJoyFirstImage.sceneLayoutPhaseData, "image");
+    assert.equal(lucidJoyFirstImage.sceneTitle, "Couverture \u2014 La Joie lucide");
+    assert.equal(lucidJoyFirstImage.currentSrc.endsWith("/00-couverture-la-joie-lucide.webp"), true);
+    assert.equal(lucidJoyFirstImage.objectFit, "contain");
+    assert.equal(lucidJoyFirstImage.imageVisible, true);
+    assert.equal(lucidJoyFirstImage.noHorizontalOverflow, true);
+
+    await clickNavigationNext(page, "Sc\u00e8ne 1 / 12 \u2014 Lire");
+    const lucidJoyFirstText = await readStablePlayerState(page, "Sc\u00e8ne 1 / 12 \u2014 Lire");
+    assert.equal(lucidJoyFirstText.layoutPhaseData, "text");
+    assert.equal(lucidJoyFirstText.sceneText.includes("Voir la houle"), true);
+    assert.equal(lucidJoyFirstText.imageVisible, false);
+    assert.equal(lucidJoyFirstText.noHorizontalOverflow, true);
+
+    const lucidJoyCheckpoints = new Map([
+      [2, "La Houle"],
+      [3, "Le Droit \u00e0 la joie"],
+      [6, "Les Deux V\u00e9rit\u00e9s"],
+      [7, "Les Dauphins dans la houle"],
+      [11, "La Joie lucide"],
+      [12, "Le Nouveau R\u00e9cit"],
+    ]);
+    for (let sceneNumber = 2; sceneNumber <= 12; sceneNumber += 1) {
+      await clickNavigationNext(page, `Sc\u00e8ne ${sceneNumber} / 12 \u2014 Contempler`);
+      const imageState = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 12 \u2014 Contempler`);
+      assert.equal(imageState.layoutPhaseData, "image");
+      assert.equal(imageState.objectFit, "contain");
+      assert.equal(imageState.imageVisible, true);
+      assert.equal(imageState.currentSrc.endsWith(".webp"), true);
+      assert.equal(imageState.noHorizontalOverflow, true);
+      if (lucidJoyCheckpoints.has(sceneNumber)) {
+        assert.equal(imageState.sceneTitle, lucidJoyCheckpoints.get(sceneNumber));
+      }
+
+      await clickNavigationNext(page, `Sc\u00e8ne ${sceneNumber} / 12 \u2014 Lire`);
+      const textState = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 12 \u2014 Lire`);
+      assert.equal(textState.layoutPhaseData, "text");
+      assert.equal(textState.imageVisible, false);
+      assert.equal(textState.sceneText.includes("LE SEUIL"), true, `PACK-011 scene ${sceneNumber} should expose a threshold question`);
+      assert.equal(textState.noHorizontalOverflow, true);
+      assert.equal(textState.nextDisabled, sceneNumber === 12);
+    }
+    const lucidJoyFinal = await readStablePlayerState(page, "Sc\u00e8ne 12 / 12 \u2014 Lire");
+    assert.equal(lucidJoyFinal.sceneTitle, "Le Nouveau R\u00e9cit");
+    assert.equal(lucidJoyFinal.sceneText.includes("LE SEUIL FINAL"), true);
+    assert.equal(
+      await evaluate(page, "document.querySelector('[data-library-continuation]')?.href.endsWith('/bibliotheque/')"),
+      true,
+    );
+    await evaluate(
+      page,
+      `(() => {
+        const continuation = document.querySelector('[data-library-continuation]');
+        continuation?.scrollIntoView({ block: 'center', inline: 'nearest' });
+        continuation?.click();
+      })()`,
+    );
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 11");
 
     await page.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],
