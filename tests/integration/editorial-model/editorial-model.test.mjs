@@ -14,6 +14,7 @@ test("published works expose the common library identity without deployment meta
     await readProjectJson("packs", "pack-008-le-veilleur", "pack.json"),
     await readProjectJson("packs", "pack-009-trouver-sa-juste-place", "pack.json"),
     await readProjectJson("packs", "pack-010-le-monde-commun", "pack.json"),
+    await readProjectJson("packs", "pack-011-la-joie-lucide", "pack.json"),
   ];
 
   for (const manifest of manifests) {

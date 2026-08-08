@@ -1,0 +1,194 @@
+[
+  {
+    "source": "Couverture.png",
+    "canonicalPng": "00-couverture-la-joie-lucide.png",
+    "webp": "00-couverture-la-joie-lucide.webp",
+    "title": "Couverture — La Joie lucide",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2497918,
+    "webpBytes": 193140
+  },
+  {
+    "source": "joie-01.png",
+    "canonicalPng": "01-la-houle.png",
+    "webp": "01-la-houle.webp",
+    "title": "La Houle",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2350622,
+    "webpBytes": 134580
+  },
+  {
+    "source": "joie-2.png",
+    "canonicalPng": "02-le-droit-a-la-joie.png",
+    "webp": "02-le-droit-a-la-joie.webp",
+    "title": "Le Droit à la joie",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2332363,
+    "webpBytes": 171730
+  },
+  {
+    "source": "joie-3.png",
+    "canonicalPng": "03-la-fausse-lumiere.png",
+    "webp": "03-la-fausse-lumiere.webp",
+    "title": "La Fausse lumière",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2087784,
+    "webpBytes": 141460
+  },
+  {
+    "source": "joie-4.png",
+    "canonicalPng": "04-le-regard-capture.png",
+    "webp": "04-le-regard-capture.webp",
+    "title": "Le Regard capturé",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2215088,
+    "webpBytes": 151726
+  },
+  {
+    "source": "joie-5.png",
+    "canonicalPng": "05-les-deux-verites.png",
+    "webp": "05-les-deux-verites.webp",
+    "title": "Les Deux Vérités",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2270358,
+    "webpBytes": 162926
+  },
+  {
+    "source": "joie-6.png",
+    "canonicalPng": "06-les-dauphins-dans-la-houle.png",
+    "webp": "06-les-dauphins-dans-la-houle.webp",
+    "title": "Les Dauphins dans la houle",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2288889,
+    "webpBytes": 184680
+  },
+  {
+    "source": "joie-7.png",
+    "canonicalPng": "07-la-frontiere-sensible.png",
+    "webp": "07-la-frontiere-sensible.webp",
+    "title": "La Frontière sensible",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2226886,
+    "webpBytes": 167732
+  },
+  {
+    "source": "joie-8.png",
+    "canonicalPng": "08-la-joie-indocile.png",
+    "webp": "08-la-joie-indocile.webp",
+    "title": "La Joie indocile",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2290251,
+    "webpBytes": 190190
+  },
+  {
+    "source": "joie-9.png",
+    "canonicalPng": "09-la-joie-qui-circule.png",
+    "webp": "09-la-joie-qui-circule.webp",
+    "title": "La Joie qui circule",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2339760,
+    "webpBytes": 206094
+  },
+  {
+    "source": "joie-10.png",
+    "canonicalPng": "10-la-joie-lucide.png",
+    "webp": "10-la-joie-lucide.webp",
+    "title": "La Joie lucide",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2481363,
+    "webpBytes": 243676
+  },
+  {
+    "source": "joie-11.png",
+    "canonicalPng": "11-le-nouveau-recit.png",
+    "webp": "11-le-nouveau-recit.webp",
+    "title": "Le Nouveau Récit",
+    "pngDimensions": [
+      1024,
+      1536
+    ],
+    "webpDimensions": [
+      1024,
+      1536
+    ],
+    "pngBytes": 2557476,
+    "webpBytes": 248580
+  }
+]

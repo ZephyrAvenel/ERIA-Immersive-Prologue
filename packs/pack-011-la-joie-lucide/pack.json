@@ -1,0 +1,119 @@
+{
+  "$schema": "../../schemas/narrative-pack.schema.json",
+  "format": "ine-narrative-pack",
+  "version": "1.0",
+  "id": "pack-011-la-joie-lucide",
+  "title": "La Joie lucide",
+  "subtitle": "Voir la houle. Ne pas manquer les dauphins.",
+  "description": "Un parcours contemplatif pour apprendre à reconnaître la houle sans manquer les dauphins, accueillir plusieurs vérités à la fois et cultiver une joie qui n’efface pas le réel.",
+  "coverImage": "assets/images/00-couverture-la-joie-lucide.webp",
+  "coverImageAlt": "Couverture La Joie lucide, une silhouette face à une mer agitée où la lumière demeure visible.",
+  "layout": "image-then-text",
+  "language": "fr",
+  "startScene": "scene-00",
+  "presentation": {
+    "defaultTransition": {
+      "type": "fade",
+      "durationMs": 650,
+      "easing": "ease-in-out"
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene-00",
+      "title": "Couverture — La Joie lucide",
+      "text": "Voir la houle.\n\nNe pas manquer les dauphins.\n\nCe parcours invite à traverser une joie qui n’ignore pas ce qui souffre, mais refuse de laisser la houle raconter tout le paysage.\n\nContempler d’abord.\n\nLire ensuite.\n\nPuis se situer, au seuil de ce qui demeure vivant.",
+      "image": "assets/images/00-couverture-la-joie-lucide.webp",
+      "imageAlt": "Couverture La Joie lucide, une silhouette face à une mer agitée où la lumière demeure visible.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-01",
+      "title": "La Houle",
+      "text": "Il existe des moments où la mer se lève en nous.\n\nQuelque chose résiste, inquiète, blesse ou disparaît. Nous aimerions parfois retrouver immédiatement le calme. Alors nous cherchons une explication, une solution, une issue.\n\nMais certaines traversées commencent autrement : non pas en faisant disparaître la houle, mais en reconnaissant qu’elle est là.\n\nRegarder ce qui fait mal ne signifie pas lui donner tout l’espace. C’est simplement cesser de dépenser notre énergie à prétendre que nous ne sommes pas touchés.\n\nLa lucidité commence peut-être ici : je peux reconnaître ce que je traverse sans croire que cela raconte toute mon histoire.\n\nLa mer est agitée.\nJe suis encore là.\n\nLE SEUIL :\nQu’est-ce que je peux reconnaître aujourd’hui sans avoir besoin de le nier ni de le résoudre immédiatement ?",
+      "image": "assets/images/01-la-houle.webp",
+      "imageAlt": "Une silhouette contemple une mer agitée sous un ciel sombre, symbole de la houle intérieure.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-02",
+      "title": "Le Droit à la joie",
+      "text": "Il arrive que la joie elle-même devienne source de culpabilité.\n\nComment rire lorsque quelqu’un que nous aimons souffre ?\nComment éprouver du bonheur lorsque tant de choses vont mal autour de nous ?\n\nPourtant, partager la douleur de quelqu’un ne nous oblige pas à reproduire sa douleur en nous.\n\nJe peux être profondément touché par ce que tu traverses et continuer à aimer une musique, un paysage, une rencontre, un repas partagé, un éclat de rire.\n\nMa joie ne retire rien à ta souffrance.\n\nElle peut même préserver en moi quelque chose dont notre relation aura peut-être besoin : de la disponibilité, de la tendresse, de l’énergie, une capacité à espérer.\n\nLa compassion ne demande pas que deux personnes se noient ensemble.\n\nLE SEUIL :\nAi-je parfois cru que je devais aller moins bien pour avoir le droit d’aimer quelqu’un qui souffre ?",
+      "image": "assets/images/02-le-droit-a-la-joie.webp",
+      "imageAlt": "Une personne assise près de la mer reçoit une lumière douce, évoquant le droit à la joie malgré la douleur.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-03",
+      "title": "La Fausse lumière",
+      "text": "Mais toute lumière n’est pas lucide.\n\nIl existe une manière d’utiliser la joie pour ne plus entendre ce qui dérange.\n\n« Regarde le positif. »\n« Ne pense plus à ça. »\n« Tout arrive pour une raison. »\n\nCes paroles peuvent parfois réconforter.\nElles peuvent aussi fermer une porte.\n\nCar certaines blessures demandent d’abord à être reconnues.\n\nLa joie lucide ne dit pas :\n« Tout va bien. »\n\nElle dit :\n« Tout ne va pas bien, et pourtant quelque chose demeure vivant. »\n\nLa différence est immense.\n\nLa première phrase efface une partie du réel.\nLa seconde lui redonne sa profondeur.\n\nLE SEUIL :\nEst-ce que ce que j’appelle parfois « positif » m’aide à regarder le réel — ou à l’éviter ?",
+      "image": "assets/images/03-la-fausse-lumiere.webp",
+      "imageAlt": "Un masque lumineux posé dans un paysage marin symbolise une clarté qui peut masquer le réel.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-04",
+      "title": "Le Regard capturé",
+      "text": "Le déni n’est pourtant pas le seul moyen de perdre le réel.\n\nNous pouvons également tellement regarder ce qui menace que nous finissons par ne plus voir que cela.\n\nCrises, violences, conflits, injustices, inquiétudes : chacune de ces réalités mérite notre attention.\n\nMais leur accumulation peut transformer notre regard.\n\nPeu à peu, nous ne pensons plus :\n« quelque chose va mal ».\n\nNous commençons à penser :\n« tout va mal ».\n\nC’est alors qu’un récit particulier devient la totalité du monde.\n\nÊtre lucide ne signifie pas collectionner les raisons de désespérer.\n\nLa véritable lucidité cherche à voir davantage, pas seulement plus sombre.\n\nLE SEUIL :\nQu’est-ce que mon regard ne voit plus lorsqu’il reste trop longtemps fixé sur ce qui menace ?",
+      "image": "assets/images/04-le-regard-capture.webp",
+      "imageAlt": "Une silhouette regarde une mer sombre et menaçante, comme si son regard était capturé par la tempête.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-05",
+      "title": "Les Deux Vérités",
+      "text": "Nous avons souvent appris à choisir.\n\nHeureux ou triste.\nFort ou vulnérable.\nReconnaissant ou révolté.\nConfiant ou inquiet.\n\nPourtant, l’expérience humaine résiste à ces alternatives.\n\nJe peux aimer quelqu’un et lui dire non.\nJe peux être triste et éprouver de la gratitude.\nJe peux être inquiet pour demain et continuer à créer aujourd’hui.\n\nDeux vérités peuvent coexister sans s’annuler.\n\nCette découverte transforme le regard : nous n’avons plus besoin de mutiler une partie de notre expérience pour rendre l’autre légitime.\n\nLe monde devient plus habitable lorsque nous cessons de demander à une seule vérité de raconter le tout.\n\nLE SEUIL :\nQuelles sont les deux vérités que j’essaie encore de séparer alors qu’elles pourraient peut-être être accueillies ensemble ?",
+      "image": "assets/images/05-les-deux-verites.webp",
+      "imageAlt": "Un paysage marin partagé entre ombre et lumière représente deux vérités qui coexistent.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-06",
+      "title": "Les Dauphins dans la houle",
+      "text": "Et parfois, quelque chose surgit.\n\nRien n’est résolu.\n\nLa mer est toujours agitée.\n\nPourtant un rire traverse la journée.\nUne musique nous atteint.\nUne lumière tombe sur un mur.\nUn animal apparaît.\nQuelqu’un nous regarde avec douceur.\n\nPendant quelques secondes, le récit qui occupait tout l’espace est interrompu.\n\nNon parce qu’il était faux.\n\nMais parce qu’il était incomplet.\n\nVoilà peut-être ce que fait l’émerveillement : il ne contredit pas la douleur. Il révèle qu’au même instant, autre chose existe également.\n\nLes dauphins n’arrêtent pas la houle.\nIls agrandissent le paysage.\n\nLE SEUIL :\nQuels sont les dauphins que je pourrais manquer aujourd’hui parce que je regarde uniquement les vagues ?",
+      "image": "assets/images/06-les-dauphins-dans-la-houle.webp",
+      "imageAlt": "Des dauphins surgissent dans une mer agitée, révélant l’émerveillement au cœur de la houle.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-07",
+      "title": "La Frontière sensible",
+      "text": "Lorsque nous aimons quelqu’un, sa douleur nous atteint.\n\nC’est humain.\n\nMais une frontière subtile existe entre être touché et être absorbé.\n\nJe peux t’écouter sans devenir toi.\nJe peux reconnaître ta peine sans devoir la porter à ta place.\nJe peux rester près de toi sans abandonner ce qui me maintient vivant.\n\nUne frontière saine n’est pas un mur.\n\nC’est ce qui permet à deux êtres de rester présents l’un à l’autre sans que l’un disparaisse dans l’expérience de l’autre.\n\nPeut-être est-ce même cela qui rend l’aide possible :\n\nêtre suffisamment proche pour rencontrer l’autre,\nsuffisamment distinct pour rester présent.\n\nLE SEUIL :\nPuis-je être auprès de quelqu’un sans faire de son état intérieur la mesure du mien ?",
+      "image": "assets/images/07-la-frontiere-sensible.webp",
+      "imageAlt": "Deux personnes face à la mer gardent une juste distance, signe d’une frontière sensible et vivante.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-08",
+      "title": "La Joie indocile",
+      "text": "Nous attendons parfois.\n\nQue les problèmes soient réglés.\nQue les relations soient apaisées.\nQue le monde soit moins inquiétant.\nQue quelqu’un nous donne enfin son accord.\n\nAlors seulement, pensons-nous, nous pourrons vivre.\n\nMais la vie ne nous promet jamais un moment où toutes les conditions seront réunies.\n\nLa joie indocile ne consiste pas à ignorer les obstacles.\n\nElle refuse simplement de leur remettre les clés de l’avenir.\n\nCréer maintenant.\nAimer maintenant.\nMarcher, apprendre, rire, rencontrer, transmettre maintenant.\n\nNon parce que tout est réglé.\n\nParce que nous sommes vivants avant que tout le soit.\n\nLE SEUIL :\nQu’est-ce que je remets à plus tard en attendant qu’une situation devienne parfaite ?",
+      "image": "assets/images/08-la-joie-indocile.webp",
+      "imageAlt": "Un groupe près d’un feu et d’une mer lumineuse incarne une joie qui persiste malgré l’incertitude.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-09",
+      "title": "La Joie qui circule",
+      "text": "La joie n’est pas seulement intérieure.\n\nElle prend forme dans une voix, une attention, une disponibilité, un geste, une manière d’accueillir quelqu’un.\n\nNous nous affectons mutuellement.\n\nCela ne signifie pas qu’une personne joyeuse puisse effacer la souffrance d’une autre.\n\nCe serait encore demander à la joie de nier le réel.\n\nMais nous pouvons contribuer à créer autour de nous un milieu relationnel différent.\n\nUn endroit où l’on respire davantage.\nOù la parole peut circuler.\nOù quelque chose peut recommencer.\n\nNous ne maîtrisons pas ce que les autres éprouvent.\n\nNous pouvons choisir la qualité de présence que nous apportons dans la relation.\n\nLE SEUIL :\nQu’est-ce qui change autour de moi lorsque je cesse de transmettre seulement ce qui m’inquiète et que je partage aussi ce qui me fait vivre ?",
+      "image": "assets/images/09-la-joie-qui-circule.webp",
+      "imageAlt": "Plusieurs personnes partagent une lumière près de la mer, symbole d’une joie qui circule.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-10",
+      "title": "La Joie lucide",
+      "text": "Nous pouvons maintenant regarder de nouveau la mer.\n\nElle n’est pas devenue parfaitement calme.\n\nEt nous n’avons plus besoin qu’elle le soit.\n\nNous savons désormais que reconnaître une souffrance ne nous oblige pas à lui donner tout le paysage.\n\nQue la joie n’a pas besoin de nier la douleur pour être légitime.\n\nQue plusieurs vérités peuvent coexister.\n\nQue l’émerveillement peut surgir au milieu même de l’incertitude.\n\nLa joie lucide n’est donc ni optimisme ni pessimisme.\n\nElle est une manière d’être présent.\n\nVoir ce qui souffre.\nAccueillir ce qui demeure vivant.\nEt ne sacrifier ni l’un ni l’autre.\n\nPeut-être est-ce cela, finalement, apprendre à habiter un monde complexe.\n\nLE SEUIL :\nRegardez encore une fois la mer.\n\nQu’y voyez-vous maintenant que vous ne voyiez pas au commencement ?",
+      "image": "assets/images/10-la-joie-lucide.webp",
+      "imageAlt": "Une mer agitée et lumineuse rassemble les signes d’une joie lucide qui voit plusieurs vérités.",
+      "imageDisplayMode": "contain"
+    },
+    {
+      "id": "scene-11",
+      "title": "Le Nouveau Récit",
+      "text": "Une traversée intérieure ne prend tout son sens que lorsqu’elle transforme notre manière d’entrer dans le monde.\n\nCe que nous avons découvert ne nous appartient donc pas entièrement.\n\nLa manière dont nous regardons transforme notre manière de parler.\nNotre manière de parler transforme nos relations.\nNos relations transforment les milieux que nous habitons.\n\nEt ces milieux rendent certains récits plus possibles que d’autres.\n\nAucun de nous n’écrit seul le monde commun.\n\nNous y contribuons pourtant chaque jour :\npar ce que nous amplifions,\nce que nous transmettons,\nce que nous refusons,\nce que nous protégeons\net ce que nous rendons possible.\n\nLa joie lucide ne promet pas un monde sans houle.\n\nElle nous demande quelque chose de plus exigeant :\n\nparticiper à un monde dans lequel la houle n’empêche jamais complètement de chercher les dauphins — et dans lequel les dauphins ne servent jamais à nier la houle.\n\nC’est peut-être ainsi qu’un récit devient vivant.\n\nNon lorsqu’il nous explique définitivement le monde,\nmais lorsqu’il nous aide à mieux l’habiter.\n\nLE SEUIL FINAL :\n\nÀ votre tour :\nquel récit souhaitez-vous contribuer à rendre possible ?",
+      "image": "assets/images/11-le-nouveau-recit.webp",
+      "imageAlt": "Une silhouette près d’un phare regarde l’horizon, ouvrant un nouveau récit après la traversée.",
+      "imageDisplayMode": "contain"
+    }
+  ]
+}
