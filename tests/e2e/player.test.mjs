@@ -543,7 +543,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(entryState.noHorizontalOverflow, true);
 
     await loadUrl(page, libraryUrl);
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 12");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");
     const libraryState = await evaluate(
       page,
       `({
@@ -594,6 +594,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         "Le Monde commun",
         "La Joie lucide",
         "Celle que je n’avais pas encore rencontrée",
+        "La Chaise",
       ],
     );
     assert.equal(libraryState.cards.every(({ imageAlt, linkLabel }) => imageAlt.length > 0 && linkLabel.length > 0), true);
@@ -609,6 +610,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[9].href.endsWith("/oeuvres/le-monde-commun/"), true);
     assert.equal(libraryState.cards[10].href.endsWith("/oeuvres/la-joie-lucide/"), true);
     assert.equal(libraryState.cards[11].href.endsWith("/oeuvres/celle-que-je-navais-pas-encore-rencontree/"), true);
+    assert.equal(libraryState.cards[12].href.endsWith("/oeuvres/la-chaise/"), true);
     assert.equal(libraryState.cards[0].slug, "les-gardiens-des-recits-vivants");
     assert.equal(libraryState.cards[1].slug, "polarites-vivantes");
     assert.equal(libraryState.cards[2].slug, "atlas-recits-vivants");
@@ -621,6 +623,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[9].slug, "le-monde-commun");
     assert.equal(libraryState.cards[10].slug, "la-joie-lucide");
     assert.equal(libraryState.cards[11].slug, "celle-que-je-navais-pas-encore-rencontree");
+    assert.equal(libraryState.cards[12].slug, "la-chaise");
     assert.equal(libraryState.cards[0].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[1].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[2].imagePosition, "50% 0%");
@@ -633,6 +636,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[9].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[10].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[11].imagePosition, "50% 50%");
+    assert.equal(libraryState.cards[12].imagePosition, "50% 50%");
     assert.equal(libraryState.noHorizontalOverflow, true);
     await loadUrl(page, url);
     await waitForPrologueReady(page);
@@ -1189,7 +1193,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       true,
     );
     await evaluate(page, "document.querySelector('.site-navigation a')?.click()");
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 12");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");
 
     const metamorphosisPackUrl = `${entryUrl}oeuvres/la-metamorphose/`;
     await page.send("Emulation.setDeviceMetricsOverride", {
@@ -1554,7 +1558,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         continuation?.click();
       })()`,
     );
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 12");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");
     assert.equal(
       await evaluate(page, "window.location.pathname.endsWith('/bibliotheque/')"),
       true,
@@ -1631,7 +1635,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         continuation?.click();
       })()`,
     );
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 12");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");
 
     const encounterPackUrl = `${entryUrl}oeuvres/celle-que-je-navais-pas-encore-rencontree/`;
     await page.send("Emulation.setDeviceMetricsOverride", {
@@ -1703,7 +1707,109 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         continuation?.click();
       })()`,
     );
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 12");
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");
+
+    const chairPackUrl = `${entryUrl}oeuvres/la-chaise/`;
+    await page.send("Emulation.setDeviceMetricsOverride", {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await loadUrl(page, chairPackUrl);
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 15 \u2014 Contempler");
+    const chairFirstImage = await readStablePlayerState(page, "Sc\u00e8ne 1 / 15 \u2014 Contempler");
+    assert.equal(chairFirstImage.packIdData, "pack-013-la-chaise");
+    assert.equal(chairFirstImage.layoutData, "image-then-text");
+    assert.equal(chairFirstImage.layoutPhaseData, "image");
+    assert.equal(chairFirstImage.sceneLayoutPhaseData, "image");
+    assert.equal(chairFirstImage.sceneTitle, "La Chaise");
+    assert.equal(chairFirstImage.currentSrc.endsWith("/00-couverture-la-chaise.webp"), true);
+    assert.equal(chairFirstImage.objectFit, "contain");
+    assert.equal(chairFirstImage.imageVisible, true);
+    assert.equal(chairFirstImage.noHorizontalOverflow, true);
+
+    await clickNavigationNext(page, "Sc\u00e8ne 1 / 15 \u2014 Lire");
+    const chairFirstText = await readStablePlayerState(page, "Sc\u00e8ne 1 / 15 \u2014 Lire");
+    assert.equal(chairFirstText.layoutPhaseData, "text");
+    assert.equal(chairFirstText.sceneText.includes("regarder la place que nous occupons"), true);
+    assert.equal(chairFirstText.imageVisible, false);
+    assert.equal(chairFirstText.noHorizontalOverflow, true);
+
+    const chairCheckpoints = new Map([
+      [2, "La Table \u2014 Entrer"],
+      [9, "Voir le dessous \u2014 Observer"],
+      [13, "La table r\u00e9ciproque \u2014 Rencontrer"],
+      [14, "Construire la table \u2014 Co-cr\u00e9er"],
+      [15, "La chaise libre \u2014 Habiter"],
+    ]);
+    for (let sceneNumber = 2; sceneNumber <= 15; sceneNumber += 1) {
+      await clickNavigationNext(page, `Sc\u00e8ne ${sceneNumber} / 15 \u2014 Contempler`);
+      const imageState = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 15 \u2014 Contempler`);
+      assert.equal(imageState.layoutPhaseData, "image");
+      assert.equal(imageState.objectFit, "contain");
+      assert.equal(imageState.imageVisible, true);
+      assert.equal(imageState.currentSrc.endsWith(".webp"), true);
+      assert.equal(imageState.noHorizontalOverflow, true);
+      if (chairCheckpoints.has(sceneNumber)) {
+        assert.equal(imageState.sceneTitle, chairCheckpoints.get(sceneNumber));
+      }
+      if (sceneNumber === 13) {
+        assert.equal(imageState.currentSrc.endsWith("/12-la-table-reciproque.webp"), true);
+      }
+      if (sceneNumber === 14) {
+        assert.equal(imageState.currentSrc.endsWith("/13-construire-la-table.webp"), true);
+      }
+      if (sceneNumber === 15) {
+        assert.equal(imageState.currentSrc.endsWith("/14-la-chaise-libre.webp"), true);
+      }
+
+      await clickNavigationNext(page, `Sc\u00e8ne ${sceneNumber} / 15 \u2014 Lire`);
+      const textState = await readStablePlayerState(page, `Sc\u00e8ne ${sceneNumber} / 15 \u2014 Lire`);
+      assert.equal(textState.layoutPhaseData, "text");
+      assert.equal(textState.imageVisible, false);
+      assert.equal(textState.sceneText.length > 80, true, `PACK-013 scene ${sceneNumber} should expose narrative text`);
+      assert.equal(textState.noHorizontalOverflow, true);
+      assert.equal(textState.nextDisabled, sceneNumber === 15);
+      if (sceneNumber === 9) {
+        const undersideLinkState = await evaluate(
+          page,
+          `(() => {
+            const link = document.querySelector('.scene__link');
+            return {
+              present: Boolean(link),
+              label: link?.textContent ?? '',
+              href: link?.href ?? '',
+              target: link?.target ?? '',
+              rel: link?.rel ?? '',
+              nextDisabled: document.querySelector('[data-navigation="next"]')?.disabled === true
+            };
+          })()`,
+        );
+        assert.equal(undersideLinkState.present, true, "PACK-013 scene 08 should render the Le Dessous external link");
+        assert.equal(undersideLinkState.label, "Explorer \u00ab Le Dessous \u00bb");
+        assert.equal(undersideLinkState.href, "https://zephyr-avenel.blogspot.com/2026/08/le-dessous.html");
+        assert.equal(undersideLinkState.target, "_blank");
+        assert.equal(undersideLinkState.rel, "noopener noreferrer");
+        assert.equal(undersideLinkState.nextDisabled, false, "PACK-013 scene 08 should keep internal progression available");
+      }
+    }
+    const chairFinal = await readStablePlayerState(page, "Sc\u00e8ne 15 / 15 \u2014 Lire");
+    assert.equal(chairFinal.sceneTitle, "La chaise libre \u2014 Habiter");
+    assert.equal(chairFinal.sceneText.includes("Il reste une chaise."), true);
+    assert.equal(
+      await evaluate(page, "document.querySelector('[data-library-continuation]')?.href.endsWith('/bibliotheque/')"),
+      true,
+    );
+    await evaluate(
+      page,
+      `(() => {
+        const continuation = document.querySelector('[data-library-continuation]');
+        continuation?.scrollIntoView({ block: 'center', inline: 'nearest' });
+        continuation?.click();
+      })()`,
+    );
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");
 
     await page.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],

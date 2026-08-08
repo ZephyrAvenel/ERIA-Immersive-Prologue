@@ -62,6 +62,11 @@
       "id": "pack-012-celle-que-je-navais-pas-encore-rencontree",
       "slug": "celle-que-je-navais-pas-encore-rencontree",
       "manifest": "pack-012-celle-que-je-navais-pas-encore-rencontree/pack.json"
+    },
+    {
+      "id": "pack-013-la-chaise",
+      "slug": "la-chaise",
+      "manifest": "pack-013-la-chaise/pack.json"
     }
   ]
 }

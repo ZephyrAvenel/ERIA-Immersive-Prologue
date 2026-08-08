@@ -101,6 +101,48 @@ test("runtime validator and JSON Schema expose the optional image-then-text layo
   assert.equal(invalid.errors.includes("INE_VALIDATION_LAYOUT_INVALID"), true);
 });
 
+test("runtime validator and JSON Schema expose optional scene links", async () => {
+  const schema = await readProjectJson("schemas", "narrative-pack.schema.json");
+  assert.deepEqual(schema.$defs.sceneLink.required, ["label", "href"]);
+  assert.equal(schema.$defs.sceneLink.additionalProperties, false);
+
+  const result = validateNarrativePack({
+    format: "ine-narrative-pack",
+    version: "1.0",
+    id: "scene-links",
+    title: "Scene links",
+    language: "fr",
+    startScene: "start",
+    scenes: [
+      {
+        id: "start",
+        title: "Start",
+        text: "Text.",
+        links: [
+          {
+            label: "Explorer",
+            href: "https://example.test",
+            description: "Ressource complémentaire.",
+          },
+        ],
+      },
+    ],
+  });
+  assert.equal(result.valid, true, result.errors.join(", "));
+
+  const invalid = validateNarrativePack({
+    format: "ine-narrative-pack",
+    version: "1.0",
+    id: "invalid-scene-links",
+    title: "Invalid scene links",
+    language: "fr",
+    startScene: "start",
+    scenes: [{ id: "start", title: "Start", text: "Text.", links: [{ href: "https://example.test" }] }],
+  });
+  assert.equal(invalid.valid, false);
+  assert.ok(invalid.errors.includes("INE_VALIDATION_SCENE_LINK_LABEL_REQUIRED:scenes[0].links[0].label"));
+});
+
 test("runtime validator and JSON Schema expose the same transition contract", async () => {
   const schema = await readProjectJson("schemas", "narrative-pack.schema.json");
   assert.deepEqual(schema.$defs.transition.required, ["type"]);

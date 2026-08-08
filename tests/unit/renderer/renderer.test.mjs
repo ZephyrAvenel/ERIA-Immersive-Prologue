@@ -258,6 +258,32 @@ test("Renderer renders images with alternative text and contain as default displ
     assert.equal(image.dataset.displayMode, "contain");
   }));
 
+test("Renderer renders optional scene links as safe external resources", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    renderPlayer(target, createState({
+      scene: {
+        ...createState().scene,
+        links: [
+          {
+            label: "Explorer « Le Dessous »",
+            href: "https://zephyr-avenel.blogspot.com/2026/08/le-dessous.html",
+            description: "Voir ce qui agit sous ce qui se raconte.",
+          },
+        ],
+      },
+    }));
+
+    const links = findElement(target, ".scene__links");
+    const link = findElement(target, ".scene__link");
+    assert.equal(links.getAttribute("aria-label"), "Ressources complémentaires");
+    assert.equal(link.textContent, "Explorer « Le Dessous »");
+    assert.equal(link.href, "https://zephyr-avenel.blogspot.com/2026/08/le-dessous.html");
+    assert.equal(link.target, "_blank");
+    assert.equal(link.rel, "noopener noreferrer");
+    assert.equal(link.title, "Voir ce qui agit sous ce qui se raconte.");
+  }));
+
 test("Renderer applies explicit image display modes", () =>
   withFakeDocument(() => {
     for (const mode of ["contain", "cover", "fill", "immersive"]) {

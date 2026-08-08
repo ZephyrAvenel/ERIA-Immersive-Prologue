@@ -169,6 +169,24 @@ function createPlayerElement(state: RenderPlayerState): HTMLElement {
   text.className = "scene__text";
   text.textContent = state.scene.text;
   content.append(title, text);
+  if (state.scene.links?.length) {
+    const links = document.createElement("nav");
+    links.className = "scene__links";
+    links.setAttribute("aria-label", "Ressources complémentaires");
+    for (const sceneLink of state.scene.links) {
+      const link = document.createElement("a");
+      link.className = "scene__link";
+      link.href = sceneLink.href;
+      link.textContent = sceneLink.label;
+      if (sceneLink.description) link.title = sceneLink.description;
+      if (/^https?:\/\//.test(sceneLink.href)) {
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+      }
+      links.append(link);
+    }
+    content.append(links);
+  }
   article.append(content);
 
   const progress = document.createElement("div");

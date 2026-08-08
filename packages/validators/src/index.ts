@@ -42,7 +42,8 @@ const PACK_PROPERTIES = new Set([
 ]);
 const PRESENTATION_PROPERTIES = new Set(["defaultTransition", "intro"]);
 const INTRO_PROPERTIES = new Set(["lines", "title", "actionLabel"]);
-const SCENE_PROPERTIES = new Set(["id", "title", "text", "image", "imageAlt", "imageDisplayMode", "transition"]);
+const SCENE_PROPERTIES = new Set(["id", "title", "text", "image", "imageAlt", "imageDisplayMode", "links", "transition"]);
+const SCENE_LINK_PROPERTIES = new Set(["label", "href", "description"]);
 const TRANSITION_PROPERTIES = new Set(["type", "durationMs", "easing"]);
 const PACK_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const NARRATIVE_PACK_LAYOUTS = new Set(["image-then-text"]);
@@ -110,6 +111,30 @@ function validateIntro(value: unknown, path: string, errors: string[]): void {
   if (!hasString(value, "actionLabel")) {
     errors.push(`INE_VALIDATION_INTRO_ACTION_LABEL_REQUIRED:${path}.actionLabel`);
   }
+}
+
+function validateSceneLinks(value: unknown, path: string, errors: string[]): void {
+  if (!Array.isArray(value)) {
+    errors.push(`INE_VALIDATION_SCENE_LINKS_ARRAY_REQUIRED:${path}`);
+    return;
+  }
+  if (value.length === 0) {
+    errors.push(`INE_VALIDATION_SCENE_LINKS_EMPTY:${path}`);
+    return;
+  }
+  value.forEach((link, index) => {
+    const linkPath = `${path}[${index}]`;
+    if (!isRecord(link)) {
+      errors.push(`INE_VALIDATION_SCENE_LINK_OBJECT_REQUIRED:${linkPath}`);
+      return;
+    }
+    reportUnknownProperties(link, SCENE_LINK_PROPERTIES, linkPath, errors);
+    if (!hasString(link, "label")) errors.push(`INE_VALIDATION_SCENE_LINK_LABEL_REQUIRED:${linkPath}.label`);
+    if (!hasString(link, "href")) errors.push(`INE_VALIDATION_SCENE_LINK_HREF_REQUIRED:${linkPath}.href`);
+    if (link.description !== undefined && typeof link.description !== "string") {
+      errors.push(`INE_VALIDATION_SCENE_LINK_DESCRIPTION_INVALID:${linkPath}.description`);
+    }
+  });
 }
 
 export function validateNarrativePack(value: unknown): ValidationResult {
@@ -181,6 +206,9 @@ export function validateNarrativePack(value: unknown): ValidationResult {
         (typeof scene.imageDisplayMode !== "string" || !IMAGE_DISPLAY_MODES.has(scene.imageDisplayMode))
       ) {
         errors.push(`INE_VALIDATION_SCENE_${index}_IMAGE_DISPLAY_MODE_INVALID`);
+      }
+      if (scene.links !== undefined) {
+        validateSceneLinks(scene.links, `scenes[${index}].links`, errors);
       }
       if (scene.transition !== undefined) {
         validateTransition(scene.transition, `scenes[${index}].transition`, errors);

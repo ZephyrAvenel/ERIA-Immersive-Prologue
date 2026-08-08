@@ -66,7 +66,22 @@
           "enum": ["contain", "cover", "fill", "immersive"],
           "default": "contain"
         },
+        "links": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/sceneLink" }
+        },
         "transition": { "$ref": "#/$defs/transition" }
+      }
+    },
+    "sceneLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "href"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "href": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" }
       }
     },
     "transition": {

@@ -32,6 +32,12 @@ export interface NarrativePresentation {
 
 export type NarrativePackLayout = "image-then-text";
 
+export interface NarrativeSceneLink {
+  readonly label: string;
+  readonly href: string;
+  readonly description?: string;
+}
+
 export interface NarrativeScene {
   readonly id: string;
   readonly title: string;
@@ -39,6 +45,7 @@ export interface NarrativeScene {
   readonly image?: string;
   readonly imageAlt?: string;
   readonly imageDisplayMode?: ImageDisplayMode;
+  readonly links?: readonly NarrativeSceneLink[];
   readonly transition?: SceneTransition;
 }
 
