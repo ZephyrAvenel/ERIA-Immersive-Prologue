@@ -277,6 +277,22 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pageThreeTextareas[0].placeholder, "Quelques mots suffisent. Ce qui vous donne envie de continuer\u2026");
   assert.equal(pageThree.blocks.some((block) => ["choice", "reveal", "promptCopy"].includes(block.type)), false);
 
+  const pageFour = pack.pages[3];
+  assert.equal(pageFour.id, "page-04");
+  assert.equal(pageFour.title, "Ne pas demander trop t\u00f4t");
+  assert.equal(pageFour.movementId, "intention");
+  assert.deepEqual(pageFour.blocks.map((block) => block.type), ["text", "recall", "text", "reveal", "text"]);
+  const pageFourRecalls = pageFour.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageFourRecalls.length, 1);
+  assert.equal(pageFourRecalls[0].id, "rappel-etincelle-avant-divergence");
+  assert.equal(pageFourRecalls[0].sourceBlockId, "etincelle");
+  assert.equal(pageFourRecalls[0].label, "Votre \u00e9tincelle");
+  const pageFourReveals = pageFour.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageFourReveals.length, 1);
+  assert.equal(pageFourReveals[0].id, "demander-trop-tot-reveal");
+  assert.equal(pageFourReveals[0].label, "Ce qui se passe lorsque nous demandons trop t\u00f4t");
+  assert.equal(pageFour.blocks.some((block) => ["textarea", "choice", "promptCopy"].includes(block.type)), false);
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [

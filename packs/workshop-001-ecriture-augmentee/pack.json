@@ -201,20 +201,30 @@
         {
           "id": "demander-trop-tot-intro",
           "type": "text",
-          "text": "Comprendre pourquoi une demande prématurée à l'IA peut refermer le possible au lieu de l'ouvrir."
+          "text": "Vous avez maintenant une étincelle.\n\nElle est peut-être encore fragile.\n\nQuelques mots seulement.\n\nUne image.\n\nUne tension.\n\nUne question.\n\nUne possibilité.\n\nC'est souvent à cet instant qu'apparaît une tentation :\n\ndemander tout de suite à une intelligence artificielle ce qu'elle pourrait en faire.\n\nElle pourrait répondre.\n\nElle pourrait même répondre très bien.\n\nMais une réponse peut être intéressante et pourtant arriver trop tôt."
         },
         {
-          "id": "etincelle-recall-page-04",
+          "id": "rappel-etincelle-avant-divergence",
           "type": "recall",
           "sourceBlockId": "etincelle",
-          "label": "Votre étincelle avant le prompt",
-          "emptyText": "Votre étincelle sera rappelée ici."
+          "label": "Votre étincelle",
+          "emptyText": "Votre étincelle n'est pas encore formulée. Vous pouvez revenir à la page précédente, ou garder simplement à l'esprit ce qui vous donne envie de continuer."
         },
         {
-          "id": "attente-avant-ia",
-          "type": "textarea",
-          "label": "Que souhaitez-vous préserver avant de demander quoi que ce soit à une IA ?",
-          "placeholder": "Une nuance, une fragilité, un mystère..."
+          "id": "demander-trop-tot-exemple",
+          "type": "text",
+          "text": "Imaginez que nous demandions maintenant :\n\n« Écris une histoire à partir de cette idée. »\n\nEn quelques secondes pourraient apparaître :\n\nun personnage,\n\nun conflit,\n\nun lieu,\n\nun ton,\n\nune structure,\n\npeut-être même une fin.\n\nTout cela pourrait sembler stimulant.\n\nMais quelque chose aurait aussi changé :\n\nplusieurs décisions créatives auraient déjà été prises.\n\nAvant même que vous ayez eu le temps de découvrir lesquelles vous appartiennent vraiment."
+        },
+        {
+          "id": "demander-trop-tot-reveal",
+          "type": "reveal",
+          "label": "Ce qui se passe lorsque nous demandons trop tôt",
+          "content": "Une intelligence artificielle est particulièrement efficace pour compléter ce qui lui est donné.\n\nC'est précisément ce qui peut être utile — et ce qui demande du discernement.\n\nLorsqu'une possibilité encore fragile lui est confiée sous la forme d'une demande trop large, elle peut rapidement combler les espaces qui étaient encore ouverts.\n\nElle propose des continuités.\n\nElle stabilise des formes.\n\nElle relie des éléments.\n\nElle choisit implicitement certaines directions parmi beaucoup d'autres.\n\nLe résultat peut être cohérent, séduisant ou surprenant.\n\nMais cette cohérence peut aussi nous faire oublier une question essentielle :\n\nqu'aurions-nous découvert si nous avions laissé la possibilité ouverte un peu plus longtemps ?\n\nUtiliser l'IA créativement ne consiste donc pas seulement à savoir quoi lui demander. Il faut aussi apprendre quand lui demander."
+        },
+        {
+          "id": "demander-trop-tot-cloture",
+          "type": "text",
+          "text": "Votre étincelle n'a pas encore besoin d'une histoire.\n\nPour l'instant, gardons-la ouverte.\n\nNous allons bientôt inviter l'IA dans le processus.\n\nMais nous ne lui demanderons pas d'écrire à notre place.\n\nNous lui demanderons d'ouvrir des possibles."
         }
       ]
     },
