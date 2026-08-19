@@ -96,36 +96,63 @@
         {
           "id": "impulsion-intro",
           "type": "text",
-          "text": "Identifier l'impulsion initiale : image, question, sensation, personnage, situation, souvenir, tension ou intuition."
+          "text": "Une histoire ne commence pas toujours par une histoire.\n\nElle peut commencer par quelque chose de beaucoup plus ténu.\n\nUne image qui revient.\n\nUne situation que vous ne parvenez pas tout à fait à oublier.\n\nUne sensation.\n\nUne voix.\n\nUne contradiction.\n\nUne question sans réponse.\n\nParfois même, vous ne savez pas encore ce que c'est.\n\nVous savez seulement que quelque chose insiste."
         },
         {
-          "id": "impulsion-type",
+          "id": "impulsion-sans-histoire",
+          "type": "text",
+          "text": "Ne cherchez pas encore une histoire.\n\nPour l'instant, ne cherchez ni intrigue, ni personnage, ni structure.\n\nEt surtout, ne demandez encore rien à une intelligence artificielle.\n\nEssayez simplement de reconnaître la forme de ce qui vous appelle."
+        },
+        {
+          "id": "forme-impulsion",
           "type": "choice",
-          "label": "Quelle forme prend d'abord ce qui appelle l'écriture ?",
+          "label": "Ce qui revient ressemble plutôt à…",
           "options": [
             {
               "id": "image",
               "label": "Une image"
             },
             {
-              "id": "question",
-              "label": "Une question"
-            },
-            {
               "id": "sensation",
               "label": "Une sensation"
             },
             {
-              "id": "tension",
-              "label": "Une tension"
+              "id": "situation",
+              "label": "Une situation"
+            },
+            {
+              "id": "presence",
+              "label": "Une personne ou une présence"
+            },
+            {
+              "id": "phrase",
+              "label": "Une phrase ou quelques mots"
+            },
+            {
+              "id": "question",
+              "label": "Une question"
+            },
+            {
+              "id": "indefini",
+              "label": "Quelque chose que je ne sais pas encore nommer"
             }
           ]
         },
         {
+          "id": "impulsion-ecriture-intro",
+          "type": "text",
+          "text": "Ne cherchez pas à bien écrire.\n\nNotez simplement ce qui revient.\n\nCela peut tenir en quelques mots ou prendre davantage de place.\n\nVous n'avez pas besoin de l'expliquer."
+        },
+        {
           "id": "impulsion-initiale",
           "type": "textarea",
-          "label": "Notez l'impulsion initiale en quelques mots.",
-          "placeholder": "Une image, une question, une sensation..."
+          "label": "Ce qui revient",
+          "placeholder": "Une image, quelques mots, une sensation, une situation, une question…"
+        },
+        {
+          "id": "impulsion-cloture",
+          "type": "text",
+          "text": "Laissez cette première trace telle qu'elle est. Nous aurons le temps de la déplacer."
         }
       ]
     },

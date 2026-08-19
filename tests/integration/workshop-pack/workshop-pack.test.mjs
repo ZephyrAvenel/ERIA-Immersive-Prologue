@@ -233,6 +233,29 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
     false,
   );
 
+  const pageTwo = pack.pages[1];
+  assert.equal(pageTwo.id, "page-02");
+  assert.equal(pageTwo.title, "Ce qui cherche \u00e0 \u00eatre \u00e9crit");
+  assert.equal(pageTwo.movementId, "intention");
+  assert.deepEqual(pageTwo.blocks.map((block) => block.type), ["text", "text", "choice", "text", "textarea", "text"]);
+  const pageTwoChoices = pageTwo.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageTwoChoices.length, 1);
+  assert.equal(pageTwoChoices[0].id, "forme-impulsion");
+  assert.equal(pageTwoChoices[0].options.length, 7);
+  assert.equal(
+    pageTwoChoices[0].options.some((option) => option.label === "Quelque chose que je ne sais pas encore nommer"),
+    true,
+  );
+  const pageTwoTextareas = pageTwo.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageTwoTextareas.length, 1);
+  assert.equal(pageTwoTextareas[0].id, "impulsion-initiale");
+  assert.equal(pageTwoTextareas[0].label, "Ce qui revient");
+  assert.equal(
+    pageTwoTextareas[0].placeholder,
+    "Une image, quelques mots, une sensation, une situation, une question\u2026",
+  );
+  assert.equal(pageTwo.blocks.some((block) => ["reveal", "promptCopy", "recall"].includes(block.type)), false);
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
