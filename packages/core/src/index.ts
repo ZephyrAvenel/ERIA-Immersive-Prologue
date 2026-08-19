@@ -73,6 +73,7 @@ export interface ValidationResult {
 export type NarrativePackValidator = (value: unknown) => ValidationResult;
 export type PolarityValidator = (value: unknown) => ValidationResult;
 export type LivingCardValidator = (value: unknown) => ValidationResult;
+export type WorkshopPackValidator = (value: unknown) => ValidationResult;
 
 export interface PolarityPole {
   readonly title: string;
@@ -197,6 +198,95 @@ export interface LivingCardPack {
   readonly fallbackImageAlt: string;
   readonly landmarkLabel: string;
   readonly actions: LivingCardPackActions;
+}
+
+export type WorkshopBlockType = "text" | "textarea" | "choice" | "reveal" | "promptCopy" | "recall";
+
+export interface WorkshopTextBlock {
+  readonly id: string;
+  readonly type: "text";
+  readonly text: string;
+}
+
+export interface WorkshopTextareaBlock {
+  readonly id: string;
+  readonly type: "textarea";
+  readonly label: string;
+  readonly placeholder?: string;
+  readonly required?: boolean;
+}
+
+export interface WorkshopChoiceOption {
+  readonly id: string;
+  readonly label: string;
+  readonly description?: string;
+}
+
+export interface WorkshopChoiceBlock {
+  readonly id: string;
+  readonly type: "choice";
+  readonly label: string;
+  readonly options: readonly WorkshopChoiceOption[];
+  readonly allowMultiple?: boolean;
+}
+
+export interface WorkshopRevealBlock {
+  readonly id: string;
+  readonly type: "reveal";
+  readonly label: string;
+  readonly content: string;
+}
+
+export interface WorkshopPromptCopyBlock {
+  readonly id: string;
+  readonly type: "promptCopy";
+  readonly label: string;
+  readonly text: string;
+  readonly description?: string;
+}
+
+export interface WorkshopRecallBlock {
+  readonly id: string;
+  readonly type: "recall";
+  readonly sourceBlockId: string;
+  readonly label?: string;
+  readonly emptyText?: string;
+}
+
+export type WorkshopBlock =
+  | WorkshopTextBlock
+  | WorkshopTextareaBlock
+  | WorkshopChoiceBlock
+  | WorkshopRevealBlock
+  | WorkshopPromptCopyBlock
+  | WorkshopRecallBlock;
+
+export interface WorkshopMovement {
+  readonly id: string;
+  readonly order: number;
+  readonly title: string;
+  readonly description?: string;
+}
+
+export interface WorkshopPage {
+  readonly id: string;
+  readonly movementId: string;
+  readonly order: number;
+  readonly title: string;
+  readonly blocks: readonly WorkshopBlock[];
+}
+
+export interface WorkshopPack {
+  readonly format: "ine-workshop-pack";
+  readonly version: "1.0";
+  readonly id: string;
+  readonly slug: string;
+  readonly title: string;
+  readonly subtitle: string;
+  readonly language: string;
+  readonly startPage: string;
+  readonly movements: readonly WorkshopMovement[];
+  readonly pages: readonly WorkshopPage[];
 }
 
 export type AssetKind = "images" | "audio" | "video" | "icons";
@@ -463,6 +553,75 @@ export async function loadLivingCard(source: URL, validate: LivingCardValidator)
   if (!result.valid) throw new Error("INE_LIVING_CARD_INVALID");
   const card = value as LivingCard;
   return { ...card, image: new AssetManager(source).image(card.image) };
+}
+
+export async function loadWorkshopPack(
+  source: URL,
+  validate: WorkshopPackValidator,
+): Promise<WorkshopPack> {
+  const response = await fetch(source);
+  if (!response.ok) throw new Error("INE_WORKSHOP_PACK_REQUEST_FAILED");
+  const value: unknown = await response.json();
+  const result = validate(value);
+  if (!result.valid) throw new Error("INE_WORKSHOP_PACK_INVALID");
+  return value as WorkshopPack;
+}
+
+export class WorkshopEngine {
+  readonly #pack: WorkshopPack;
+  #index: number;
+
+  constructor(pack: WorkshopPack) {
+    this.#pack = pack;
+    const startIndex = pack.pages.findIndex((page) => page.id === pack.startPage);
+    if (startIndex < 0) {
+      throw new Error("INE_WORKSHOP_START_PAGE_MISSING");
+    }
+    this.#index = startIndex;
+  }
+
+  get currentPage(): WorkshopPage {
+    const page = this.#pack.pages[this.#index];
+    if (!page) {
+      throw new Error("INE_WORKSHOP_PAGE_STATE_INVALID");
+    }
+    return page;
+  }
+
+  get currentPageIndex(): number {
+    return this.#index;
+  }
+
+  get pageCount(): number {
+    return this.#pack.pages.length;
+  }
+
+  get canGoPrevious(): boolean {
+    return this.#index > 0;
+  }
+
+  get canGoNext(): boolean {
+    return this.#index < this.#pack.pages.length - 1;
+  }
+
+  findPageIndex(pageId: string): number {
+    return this.#pack.pages.findIndex((page) => page.id === pageId);
+  }
+
+  goToPage(pageId: string): boolean {
+    const index = this.findPageIndex(pageId);
+    if (index < 0) return false;
+    this.#index = index;
+    return true;
+  }
+
+  previous(): void {
+    if (this.canGoPrevious) this.#index -= 1;
+  }
+
+  next(): void {
+    if (this.canGoNext) this.#index += 1;
+  }
 }
 
 export class NarrativeEngine {

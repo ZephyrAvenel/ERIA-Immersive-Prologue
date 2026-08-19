@@ -1,0 +1,90 @@
+{
+  "$schema": "../../../schemas/workshop-pack.schema.json",
+  "format": "ine-workshop-pack",
+  "version": "1.0",
+  "id": "ecriture-augmentee",
+  "slug": "ecriture-augmentee",
+  "title": "Écriture augmentée",
+  "subtitle": "Écrire avec l'IA sans lui abandonner sa voix",
+  "language": "fr",
+  "startPage": "page-01",
+  "movements": [
+    {
+      "id": "intention",
+      "order": 1,
+      "title": "INTENTION",
+      "description": "Faire apparaître ce qui cherche à être écrit."
+    },
+    {
+      "id": "divergence",
+      "order": 2,
+      "title": "DIVERGENCE",
+      "description": "Ouvrir plusieurs possibles avant de choisir."
+    }
+  ],
+  "pages": [
+    {
+      "id": "page-01",
+      "movementId": "intention",
+      "order": 1,
+      "title": "Le seuil de l'écriture",
+      "blocks": [
+        {
+          "id": "intro",
+          "type": "text",
+          "text": "Avant le prompt existe une intention."
+        },
+        {
+          "id": "spark",
+          "type": "textarea",
+          "label": "Votre étincelle",
+          "placeholder": "Une image, une question, une sensation..."
+        }
+      ]
+    },
+    {
+      "id": "page-02",
+      "movementId": "divergence",
+      "order": 2,
+      "title": "Une idée, plusieurs directions",
+      "blocks": [
+        {
+          "id": "direction-choice",
+          "type": "choice",
+          "label": "Quelle piste souhaitez-vous explorer provisoirement ?",
+          "options": [
+            {
+              "id": "intime",
+              "label": "Une piste intime"
+            },
+            {
+              "id": "symbolique",
+              "label": "Une piste symbolique",
+              "description": "Faire apparaître une image ou une métaphore."
+            }
+          ]
+        },
+        {
+          "id": "hidden-tension",
+          "type": "reveal",
+          "label": "Révéler une question de déplacement",
+          "content": "Quelle tension cachée pourrait transformer cette situation ?"
+        },
+        {
+          "id": "directions-prompt",
+          "type": "promptCopy",
+          "label": "Copier le prompt",
+          "description": "Vous pouvez utiliser cette proposition dans l'outil d'IA de votre choix.",
+          "text": "À partir de cette idée, propose cinq directions narratives très différentes sans rédiger l'histoire. Ne choisis pas à ma place."
+        },
+        {
+          "id": "spark-recall",
+          "type": "recall",
+          "sourceBlockId": "spark",
+          "label": "Votre étincelle initiale",
+          "emptyText": "Aucune étincelle n'a encore été formulée."
+        }
+      ]
+    }
+  ]
+}

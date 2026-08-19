@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import { readdir } from "node:fs/promises";
 import test from "node:test";
-import { validateLivingCard, validateNarrativePack, validatePolarity } from "../../../.test-build/packages/validators/src/index.js";
+import {
+  validateLivingCard,
+  validateNarrativePack,
+  validatePolarity,
+  validateWorkshopPack,
+} from "../../../.test-build/packages/validators/src/index.js";
 import { readJsonFixture, readProjectJson } from "../../helpers/fixtures.mjs";
 
 const expectedInvalidCodes = {
@@ -195,6 +200,174 @@ test("runtime validator and JSON Schema expose the same intro contract", async (
   });
 
   assert.equal(result.valid, true, result.errors.join(", "));
+});
+
+function validWorkshopPack() {
+  return {
+    format: "ine-workshop-pack",
+    version: "1.0",
+    id: "ecriture-augmentee",
+    slug: "ecriture-augmentee",
+    title: "Écriture augmentée",
+    subtitle: "Écrire avec l'IA sans lui abandonner sa voix",
+    language: "fr",
+    startPage: "page-01",
+    movements: [
+      { id: "intention", order: 1, title: "INTENTION", description: "Faire apparaître." },
+      { id: "divergence", order: 2, title: "DIVERGENCE" },
+    ],
+    pages: [
+      {
+        id: "page-01",
+        movementId: "intention",
+        order: 1,
+        title: "Le seuil",
+        blocks: [
+          { id: "intro", type: "text", text: "Avant le prompt existe une intention." },
+          { id: "spark", type: "textarea", label: "Votre étincelle", placeholder: "Une image..." },
+        ],
+      },
+      {
+        id: "page-02",
+        movementId: "divergence",
+        order: 2,
+        title: "Ouvrir",
+        blocks: [
+          {
+            id: "direction",
+            type: "choice",
+            label: "Quelle piste ?",
+            options: [
+              { id: "intime", label: "Intime" },
+              { id: "symbolique", label: "Symbolique", description: "Une image forte." },
+            ],
+          },
+          { id: "question", type: "reveal", label: "Révéler", content: "Et si ?" },
+          {
+            id: "prompt",
+            type: "promptCopy",
+            label: "Copier le prompt",
+            text: "Propose cinq directions narratives sans rédiger l'histoire.",
+          },
+          { id: "recall-spark", type: "recall", sourceBlockId: "spark", label: "Votre étincelle" },
+        ],
+      },
+    ],
+  };
+}
+
+test("workshop validator accepts a minimal reusable workshop fixture", async () => {
+  const result = validateWorkshopPack(await readJsonFixture("workshop/valid", "minimal.json"));
+  assert.deepEqual(result, { valid: true, errors: [] });
+});
+
+test("runtime validator and JSON Schema expose the workshop pack contract", async () => {
+  const schema = await readProjectJson("schemas", "workshop-pack.schema.json");
+  assert.deepEqual(schema.required, [
+    "format",
+    "version",
+    "id",
+    "slug",
+    "title",
+    "subtitle",
+    "language",
+    "startPage",
+    "movements",
+    "pages",
+  ]);
+  assert.deepEqual(schema.$defs.movement.required, ["id", "order", "title"]);
+  assert.deepEqual(schema.$defs.page.required, ["id", "movementId", "order", "title", "blocks"]);
+  assert.equal(schema.additionalProperties, false);
+  assert.equal(schema.$defs.movement.additionalProperties, false);
+  assert.equal(schema.$defs.page.additionalProperties, false);
+  assert.deepEqual(schema.$defs.blockBase.properties.type.enum, [
+    "text",
+    "textarea",
+    "choice",
+    "reveal",
+    "promptCopy",
+    "recall",
+  ]);
+
+  const result = validateWorkshopPack(validWorkshopPack());
+  assert.equal(result.valid, true, result.errors.join(", "));
+});
+
+test("workshop validator rejects unknown formats, blocks, and properties", () => {
+  const unknownFormat = validateWorkshopPack({ ...validWorkshopPack(), format: "ine-narrative-pack" });
+  assert.equal(unknownFormat.valid, false);
+  assert.ok(unknownFormat.errors.includes("INE_WORKSHOP_FORMAT_INVALID"));
+
+  const unknownRootProperty = validateWorkshopPack({ ...validWorkshopPack(), apiEndpoint: "https://example.test" });
+  assert.equal(unknownRootProperty.valid, false);
+  assert.ok(unknownRootProperty.errors.includes("INE_VALIDATION_UNKNOWN_PROPERTY:workshop.apiEndpoint"));
+
+  const unknownBlock = validWorkshopPack();
+  unknownBlock.pages[0].blocks = [{ id: "chat", type: "chatbot", prompt: "Écris à ma place." }];
+  const unknownBlockResult = validateWorkshopPack(unknownBlock);
+  assert.equal(unknownBlockResult.valid, false);
+  assert.ok(unknownBlockResult.errors.includes("INE_WORKSHOP_BLOCK_TYPE_INVALID:workshop.pages[0].blocks[0].type"));
+
+  const extraBlockProperty = validWorkshopPack();
+  extraBlockProperty.pages[0].blocks[0].html = "<strong>Interdit</strong>";
+  const extraBlockResult = validateWorkshopPack(extraBlockProperty);
+  assert.equal(extraBlockResult.valid, false);
+  assert.ok(extraBlockResult.errors.includes("INE_VALIDATION_UNKNOWN_PROPERTY:workshop.pages[0].blocks[0].html"));
+});
+
+test("workshop validator rejects duplicate ids and broken structural references", () => {
+  const duplicateMovement = validWorkshopPack();
+  duplicateMovement.movements[1].id = "intention";
+  const duplicateMovementResult = validateWorkshopPack(duplicateMovement);
+  assert.equal(duplicateMovementResult.valid, false);
+  assert.ok(duplicateMovementResult.errors.includes("INE_WORKSHOP_MOVEMENT_ID_DUPLICATED:workshop.movements[1].id"));
+
+  const duplicatePage = validWorkshopPack();
+  duplicatePage.pages[1].id = "page-01";
+  const duplicatePageResult = validateWorkshopPack(duplicatePage);
+  assert.equal(duplicatePageResult.valid, false);
+  assert.ok(duplicatePageResult.errors.includes("INE_WORKSHOP_PAGE_ID_DUPLICATED:workshop.pages[1].id"));
+
+  const unknownMovement = validWorkshopPack();
+  unknownMovement.pages[1].movementId = "creation";
+  const unknownMovementResult = validateWorkshopPack(unknownMovement);
+  assert.equal(unknownMovementResult.valid, false);
+  assert.ok(unknownMovementResult.errors.includes("INE_WORKSHOP_PAGE_MOVEMENT_UNKNOWN:workshop.pages[1].movementId"));
+
+  const unknownStart = validateWorkshopPack({ ...validWorkshopPack(), startPage: "missing" });
+  assert.equal(unknownStart.valid, false);
+  assert.ok(unknownStart.errors.includes("INE_WORKSHOP_START_PAGE_UNKNOWN"));
+
+  const unknownRecall = validWorkshopPack();
+  unknownRecall.pages[1].blocks[3].sourceBlockId = "missing-block";
+  const unknownRecallResult = validateWorkshopPack(unknownRecall);
+  assert.equal(unknownRecallResult.valid, false);
+  assert.ok(unknownRecallResult.errors.includes("INE_WORKSHOP_RECALL_SOURCE_BLOCK_UNKNOWN:missing-block"));
+});
+
+test("workshop validator rejects invalid textarea, choice, and prompt copy blocks", () => {
+  const invalidTextarea = validWorkshopPack();
+  invalidTextarea.pages[0].blocks[1] = { id: "spark", type: "textarea", placeholder: "Missing label" };
+  const textareaResult = validateWorkshopPack(invalidTextarea);
+  assert.equal(textareaResult.valid, false);
+  assert.ok(textareaResult.errors.includes("INE_WORKSHOP_TEXTAREA_LABEL_REQUIRED:workshop.pages[0].blocks[1].label"));
+
+  const invalidChoice = validWorkshopPack();
+  invalidChoice.pages[1].blocks[0] = {
+    id: "direction",
+    type: "choice",
+    label: "Quelle piste ?",
+    options: [{ id: "one", label: "Une seule option" }],
+  };
+  const choiceResult = validateWorkshopPack(invalidChoice);
+  assert.equal(choiceResult.valid, false);
+  assert.ok(choiceResult.errors.includes("INE_WORKSHOP_CHOICE_OPTIONS_INVALID:workshop.pages[1].blocks[0].options"));
+
+  const invalidPrompt = validWorkshopPack();
+  invalidPrompt.pages[1].blocks[2] = { id: "prompt", type: "promptCopy", label: "Copier" };
+  const promptResult = validateWorkshopPack(invalidPrompt);
+  assert.equal(promptResult.valid, false);
+  assert.ok(promptResult.errors.includes("INE_WORKSHOP_PROMPT_COPY_TEXT_REQUIRED:workshop.pages[1].blocks[2].text"));
 });
 
 test("validator accepts a complete reusable polarity", () => {

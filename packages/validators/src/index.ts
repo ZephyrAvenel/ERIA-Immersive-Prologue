@@ -63,6 +63,29 @@ const LIVING_CARD_PROPERTIES = new Set([
 const LIVING_CARD_METADATA_PROPERTIES = new Set(["label", "value"]);
 const LIVING_CARD_LOCALE_PROPERTIES = new Set(["fr", "en"]);
 const LIVING_CARD_LOCALE_CONTENT_PROPERTIES = new Set(["title", "subtitle", "quote", "motto"]);
+const WORKSHOP_PACK_PROPERTIES = new Set([
+  "$schema",
+  "format",
+  "version",
+  "id",
+  "slug",
+  "title",
+  "subtitle",
+  "language",
+  "startPage",
+  "movements",
+  "pages",
+]);
+const WORKSHOP_MOVEMENT_PROPERTIES = new Set(["id", "order", "title", "description"]);
+const WORKSHOP_PAGE_PROPERTIES = new Set(["id", "movementId", "order", "title", "blocks"]);
+const WORKSHOP_TEXT_BLOCK_PROPERTIES = new Set(["id", "type", "text"]);
+const WORKSHOP_TEXTAREA_BLOCK_PROPERTIES = new Set(["id", "type", "label", "placeholder", "required"]);
+const WORKSHOP_CHOICE_BLOCK_PROPERTIES = new Set(["id", "type", "label", "options", "allowMultiple"]);
+const WORKSHOP_CHOICE_OPTION_PROPERTIES = new Set(["id", "label", "description"]);
+const WORKSHOP_REVEAL_BLOCK_PROPERTIES = new Set(["id", "type", "label", "content"]);
+const WORKSHOP_PROMPT_COPY_BLOCK_PROPERTIES = new Set(["id", "type", "label", "text", "description"]);
+const WORKSHOP_RECALL_BLOCK_PROPERTIES = new Set(["id", "type", "sourceBlockId", "label", "emptyText"]);
+const WORKSHOP_BLOCK_TYPES = new Set(["text", "textarea", "choice", "reveal", "promptCopy", "recall"]);
 
 function validateTransition(value: unknown, path: string, errors: string[]): void {
   if (!isRecord(value)) {
@@ -319,5 +342,212 @@ export function validateLivingCard(value: unknown): ValidationResult {
       }
     }
   }
+  return { valid: errors.length === 0, errors };
+}
+
+function validateWorkshopBlock(
+  value: unknown,
+  path: string,
+  errors: string[],
+  knownBlockIds: Set<string>,
+  recallReferences: string[],
+): void {
+  if (!isRecord(value)) {
+    errors.push(`INE_WORKSHOP_BLOCK_OBJECT_REQUIRED:${path}`);
+    return;
+  }
+
+  if (!hasString(value, "id")) errors.push(`INE_WORKSHOP_BLOCK_ID_REQUIRED:${path}.id`);
+  if (typeof value.id === "string") {
+    if (knownBlockIds.has(value.id)) errors.push(`INE_WORKSHOP_BLOCK_ID_DUPLICATED:${path}.id`);
+    knownBlockIds.add(value.id);
+  }
+  if (typeof value.type !== "string" || !WORKSHOP_BLOCK_TYPES.has(value.type)) {
+    errors.push(`INE_WORKSHOP_BLOCK_TYPE_INVALID:${path}.type`);
+    return;
+  }
+
+  if (value.type === "text") {
+    reportUnknownProperties(value, WORKSHOP_TEXT_BLOCK_PROPERTIES, path, errors);
+    if (!hasString(value, "text")) errors.push(`INE_WORKSHOP_TEXT_REQUIRED:${path}.text`);
+    return;
+  }
+
+  if (value.type === "textarea") {
+    reportUnknownProperties(value, WORKSHOP_TEXTAREA_BLOCK_PROPERTIES, path, errors);
+    if (!hasString(value, "label")) errors.push(`INE_WORKSHOP_TEXTAREA_LABEL_REQUIRED:${path}.label`);
+    if (value.placeholder !== undefined && typeof value.placeholder !== "string") {
+      errors.push(`INE_WORKSHOP_TEXTAREA_PLACEHOLDER_INVALID:${path}.placeholder`);
+    }
+    if (value.required !== undefined && typeof value.required !== "boolean") {
+      errors.push(`INE_WORKSHOP_TEXTAREA_REQUIRED_INVALID:${path}.required`);
+    }
+    return;
+  }
+
+  if (value.type === "choice") {
+    reportUnknownProperties(value, WORKSHOP_CHOICE_BLOCK_PROPERTIES, path, errors);
+    if (!hasString(value, "label")) errors.push(`INE_WORKSHOP_CHOICE_LABEL_REQUIRED:${path}.label`);
+    if (!Array.isArray(value.options) || value.options.length < 2) {
+      errors.push(`INE_WORKSHOP_CHOICE_OPTIONS_INVALID:${path}.options`);
+    } else {
+      const optionIds = new Set<string>();
+      value.options.forEach((option, index) => {
+        const optionPath = `${path}.options[${index}]`;
+        if (!isRecord(option)) {
+          errors.push(`INE_WORKSHOP_CHOICE_OPTION_OBJECT_REQUIRED:${optionPath}`);
+          return;
+        }
+        reportUnknownProperties(option, WORKSHOP_CHOICE_OPTION_PROPERTIES, optionPath, errors);
+        if (!hasString(option, "id")) errors.push(`INE_WORKSHOP_CHOICE_OPTION_ID_REQUIRED:${optionPath}.id`);
+        if (typeof option.id === "string") {
+          if (optionIds.has(option.id)) errors.push(`INE_WORKSHOP_CHOICE_OPTION_ID_DUPLICATED:${optionPath}.id`);
+          optionIds.add(option.id);
+        }
+        if (!hasString(option, "label")) errors.push(`INE_WORKSHOP_CHOICE_OPTION_LABEL_REQUIRED:${optionPath}.label`);
+        if (option.description !== undefined && typeof option.description !== "string") {
+          errors.push(`INE_WORKSHOP_CHOICE_OPTION_DESCRIPTION_INVALID:${optionPath}.description`);
+        }
+      });
+    }
+    if (value.allowMultiple !== undefined && typeof value.allowMultiple !== "boolean") {
+      errors.push(`INE_WORKSHOP_CHOICE_ALLOW_MULTIPLE_INVALID:${path}.allowMultiple`);
+    }
+    return;
+  }
+
+  if (value.type === "reveal") {
+    reportUnknownProperties(value, WORKSHOP_REVEAL_BLOCK_PROPERTIES, path, errors);
+    if (!hasString(value, "label")) errors.push(`INE_WORKSHOP_REVEAL_LABEL_REQUIRED:${path}.label`);
+    if (!hasString(value, "content")) errors.push(`INE_WORKSHOP_REVEAL_CONTENT_REQUIRED:${path}.content`);
+    return;
+  }
+
+  if (value.type === "promptCopy") {
+    reportUnknownProperties(value, WORKSHOP_PROMPT_COPY_BLOCK_PROPERTIES, path, errors);
+    if (!hasString(value, "label")) errors.push(`INE_WORKSHOP_PROMPT_COPY_LABEL_REQUIRED:${path}.label`);
+    if (!hasString(value, "text")) errors.push(`INE_WORKSHOP_PROMPT_COPY_TEXT_REQUIRED:${path}.text`);
+    if (value.description !== undefined && typeof value.description !== "string") {
+      errors.push(`INE_WORKSHOP_PROMPT_COPY_DESCRIPTION_INVALID:${path}.description`);
+    }
+    return;
+  }
+
+  reportUnknownProperties(value, WORKSHOP_RECALL_BLOCK_PROPERTIES, path, errors);
+  if (!hasString(value, "sourceBlockId")) {
+    errors.push(`INE_WORKSHOP_RECALL_SOURCE_BLOCK_REQUIRED:${path}.sourceBlockId`);
+  } else {
+    recallReferences.push(value.sourceBlockId as string);
+  }
+  if (value.label !== undefined && typeof value.label !== "string") {
+    errors.push(`INE_WORKSHOP_RECALL_LABEL_INVALID:${path}.label`);
+  }
+  if (value.emptyText !== undefined && typeof value.emptyText !== "string") {
+    errors.push(`INE_WORKSHOP_RECALL_EMPTY_TEXT_INVALID:${path}.emptyText`);
+  }
+}
+
+export function validateWorkshopPack(value: unknown): ValidationResult {
+  const errors: string[] = [];
+  if (!isRecord(value)) return { valid: false, errors: ["INE_WORKSHOP_PACK_OBJECT_REQUIRED"] };
+
+  reportUnknownProperties(value, WORKSHOP_PACK_PROPERTIES, "workshop", errors);
+  if (value.format !== "ine-workshop-pack") errors.push("INE_WORKSHOP_FORMAT_INVALID");
+  if (value.version !== "1.0") errors.push("INE_WORKSHOP_VERSION_INVALID");
+  if (value.$schema !== undefined && typeof value.$schema !== "string") {
+    errors.push("INE_WORKSHOP_SCHEMA_STRING_REQUIRED");
+  }
+  for (const key of ["id", "slug", "title", "subtitle", "language", "startPage"]) {
+    if (!hasString(value, key)) errors.push(`INE_WORKSHOP_${key.toUpperCase()}_REQUIRED`);
+  }
+  for (const key of ["id", "slug"]) {
+    if (typeof value[key] === "string" && !PACK_ID_PATTERN.test(value[key])) {
+      errors.push(`INE_WORKSHOP_${key.toUpperCase()}_KEBAB_CASE_REQUIRED`);
+    }
+  }
+  if (typeof value.language === "string" && value.language.length < 2) {
+    errors.push("INE_WORKSHOP_LANGUAGE_INVALID");
+  }
+
+  const movementIds = new Set<string>();
+  if (!Array.isArray(value.movements) || value.movements.length === 0) {
+    errors.push("INE_WORKSHOP_MOVEMENTS_REQUIRED");
+  } else {
+    const movementOrders = new Set<number>();
+    value.movements.forEach((movement, index) => {
+      const path = `workshop.movements[${index}]`;
+      if (!isRecord(movement)) {
+        errors.push(`INE_WORKSHOP_MOVEMENT_OBJECT_REQUIRED:${path}`);
+        return;
+      }
+      reportUnknownProperties(movement, WORKSHOP_MOVEMENT_PROPERTIES, path, errors);
+      if (!hasString(movement, "id")) errors.push(`INE_WORKSHOP_MOVEMENT_ID_REQUIRED:${path}.id`);
+      if (typeof movement.id === "string") {
+        if (movementIds.has(movement.id)) errors.push(`INE_WORKSHOP_MOVEMENT_ID_DUPLICATED:${path}.id`);
+        movementIds.add(movement.id);
+      }
+      if (!Number.isInteger(movement.order) || typeof movement.order !== "number" || movement.order < 1) {
+        errors.push(`INE_WORKSHOP_MOVEMENT_ORDER_INVALID:${path}.order`);
+      } else if (movementOrders.has(movement.order)) {
+        errors.push(`INE_WORKSHOP_MOVEMENT_ORDER_DUPLICATED:${path}.order`);
+      } else {
+        movementOrders.add(movement.order);
+      }
+      if (!hasString(movement, "title")) errors.push(`INE_WORKSHOP_MOVEMENT_TITLE_REQUIRED:${path}.title`);
+      if (movement.description !== undefined && typeof movement.description !== "string") {
+        errors.push(`INE_WORKSHOP_MOVEMENT_DESCRIPTION_INVALID:${path}.description`);
+      }
+    });
+  }
+
+  const pageIds = new Set<string>();
+  const blockIds = new Set<string>();
+  const recallReferences: string[] = [];
+  if (!Array.isArray(value.pages) || value.pages.length === 0) {
+    errors.push("INE_WORKSHOP_PAGES_REQUIRED");
+  } else {
+    const pageOrders = new Set<number>();
+    value.pages.forEach((page, index) => {
+      const path = `workshop.pages[${index}]`;
+      if (!isRecord(page)) {
+        errors.push(`INE_WORKSHOP_PAGE_OBJECT_REQUIRED:${path}`);
+        return;
+      }
+      reportUnknownProperties(page, WORKSHOP_PAGE_PROPERTIES, path, errors);
+      if (!hasString(page, "id")) errors.push(`INE_WORKSHOP_PAGE_ID_REQUIRED:${path}.id`);
+      if (typeof page.id === "string") {
+        if (pageIds.has(page.id)) errors.push(`INE_WORKSHOP_PAGE_ID_DUPLICATED:${path}.id`);
+        pageIds.add(page.id);
+      }
+      if (!hasString(page, "movementId")) {
+        errors.push(`INE_WORKSHOP_PAGE_MOVEMENT_ID_REQUIRED:${path}.movementId`);
+      } else if (!movementIds.has(page.movementId as string)) {
+        errors.push(`INE_WORKSHOP_PAGE_MOVEMENT_UNKNOWN:${path}.movementId`);
+      }
+      if (!Number.isInteger(page.order) || typeof page.order !== "number" || page.order < 1) {
+        errors.push(`INE_WORKSHOP_PAGE_ORDER_INVALID:${path}.order`);
+      } else if (pageOrders.has(page.order)) {
+        errors.push(`INE_WORKSHOP_PAGE_ORDER_DUPLICATED:${path}.order`);
+      } else {
+        pageOrders.add(page.order);
+      }
+      if (!hasString(page, "title")) errors.push(`INE_WORKSHOP_PAGE_TITLE_REQUIRED:${path}.title`);
+      if (!Array.isArray(page.blocks) || page.blocks.length === 0) {
+        errors.push(`INE_WORKSHOP_PAGE_BLOCKS_REQUIRED:${path}.blocks`);
+      } else {
+        page.blocks.forEach((block, blockIndex) => {
+          validateWorkshopBlock(block, `${path}.blocks[${blockIndex}]`, errors, blockIds, recallReferences);
+        });
+      }
+    });
+  }
+
+  if (typeof value.startPage === "string" && !pageIds.has(value.startPage)) {
+    errors.push("INE_WORKSHOP_START_PAGE_UNKNOWN");
+  }
+  for (const sourceBlockId of recallReferences) {
+    if (!blockIds.has(sourceBlockId)) errors.push(`INE_WORKSHOP_RECALL_SOURCE_BLOCK_UNKNOWN:${sourceBlockId}`);
+  }
+
   return { valid: errors.length === 0, errors };
 }

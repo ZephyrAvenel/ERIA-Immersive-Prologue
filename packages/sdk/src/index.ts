@@ -5,7 +5,9 @@ export {
   MAX_TRANSITION_DURATION_MS,
   getSceneTransition,
   getTransitionDirection,
+  loadWorkshopPack,
   normalizeSceneTransition,
+  WorkshopEngine,
 } from "@ine/core";
 export type {
   AssetKind,
@@ -18,5 +20,17 @@ export type {
   TransitionDirection,
   TransitionEasing,
   TransitionType,
+  WorkshopBlock,
+  WorkshopBlockType,
+  WorkshopChoiceBlock,
+  WorkshopChoiceOption,
+  WorkshopMovement,
+  WorkshopPack,
+  WorkshopPage,
+  WorkshopPromptCopyBlock,
+  WorkshopRecallBlock,
+  WorkshopRevealBlock,
+  WorkshopTextareaBlock,
+  WorkshopTextBlock,
 } from "@ine/core";
-export { validateNarrativePack } from "@ine/validators";
+export { validateNarrativePack, validateWorkshopPack } from "@ine/validators";

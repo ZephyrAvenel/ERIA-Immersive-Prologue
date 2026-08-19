@@ -11,9 +11,16 @@ import {
   loadNarrativePack,
   loadPolarity,
   loadPolarityPack,
+  loadWorkshopPack,
   normalizeSceneTransition,
+  WorkshopEngine,
 } from "../../../.test-build/packages/core/src/index.js";
-import { validateLivingCard, validateNarrativePack, validatePolarity } from "../../../.test-build/packages/validators/src/index.js";
+import {
+  validateLivingCard,
+  validateNarrativePack,
+  validatePolarity,
+  validateWorkshopPack,
+} from "../../../.test-build/packages/validators/src/index.js";
 
 function createPack() {
   return {
@@ -244,6 +251,100 @@ test("living card pack loader validates its manifest and resolves independent ca
   } finally {
     globalThis.fetch = previousFetch;
   }
+});
+
+function createWorkshopPack() {
+  return {
+    format: "ine-workshop-pack",
+    version: "1.0",
+    id: "ecriture-augmentee",
+    slug: "ecriture-augmentee",
+    title: "Écriture augmentée",
+    subtitle: "Écrire avec l'IA sans lui abandonner sa voix",
+    language: "fr",
+    startPage: "page-02",
+    movements: [
+      { id: "intention", order: 1, title: "INTENTION" },
+      { id: "divergence", order: 2, title: "DIVERGENCE" },
+    ],
+    pages: [
+      {
+        id: "page-01",
+        movementId: "intention",
+        order: 1,
+        title: "Le seuil",
+        blocks: [{ id: "intro", type: "text", text: "Avant le prompt existe une intention." }],
+      },
+      {
+        id: "page-02",
+        movementId: "divergence",
+        order: 2,
+        title: "Ouvrir",
+        blocks: [{ id: "spark", type: "textarea", label: "Votre étincelle" }],
+      },
+    ],
+  };
+}
+
+test("workshop pack loader validates a declarative workshop pack", async () => {
+  const workshop = createWorkshopPack();
+  const previousFetch = globalThis.fetch;
+  globalThis.fetch = async () => ({ ok: true, json: async () => workshop });
+
+  try {
+    const source = new URL("https://example.test/ateliers/ecriture/pack.json");
+    assert.equal(await detectPackFormat(source), "ine-workshop-pack");
+    const loaded = await loadWorkshopPack(source, validateWorkshopPack);
+    assert.equal(loaded.id, "ecriture-augmentee");
+    assert.equal(loaded.movements.length, 2);
+    assert.equal(loaded.pages.length, 2);
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+});
+
+test("workshop pack loader rejects failed requests and invalid manifests with stable error codes", async () => {
+  const previousFetch = globalThis.fetch;
+  try {
+    globalThis.fetch = async () => ({ ok: false });
+    await assert.rejects(
+      () => loadWorkshopPack(new URL("https://example.test/missing.json"), validateWorkshopPack),
+      /INE_WORKSHOP_PACK_REQUEST_FAILED/,
+    );
+
+    globalThis.fetch = async () => ({ ok: true, json: async () => ({ format: "ine-workshop-pack" }) });
+    await assert.rejects(
+      () => loadWorkshopPack(new URL("https://example.test/invalid.json"), validateWorkshopPack),
+      /INE_WORKSHOP_PACK_INVALID/,
+    );
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+});
+
+test("WorkshopEngine selects the start page and navigates deterministically", () => {
+  const engine = new WorkshopEngine(createWorkshopPack());
+  assert.equal(engine.currentPage.id, "page-02");
+  assert.equal(engine.currentPageIndex, 1);
+  assert.equal(engine.pageCount, 2);
+  assert.equal(engine.canGoNext, false);
+  assert.equal(engine.canGoPrevious, true);
+
+  engine.previous();
+  assert.equal(engine.currentPage.id, "page-01");
+  assert.equal(engine.canGoPrevious, false);
+  assert.equal(engine.canGoNext, true);
+  assert.equal(engine.goToPage("page-02"), true);
+  assert.equal(engine.currentPage.id, "page-02");
+  assert.equal(engine.goToPage("missing"), false);
+  assert.equal(engine.currentPage.id, "page-02");
+});
+
+test("WorkshopEngine rejects a missing start page", () => {
+  assert.throws(
+    () => new WorkshopEngine({ ...createWorkshopPack(), startPage: "missing" }),
+    /INE_WORKSHOP_START_PAGE_MISSING/,
+  );
 });
 
 test("NarrativeEngine selects the start scene and navigates deterministically", () => {
