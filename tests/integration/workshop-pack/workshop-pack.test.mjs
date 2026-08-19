@@ -293,6 +293,26 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pageFourReveals[0].label, "Ce qui se passe lorsque nous demandons trop t\u00f4t");
   assert.equal(pageFour.blocks.some((block) => ["textarea", "choice", "promptCopy"].includes(block.type)), false);
 
+  const pageFive = pack.pages[4];
+  assert.equal(pageFive.id, "page-05");
+  assert.equal(pageFive.title, "Ouvrir les possibles");
+  assert.equal(pageFive.movementId, "divergence");
+  assert.deepEqual(pageFive.blocks.map((block) => block.type), ["text", "recall", "text", "promptCopy", "text"]);
+  const pageFiveRecalls = pageFive.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageFiveRecalls.length, 1);
+  assert.equal(pageFiveRecalls[0].id, "rappel-etincelle-divergence");
+  assert.equal(pageFiveRecalls[0].sourceBlockId, "etincelle");
+  assert.equal(pageFiveRecalls[0].label, "Votre point de d\u00e9part");
+  const pageFivePrompts = pageFive.blocks.filter((block) => block.type === "promptCopy");
+  assert.equal(pageFivePrompts.length, 1);
+  assert.equal(pageFivePrompts[0].id, "prompt-ouvrir-possibles");
+  assert.equal(pageFivePrompts[0].label, "Ouvrir plusieurs directions");
+  assert.equal(pageFivePrompts[0].text.includes("[COLLEZ ICI VOTRE \u00c9TINCELLE]"), true);
+  assert.equal(pageFivePrompts[0].text.includes("Ne choisis pas la meilleure direction."), true);
+  assert.equal(pageFivePrompts[0].text.includes("Ne d\u00e9veloppe aucune histoire compl\u00e8te."), true);
+  assert.equal(pageFivePrompts[0].text.includes("Propose 6 directions"), true);
+  assert.equal(pageFive.blocks.some((block) => ["textarea", "choice", "reveal"].includes(block.type)), false);
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [

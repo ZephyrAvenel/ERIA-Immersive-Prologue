@@ -237,21 +237,31 @@
         {
           "id": "ouvrir-possibles-intro",
           "type": "text",
-          "text": "Introduire la divergence comme exploration avant décision."
+          "text": "Jusqu'ici, nous avons laissé l'intelligence artificielle à l'extérieur.\n\nCe n'était pas pour nous en protéger.\n\nC'était pour laisser quelque chose apparaître avant qu'elle intervienne.\n\nVous avez maintenant une étincelle.\n\nElle vient de vous.\n\nNous pouvons donc inviter l'IA dans le processus sans lui demander de prendre votre place.\n\nPour cette première rencontre, nous ne lui demanderons ni une histoire, ni un plan, ni une solution.\n\nNous allons lui demander d'ouvrir le paysage."
         },
         {
-          "id": "etincelle-recall-page-05",
+          "id": "rappel-etincelle-divergence",
           "type": "recall",
           "sourceBlockId": "etincelle",
-          "label": "Point de départ",
-          "emptyText": "Votre étincelle servira de point d'appui."
+          "label": "Votre point de départ",
+          "emptyText": "Votre étincelle n'est pas encore formulée. Vous pouvez revenir au mouvement précédent, ou poursuivre avec l'idée qui vous accompagne maintenant."
         },
         {
-          "id": "ouvrir-possibles-prompt",
+          "id": "ouvrir-possibles-geste",
+          "type": "text",
+          "text": "Une idée devient parfois trop vite une direction.\n\nPuis cette direction devient un projet.\n\nEt nous oublions qu'au commencement, d'autres chemins étaient possibles.\n\nDiverger consiste à retarder un peu ce moment.\n\nNon pour rester indéfiniment dans l'hésitation, mais pour rendre perceptible un espace plus large avant de choisir.\n\nL'IA peut être particulièrement utile ici.\n\nElle peut faire apparaître rapidement des associations auxquelles nous n'aurions pas pensé.\n\nMais nous allons lui donner une limite importante :\n\nelle peut ouvrir des chemins ; elle ne doit pas décider lequel nous prendrons."
+        },
+        {
+          "id": "prompt-ouvrir-possibles",
           "type": "promptCopy",
-          "label": "Copier un prompt de divergence",
-          "description": "À utiliser dans l'assistant IA extérieur de votre choix.",
-          "text": "À partir de cette étincelle, propose cinq directions narratives très différentes sans rédiger l'histoire. Cherche à ouvrir les possibles plutôt qu'à choisir immédiatement une solution."
+          "label": "Ouvrir plusieurs directions",
+          "description": "Copiez ce prompt dans l'assistant IA de votre choix, puis remplacez ou complétez la partie indiquée avec votre étincelle.",
+          "text": "Je pars de cette étincelle :\n\n[COLLEZ ICI VOTRE ÉTINCELLE]\n\nÀ partir de cette étincelle, fais apparaître plusieurs directions très différentes qu'elle pourrait ouvrir.\n\nNe développe aucune histoire complète.\nNe choisis pas la meilleure direction.\nNe cherche pas à résoudre l'idée.\n\nExplore plutôt des possibilités contrastées en faisant varier, lorsque cela est pertinent :\n- le point de vue ;\n- la situation ;\n- la relation centrale ;\n- la tension ;\n- le lieu ou l'époque ;\n- l'échelle ;\n- le registre ou la tonalité ;\n- la manière dont le monde pourrait fonctionner.\n\nPropose 6 directions suffisamment différentes pour que chacune ouvre un véritable chemin.\n\nPour chaque direction, reste bref : quelques phrases suffisent.\n\nJe ne cherche pas encore ce que je vais écrire.\nJe cherche à voir ce qui devient possible."
+        },
+        {
+          "id": "ouvrir-possibles-cloture",
+          "type": "text",
+          "text": "Regardez les directions obtenues sans chercher immédiatement laquelle est la meilleure.\n\nCertaines vous sembleront évidentes.\n\nD'autres étrangères.\n\nCertaines ne vous intéresseront pas du tout.\n\nEt l'une d'elles pourrait déplacer votre regard.\n\nPour l'instant, ne choisissez pas.\n\nObservez simplement ce qui s'est ouvert.\n\nSi vous préférez poursuivre sans IA, imaginez vous-même plusieurs directions possibles et gardez-les simplement à l'esprit pour la suite.\n\nÀ l'étape suivante, nous allons commencer à distinguer quelques directions dans ce paysage."
         }
       ]
     },
