@@ -76,6 +76,16 @@ button:focus-visible,
   outline-offset: 0.22rem;
 }
 
+button:focus:not(:focus-visible),
+.orientation-door__action:focus:not(:focus-visible),
+.work-card__action:focus:not(:focus-visible),
+.scene__link:focus:not(:focus-visible),
+.site-navigation a:focus:not(:focus-visible),
+.journey-continuation:focus:not(:focus-visible),
+.polarity-closing__continue:focus:not(:focus-visible) {
+  outline: none;
+}
+
 button:disabled {
   cursor: not-allowed;
   opacity: 0.38;
