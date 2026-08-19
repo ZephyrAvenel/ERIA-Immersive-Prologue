@@ -559,27 +559,49 @@
         {
           "id": "et-si-intro",
           "type": "text",
-          "text": "Utiliser l'hypothèse comme moteur créatif."
+          "text": "Vous avez déplacé le regard.\n\nQuelque chose qui restait peut-être hors champ est devenu perceptible.\n\nNous pouvons maintenant déplacer autre chose :\n\nnon plus l'endroit depuis lequel nous regardons,\nmais une condition de la possibilité elle-même.\n\nC'est ici qu'une question très simple devient féconde :\n\nEt si ?\n\nPas pour ajouter un rebondissement.\n\nPour découvrir ce que notre première version tenait silencieusement pour acquis."
         },
         {
-          "id": "etincelle-recall-page-11",
+          "id": "rappel-piste-hypothese",
           "type": "recall",
-          "sourceBlockId": "etincelle",
-          "label": "L'étincelle qui accompagne les hypothèses",
-          "emptyText": "Votre étincelle sera rappelée ici."
+          "sourceBlockId": "piste-provisoire",
+          "label": "La possibilité que vous explorez",
+          "emptyText": "Votre piste provisoire n'est pas encore formulée. Vous pouvez revenir aux étapes précédentes, ou poursuivre avec la possibilité que vous avez actuellement en tête."
         },
         {
-          "id": "hypothese-prompt",
+          "id": "rappel-regard-hypothese",
+          "type": "recall",
+          "sourceBlockId": "regard-deplace",
+          "label": "Ce que vous voyez maintenant",
+          "emptyText": "Vous n'avez pas encore noté ce que le déplacement du regard vous a permis de voir. Vous pouvez néanmoins poursuivre à partir de votre piste actuelle."
+        },
+        {
+          "id": "hypothese-condition",
+          "type": "text",
+          "text": "Un “Et si ?” devient particulièrement utile lorsqu'il ne transforme pas tout à la fois.\n\nChangez une condition.\n\nUne présence devient absence.\nUne absence devient présence.\nUne certitude devient doute.\nUne règle cesse de fonctionner.\nUne relation change de nature.\nUne conséquence arrive plus tôt.\nCe qui semblait impossible devient possible.\nCe qui paraissait acquis ne l'est plus.\n\nPuis regardez ce que ce déplacement révèle.\n\nL'objectif n'est pas de rendre votre piste plus spectaculaire.\n\nIl est de découvrir sur quoi elle repose."
+        },
+        {
+          "id": "prompt-et-si",
           "type": "promptCopy",
-          "label": "Copier un prompt d'hypothèses",
-          "description": "Le prompt demande des questions et possibilités, pas une solution.",
-          "text": "À partir de cette situation, formule cinq hypothèses commençant par Et si. Chaque hypothèse doit déplacer le récit sans décider à ma place."
+          "label": "Faire varier une condition",
+          "description": "Si vous souhaitez utiliser une IA extérieure, copiez ce prompt dans l'assistant de votre choix puis remplacez les parties indiquées par votre piste et, si vous le souhaitez, ce que le déplacement précédent vous a permis de voir.",
+          "text": "Je souhaite explorer cette possibilité :\n\n[COLLEZ ICI VOTRE PISTE PROVISOIRE]\n\nVoici, si cela peut servir, ce qu'un déplacement du regard m'a déjà permis d'y percevoir :\n\n[COLLEZ ICI CE QUE LE DÉPLACEMENT DU REGARD VOUS A FAIT VOIR — FACULTATIF]\n\nJe ne cherche pas encore à écrire la suite.\n\nPropose 6 hypothèses commençant par « Et si ? ».\n\nChaque hypothèse doit modifier une seule condition significative de la possibilité de départ.\n\nTu peux par exemple faire varier :\n- une présence ou une absence ;\n- une certitude ;\n- une relation ;\n- une règle du monde ;\n- une possibilité ou une impossibilité ;\n- le moment où survient une conséquence ;\n- ce qu'un personnage croit savoir ;\n- ce qui était jusque-là considéré comme acquis.\n\nNe cherche pas le rebondissement pour lui-même.\nNe rends pas artificiellement l'histoire plus spectaculaire.\nN'écris pas de scène.\nNe poursuis pas le récit.\nNe produis pas de synopsis.\nNe réécris pas ma piste.\nNe choisis pas l'hypothèse à ma place.\n\nPour chaque hypothèse, indique brièvement :\n\n1. la condition qui change ;\n2. ce que cette modification rend possible ou impossible ;\n3. ce qu'elle pourrait révéler de la situation initiale.\n\nLes hypothèses doivent être réellement différentes les unes des autres.\n\nJe ne cherche pas encore ce qui doit arriver.\n\nJe cherche à découvrir ce que cette possibilité tient pour évident."
+        },
+        {
+          "id": "hypothese-retour-auteur",
+          "type": "text",
+          "text": "Ne retenez pas nécessairement l'hypothèse la plus spectaculaire.\n\nCherchez plutôt celle qui fait bouger quelque chose d'essentiel.\n\nPeut-être révèle-t-elle une fragilité que vous n'aviez pas vue.\nUne dépendance.\nUne règle silencieuse.\nUne relation plus importante qu'elle n'en avait l'air.\nUne question que votre piste contenait déjà.\n\nUne hypothèse devient féconde lorsqu'elle ne se contente pas d'ajouter du possible :\n\nelle nous apprend quelque chose sur ce qui était déjà là."
         },
         {
           "id": "hypothese-forte",
           "type": "textarea",
-          "label": "Quelle hypothèse mérite d'être gardée ?",
-          "placeholder": "Et si..."
+          "label": "L'hypothèse qui ouvre quelque chose",
+          "placeholder": "Avec vos propres mots, formulez un “Et si ?” qui déplace réellement votre piste et notez brièvement ce qu'il vous permet de questionner…"
+        },
+        {
+          "id": "hypothese-cloture",
+          "type": "text",
+          "text": "Vous n'avez pas choisi ce qui arrivera.\n\nVous avez découvert une condition qui mérite d'être mise à l'épreuve.\n\nGardez cette hypothèse ouverte.\n\nÀ l'étape suivante, nous n'allons pas chercher à la résoudre.\n\nNous allons laisser entrer quelque chose que nous n'avions pas prévu."
         }
       ]
     },

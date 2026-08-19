@@ -488,8 +488,58 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pageTenTextareas[0].label, "Ce que ce d\u00e9placement vous a permis de voir");
   assert.equal(pageTenTextareas[0].placeholder.includes("Avec vos propres mots"), true);
   assert.equal(pageTen.blocks.some((block) => ["choice", "reveal"].includes(block.type)), false);
+
+  const pageEleven = pack.pages[10];
+  assert.equal(pageEleven.id, "page-11");
+  assert.equal(pageEleven.title, "Et si ?");
+  assert.equal(pageEleven.movementId, "exploration");
+  assert.deepEqual(pageEleven.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "promptCopy",
+    "text",
+    "textarea",
+    "text",
+  ]);
+  const pageElevenRecalls = pageEleven.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageElevenRecalls.length, 2);
+  assert.deepEqual(
+    pageElevenRecalls.map((block) => block.id),
+    ["rappel-piste-hypothese", "rappel-regard-hypothese"],
+  );
+  assert.deepEqual(
+    pageElevenRecalls.map((block) => block.sourceBlockId),
+    ["piste-provisoire", "regard-deplace"],
+  );
+  const pageElevenPrompts = pageEleven.blocks.filter((block) => block.type === "promptCopy");
+  assert.equal(pageElevenPrompts.length, 1);
+  assert.equal(pageElevenPrompts[0].id, "prompt-et-si");
+  assert.equal(pageElevenPrompts[0].label, "Faire varier une condition");
+  assert.equal(pageElevenPrompts[0].text.includes("[COLLEZ ICI VOTRE PISTE PROVISOIRE]"), true);
+  assert.equal(
+    pageElevenPrompts[0].text.includes(
+      "[COLLEZ ICI CE QUE LE D\u00c9PLACEMENT DU REGARD VOUS A FAIT VOIR \u2014 FACULTATIF]",
+    ),
+    true,
+  );
+  assert.equal(pageElevenPrompts[0].text.includes("Propose 6 hypoth\u00e8ses"), true);
+  assert.equal(pageElevenPrompts[0].text.includes("une seule condition significative"), true);
+  assert.equal(pageElevenPrompts[0].text.includes("Ne cherche pas le rebondissement pour lui-m\u00eame."), true);
+  assert.equal(pageElevenPrompts[0].text.includes("N'\u00e9cris pas de sc\u00e8ne."), true);
+  assert.equal(pageElevenPrompts[0].text.includes("Ne poursuis pas le r\u00e9cit."), true);
+  assert.equal(pageElevenPrompts[0].text.includes("Ne produis pas de synopsis."), true);
+  assert.equal(pageElevenPrompts[0].text.includes("Ne choisis pas l'hypoth\u00e8se \u00e0 ma place."), true);
+  const pageElevenTextareas = pageEleven.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageElevenTextareas.length, 1);
+  assert.equal(pageElevenTextareas[0].id, "hypothese-forte");
+  assert.equal(pageElevenTextareas[0].label, "L'hypoth\u00e8se qui ouvre quelque chose");
+  assert.equal(pageElevenTextareas[0].placeholder.includes("Avec vos propres mots"), true);
+  assert.equal(pageEleven.blocks.some((block) => ["choice", "reveal"].includes(block.type)), false);
+  assert.equal(pack.pages[9].movementId, "exploration");
   assert.equal(pack.pages[10].movementId, "exploration");
-  assert.equal(pack.pages[10].blocks.some((block) => block.id === "hypothese-forte"), true);
+  assert.equal(pack.pages[11].movementId, "exploration");
 
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
