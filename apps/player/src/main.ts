@@ -40,6 +40,7 @@ import {
   type EditorialFamilyId,
   type LocalizedEditorialFamily,
 } from "./editorial";
+import { createBrowserPublicThresholdSession } from "./threshold-session";
 import "./styles.css";
 
 const app = document.querySelector<HTMLElement>("#app");
@@ -68,9 +69,13 @@ function prefersReducedMotion(): boolean {
   return globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 }
 
-function updateShell(messages: LocaleMessages, packTitle?: string): void {
+function updateShell(messages: LocaleMessages, packTitle?: string, includeEngineTitle = true): void {
   document.documentElement.lang = messages.language;
-  document.title = packTitle ? `${packTitle} | ${messages.engineTitle}` : messages.engineTitle;
+  document.title = packTitle
+    ? includeEngineTitle
+      ? `${packTitle} | ${messages.engineTitle}`
+      : packTitle
+    : messages.engineTitle;
 
   let skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
   if (!skipLink) {
@@ -312,10 +317,23 @@ function findEditorialFamily(
   return family;
 }
 
-async function renderHome(): Promise<void> {
+async function loadHomeNarrativeIntro(): Promise<{
+  readonly intro: NarrativeIntro;
+  readonly packLanguage: string;
+  readonly packTitle: string;
+} | null> {
+  const registry = await loadPackRegistry(registryUrl);
+  const entry = registry.packs.find(({ id }) => id === registry.home);
+  if (!entry) throw new Error("INE_PACK_REGISTRY_HOME_MISSING");
+  const pack = await loadNarrativePack(new URL(entry.manifest, registryUrl), validateNarrativePack);
+  if (!pack.presentation?.intro) return null;
+  return { intro: pack.presentation.intro, packLanguage: pack.language, packTitle: pack.title };
+}
+
+async function renderHome(focusFirstAction = false): Promise<void> {
   const messages = resolveLocale(navigator.language);
   const families = editorialFamilies(messages.language);
-  updateShell(messages, messages.homeTitle);
+  updateShell(messages, messages.homeTitle, false);
   updateLibraryNavigation(messages, false);
   const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
   if (skipLink) {
@@ -367,6 +385,30 @@ async function renderHome(): Promise<void> {
 
   home.append(header, doors);
   mount.append(home);
+
+  if (focusFirstAction) {
+    home.querySelector<HTMLAnchorElement>(".orientation-door__action")?.focus();
+  }
+}
+
+async function renderPublicThreshold(): Promise<void> {
+  const thresholdSession = createBrowserPublicThresholdSession();
+  if (thresholdSession.hasCrossed()) {
+    await renderHome();
+    return;
+  }
+
+  const threshold = await loadHomeNarrativeIntro();
+  if (!threshold) {
+    await renderHome();
+    return;
+  }
+
+  const messages = resolveLocale(threshold.packLanguage);
+  updateShell(messages, threshold.intro.title ?? threshold.packTitle, false);
+  await renderPrologue(threshold.intro, threshold.packTitle);
+  thresholdSession.markCrossed();
+  await renderHome(true);
 }
 
 async function renderWorkshops(): Promise<void> {
@@ -883,7 +925,7 @@ async function startLivingCardPack(packUrl: URL): Promise<void> {
 async function start(): Promise<void> {
   const hasPackOverride = new URL(globalThis.location.href).searchParams.has("pack");
   if (!hasPackOverride && isHomeRoute()) {
-    await renderHome();
+    await renderPublicThreshold();
     return;
   }
   if (!hasPackOverride && isLibraryRoute()) {

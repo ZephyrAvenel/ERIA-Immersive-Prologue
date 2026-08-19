@@ -10,6 +10,7 @@ import test from "node:test";
 const baseUrl = "/ERIA-Immersive-Prologue/";
 const artifactsDir = "test-results/e2e";
 const progressStorageKey = "ine:progress:v1:les-gardiens-des-recits-vivants";
+const publicThresholdSessionKey = "ine:public-threshold:v1:recits-vivants";
 
 function once(emitter, event) {
   return new Promise((resolve) => emitter.once(event, resolve));
@@ -311,6 +312,20 @@ async function crossPrologue(client) {
   await evaluate(client, "document.querySelector('.prologue button')?.click()");
 }
 
+async function waitForOrientationReady(client) {
+  await waitForExpression(
+    client,
+    `(() => {
+      const firstAction = document.querySelector('.orientation-door__action');
+      return document.querySelectorAll('.orientation-door').length === 2
+        && ['Deux manières de poursuivre', 'Two ways to continue'].includes(document.querySelector('#home-title')?.textContent ?? '')
+        && (document.body.textContent?.includes('VIVRE') || document.body.textContent?.includes('LIVE'))
+        && (document.body.textContent?.includes('CRÉER') || document.body.textContent?.includes('CREATE'))
+        && firstAction instanceof HTMLAnchorElement;
+    })()`,
+  );
+}
+
 async function clearReadingProgress(client) {
   await evaluate(client, `localStorage.removeItem(${JSON.stringify(progressStorageKey)})`);
 }
@@ -524,7 +539,23 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
     });
     await loadUrl(page, entryUrl);
-    await waitForExpression(page, "document.querySelectorAll('.orientation-door').length === 2");
+    await waitForPrologueReady(page);
+    assert.equal(
+      await evaluate(page, `sessionStorage.getItem(${JSON.stringify(publicThresholdSessionKey)})`),
+      null,
+      "a new browser session should not mark the public threshold before it is crossed",
+    );
+    await crossPrologue(page);
+    await waitForOrientationReady(page);
+    assert.equal(
+      await evaluate(page, `sessionStorage.getItem(${JSON.stringify(publicThresholdSessionKey)})`),
+      "crossed",
+      "crossing the public threshold should be stored only in sessionStorage",
+    );
+    await waitForExpression(
+      page,
+      "document.querySelector('.orientation-door__action') === document.activeElement",
+    );
     const entryState = await evaluate(
       page,
       `({
@@ -544,7 +575,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     const entryIsFrench = entryState.language.toLowerCase().startsWith("fr");
     assert.equal(
       entryState.title,
-      entryIsFrench ? "Deux mani\u00e8res d\u2019entrer dans l\u2019INE" : "Two ways to enter INE",
+      entryIsFrench ? "Deux mani\u00e8res de poursuivre" : "Two ways to continue",
     );
     assert.deepEqual(
       entryState.doors,
@@ -587,6 +618,40 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
           ],
     );
     assert.equal(entryState.noHorizontalOverflow, true);
+
+    const vivreNavigation = page.waitFor("Page.loadEventFired");
+    await evaluate(page, "document.querySelector('[data-family=\"narrative-packs\"] a')?.click()");
+    await vivreNavigation;
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length >= 1");
+    assert.equal(
+      await evaluate(page, "window.location.pathname.endsWith('/bibliotheque/')"),
+      true,
+      "the VIVRE door should navigate to the narrative packs library",
+    );
+
+    await loadUrl(page, entryUrl);
+    await waitForOrientationReady(page);
+    assert.equal(
+      await evaluate(page, "document.querySelector('.prologue') === null"),
+      true,
+      "returning to the public root in the same session should not replay the threshold",
+    );
+
+    const creerNavigation = page.waitFor("Page.loadEventFired");
+    await evaluate(page, "document.querySelector('[data-family=\"augmented-workshops\"] a')?.click()");
+    await creerNavigation;
+    await waitForExpression(page, "document.querySelectorAll('.workshop-card').length === 4");
+    assert.equal(
+      await evaluate(page, "window.location.pathname.endsWith('/ateliers/')"),
+      true,
+      "the CRÉER door should navigate to the augmented workshops page",
+    );
+
+    const packOverrideUrl = `${entryUrl}?pack=examples/demo-pack/pack.json`;
+    await loadUrl(page, packOverrideUrl);
+    await waitForPrologueReady(page);
+    await crossPrologue(page);
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 9");
 
     await loadUrl(page, workshopsUrl);
     await waitForExpression(page, "document.querySelectorAll('.workshop-card').length === 4");
