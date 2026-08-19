@@ -165,20 +165,30 @@
         {
           "id": "etincelle-intro",
           "type": "text",
-          "text": "Formuler le point de départ du parcours sous une forme brève et personnelle."
+          "text": "Relisez ce que vous venez d'écrire.\n\nNe cherchez pas encore ce que cela pourrait devenir.\n\nRegardez plutôt ce qui, dans cette première trace, vous donne envie de continuer.\n\nCe n'est peut-être pas l'ensemble.\n\nParfois, une seule chose suffit.\n\nUne image.\n\nUne tension.\n\nUne question.\n\nUne relation.\n\nUn mouvement.\n\nQuelque chose que vous ne savez pas encore nommer."
         },
         {
-          "id": "impulsion-recall",
+          "id": "rappel-impulsion-etincelle",
           "type": "recall",
           "sourceBlockId": "impulsion-initiale",
-          "label": "Votre impulsion initiale",
-          "emptyText": "Aucune impulsion n'a encore été formulée."
+          "label": "Votre première trace",
+          "emptyText": "Vous n'avez encore rien noté ici. Vous pouvez revenir à la page précédente, ou poursuivre avec ce qui vous vient maintenant."
+        },
+        {
+          "id": "etincelle-condensation",
+          "type": "text",
+          "text": "S'il ne devait rester qu'une étincelle, laquelle garderiez-vous ?\n\nNe cherchez pas la formulation parfaite.\n\nQuelques mots peuvent suffire.\n\nGardez ce qui vous attire, vous trouble, vous questionne ou vous donne simplement envie d'aller un peu plus loin."
         },
         {
           "id": "etincelle",
           "type": "textarea",
-          "label": "Formulez votre étincelle.",
-          "placeholder": "Ce qui cherche à commencer..."
+          "label": "Votre étincelle",
+          "placeholder": "Quelques mots suffisent. Ce qui vous donne envie de continuer…"
+        },
+        {
+          "id": "etincelle-cloture",
+          "type": "text",
+          "text": "Ne lui demandez pas encore où elle mène. Gardez-la simplement allumée."
         }
       ]
     },

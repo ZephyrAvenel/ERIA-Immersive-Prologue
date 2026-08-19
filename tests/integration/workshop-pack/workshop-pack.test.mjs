@@ -256,6 +256,27 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   );
   assert.equal(pageTwo.blocks.some((block) => ["reveal", "promptCopy", "recall"].includes(block.type)), false);
 
+  const pageThree = pack.pages[2];
+  assert.equal(pageThree.id, "page-03");
+  assert.equal(pageThree.title, "Votre \u00e9tincelle");
+  assert.equal(pageThree.movementId, "intention");
+  assert.deepEqual(pageThree.blocks.map((block) => block.type), ["text", "recall", "text", "textarea", "text"]);
+  const pageThreeRecalls = pageThree.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageThreeRecalls.length, 1);
+  assert.equal(pageThreeRecalls[0].id, "rappel-impulsion-etincelle");
+  assert.equal(pageThreeRecalls[0].sourceBlockId, "impulsion-initiale");
+  assert.equal(pageThreeRecalls[0].label, "Votre premi\u00e8re trace");
+  assert.equal(
+    pageThreeRecalls[0].emptyText,
+    "Vous n'avez encore rien not\u00e9 ici. Vous pouvez revenir \u00e0 la page pr\u00e9c\u00e9dente, ou poursuivre avec ce qui vous vient maintenant.",
+  );
+  const pageThreeTextareas = pageThree.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageThreeTextareas.length, 1);
+  assert.equal(pageThreeTextareas[0].id, "etincelle");
+  assert.equal(pageThreeTextareas[0].label, "Votre \u00e9tincelle");
+  assert.equal(pageThreeTextareas[0].placeholder, "Quelques mots suffisent. Ce qui vous donne envie de continuer\u2026");
+  assert.equal(pageThree.blocks.some((block) => ["choice", "reveal", "promptCopy"].includes(block.type)), false);
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
