@@ -11,6 +11,7 @@ const baseUrl = "/ERIA-Immersive-Prologue/";
 const artifactsDir = "test-results/e2e";
 const progressStorageKey = "ine:progress:v1:les-gardiens-des-recits-vivants";
 const publicThresholdSessionKey = "ine:public-threshold:v1:recits-vivants";
+const publicThresholdSkipHomeIntroKey = `${publicThresholdSessionKey}:skip-home-intro-once`;
 
 function once(emitter, event) {
   return new Promise((resolve) => emitter.once(event, resolve));
@@ -619,10 +620,11 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     );
     assert.equal(entryState.noHorizontalOverflow, true);
 
-    const vivreNavigation = page.waitFor("Page.loadEventFired");
     await evaluate(page, "document.querySelector('[data-family=\"narrative-packs\"] a')?.click()");
-    await vivreNavigation;
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length >= 1");
+    await waitForExpression(
+      page,
+      "window.location.pathname.endsWith('/bibliotheque/') && document.querySelectorAll('.work-card').length >= 1",
+    );
     assert.equal(
       await evaluate(page, "window.location.pathname.endsWith('/bibliotheque/')"),
       true,
@@ -637,10 +639,11 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       "returning to the public root in the same session should not replay the threshold",
     );
 
-    const creerNavigation = page.waitFor("Page.loadEventFired");
     await evaluate(page, "document.querySelector('[data-family=\"augmented-workshops\"] a')?.click()");
-    await creerNavigation;
-    await waitForExpression(page, "document.querySelectorAll('.workshop-card').length === 4");
+    await waitForExpression(
+      page,
+      "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 4",
+    );
     assert.equal(
       await evaluate(page, "window.location.pathname.endsWith('/ateliers/')"),
       true,
@@ -855,6 +858,36 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[11].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[12].imagePosition, "50% 50%");
     assert.equal(libraryState.noHorizontalOverflow, true);
+
+    await evaluate(
+      page,
+      "document.querySelector('[data-work-slug=\"les-gardiens-des-recits-vivants\"] .work-card__action')?.click()",
+    );
+    await waitForPlayerReady(page, "Sc\u00e8ne 1 / 9");
+    assert.equal(
+      await evaluate(page, "document.querySelector('.prologue') === null"),
+      true,
+      "opening the home pack from the library after the public threshold should not replay Le Seuil",
+    );
+    assert.equal(
+      await evaluate(page, `sessionStorage.getItem(${JSON.stringify(publicThresholdSkipHomeIntroKey)})`),
+      null,
+      "the library-origin skip intent should be consumed once",
+    );
+
+    await evaluate(page, "history.back()");
+    await waitForExpression(
+      page,
+      "window.location.pathname.endsWith('/bibliotheque/') && document.querySelectorAll('.work-card').length === 13",
+    );
+    assert.equal(
+      await evaluate(page, `sessionStorage.getItem(${JSON.stringify(publicThresholdSkipHomeIntroKey)})`),
+      null,
+      "browser back should not leave a residual home intro skip intent",
+    );
+
+    await loadUrl(page, url);
+    await waitForPrologueReady(page);
     await loadUrl(page, url);
     await waitForPrologueReady(page);
     await enterPrologue(page);

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  PUBLIC_THRESHOLD_SKIP_HOME_INTRO_KEY,
   PUBLIC_THRESHOLD_SESSION_KEY,
   PublicThresholdSession,
 } from "../../../.test-build/apps/player/src/threshold-session.js";
@@ -15,6 +16,10 @@ class MemoryStorage {
   setItem(key, value) {
     this.items.set(key, value);
   }
+
+  removeItem(key) {
+    this.items.delete(key);
+  }
 }
 
 class UnavailableStorage {
@@ -23,6 +28,10 @@ class UnavailableStorage {
   }
 
   setItem() {
+    throw new Error("unavailable");
+  }
+
+  removeItem() {
     throw new Error("unavailable");
   }
 }
@@ -43,4 +52,31 @@ test("PublicThresholdSession is non-blocking when sessionStorage is unavailable"
 
   assert.equal(session.hasCrossed(), false);
   assert.doesNotThrow(() => session.markCrossed());
+  assert.doesNotThrow(() => session.markHomeIntroSkippedOnce());
+  assert.equal(session.consumeHomeIntroSkip(), false);
+});
+
+test("PublicThresholdSession marks the home intro skip only after the public threshold is crossed", () => {
+  const storage = new MemoryStorage();
+  const session = new PublicThresholdSession(storage);
+
+  session.markHomeIntroSkippedOnce();
+  assert.equal(storage.getItem(PUBLIC_THRESHOLD_SKIP_HOME_INTRO_KEY), null);
+
+  session.markCrossed();
+  session.markHomeIntroSkippedOnce();
+
+  assert.equal(storage.getItem(PUBLIC_THRESHOLD_SKIP_HOME_INTRO_KEY), "pending");
+});
+
+test("PublicThresholdSession consumes the home intro skip once", () => {
+  const storage = new MemoryStorage();
+  const session = new PublicThresholdSession(storage);
+
+  session.markCrossed();
+  session.markHomeIntroSkippedOnce();
+
+  assert.equal(session.consumeHomeIntroSkip(), true);
+  assert.equal(storage.getItem(PUBLIC_THRESHOLD_SKIP_HOME_INTRO_KEY), null);
+  assert.equal(session.consumeHomeIntroSkip(), false);
 });

@@ -474,7 +474,9 @@ async function renderWorkshops(): Promise<void> {
 async function renderLibrary(): Promise<void> {
   const messages = resolveLocale(navigator.language);
   const narrativeFamily = findEditorialFamily(editorialFamilies(messages.language), "narrative-packs");
+  const registry = await loadPackRegistry(registryUrl);
   const packs = await loadCatalog(registryUrl);
+  const thresholdSession = createBrowserPublicThresholdSession();
   updateShell(messages, messages.libraryTitle);
   updateLibraryNavigation(messages, false);
   const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
@@ -533,7 +535,12 @@ async function renderLibrary(): Promise<void> {
     link.className = "work-card__action";
     link.href = new URL(`oeuvres/${pack.slug}/`, applicationBaseUrl).href;
     link.textContent = messages.exploreWork;
-    link.setAttribute("aria-label", `${messages.exploreWork} — ${pack.title}`);
+    link.setAttribute("aria-label", `${messages.exploreWork} - ${pack.title}`);
+    if (pack.id === registry.home && thresholdSession.hasCrossed()) {
+      link.addEventListener("click", () => {
+        thresholdSession.markHomeIntroSkippedOnce();
+      });
+    }
     content.append(workTitle, subtitle, summary, link);
     article.append(image, content);
     grid.append(article);
@@ -541,6 +548,25 @@ async function renderLibrary(): Promise<void> {
 
   library.append(header, grid);
   mount.append(library);
+}
+
+async function shouldSkipHomeIntroForCurrentRoute(packId: string): Promise<boolean> {
+  const requestedPack = new URL(globalThis.location.href).searchParams.get("pack");
+  if (requestedPack) return false;
+
+  const workSlug = requestedWorkSlug();
+  if (!workSlug) return false;
+
+  const registry = await loadPackRegistry(registryUrl);
+  if (registry.home !== packId) return false;
+
+  const entry = findRegistryEntryBySlug(registry, workSlug);
+  if (!entry || entry.id !== packId) return false;
+
+  const thresholdSession = createBrowserPublicThresholdSession();
+  if (!thresholdSession.hasCrossed()) return false;
+
+  return thresholdSession.consumeHomeIntroSkip();
 }
 
 async function startNarrativePack(packUrl: URL): Promise<void> {
@@ -753,7 +779,9 @@ async function startNarrativePack(packUrl: URL): Promise<void> {
     resumableProgress = null;
   }
 
-  if (intro) {
+  const skipIntro = intro ? await shouldSkipHomeIntroForCurrentRoute(pack.id) : false;
+
+  if (intro && !skipIntro) {
     await renderPrologue(intro, pack.title);
   }
 
