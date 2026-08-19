@@ -352,6 +352,10 @@ async function readWorkshopState(client) {
       const exit = document.querySelector('.workshop-exit');
       const page = document.querySelector('#workshop-page');
       const controls = document.querySelector('.workshop-controls');
+      const textarea = document.querySelector('textarea');
+      const textareaLabel = textarea ? document.querySelector(\`label[for="\${textarea.id}"]\`) : null;
+      const revealButton = document.querySelector('.workshop-reveal__button');
+      const revealContent = document.querySelector('.workshop-reveal__content');
       const pageRect = page?.getBoundingClientRect();
       const controlsRect = controls?.getBoundingClientRect();
       return {
@@ -364,9 +368,19 @@ async function readWorkshopState(client) {
         nextDisabled: next?.disabled === true,
         pendingBlocks: document.querySelectorAll('.workshop-block--pending').length,
         textareaCount: document.querySelectorAll('textarea').length,
+        textareaValue: textarea?.value ?? null,
+        textareaLabel: textareaLabel?.textContent ?? null,
         inputCount: document.querySelectorAll('input').length,
+        checkedChoices: Array.from(document.querySelectorAll('input[type="radio"]:checked')).map((input) => input.value),
+        choiceLabels: Array.from(document.querySelectorAll('.workshop-choice__label')).map((label) => label.textContent),
+        revealExpanded: revealButton?.getAttribute('aria-expanded') ?? null,
+        revealControls: revealButton?.getAttribute('aria-controls') ?? null,
+        revealContentId: revealContent?.id ?? null,
+        revealHidden: revealContent?.hidden ?? null,
+        revealText: revealContent?.textContent ?? null,
         exitHref: exit?.href ?? null,
         activeId: document.activeElement?.id,
+        activeTag: document.activeElement?.tagName,
         noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth,
         pageVisible: Boolean(pageRect && pageRect.width > 0 && pageRect.height > 0),
         controlsInsideViewport: Boolean(controlsRect && controlsRect.left >= 0 && controlsRect.right <= document.documentElement.clientWidth)
@@ -829,32 +843,58 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await waitForWorkshopReady(page, "02 / 04");
     const workshopPageTwo = await readWorkshopState(page);
     assert.equal(workshopPageTwo.movement, "MOUVEMENT I \u00b7 ENTRER");
-    assert.equal(workshopPageTwo.pageTitle, "Pr\u00e9parer la travers\u00e9e");
-    assert.equal(workshopPageTwo.pendingBlocks, 1);
-    assert.equal(workshopPageTwo.textareaCount, 0);
+    assert.equal(workshopPageTwo.pageTitle, "\u00c9crire quelques mots");
+    assert.equal(workshopPageTwo.pendingBlocks, 0);
+    assert.equal(workshopPageTwo.textareaCount, 1);
+    assert.equal(workshopPageTwo.textareaLabel, "Note technique temporaire");
+    assert.equal(workshopPageTwo.textareaValue, "");
+    await evaluate(
+      page,
+      `(() => {
+        const textarea = document.querySelector('textarea');
+        textarea.value = '<img src=x onerror=alert(1)> Une note locale';
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+      })()`,
+    );
 
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
     await waitForWorkshopReady(page, "03 / 04");
     const workshopPageThree = await readWorkshopState(page);
     assert.equal(workshopPageThree.movement, "MOUVEMENT II \u00b7 EXPLORER");
-    assert.equal(workshopPageThree.pageTitle, "Changer de mouvement");
-    assert.equal(workshopPageThree.pendingBlocks, 1);
-    assert.equal(workshopPageThree.inputCount, 0);
+    assert.equal(workshopPageThree.pageTitle, "Choisir une piste");
+    assert.equal(workshopPageThree.pendingBlocks, 0);
+    assert.equal(workshopPageThree.inputCount, 3);
+    assert.deepEqual(workshopPageThree.choiceLabels, ["Lire", "\u00c9crire", "R\u00e9v\u00e9ler"]);
+    assert.deepEqual(workshopPageThree.checkedChoices, []);
+    await evaluate(page, "document.querySelector('input[value=\"reveler\"]')?.click()");
+    assert.deepEqual((await readWorkshopState(page)).checkedChoices, ["reveler"]);
 
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"previous\"]')?.click()");
     await waitForWorkshopReady(page, "02 / 04");
+    assert.equal((await readWorkshopState(page)).textareaValue, "<img src=x onerror=alert(1)> Une note locale");
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
     await waitForWorkshopReady(page, "03 / 04");
+    assert.deepEqual((await readWorkshopState(page)).checkedChoices, ["reveler"]);
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
     await waitForWorkshopReady(page, "04 / 04");
     const workshopPageFour = await readWorkshopState(page);
     assert.equal(workshopPageFour.movement, "MOUVEMENT II \u00b7 EXPLORER");
-    assert.equal(workshopPageFour.pageTitle, "Sortir du d\u00e9monstrateur");
+    assert.equal(workshopPageFour.pageTitle, "R\u00e9v\u00e9ler une information");
     assert.equal(workshopPageFour.previousDisabled, false);
     assert.equal(workshopPageFour.nextDisabled, true);
-    assert.equal(workshopPageFour.pendingBlocks, 3);
+    assert.equal(workshopPageFour.pendingBlocks, 0);
+    assert.equal(workshopPageFour.revealExpanded, "false");
+    assert.equal(workshopPageFour.revealControls, workshopPageFour.revealContentId);
+    assert.equal(workshopPageFour.revealHidden, true);
     assert.equal(workshopPageFour.exitHref, workshopsUrl);
     assert.equal(workshopPageFour.noHorizontalOverflow, true);
+    await evaluate(page, "document.querySelector('.workshop-reveal__button')?.click()");
+    const revealedWorkshop = await readWorkshopState(page);
+    assert.equal(revealedWorkshop.revealExpanded, "true");
+    assert.equal(revealedWorkshop.revealHidden, false);
+    assert.equal(revealedWorkshop.revealText.includes("reste ouvert pendant cette travers\u00e9e"), true);
+    assert.equal(["ARTICLE", "BUTTON"].includes(revealedWorkshop.activeTag), true);
+    await evaluate(page, "document.querySelector('#workshop-page')?.focus()");
 
     for (const viewport of [
       { width: 1280, height: 800 },
@@ -875,7 +915,14 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
 
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
     await waitForWorkshopReady(page, "04 / 04");
-    assert.equal((await readWorkshopState(page)).pageTitle, "Sortir du d\u00e9monstrateur");
+    assert.equal((await readWorkshopState(page)).pageTitle, "R\u00e9v\u00e9ler une information");
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"previous\"]')?.click()");
+    await waitForWorkshopReady(page, "03 / 04");
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
+    await waitForWorkshopReady(page, "04 / 04");
+    const returnedReveal = await readWorkshopState(page);
+    assert.equal(returnedReveal.revealExpanded, "true");
+    assert.equal(returnedReveal.revealHidden, false);
 
     await evaluate(page, "document.querySelector('.workshop-exit')?.click()");
     await waitForExpression(page, "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 4");

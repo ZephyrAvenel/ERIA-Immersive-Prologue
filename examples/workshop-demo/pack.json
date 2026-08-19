@@ -40,18 +40,18 @@
       "id": "page-02",
       "movementId": "entrer",
       "order": 2,
-      "title": "Préparer la traversée",
+      "title": "Écrire quelques mots",
       "blocks": [
         {
-          "id": "transition",
+          "id": "writing-intro",
           "type": "text",
-          "text": "La navigation reste linéaire, bornée et indépendante de tout contenu pédagogique définitif."
+          "text": "Cette page vérifie qu'une réponse locale reste disponible pendant la traversée courante."
         },
         {
-          "id": "future-note",
+          "id": "technical-note",
           "type": "textarea",
-          "label": "Interaction future",
-          "placeholder": "Cette saisie sera activée dans une prochaine mission."
+          "label": "Note technique temporaire",
+          "placeholder": "Écrivez quelques mots pour tester la mémoire en cours de traversée."
         }
       ]
     },
@@ -59,25 +59,29 @@
       "id": "page-03",
       "movementId": "explorer",
       "order": 3,
-      "title": "Changer de mouvement",
+      "title": "Choisir une piste",
       "blocks": [
         {
-          "id": "movement-check",
+          "id": "choice-intro",
           "type": "text",
-          "text": "Cette page appartient au deuxième mouvement grâce à sa donnée movementId."
+          "text": "Cette page appartient au deuxième mouvement grâce à sa donnée movementId et vérifie une sélection unique."
         },
         {
-          "id": "future-choice",
+          "id": "technical-choice",
           "type": "choice",
-          "label": "Choix futur",
+          "label": "Quelle orientation technique souhaitez-vous sélectionner ?",
           "options": [
             {
-              "id": "option-a",
-              "label": "Option A"
+              "id": "lire",
+              "label": "Lire"
             },
             {
-              "id": "option-b",
-              "label": "Option B"
+              "id": "ecrire",
+              "label": "Écrire"
+            },
+            {
+              "id": "reveler",
+              "label": "Révéler"
             }
           ]
         }
@@ -87,31 +91,18 @@
       "id": "page-04",
       "movementId": "explorer",
       "order": 4,
-      "title": "Sortir du démonstrateur",
+      "title": "Révéler une information",
       "blocks": [
         {
-          "id": "closing",
+          "id": "reveal-intro",
           "type": "text",
-          "text": "La dernière page vérifie l'état final, la navigation bornée et le retour vers les ateliers."
+          "text": "Cette dernière page vérifie l'ouverture contrôlée d'un contenu complémentaire."
         },
         {
-          "id": "future-reveal",
+          "id": "technical-reveal",
           "type": "reveal",
-          "label": "Révélation future",
-          "content": "Cette primitive sera rendue fonctionnelle dans une mission dédiée."
-        },
-        {
-          "id": "future-prompt",
-          "type": "promptCopy",
-          "label": "Prompt futur",
-          "text": "Propose trois questions pour approfondir cette intention sans écrire à ma place."
-        },
-        {
-          "id": "future-recall",
-          "type": "recall",
-          "sourceBlockId": "future-note",
-          "label": "Rappel futur",
-          "emptyText": "Aucune réponse locale n'est encore enregistrée."
+          "label": "Révéler le contenu technique",
+          "content": "Le contenu révélé apparaît seulement après activation et reste ouvert pendant cette traversée."
         }
       ]
     }

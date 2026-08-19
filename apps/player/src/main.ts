@@ -61,6 +61,7 @@ const mount = app;
 type NavigationTarget = "previous" | "next";
 type ResumeChoice = "resume" | "restart";
 type NarrativeLayoutPhase = "image" | "text";
+type WorkshopResponseValue = string | boolean;
 
 interface PlayerConfiguration {
   readonly packUrl: string;
@@ -970,6 +971,7 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
     skipLink.textContent = messages.skipToNarrative;
   }
   let navigationInProgress = false;
+  const responses = new Map<string, WorkshopResponseValue>();
 
   const movementForCurrentPage = () => {
     const movement = pack.movements.find((candidate) => candidate.id === engine.currentPage.movementId);
@@ -1005,6 +1007,10 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
       movement: movementForCurrentPage(),
       pageIndex: engine.currentPageIndex,
       pageCount: engine.pageCount,
+      responses,
+      onResponseChange: (blockId, value) => {
+        responses.set(blockId, value);
+      },
       controls,
       exitControl: !engine.canGoNext ? exit : undefined,
       messages: {

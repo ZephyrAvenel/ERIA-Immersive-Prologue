@@ -264,12 +264,16 @@ export interface WorkshopRendererMessages {
   readonly unsupportedBlockText: string;
 }
 
+export type WorkshopResponseValue = string | boolean;
+
 export interface RenderWorkshopState {
   readonly pack: WorkshopPack;
   readonly page: WorkshopPage;
   readonly movement: WorkshopMovement;
   readonly pageIndex: number;
   readonly pageCount: number;
+  readonly responses?: ReadonlyMap<string, WorkshopResponseValue>;
+  readonly onResponseChange?: (blockId: string, value: WorkshopResponseValue) => void;
   readonly controls: HTMLElement;
   readonly exitControl?: HTMLElement;
   readonly messages: WorkshopRendererMessages;
@@ -294,7 +298,27 @@ function romanNumeral(value: number): string {
   return output || String(value);
 }
 
-function createWorkshopBlock(block: WorkshopBlock, unsupportedBlockText: string): HTMLElement {
+function createDomId(pageId: string, blockId: string, suffix?: string): string {
+  const safe = `${pageId}-${blockId}${suffix ? `-${suffix}` : ""}`.replace(/[^a-zA-Z0-9_-]+/g, "-");
+  return `workshop-${safe}`;
+}
+
+function getStringResponse(responses: ReadonlyMap<string, WorkshopResponseValue> | undefined, blockId: string): string {
+  const value = responses?.get(blockId);
+  return typeof value === "string" ? value : "";
+}
+
+function getBooleanResponse(responses: ReadonlyMap<string, WorkshopResponseValue> | undefined, blockId: string): boolean {
+  return responses?.get(blockId) === true;
+}
+
+function createWorkshopBlock(
+  pageId: string,
+  block: WorkshopBlock,
+  responses: ReadonlyMap<string, WorkshopResponseValue> | undefined,
+  onResponseChange: ((blockId: string, value: WorkshopResponseValue) => void) | undefined,
+  unsupportedBlockText: string,
+): HTMLElement {
   const section = document.createElement("section");
   section.className = `workshop-block workshop-block--${block.type}`;
   section.dataset.blockId = block.id;
@@ -304,6 +328,102 @@ function createWorkshopBlock(block: WorkshopBlock, unsupportedBlockText: string)
     const paragraph = document.createElement("p");
     paragraph.textContent = block.text;
     section.append(paragraph);
+    return section;
+  }
+
+  if (block.type === "textarea") {
+    const textareaId = createDomId(pageId, block.id, "textarea");
+    const label = document.createElement("label");
+    label.className = "workshop-field__label";
+    label.setAttribute("for", textareaId);
+    label.textContent = block.label;
+
+    const textarea = document.createElement("textarea");
+    textarea.id = textareaId;
+    textarea.className = "workshop-textarea";
+    textarea.name = block.id;
+    textarea.value = getStringResponse(responses, block.id);
+    if (block.placeholder) textarea.placeholder = block.placeholder;
+    if (block.required) textarea.required = true;
+    textarea.addEventListener("input", () => onResponseChange?.(block.id, textarea.value));
+
+    section.append(label, textarea);
+    return section;
+  }
+
+  if (block.type === "choice") {
+    const fieldset = document.createElement("fieldset");
+    fieldset.className = "workshop-choice";
+    const legend = document.createElement("legend");
+    legend.className = "workshop-field__label";
+    legend.textContent = block.label;
+    fieldset.append(legend);
+
+    const selected = getStringResponse(responses, block.id);
+    const options = document.createElement("div");
+    options.className = "workshop-choice__options";
+    for (const option of block.options) {
+      const optionId = createDomId(pageId, block.id, option.id);
+      const item = document.createElement("label");
+      item.className = "workshop-choice__option";
+      item.setAttribute("for", optionId);
+
+      const input = document.createElement("input");
+      input.id = optionId;
+      input.type = "radio";
+      input.name = block.id;
+      input.value = option.id;
+      input.checked = selected === option.id;
+      input.addEventListener("change", () => {
+        if (input.checked) onResponseChange?.(block.id, option.id);
+      });
+
+      const labelText = document.createElement("span");
+      labelText.className = "workshop-choice__label";
+      labelText.textContent = option.label;
+      item.append(input, labelText);
+      if (option.description) {
+        const description = document.createElement("span");
+        description.className = "workshop-choice__description";
+        description.textContent = option.description;
+        item.append(description);
+      }
+      options.append(item);
+    }
+    fieldset.append(options);
+    section.append(fieldset);
+    return section;
+  }
+
+  if (block.type === "reveal") {
+    const contentId = createDomId(pageId, block.id, "content");
+    const isOpen = getBooleanResponse(responses, block.id);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "workshop-reveal__button";
+    button.textContent = block.label;
+    button.setAttribute("aria-expanded", String(isOpen));
+    button.setAttribute("aria-controls", contentId);
+
+    const content = document.createElement("div");
+    content.id = contentId;
+    content.className = "workshop-reveal__content";
+    if (!isOpen) {
+      content.hidden = true;
+      content.setAttribute("hidden", "");
+    }
+    const paragraph = document.createElement("p");
+    paragraph.textContent = block.content;
+    content.append(paragraph);
+
+    button.addEventListener("click", () => {
+      onResponseChange?.(block.id, true);
+      button.setAttribute("aria-expanded", "true");
+      content.hidden = false;
+      content.removeAttribute("hidden");
+    });
+
+    section.append(button, content);
     return section;
   }
 
@@ -353,7 +473,13 @@ export function renderWorkshop(target: HTMLElement, state: RenderWorkshopState):
   const body = document.createElement("div");
   body.className = "workshop-page__blocks";
   for (const block of state.page.blocks) {
-    body.append(createWorkshopBlock(block, state.messages.unsupportedBlockText));
+    body.append(createWorkshopBlock(
+      state.page.id,
+      block,
+      state.responses,
+      state.onResponseChange,
+      state.messages.unsupportedBlockText,
+    ));
   }
 
   article.append(movement, title, body);

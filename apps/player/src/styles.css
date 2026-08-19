@@ -1789,6 +1789,134 @@ button:disabled {
   line-height: 1.65;
 }
 
+.workshop-field__label {
+  display: block;
+  margin: 0 0 0.65rem;
+  color: var(--ink);
+  font-family: var(--ui-font);
+  font-size: clamp(0.98rem, 2vw, 1.08rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.workshop-textarea {
+  width: 100%;
+  min-height: clamp(8rem, 24vh, 13rem);
+  resize: vertical;
+  padding: 1rem;
+  border: 1px solid rgb(255 249 233 / 22%);
+  border-radius: 1rem;
+  color: var(--ink);
+  background: rgb(8 18 29 / 58%);
+  font: inherit;
+  font-family: var(--text-font);
+  font-size: clamp(1rem, 2.2vw, 1.15rem);
+  line-height: 1.55;
+}
+
+.workshop-textarea::placeholder {
+  color: rgb(255 249 233 / 48%);
+}
+
+.workshop-textarea:focus {
+  outline: none;
+}
+
+.workshop-textarea:focus-visible {
+  outline: 0.18rem solid var(--accent-cool);
+  outline-offset: 0.18rem;
+}
+
+.workshop-choice {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.workshop-choice__options {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.workshop-choice__option {
+  min-height: 3rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgb(255 249 233 / 16%);
+  border-radius: 1rem;
+  color: var(--ink);
+  background: rgb(255 249 233 / 5%);
+  cursor: pointer;
+}
+
+.workshop-choice__option:has(input:checked) {
+  border-color: rgb(216 183 107 / 72%);
+  background: rgb(216 183 107 / 14%);
+  box-shadow: inset 0 0 0 1px rgb(216 183 107 / 28%);
+}
+
+.workshop-choice__option input {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--gold);
+}
+
+.workshop-choice__option input:focus-visible {
+  outline: 0.18rem solid var(--accent-cool);
+  outline-offset: 0.2rem;
+}
+
+.workshop-choice__label {
+  font-family: var(--ui-font);
+  font-weight: 800;
+}
+
+.workshop-choice__description {
+  grid-column: 2;
+  color: var(--text-muted);
+  font-family: var(--text-font);
+  line-height: 1.45;
+}
+
+.workshop-reveal__button {
+  min-height: 3.25rem;
+  display: inline-grid;
+  place-items: center;
+  padding: 0.8rem 1.15rem;
+  border: 1px solid rgb(216 183 107 / 44%);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgb(216 183 107 / 12%);
+  font-family: var(--ui-font);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.workshop-reveal__button:hover {
+  background: rgb(216 183 107 / 18%);
+}
+
+.workshop-reveal__button:focus {
+  outline: none;
+}
+
+.workshop-reveal__button:focus-visible {
+  outline: 0.18rem solid var(--accent-cool);
+  outline-offset: 0.22rem;
+}
+
+.workshop-reveal__content {
+  margin-top: 0.9rem;
+  padding: 1rem;
+  border-left: 0.18rem solid var(--gold);
+  border-radius: 0.9rem;
+  background: rgb(255 249 233 / 6%);
+}
+
 .workshop-block--pending {
   padding: 1rem;
   border: 1px solid rgb(216 183 107 / 22%);

@@ -158,7 +158,118 @@ test("WorkshopRenderer renders workshop identity, movement, text blocks, and pro
     assert.equal(findElement(target, "#workshop-page").focused, true);
   }));
 
-test("WorkshopRenderer exposes unsupported interactive primitives safely", () =>
+test("WorkshopRenderer renders textarea blocks and reports local text changes safely", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    const changes = [];
+    renderWorkshop(target, createWorkshopState({
+      responses: new Map([["note", "Déjà écrit"]]),
+      onResponseChange: (blockId, value) => changes.push({ blockId, value }),
+      page: {
+        id: "page-02",
+        movementId: "entrer",
+        order: 2,
+        title: "Écrire quelques mots",
+        blocks: [
+          {
+            id: "note",
+            type: "textarea",
+            label: "<img src=x onerror=alert(1)> Votre note",
+            placeholder: "Écrivez ici.",
+          },
+        ],
+      },
+    }));
+
+    const label = findElement(target, "label");
+    const textarea = findElement(target, "textarea");
+    assert.equal(label.textContent, "<img src=x onerror=alert(1)> Votre note");
+    assert.equal(label.getAttribute("for"), textarea.id);
+    assert.equal(textarea.value, "Déjà écrit");
+    assert.equal(textarea.placeholder, "Écrivez ici.");
+    assert.equal(findElements(target, "img").length, 0);
+
+    textarea.value = "<img src=x onerror=alert(1)>";
+    textarea.dispatchEvent({ type: "input" });
+    assert.deepEqual(changes, [{ blockId: "note", value: "<img src=x onerror=alert(1)>" }]);
+  }));
+
+test("WorkshopRenderer renders choice blocks as a single accessible radio group", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    const changes = [];
+    renderWorkshop(target, createWorkshopState({
+      responses: new Map([["direction", "deplacer"]]),
+      onResponseChange: (blockId, value) => changes.push({ blockId, value }),
+      page: {
+        id: "page-03",
+        movementId: "explorer",
+        order: 3,
+        title: "Choisir une piste",
+        blocks: [
+          {
+            id: "direction",
+            type: "choice",
+            label: "Quelle direction souhaitez-vous explorer ?",
+            options: [
+              { id: "prolonger", label: "Prolonger" },
+              { id: "deplacer", label: "Déplacer" },
+              { id: "renverser", label: "Renverser" },
+            ],
+          },
+        ],
+      },
+    }));
+
+    assert.equal(findElement(target, "legend").textContent, "Quelle direction souhaitez-vous explorer ?");
+    const inputs = findElements(target, "input");
+    assert.equal(inputs.length, 3);
+    assert.equal(inputs.every((input) => input.type === "radio" && input.name === "direction"), true);
+    assert.equal(inputs.filter((input) => input.checked).length, 1);
+    assert.equal(inputs[1].checked, true);
+
+    inputs[2].checked = true;
+    inputs[2].dispatchEvent({ type: "change" });
+    assert.deepEqual(changes, [{ blockId: "direction", value: "renverser" }]);
+  }));
+
+test("WorkshopRenderer renders reveal blocks as controlled accessible disclosure", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    const changes = [];
+    renderWorkshop(target, createWorkshopState({
+      onResponseChange: (blockId, value) => changes.push({ blockId, value }),
+      page: {
+        id: "page-04",
+        movementId: "explorer",
+        order: 4,
+        title: "Révéler une information",
+        blocks: [
+          {
+            id: "hint",
+            type: "reveal",
+            label: "Révéler",
+            content: "<img src=x onerror=alert(1)> Et si le regard changeait ?",
+          },
+        ],
+      },
+    }));
+
+    const button = findElement(target, ".workshop-reveal__button");
+    const content = findElement(target, ".workshop-reveal__content");
+    assert.equal(button.getAttribute("aria-expanded"), "false");
+    assert.equal(button.getAttribute("aria-controls"), content.id);
+    assert.equal(content.hidden, true);
+    assert.equal(findElements(content, "img").length, 0);
+
+    button.dispatchEvent({ type: "click" });
+    assert.deepEqual(changes, [{ blockId: "hint", value: true }]);
+    assert.equal(button.getAttribute("aria-expanded"), "true");
+    assert.equal(content.hidden, false);
+    assert.equal(findElement(content, "p").textContent, "<img src=x onerror=alert(1)> Et si le regard changeait ?");
+  }));
+
+test("WorkshopRenderer keeps prompt copy and recall primitives explicitly pending", () =>
   withFakeDocument(() => {
     const target = new FakeElement("main");
     renderWorkshop(target, createWorkshopState({
@@ -178,10 +289,10 @@ test("WorkshopRenderer exposes unsupported interactive primitives safely", () =>
     }));
 
     const pendingBlocks = findElements(target, ".workshop-block--pending");
-    assert.equal(pendingBlocks.length, 5);
-    assert.equal(findElements(target, "textarea").length, 0);
-    assert.equal(findElements(target, "input").length, 0);
-    assert.equal(findElements(target, ".workshop-block--choice")[0].getAttribute("aria-disabled"), "true");
+    assert.equal(pendingBlocks.length, 2);
+    assert.equal(findElements(target, "textarea").length, 1);
+    assert.equal(findElements(target, "input").length, 2);
+    assert.equal(findElement(target, ".workshop-reveal__button").getAttribute("aria-expanded"), "false");
     assert.equal(
       pendingBlocks.every((block) => findElement(block, "p").textContent.includes("Cette interaction sera disponible")),
       true,
