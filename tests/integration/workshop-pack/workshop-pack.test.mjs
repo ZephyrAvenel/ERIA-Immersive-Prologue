@@ -147,3 +147,146 @@ test("workshop progress restores local responses into a new traversal instance",
   store.clear(demo.id);
   assert.equal(store.load(demo.id, demo.version, demo.pages), null);
 });
+
+test("augmented writing workshop structural draft is valid and unpublished", async () => {
+  const pack = await readProjectJson("packs", "workshop-001-ecriture-augmentee", "pack.json");
+  const result = validateWorkshopPack(pack);
+  assert.deepEqual(result, { valid: true, errors: [] });
+  assert.equal(pack.format, "ine-workshop-pack");
+  assert.equal(pack.id, "ecriture-augmentee");
+  assert.equal(pack.slug, "ecriture-augmentee");
+  assert.equal(pack.version, "1.0");
+  assert.equal(pack.language, "fr");
+  assert.equal(pack.startPage, "page-01");
+  assert.equal(pack.movements.length, 7);
+  assert.equal(pack.pages.length, 26);
+
+  assert.deepEqual(
+    pack.movements.map((movement) => [movement.id, movement.order, movement.title]),
+    [
+      ["intention", 1, "INTENTION"],
+      ["divergence", 2, "DIVERGENCE"],
+      ["exploration", 3, "EXPLORATION"],
+      ["discernement", 4, "DISCERNEMENT"],
+      ["ecriture", 5, "ÉCRITURE"],
+      ["transformation", 6, "TRANSFORMATION"],
+      ["creation", 7, "CRÉATION"],
+    ],
+  );
+
+  assert.deepEqual(
+    pack.pages.map((page) => [page.id, page.order, page.movementId, page.title]),
+    [
+      ["page-01", 1, "intention", "Le seuil de l'écriture"],
+      ["page-02", 2, "intention", "Ce qui cherche à être écrit"],
+      ["page-03", 3, "intention", "Votre étincelle"],
+      ["page-04", 4, "intention", "Ne pas demander trop tôt"],
+      ["page-05", 5, "divergence", "Ouvrir les possibles"],
+      ["page-06", 6, "divergence", "Une idée, plusieurs directions"],
+      ["page-07", 7, "divergence", "Faire varier"],
+      ["page-08", 8, "divergence", "Diverger sans se perdre"],
+      ["page-09", 9, "exploration", "Entrer dans une possibilité"],
+      ["page-10", 10, "exploration", "Déplacer le regard"],
+      ["page-11", 11, "exploration", "Et si ?"],
+      ["page-12", 12, "exploration", "Faire apparaître l'inattendu"],
+      ["page-13", 13, "discernement", "Tout ce qui est possible n'est pas juste"],
+      ["page-14", 14, "discernement", "Reconnaître ce qui résonne"],
+      ["page-15", 15, "discernement", "Choisir et renoncer"],
+      ["page-16", 16, "discernement", "Retrouver sa voix"],
+      ["page-17", 17, "ecriture", "Reprendre la main"],
+      ["page-18", 18, "ecriture", "Composer"],
+      ["page-19", 19, "ecriture", "Écrire ensemble sans déléguer"],
+      ["page-20", 20, "ecriture", "Laisser une place à l'auteur"],
+      ["page-21", 21, "transformation", "Le texte n'est pas terminé"],
+      ["page-22", 22, "transformation", "Transformer plutôt que corriger"],
+      ["page-23", 23, "transformation", "Faire sien"],
+      ["page-24", 24, "transformation", "Savoir s'arrêter"],
+      ["page-25", 25, "creation", "Votre récit"],
+      ["page-26", 26, "creation", "Continuer sans l'atelier"],
+    ],
+  );
+
+  const pagesByMovement = Object.fromEntries(
+    pack.movements.map((movement) => [
+      movement.id,
+      pack.pages.filter((page) => page.movementId === movement.id).map((page) => page.id),
+    ]),
+  );
+  assert.deepEqual(pagesByMovement, {
+    intention: ["page-01", "page-02", "page-03", "page-04"],
+    divergence: ["page-05", "page-06", "page-07", "page-08"],
+    exploration: ["page-09", "page-10", "page-11", "page-12"],
+    discernement: ["page-13", "page-14", "page-15", "page-16"],
+    ecriture: ["page-17", "page-18", "page-19", "page-20"],
+    transformation: ["page-21", "page-22", "page-23", "page-24"],
+    creation: ["page-25", "page-26"],
+  });
+
+  const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
+  assert.equal(new Set(blockIds).size, blockIds.length);
+  for (const traceId of [
+    "impulsion-initiale",
+    "etincelle",
+    "directions-brutes",
+    "variation-retenue",
+    "boussole",
+    "piste-provisoire",
+    "hypothese-forte",
+    "choix-assume",
+    "voix-recherchee",
+    "premiere-forme",
+    "version-a-moi",
+    "critere-arret",
+  ]) {
+    assert.equal(blockIds.includes(traceId), true, `${traceId} should exist as a structural trace`);
+  }
+
+  const supportedTypes = new Set(["text", "textarea", "choice", "reveal", "promptCopy", "recall"]);
+  assert.equal(pack.pages.every((page) => page.blocks.every((block) => supportedTypes.has(block.type))), true);
+
+  const recallSources = pack.pages
+    .flatMap((page) => page.blocks)
+    .filter((block) => block.type === "recall")
+    .map((block) => block.sourceBlockId);
+  assert.equal(recallSources.every((sourceBlockId) => blockIds.includes(sourceBlockId)), true);
+  assert.equal(recallSources.includes("etincelle"), true);
+  assert.equal(recallSources.includes("boussole"), true);
+  assert.equal(recallSources.includes("voix-recherchee"), true);
+  assert.equal(recallSources.includes("premiere-forme"), true);
+  assert.equal(recallSources.includes("version-a-moi"), true);
+
+  assert.deepEqual(
+    pack.pages
+      .filter((page) => page.blocks.some((block) => block.type === "promptCopy"))
+      .map((page) => page.id),
+    ["page-05", "page-06", "page-07", "page-10", "page-11", "page-12", "page-19", "page-22"],
+  );
+
+  const serialized = JSON.stringify(pack).toLowerCase();
+  for (const forbidden of ["apikey", "api_key", "endpoint", "chatbot", "streaming", "openaikey"]) {
+    assert.equal(serialized.includes(forbidden), false, `pack should not contain ${forbidden}`);
+  }
+
+  const registry = await readProjectJson("apps", "player", "src", "editorial-registry.json");
+  const writingWorkshop = registry.workshops.find((workshop) => workshop.id === "ecriture-augmentee");
+  assert.equal(writingWorkshop.status, "planned");
+
+  const engine = new WorkshopEngine(pack);
+  assert.equal(engine.currentPage.id, "page-01");
+  for (let index = 1; index < pack.pages.length; index += 1) engine.next();
+  assert.equal(engine.currentPage.id, "page-26");
+  assert.equal(engine.canGoNext, false);
+
+  const previousFetch = globalThis.fetch;
+  globalThis.fetch = async () => ({ ok: true, json: async () => pack });
+  try {
+    const loaded = await loadWorkshopPack(
+      new URL("https://example.test/packs/workshop-001-ecriture-augmentee/pack.json"),
+      validateWorkshopPack,
+    );
+    assert.equal(loaded.id, "ecriture-augmentee");
+    assert.equal(loaded.pages.length, 26);
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+});

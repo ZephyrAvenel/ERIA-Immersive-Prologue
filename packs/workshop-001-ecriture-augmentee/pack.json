@@ -1,0 +1,880 @@
+{
+  "$schema": "../../schemas/workshop-pack.schema.json",
+  "format": "ine-workshop-pack",
+  "version": "1.0",
+  "id": "ecriture-augmentee",
+  "slug": "ecriture-augmentee",
+  "title": "Écriture augmentée",
+  "subtitle": "Écrire avec l'IA sans lui abandonner sa voix",
+  "language": "fr",
+  "startPage": "page-01",
+  "movements": [
+    {
+      "id": "intention",
+      "order": 1,
+      "title": "INTENTION",
+      "description": "Faire apparaître ce qui cherche à être écrit avant de demander à l'IA ce qu'elle pourrait produire."
+    },
+    {
+      "id": "divergence",
+      "order": 2,
+      "title": "DIVERGENCE",
+      "description": "Ouvrir plusieurs possibles avant de choisir."
+    },
+    {
+      "id": "exploration",
+      "order": 3,
+      "title": "EXPLORATION",
+      "description": "Déplacer le regard, les situations, les voix ou les formes."
+    },
+    {
+      "id": "discernement",
+      "order": 4,
+      "title": "DISCERNEMENT",
+      "description": "Comparer, sentir, sélectionner et refuser."
+    },
+    {
+      "id": "ecriture",
+      "order": 5,
+      "title": "ÉCRITURE",
+      "description": "Composer à partir des possibilités retenues."
+    },
+    {
+      "id": "transformation",
+      "order": 6,
+      "title": "TRANSFORMATION",
+      "description": "Réécrire, déplacer, densifier et faire sien."
+    },
+    {
+      "id": "creation",
+      "order": 7,
+      "title": "CRÉATION",
+      "description": "Assumer le texte final comme une création dont l'auteur reste responsable."
+    }
+  ],
+  "pages": [
+    {
+      "id": "page-01",
+      "movementId": "intention",
+      "order": 1,
+      "title": "Le seuil de l'écriture",
+      "blocks": [
+        {
+          "id": "seuil-intro",
+          "type": "text",
+          "text": "Entrer dans l'atelier. Cette page précisera que l'IA reste extérieure à l'INE et que l'auteur conserve ses décisions."
+        },
+        {
+          "id": "seuil-reveal",
+          "type": "reveal",
+          "label": "Lire le principe de l'atelier",
+          "content": "L'atelier n'apprend pas à faire écrire l'IA à votre place. Il prépare une manière d'ouvrir des possibles sans abandonner votre voix."
+        }
+      ]
+    },
+    {
+      "id": "page-02",
+      "movementId": "intention",
+      "order": 2,
+      "title": "Ce qui cherche à être écrit",
+      "blocks": [
+        {
+          "id": "impulsion-intro",
+          "type": "text",
+          "text": "Identifier l'impulsion initiale : image, question, sensation, personnage, situation, souvenir, tension ou intuition."
+        },
+        {
+          "id": "impulsion-type",
+          "type": "choice",
+          "label": "Quelle forme prend d'abord ce qui appelle l'écriture ?",
+          "options": [
+            {
+              "id": "image",
+              "label": "Une image"
+            },
+            {
+              "id": "question",
+              "label": "Une question"
+            },
+            {
+              "id": "sensation",
+              "label": "Une sensation"
+            },
+            {
+              "id": "tension",
+              "label": "Une tension"
+            }
+          ]
+        },
+        {
+          "id": "impulsion-initiale",
+          "type": "textarea",
+          "label": "Notez l'impulsion initiale en quelques mots.",
+          "placeholder": "Une image, une question, une sensation..."
+        }
+      ]
+    },
+    {
+      "id": "page-03",
+      "movementId": "intention",
+      "order": 3,
+      "title": "Votre étincelle",
+      "blocks": [
+        {
+          "id": "etincelle-intro",
+          "type": "text",
+          "text": "Formuler le point de départ du parcours sous une forme brève et personnelle."
+        },
+        {
+          "id": "impulsion-recall",
+          "type": "recall",
+          "sourceBlockId": "impulsion-initiale",
+          "label": "Votre impulsion initiale",
+          "emptyText": "Aucune impulsion n'a encore été formulée."
+        },
+        {
+          "id": "etincelle",
+          "type": "textarea",
+          "label": "Formulez votre étincelle.",
+          "placeholder": "Ce qui cherche à commencer..."
+        }
+      ]
+    },
+    {
+      "id": "page-04",
+      "movementId": "intention",
+      "order": 4,
+      "title": "Ne pas demander trop tôt",
+      "blocks": [
+        {
+          "id": "demander-trop-tot-intro",
+          "type": "text",
+          "text": "Comprendre pourquoi une demande prématurée à l'IA peut refermer le possible au lieu de l'ouvrir."
+        },
+        {
+          "id": "etincelle-recall-page-04",
+          "type": "recall",
+          "sourceBlockId": "etincelle",
+          "label": "Votre étincelle avant le prompt",
+          "emptyText": "Votre étincelle sera rappelée ici."
+        },
+        {
+          "id": "attente-avant-ia",
+          "type": "textarea",
+          "label": "Que souhaitez-vous préserver avant de demander quoi que ce soit à une IA ?",
+          "placeholder": "Une nuance, une fragilité, un mystère..."
+        }
+      ]
+    },
+    {
+      "id": "page-05",
+      "movementId": "divergence",
+      "order": 5,
+      "title": "Ouvrir les possibles",
+      "blocks": [
+        {
+          "id": "ouvrir-possibles-intro",
+          "type": "text",
+          "text": "Introduire la divergence comme exploration avant décision."
+        },
+        {
+          "id": "etincelle-recall-page-05",
+          "type": "recall",
+          "sourceBlockId": "etincelle",
+          "label": "Point de départ",
+          "emptyText": "Votre étincelle servira de point d'appui."
+        },
+        {
+          "id": "ouvrir-possibles-prompt",
+          "type": "promptCopy",
+          "label": "Copier un prompt de divergence",
+          "description": "À utiliser dans l'assistant IA extérieur de votre choix.",
+          "text": "À partir de cette étincelle, propose cinq directions narratives très différentes sans rédiger l'histoire. Cherche à ouvrir les possibles plutôt qu'à choisir immédiatement une solution."
+        }
+      ]
+    },
+    {
+      "id": "page-06",
+      "movementId": "divergence",
+      "order": 6,
+      "title": "Une idée, plusieurs directions",
+      "blocks": [
+        {
+          "id": "directions-intro",
+          "type": "text",
+          "text": "Observer qu'une même étincelle peut produire plusieurs trajectoires narratives."
+        },
+        {
+          "id": "directions-prompt",
+          "type": "promptCopy",
+          "label": "Copier un prompt pour multiplier les directions",
+          "description": "Le prompt demande des directions, pas un texte terminé.",
+          "text": "Propose quatre trajectoires narratives distinctes à partir de cette idée. Pour chaque trajectoire, indique seulement son angle, sa tension principale et ce qu'elle rendrait possible. Ne choisis pas à ma place."
+        },
+        {
+          "id": "directions-brutes",
+          "type": "textarea",
+          "label": "Notez les directions qui méritent d'être gardées.",
+          "placeholder": "Direction 1, direction 2, direction 3..."
+        }
+      ]
+    },
+    {
+      "id": "page-07",
+      "movementId": "divergence",
+      "order": 7,
+      "title": "Faire varier",
+      "blocks": [
+        {
+          "id": "variation-intro",
+          "type": "text",
+          "text": "Explorer des variations de point de vue, d'époque, de lieu, de tonalité, de conflit, de forme ou de narrateur."
+        },
+        {
+          "id": "variation-angle",
+          "type": "choice",
+          "label": "Quelle variation souhaitez-vous tester en premier ?",
+          "options": [
+            {
+              "id": "point-de-vue",
+              "label": "Changer de point de vue"
+            },
+            {
+              "id": "lieu",
+              "label": "Déplacer le lieu"
+            },
+            {
+              "id": "tonalite",
+              "label": "Modifier la tonalité"
+            },
+            {
+              "id": "forme",
+              "label": "Changer la forme"
+            }
+          ]
+        },
+        {
+          "id": "variation-prompt",
+          "type": "promptCopy",
+          "label": "Copier un prompt de variation",
+          "description": "À utiliser pour tester des déplacements sans déléguer le choix final.",
+          "text": "À partir de cette direction, propose trois variations radicalement différentes : une variation de point de vue, une variation de lieu et une variation de tonalité. Ne rédige pas l'histoire."
+        },
+        {
+          "id": "variation-retenue",
+          "type": "textarea",
+          "label": "Quelle variation souhaitez-vous garder provisoirement ?",
+          "placeholder": "Je garde..."
+        }
+      ]
+    },
+    {
+      "id": "page-08",
+      "movementId": "divergence",
+      "order": 8,
+      "title": "Diverger sans se perdre",
+      "blocks": [
+        {
+          "id": "boussole-intro",
+          "type": "text",
+          "text": "Conserver l'intention initiale comme boussole."
+        },
+        {
+          "id": "etincelle-recall-page-08",
+          "type": "recall",
+          "sourceBlockId": "etincelle",
+          "label": "Votre étincelle",
+          "emptyText": "Votre étincelle sera rappelée ici."
+        },
+        {
+          "id": "directions-recall-page-08",
+          "type": "recall",
+          "sourceBlockId": "directions-brutes",
+          "label": "Directions ouvertes",
+          "emptyText": "Les directions retenues seront rappelées ici."
+        },
+        {
+          "id": "boussole",
+          "type": "textarea",
+          "label": "Quelle boussole vous évitera de vous perdre ?",
+          "placeholder": "Ce à quoi je veux rester fidèle..."
+        }
+      ]
+    },
+    {
+      "id": "page-09",
+      "movementId": "exploration",
+      "order": 9,
+      "title": "Entrer dans une possibilité",
+      "blocks": [
+        {
+          "id": "possibilite-intro",
+          "type": "text",
+          "text": "Choisir provisoirement une piste sans la considérer comme définitive."
+        },
+        {
+          "id": "boussole-recall-page-09",
+          "type": "recall",
+          "sourceBlockId": "boussole",
+          "label": "Votre boussole",
+          "emptyText": "Votre boussole sera rappelée ici."
+        },
+        {
+          "id": "piste-provisoire",
+          "type": "textarea",
+          "label": "Formulez la piste que vous acceptez d'explorer.",
+          "placeholder": "Je vais explorer..."
+        }
+      ]
+    },
+    {
+      "id": "page-10",
+      "movementId": "exploration",
+      "order": 10,
+      "title": "Déplacer le regard",
+      "blocks": [
+        {
+          "id": "regard-intro",
+          "type": "text",
+          "text": "Observer la même situation depuis plusieurs positions narratives."
+        },
+        {
+          "id": "regard-prompt",
+          "type": "promptCopy",
+          "label": "Copier un prompt de déplacement du regard",
+          "description": "Le prompt invite l'assistant extérieur à proposer des angles, sans écrire à votre place.",
+          "text": "À partir de cette piste, propose trois points de vue qui transformeraient profondément la perception de la situation. Décris l'effet de chaque point de vue sans rédiger la scène."
+        },
+        {
+          "id": "regard-deplace",
+          "type": "textarea",
+          "label": "Quel déplacement du regard vous intéresse ?",
+          "placeholder": "Regarder depuis..."
+        }
+      ]
+    },
+    {
+      "id": "page-11",
+      "movementId": "exploration",
+      "order": 11,
+      "title": "Et si ?",
+      "blocks": [
+        {
+          "id": "et-si-intro",
+          "type": "text",
+          "text": "Utiliser l'hypothèse comme moteur créatif."
+        },
+        {
+          "id": "etincelle-recall-page-11",
+          "type": "recall",
+          "sourceBlockId": "etincelle",
+          "label": "L'étincelle qui accompagne les hypothèses",
+          "emptyText": "Votre étincelle sera rappelée ici."
+        },
+        {
+          "id": "hypothese-prompt",
+          "type": "promptCopy",
+          "label": "Copier un prompt d'hypothèses",
+          "description": "Le prompt demande des questions et possibilités, pas une solution.",
+          "text": "À partir de cette situation, formule cinq hypothèses commençant par Et si. Chaque hypothèse doit déplacer le récit sans décider à ma place."
+        },
+        {
+          "id": "hypothese-forte",
+          "type": "textarea",
+          "label": "Quelle hypothèse mérite d'être gardée ?",
+          "placeholder": "Et si..."
+        }
+      ]
+    },
+    {
+      "id": "page-12",
+      "movementId": "exploration",
+      "order": 12,
+      "title": "Faire apparaître l'inattendu",
+      "blocks": [
+        {
+          "id": "inattendu-intro",
+          "type": "text",
+          "text": "Introduire volontairement un déplacement susceptible de surprendre l'auteur."
+        },
+        {
+          "id": "inattendu-prompt",
+          "type": "promptCopy",
+          "label": "Copier un prompt pour chercher l'inattendu",
+          "description": "Le prompt ouvre une surprise possible sans la transformer en obligation.",
+          "text": "Propose trois déplacements inattendus qui pourraient surprendre l'auteur de cette piste. Pour chacun, précise ce qu'il révèle et ce qu'il risque d'abîmer."
+        },
+        {
+          "id": "inattendu-retenu",
+          "type": "choice",
+          "label": "Que souhaitez-vous faire de l'inattendu ?",
+          "options": [
+            {
+              "id": "garder",
+              "label": "Le garder"
+            },
+            {
+              "id": "transformer",
+              "label": "Le transformer"
+            },
+            {
+              "id": "ecarter",
+              "label": "L'écarter"
+            }
+          ]
+        },
+        {
+          "id": "inattendu-note",
+          "type": "textarea",
+          "label": "Notez ce que cet inattendu déplace.",
+          "placeholder": "Cela change..."
+        }
+      ]
+    },
+    {
+      "id": "page-13",
+      "movementId": "discernement",
+      "order": 13,
+      "title": "Tout ce qui est possible n'est pas juste",
+      "blocks": [
+        {
+          "id": "discernement-intro",
+          "type": "text",
+          "text": "Introduire le discernement : une possibilité séduisante n'est pas forcément juste pour ce récit."
+        },
+        {
+          "id": "boussole-recall-page-13",
+          "type": "recall",
+          "sourceBlockId": "boussole",
+          "label": "Votre boussole de discernement",
+          "emptyText": "Votre boussole sera rappelée ici."
+        },
+        {
+          "id": "piste-recall-page-13",
+          "type": "recall",
+          "sourceBlockId": "piste-provisoire",
+          "label": "La piste explorée",
+          "emptyText": "Votre piste sera rappelée ici."
+        }
+      ]
+    },
+    {
+      "id": "page-14",
+      "movementId": "discernement",
+      "order": 14,
+      "title": "Reconnaître ce qui résonne",
+      "blocks": [
+        {
+          "id": "resonance-intro",
+          "type": "text",
+          "text": "Comparer différentes propositions en revenant à ce qui résonne vraiment."
+        },
+        {
+          "id": "directions-recall-page-14",
+          "type": "recall",
+          "sourceBlockId": "directions-brutes",
+          "label": "Possibles encore présents",
+          "emptyText": "Les possibles retenus seront rappelés ici."
+        },
+        {
+          "id": "criteres-resonance",
+          "type": "textarea",
+          "label": "À quoi reconnaissez-vous qu'une piste résonne ?",
+          "placeholder": "Je reconnais une piste juste quand..."
+        }
+      ]
+    },
+    {
+      "id": "page-15",
+      "movementId": "discernement",
+      "order": 15,
+      "title": "Choisir et renoncer",
+      "blocks": [
+        {
+          "id": "choisir-renoncer-intro",
+          "type": "text",
+          "text": "Créer signifie également écarter."
+        },
+        {
+          "id": "choix-direction",
+          "type": "choice",
+          "label": "Quel geste de choix devez-vous poser maintenant ?",
+          "options": [
+            {
+              "id": "conserver",
+              "label": "Conserver une piste"
+            },
+            {
+              "id": "fusionner",
+              "label": "Fusionner deux pistes"
+            },
+            {
+              "id": "renoncer",
+              "label": "Renoncer à une piste séduisante"
+            }
+          ]
+        },
+        {
+          "id": "choix-assume",
+          "type": "textarea",
+          "label": "Formulez le choix que vous assumez.",
+          "placeholder": "Je choisis..."
+        },
+        {
+          "id": "renoncement",
+          "type": "textarea",
+          "label": "Formulez ce à quoi vous acceptez de renoncer.",
+          "placeholder": "Je laisse de côté..."
+        }
+      ]
+    },
+    {
+      "id": "page-16",
+      "movementId": "discernement",
+      "order": 16,
+      "title": "Retrouver sa voix",
+      "blocks": [
+        {
+          "id": "voix-intro",
+          "type": "text",
+          "text": "Identifier ce qui appartient réellement au projet de l'auteur et ce qui semble seulement séduisant, efficace ou générique."
+        },
+        {
+          "id": "choix-recall-page-16",
+          "type": "recall",
+          "sourceBlockId": "choix-assume",
+          "label": "Votre choix assumé",
+          "emptyText": "Votre choix sera rappelé ici."
+        },
+        {
+          "id": "voix-recherchee",
+          "type": "textarea",
+          "label": "Comment reconnaissez-vous votre voix dans ce projet ?",
+          "placeholder": "Ma voix tient à..."
+        },
+        {
+          "id": "voix-reveal",
+          "type": "reveal",
+          "label": "Lire un repère pour reconnaître sa voix",
+          "content": "Une proposition peut être brillante et ne pas être juste. La voix de l'auteur se reconnaît parfois à ce qu'il refuse."
+        }
+      ]
+    },
+    {
+      "id": "page-17",
+      "movementId": "ecriture",
+      "order": 17,
+      "title": "Reprendre la main",
+      "blocks": [
+        {
+          "id": "reprendre-main-intro",
+          "type": "text",
+          "text": "Passer de l'exploration assistée à l'acte d'écriture."
+        },
+        {
+          "id": "voix-recall-page-17",
+          "type": "recall",
+          "sourceBlockId": "voix-recherchee",
+          "label": "Votre repère de voix",
+          "emptyText": "Votre repère de voix sera rappelé ici."
+        },
+        {
+          "id": "matiere-premiere",
+          "type": "textarea",
+          "label": "Quelle matière gardez-vous pour écrire ?",
+          "placeholder": "Je garde..."
+        }
+      ]
+    },
+    {
+      "id": "page-18",
+      "movementId": "ecriture",
+      "order": 18,
+      "title": "Composer",
+      "blocks": [
+        {
+          "id": "composer-intro",
+          "type": "text",
+          "text": "Réunir les éléments retenus dans une première forme."
+        },
+        {
+          "id": "choix-recall-page-18",
+          "type": "recall",
+          "sourceBlockId": "choix-assume",
+          "label": "Le choix qui guide la composition",
+          "emptyText": "Votre choix sera rappelé ici."
+        },
+        {
+          "id": "premiere-forme",
+          "type": "textarea",
+          "label": "Écrivez une première forme, même brève.",
+          "placeholder": "Première forme..."
+        }
+      ]
+    },
+    {
+      "id": "page-19",
+      "movementId": "ecriture",
+      "order": 19,
+      "title": "Écrire ensemble sans déléguer",
+      "blocks": [
+        {
+          "id": "sans-deleguer-intro",
+          "type": "text",
+          "text": "Explorer plusieurs usages possibles de l'IA : contradiction, variantes, questions, alternatives ou critique, plutôt que substitution."
+        },
+        {
+          "id": "premiere-forme-recall-page-19",
+          "type": "recall",
+          "sourceBlockId": "premiere-forme",
+          "label": "Votre première forme",
+          "emptyText": "Votre première forme sera rappelée ici."
+        },
+        {
+          "id": "dialogue-ia-prompt",
+          "type": "promptCopy",
+          "label": "Copier un prompt de confrontation",
+          "description": "Le prompt demande un retour critique sans déléguer l'écriture.",
+          "text": "À partir de cette première forme, pose cinq questions qui pourraient la rendre plus précise. Propose ensuite trois alternatives possibles sans réécrire le texte à ma place."
+        },
+        {
+          "id": "usage-ia-choisi",
+          "type": "choice",
+          "label": "Quel usage de l'IA reste acceptable ici ?",
+          "options": [
+            {
+              "id": "questions",
+              "label": "Recevoir des questions"
+            },
+            {
+              "id": "contradiction",
+              "label": "Chercher une contradiction"
+            },
+            {
+              "id": "alternatives",
+              "label": "Voir des alternatives"
+            },
+            {
+              "id": "aucun",
+              "label": "Ne pas utiliser l'IA ici"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "page-20",
+      "movementId": "ecriture",
+      "order": 20,
+      "title": "Laisser une place à l'auteur",
+      "blocks": [
+        {
+          "id": "place-auteur-intro",
+          "type": "text",
+          "text": "Préserver volontairement des espaces que l'IA ne remplit pas."
+        },
+        {
+          "id": "part-auteur",
+          "type": "textarea",
+          "label": "Quelle part doit rester seulement à vous ?",
+          "placeholder": "Ce que je ne délègue pas..."
+        },
+        {
+          "id": "place-auteur-reveal",
+          "type": "reveal",
+          "label": "Lire une note sur la part de l'auteur",
+          "content": "Ne pas tout déléguer n'est pas une faiblesse du parcours. C'est le lieu même de la création."
+        }
+      ]
+    },
+    {
+      "id": "page-21",
+      "movementId": "transformation",
+      "order": 21,
+      "title": "Le texte n'est pas terminé",
+      "blocks": [
+        {
+          "id": "texte-pas-termine-intro",
+          "type": "text",
+          "text": "Introduire la réécriture."
+        },
+        {
+          "id": "premiere-forme-recall-page-21",
+          "type": "recall",
+          "sourceBlockId": "premiere-forme",
+          "label": "La première forme à transformer",
+          "emptyText": "Votre première forme sera rappelée ici."
+        },
+        {
+          "id": "relecture-note",
+          "type": "textarea",
+          "label": "Que voyez-vous maintenant dans cette première forme ?",
+          "placeholder": "Je remarque..."
+        }
+      ]
+    },
+    {
+      "id": "page-22",
+      "movementId": "transformation",
+      "order": 22,
+      "title": "Transformer plutôt que corriger",
+      "blocks": [
+        {
+          "id": "transformer-intro",
+          "type": "text",
+          "text": "Déplacer rythme, structure, voix, images ou tension."
+        },
+        {
+          "id": "transformation-prompt",
+          "type": "promptCopy",
+          "label": "Copier un prompt de transformation",
+          "description": "Le prompt propose des transformations sans imposer une correction automatique.",
+          "text": "À partir de cette première forme, propose trois transformations possibles : une transformation de rythme, une transformation de structure et une transformation de voix. Explique ce que chaque transformation change sans produire de version finale."
+        },
+        {
+          "id": "transformation-choisie",
+          "type": "textarea",
+          "label": "Quelle transformation souhaitez-vous tenter ?",
+          "placeholder": "Je transforme..."
+        }
+      ]
+    },
+    {
+      "id": "page-23",
+      "movementId": "transformation",
+      "order": 23,
+      "title": "Faire sien",
+      "blocks": [
+        {
+          "id": "faire-sien-intro",
+          "type": "text",
+          "text": "Retravailler ce qui a éventuellement émergé du dialogue avec l'IA jusqu'à ce que le texte appartienne réellement à l'auteur."
+        },
+        {
+          "id": "voix-recall-page-23",
+          "type": "recall",
+          "sourceBlockId": "voix-recherchee",
+          "label": "Votre voix comme repère",
+          "emptyText": "Votre repère de voix sera rappelé ici."
+        },
+        {
+          "id": "version-a-moi",
+          "type": "textarea",
+          "label": "Formulez ce qui devient vraiment vôtre.",
+          "placeholder": "Cette version m'appartient parce que..."
+        }
+      ]
+    },
+    {
+      "id": "page-24",
+      "movementId": "transformation",
+      "order": 24,
+      "title": "Savoir s'arrêter",
+      "blocks": [
+        {
+          "id": "savoir-arreter-intro",
+          "type": "text",
+          "text": "Reconnaître le moment où davantage d'assistance ou de variations n'améliore plus le texte."
+        },
+        {
+          "id": "arret-choice",
+          "type": "choice",
+          "label": "Quel signal vous indique qu'il faut s'arrêter ?",
+          "options": [
+            {
+              "id": "clarte",
+              "label": "Le texte devient plus clair"
+            },
+            {
+              "id": "saturation",
+              "label": "Les variations n'ajoutent plus rien"
+            },
+            {
+              "id": "justesse",
+              "label": "La voix semble juste"
+            }
+          ]
+        },
+        {
+          "id": "critere-arret",
+          "type": "textarea",
+          "label": "Formulez votre critère d'arrêt.",
+          "placeholder": "Je m'arrête lorsque..."
+        }
+      ]
+    },
+    {
+      "id": "page-25",
+      "movementId": "creation",
+      "order": 25,
+      "title": "Votre récit",
+      "blocks": [
+        {
+          "id": "votre-recit-intro",
+          "type": "text",
+          "text": "Revenir à l'étincelle initiale et observer le chemin parcouru."
+        },
+        {
+          "id": "etincelle-recall-page-25",
+          "type": "recall",
+          "sourceBlockId": "etincelle",
+          "label": "Ce dont vous êtes parti",
+          "emptyText": "Votre étincelle sera rappelée ici."
+        },
+        {
+          "id": "choix-recall-page-25",
+          "type": "recall",
+          "sourceBlockId": "choix-assume",
+          "label": "Ce que vous avez choisi",
+          "emptyText": "Votre choix sera rappelé ici."
+        },
+        {
+          "id": "version-recall-page-25",
+          "type": "recall",
+          "sourceBlockId": "version-a-moi",
+          "label": "Ce qui vous appartient désormais",
+          "emptyText": "Votre version personnelle sera rappelée ici."
+        },
+        {
+          "id": "chemin-parcouru",
+          "type": "textarea",
+          "label": "Que percevez-vous du chemin parcouru ?",
+          "placeholder": "Je vois maintenant..."
+        }
+      ]
+    },
+    {
+      "id": "page-26",
+      "movementId": "creation",
+      "order": 26,
+      "title": "Continuer sans l'atelier",
+      "blocks": [
+        {
+          "id": "cloture-intro",
+          "type": "text",
+          "text": "Clôturer le parcours en rappelant que l'objectif est une manière de travailler librement réutilisable."
+        },
+        {
+          "id": "version-recall-page-26",
+          "type": "recall",
+          "sourceBlockId": "version-a-moi",
+          "label": "Votre trace de création",
+          "emptyText": "Votre trace de création sera rappelée ici."
+        },
+        {
+          "id": "critere-arret-recall-page-26",
+          "type": "recall",
+          "sourceBlockId": "critere-arret",
+          "label": "Votre critère d'arrêt",
+          "emptyText": "Votre critère d'arrêt sera rappelé ici."
+        },
+        {
+          "id": "cloture-reveal",
+          "type": "reveal",
+          "label": "Lire la phrase de sortie",
+          "content": "L'IA peut ouvrir des possibles. C'est encore à vous de décider lesquels méritent de devenir un récit."
+        }
+      ]
+    }
+  ]
+}
