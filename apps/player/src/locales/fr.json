@@ -44,5 +44,7 @@
   "workshopPromptCopyAction": "Copier le prompt",
   "workshopPromptCopySuccess": "Prompt copié",
   "workshopPromptCopyFailure": "La copie automatique n'a pas fonctionné. Le prompt reste disponible pour une copie manuelle.",
-  "workshopRecallEmptyText": "Aucune réponse formulée à cette étape."
+  "workshopRecallEmptyText": "Aucune réponse formulée à cette étape.",
+  "workshopClearProgress": "Effacer ma progression",
+  "workshopClearProgressConfirm": "Confirmer l'effacement"
 }

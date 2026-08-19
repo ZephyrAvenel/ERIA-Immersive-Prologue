@@ -281,6 +281,7 @@ export interface RenderWorkshopState {
   readonly onCopyText?: (text: string) => Promise<boolean>;
   readonly controls: HTMLElement;
   readonly exitControl?: HTMLElement;
+  readonly resetControl?: HTMLElement;
   readonly messages: WorkshopRendererMessages;
 }
 
@@ -564,6 +565,7 @@ export function renderWorkshop(target: HTMLElement, state: RenderWorkshopState):
   const footer = document.createElement("footer");
   footer.className = "workshop-player__footer";
   footer.append(progress, state.controls);
+  if (state.resetControl) footer.append(state.resetControl);
   if (state.exitControl) footer.append(state.exitControl);
 
   shell.append(header, article, footer);

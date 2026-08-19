@@ -10,6 +10,7 @@ import test from "node:test";
 const baseUrl = "/ERIA-Immersive-Prologue/";
 const artifactsDir = "test-results/e2e";
 const progressStorageKey = "ine:progress:v1:les-gardiens-des-recits-vivants";
+const workshopProgressStorageKey = "ine:workshop-progress:v1:workshop-demo";
 const publicThresholdSessionKey = "ine:public-threshold:v1:recits-vivants";
 const publicThresholdSkipHomeIntroKey = `${publicThresholdSessionKey}:skip-home-intro-once`;
 
@@ -360,6 +361,7 @@ async function readWorkshopState(client) {
       const promptButton = document.querySelector('.workshop-prompt-copy__button');
       const promptStatus = document.querySelector('.workshop-prompt-copy__status');
       const recall = document.querySelector('.workshop-recall__content');
+      const reset = document.querySelector('.workshop-reset');
       const pageRect = page?.getBoundingClientRect();
       const controlsRect = controls?.getBoundingClientRect();
       return {
@@ -382,6 +384,7 @@ async function readWorkshopState(client) {
         promptStatus: promptStatus?.textContent ?? null,
         copiedPrompt: window.__ineCopiedPrompt ?? null,
         recallText: recall?.textContent ?? null,
+        resetText: reset?.textContent ?? null,
         revealExpanded: revealButton?.getAttribute('aria-expanded') ?? null,
         revealControls: revealButton?.getAttribute('aria-controls') ?? null,
         revealContentId: revealContent?.id ?? null,
@@ -407,6 +410,16 @@ async function readStoredProgress(client) {
     client,
     `(() => {
       const raw = localStorage.getItem(${JSON.stringify(progressStorageKey)});
+      return raw ? JSON.parse(raw) : null;
+    })()`,
+  );
+}
+
+async function readStoredWorkshopProgress(client) {
+  return evaluate(
+    client,
+    `(() => {
+      const raw = localStorage.getItem(${JSON.stringify(workshopProgressStorageKey)});
       return raw ? JSON.parse(raw) : null;
     })()`,
   );
@@ -574,6 +587,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
   const consoleErrors = [];
   const failedRequests = [];
   const imageResponses = [];
+  const isIgnorableDevServerLog = (entry) =>
+    entry.source === "network" &&
+    String(entry.text).includes(`WebSocket connection to 'ws://127.0.0.1:${port}`) &&
+    String(entry.text).includes("Page entered Back-Forward Cache.");
 
   try {
     await page.send("Page.enable");
@@ -584,7 +601,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       if (event.type === "error") consoleErrors.push(event);
     });
     page.on("Log.entryAdded", (event) => {
-      if (event.entry.level === "error") consoleErrors.push(event.entry);
+      if (event.entry.level === "error" && !isIgnorableDevServerLog(event.entry)) consoleErrors.push(event.entry);
     });
     page.on("Network.responseReceived", (event) => {
       const status = event.response.status;
@@ -929,6 +946,20 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(revealedWorkshop.revealText.includes("reste ouvert pendant cette travers\u00e9e"), true);
     assert.equal(["ARTICLE", "BUTTON"].includes(revealedWorkshop.activeTag), true);
     await evaluate(page, "document.querySelector('#workshop-page')?.focus()");
+    const savedWorkshopProgress = await readStoredWorkshopProgress(page);
+    assert.equal(savedWorkshopProgress.pageId, "page-04");
+    assert.equal(savedWorkshopProgress.completed, true);
+    assert.equal(savedWorkshopProgress.responses["technical-note"], "<script>alert(\"test\")</script> Une premi\u00e8re trace");
+    assert.equal(savedWorkshopProgress.responses["technical-choice"], "reveler");
+    assert.equal(savedWorkshopProgress.responses["technical-reveal"], true);
+    assert.equal("technical-prompt" in savedWorkshopProgress.responses, false);
+
+    await loadUrl(page, workshopDemoUrl);
+    await waitForWorkshopReady(page, "04 / 04");
+    const restoredWorkshop = await readWorkshopState(page);
+    assert.equal(restoredWorkshop.recallText, "<script>alert(\"test\")</script> Une premi\u00e8re trace");
+    assert.equal(restoredWorkshop.revealExpanded, "true");
+    assert.equal(restoredWorkshop.revealHidden, false);
 
     for (const viewport of [
       { width: 1280, height: 800 },
@@ -972,7 +1003,30 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(returnedReveal.revealExpanded, "true");
     assert.equal(returnedReveal.revealHidden, false);
 
-    await evaluate(page, "document.querySelector('.workshop-exit')?.click()");
+    await evaluate(page, `localStorage.setItem(${JSON.stringify(`${workshopProgressStorageKey}:sentinel`)}, "keep")`);
+    assert.equal((await readStoredWorkshopProgress(page)).responses["technical-note"], "Une trace r\u00e9\u00e9crite depuis le retour");
+    await evaluate(page, "document.querySelector('.workshop-reset')?.click()");
+    assert.equal((await readWorkshopState(page)).resetText, "Confirmer l'effacement");
+    await evaluate(page, "document.querySelector('.workshop-reset')?.click()");
+    await waitForWorkshopReady(page, "01 / 04");
+    assert.equal(await readStoredWorkshopProgress(page), null);
+    assert.equal(
+      await evaluate(page, `localStorage.getItem(${JSON.stringify(`${workshopProgressStorageKey}:sentinel`)})`),
+      "keep",
+    );
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
+    await waitForWorkshopReady(page, "02 / 04");
+    assert.equal((await readWorkshopState(page)).textareaValue, "");
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
+    await waitForWorkshopReady(page, "03 / 04");
+    assert.deepEqual((await readWorkshopState(page)).checkedChoices, []);
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
+    await waitForWorkshopReady(page, "04 / 04");
+    const clearedWorkshop = await readWorkshopState(page);
+    assert.equal(clearedWorkshop.recallText, "Aucune note technique n'a encore \u00e9t\u00e9 formul\u00e9e.");
+    assert.equal(clearedWorkshop.revealExpanded, "false");
+
+    await loadUrl(page, workshopsUrl);
     await waitForExpression(page, "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 4");
 
     await loadUrl(page, libraryUrl);

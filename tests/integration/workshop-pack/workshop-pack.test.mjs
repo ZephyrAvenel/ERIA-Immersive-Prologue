@@ -4,8 +4,30 @@ import {
   loadWorkshopPack,
   WorkshopEngine,
 } from "../../../.test-build/packages/core/src/index.js";
+import {
+  WorkshopProgressStore,
+  createWorkshopProgress,
+} from "../../../.test-build/apps/player/src/workshop-progress.js";
 import { validateWorkshopPack } from "../../../.test-build/packages/validators/src/index.js";
 import { readJsonFixture, readProjectJson } from "../../helpers/fixtures.mjs";
+
+class MemoryStorage {
+  constructor() {
+    this.values = new Map();
+  }
+
+  getItem(key) {
+    return this.values.get(key) ?? null;
+  }
+
+  setItem(key, value) {
+    this.values.set(key, value);
+  }
+
+  removeItem(key) {
+    this.values.delete(key);
+  }
+}
 
 test("technical workshop fixture is valid, declarative, and navigable", async () => {
   const fixture = await readJsonFixture("workshop/valid", "minimal.json");
@@ -84,4 +106,44 @@ test("technical workshop demo covers the minimal runtime traversal", async () =>
   assert.equal(engine.currentPage.id, "page-04");
   engine.previous();
   assert.equal(engine.currentPage.id, "page-03");
+});
+
+test("workshop progress restores local responses into a new traversal instance", async () => {
+  const demo = await readProjectJson("examples", "workshop-demo", "pack.json");
+  const storage = new MemoryStorage();
+  const store = new WorkshopProgressStore(storage);
+  const firstEngine = new WorkshopEngine(demo);
+  const responses = new Map();
+
+  firstEngine.next();
+  responses.set("technical-note", "Une trace restaurée");
+  firstEngine.next();
+  responses.set("technical-choice", "reveler");
+  firstEngine.next();
+  responses.set("technical-reveal", true);
+  store.save(createWorkshopProgress({
+    workshopId: demo.id,
+    workshopVersion: demo.version,
+    pageId: firstEngine.currentPage.id,
+    completed: !firstEngine.canGoNext,
+    responses,
+  }));
+
+  const restored = store.load(demo.id, demo.version, demo.pages);
+  const secondEngine = new WorkshopEngine(demo);
+  const restoredResponses = new Map(Object.entries(restored.responses));
+  secondEngine.goToPage(restored.pageId);
+
+  assert.equal(secondEngine.currentPage.id, "page-04");
+  assert.equal(restored.completed, true);
+  assert.equal(restoredResponses.get("technical-note"), "Une trace restaurée");
+  assert.equal(restoredResponses.get("technical-choice"), "reveler");
+  assert.equal(restoredResponses.get("technical-reveal"), true);
+  assert.equal(
+    restoredResponses.get(demo.pages[3].blocks.find((block) => block.type === "recall").sourceBlockId),
+    "Une trace restaurée",
+  );
+
+  store.clear(demo.id);
+  assert.equal(store.load(demo.id, demo.version, demo.pages), null);
 });

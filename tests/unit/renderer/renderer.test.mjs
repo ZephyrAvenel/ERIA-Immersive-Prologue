@@ -88,6 +88,7 @@ function createLivingCard() {
 
 function createWorkshopState(overrides = {}) {
   const controls = new FakeElement("nav");
+  controls.className = "workshop-controls";
   const previous = new FakeElement("button");
   previous.textContent = "Précédent";
   const next = new FakeElement("button");
@@ -160,6 +161,23 @@ test("WorkshopRenderer renders workshop identity, movement, text blocks, and pro
     assert.equal(findElement(target, ".workshop-progress__text").textContent, "03 / 04");
     assert.equal(findElements(target, "button").length, 2);
     assert.equal(findElement(target, "#workshop-page").focused, true);
+  }));
+
+test("WorkshopRenderer renders reset and exit controls without replacing navigation", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    const reset = new FakeElement("button");
+    reset.className = "workshop-reset";
+    reset.textContent = "Effacer ma progression";
+    const exit = new FakeElement("a");
+    exit.className = "workshop-exit";
+    exit.textContent = "Revenir aux ateliers";
+
+    renderWorkshop(target, createWorkshopState({ resetControl: reset, exitControl: exit }));
+
+    assert.equal(findElements(findElement(target, ".workshop-controls"), "button").length, 2);
+    assert.equal(findElement(target, ".workshop-reset").textContent, "Effacer ma progression");
+    assert.equal(findElement(target, ".workshop-exit").textContent, "Revenir aux ateliers");
   }));
 
 test("WorkshopRenderer renders textarea blocks and reports local text changes safely", () =>

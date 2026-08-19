@@ -48,6 +48,8 @@ export interface LocaleMessages {
   readonly workshopPromptCopySuccess: string;
   readonly workshopPromptCopyFailure: string;
   readonly workshopRecallEmptyText: string;
+  readonly workshopClearProgress: string;
+  readonly workshopClearProgressConfirm: string;
 }
 
 export const locales: Readonly<Record<string, LocaleMessages>> = {

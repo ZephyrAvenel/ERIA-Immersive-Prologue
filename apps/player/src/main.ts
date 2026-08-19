@@ -38,6 +38,10 @@ import {
   resolveProgressSceneIndex,
 } from "./progress";
 import {
+  createBrowserWorkshopProgressStore,
+  createWorkshopProgress,
+} from "./workshop-progress";
+import {
   findRegistryEntryBySlug,
   loadCatalog,
   loadPackRegistry,
@@ -971,7 +975,16 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
     skipLink.textContent = messages.skipToNarrative;
   }
   let navigationInProgress = false;
+  let clearConfirmationPending = false;
   const responses = new Map<string, WorkshopResponseValue>();
+  const progressStore = createBrowserWorkshopProgressStore();
+  const savedProgress = progressStore.load(pack.id, pack.version, pack.pages);
+  if (savedProgress) {
+    engine.goToPage(savedProgress.pageId);
+    for (const [blockId, value] of Object.entries(savedProgress.responses)) {
+      responses.set(blockId, value);
+    }
+  }
 
   const movementForCurrentPage = () => {
     const movement = pack.movements.find((candidate) => candidate.id === engine.currentPage.movementId);
@@ -987,6 +1000,45 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
     } catch {
       return false;
     }
+  };
+
+  const saveCurrentProgress = (): void => {
+    progressStore.save(
+      createWorkshopProgress({
+        workshopId: pack.id,
+        workshopVersion: pack.version,
+        pageId: engine.currentPage.id,
+        completed: !engine.canGoNext,
+        responses,
+      }),
+    );
+  };
+
+  const clearProgress = (): void => {
+    progressStore.clear(pack.id);
+    responses.clear();
+    engine.goToPage(pack.startPage);
+    clearConfirmationPending = false;
+    render();
+  };
+
+  const createResetControl = (): HTMLButtonElement => {
+    const button = createButton(
+      clearConfirmationPending ? messages.workshopClearProgressConfirm : messages.workshopClearProgress,
+      () => {
+        if (!clearConfirmationPending) {
+          clearConfirmationPending = true;
+          button.textContent = messages.workshopClearProgressConfirm;
+          button.dataset.confirming = "true";
+          button.focus();
+          return;
+        }
+        clearProgress();
+      },
+    );
+    button.className = "workshop-reset";
+    if (clearConfirmationPending) button.dataset.confirming = "true";
+    return button;
   };
 
   const render = (): void => {
@@ -1020,10 +1072,12 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
       responses,
       onResponseChange: (blockId, value) => {
         responses.set(blockId, value);
+        saveCurrentProgress();
       },
       onCopyText: copyText,
       controls,
       exitControl: !engine.canGoNext ? exit : undefined,
+      resetControl: createResetControl(),
       messages: {
         landmarkLabel: messages.workshopPackLabel,
         progressLabel: messages.workshopProgressLabel,
@@ -1052,6 +1106,7 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
       navigationInProgress = false;
       try {
         render();
+        saveCurrentProgress();
       } finally {
         mount.removeAttribute("aria-busy");
       }
