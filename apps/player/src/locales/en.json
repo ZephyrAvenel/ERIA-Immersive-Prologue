@@ -18,6 +18,10 @@
   "errorTitle": "Unable to load the Narrative Pack",
   "errorMessage": "The player could not open this Narrative Pack.",
   "unknownError": "Unknown player error",
+  "homeTitle": "INE home",
+  "homeHeroTitle": "Two ways to enter INE",
+  "homeHeroDescription": "Choose an orientation: journey through a narrative experience or prepare an augmented creation.",
+  "homePrompt": "Two doors, one shared attention to living stories.",
   "libraryTitle": "Immersive works library",
   "libraryHeroTitle": "A habitable narrative world",
   "libraryHeroSignature": "Living Stories are not only stories to read. They are worlds to explore, passages to cross, and experiences that invite each person to inhabit reality differently.",
@@ -25,5 +29,11 @@
   "libraryDescription": "Choose an entryway. Each journey opens a different way to explore the Living Stories.",
   "exploreWork": "Explore",
   "libraryAction": "Explore the works",
+  "workshopsTitle": "Augmented workshops",
+  "workshopsHeroTitle": "Learn to create with AI",
+  "workshopsDescription": "These workshops are prepared as future creative learning paths. They are declared in INE, but their pedagogical content is not open yet.",
+  "workshopsStatusPlanned": "Planned",
+  "workshopsNoAccess": "Path in preparation",
+  "homeAction": "Enter",
   "continueExploration": "Continue exploring"
 }

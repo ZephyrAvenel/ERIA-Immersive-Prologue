@@ -518,29 +518,181 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
 
     const entryUrl = `http://127.0.0.1:${port}${baseUrl}`;
     const libraryUrl = `${entryUrl}bibliotheque/`;
+    const workshopsUrl = `${entryUrl}ateliers/`;
     const url = `${entryUrl}oeuvres/les-gardiens-des-recits-vivants/`;
     await page.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
     });
     await loadUrl(page, entryUrl);
-    await waitForPrologueReady(page);
+    await waitForExpression(page, "document.querySelectorAll('.orientation-door').length === 2");
     const entryState = await evaluate(
       page,
       `({
-        title: document.querySelector('.prologue__title')?.textContent,
-        libraryHref: document.querySelector('.site-navigation a')?.href,
-        libraryLabel: document.querySelector('.site-navigation a')?.getAttribute('aria-label'),
-        libraryTitle: document.querySelector('.site-navigation a')?.getAttribute('title'),
-        libraryIconHidden: document.querySelector('.site-navigation svg')?.getAttribute('aria-hidden'),
+        language: navigator.language,
+        title: document.querySelector('#home-title')?.textContent,
+        doors: Array.from(document.querySelectorAll('.orientation-door')).map((door) => ({
+          family: door.getAttribute('data-family'),
+          orientation: door.querySelector('.orientation-door__orientation')?.textContent,
+          title: door.querySelector('h2')?.textContent,
+          description: Array.from(door.querySelectorAll('p')).at(-1)?.textContent,
+          href: door.querySelector('a')?.href,
+          linkLabel: door.querySelector('a')?.getAttribute('aria-label')
+        })),
         noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
       })`,
     );
-    assert.equal(entryState.title, "Le Seuil");
-    assert.equal(entryState.libraryHref.endsWith("/bibliotheque/"), true);
-    assert.equal(entryState.libraryLabel, "Explorer les œuvres");
-    assert.equal(entryState.libraryTitle, "Explorer les œuvres");
-    assert.equal(entryState.libraryIconHidden, "true");
+    const entryIsFrench = entryState.language.toLowerCase().startsWith("fr");
+    assert.equal(
+      entryState.title,
+      entryIsFrench ? "Deux mani\u00e8res d\u2019entrer dans l\u2019INE" : "Two ways to enter INE",
+    );
+    assert.deepEqual(
+      entryState.doors,
+      entryIsFrench
+        ? [
+            {
+              family: "narrative-packs",
+              orientation: "VIVRE",
+              title: "Packs narratifs",
+              description: "Des exp\u00e9riences narratives \u00e0 traverser.",
+              href: libraryUrl,
+              linkLabel: "Entrer \u2014 VIVRE, Packs narratifs",
+            },
+            {
+              family: "augmented-workshops",
+              orientation: "CR\u00c9ER",
+              title: "Ateliers augment\u00e9s",
+              description: "Des formations cr\u00e9atives pour apprendre \u00e0 cr\u00e9er avec l\u2019IA.",
+              href: workshopsUrl,
+              linkLabel: "Entrer \u2014 CR\u00c9ER, Ateliers augment\u00e9s",
+            },
+          ]
+        : [
+            {
+              family: "narrative-packs",
+              orientation: "LIVE",
+              title: "Narrative Packs",
+              description: "Narrative experiences to journey through.",
+              href: libraryUrl,
+              linkLabel: "Enter \u2014 LIVE, Narrative Packs",
+            },
+            {
+              family: "augmented-workshops",
+              orientation: "CREATE",
+              title: "Augmented workshops",
+              description: "Creative learning paths for learning to create with AI.",
+              href: workshopsUrl,
+              linkLabel: "Enter \u2014 CREATE, Augmented workshops",
+            },
+          ],
+    );
     assert.equal(entryState.noHorizontalOverflow, true);
+
+    await loadUrl(page, workshopsUrl);
+    await waitForExpression(page, "document.querySelectorAll('.workshop-card').length === 4");
+    const workshopsState = await evaluate(
+      page,
+      `({
+        language: navigator.language,
+        title: document.querySelector('#workshops-title')?.textContent,
+        cards: Array.from(document.querySelectorAll('.workshop-card')).map((card) => ({
+          id: card.getAttribute('data-workshop-id'),
+          status: card.getAttribute('data-status'),
+          visibleStatus: card.querySelector('.workshop-card__status')?.textContent,
+          orientation: card.querySelector('.workshop-card__orientation')?.textContent,
+          title: card.querySelector('h2')?.textContent,
+          description: Array.from(card.querySelectorAll('p')).at(-2)?.textContent,
+          linkCount: card.querySelectorAll('a').length
+        })),
+        noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
+      })`,
+    );
+    const workshopsIsFrench = workshopsState.language.toLowerCase().startsWith("fr");
+    assert.equal(
+      workshopsState.title,
+      workshopsIsFrench ? "Apprendre \u00e0 cr\u00e9er avec l\u2019IA" : "Learn to create with AI",
+    );
+    assert.deepEqual(
+      workshopsState.cards,
+      workshopsIsFrench
+        ? [
+            {
+              id: "ecriture-augmentee",
+              status: "planned",
+              visibleStatus: "Pr\u00e9vu",
+              orientation: "\u00c9CRIRE",
+              title: "\u00c9criture augment\u00e9e",
+              description: "\u00c9crire avec l\u2019IA sans lui abandonner sa voix.",
+              linkCount: 0,
+            },
+            {
+              id: "art-augmente",
+              status: "planned",
+              visibleStatus: "Pr\u00e9vu",
+              orientation: "VOIR",
+              title: "Art augment\u00e9",
+              description: "Cr\u00e9er avec l\u2019IA sans renoncer \u00e0 son regard.",
+              linkCount: 0,
+            },
+            {
+              id: "cartographie-augmentee",
+              status: "planned",
+              visibleStatus: "Pr\u00e9vu",
+              orientation: "RELIER",
+              title: "Cartographie augment\u00e9e",
+              description: "Rendre visibles les relations avec l\u2019IA.",
+              linkCount: 0,
+            },
+            {
+              id: "composer-recit-vivant-ia",
+              status: "planned",
+              visibleStatus: "Pr\u00e9vu",
+              orientation: "COMPOSER",
+              title: "Cr\u00e9er un R\u00e9cit Vivant avec l\u2019IA",
+              description: "Faire dialoguer \u00e9criture, image et cartographie.",
+              linkCount: 0,
+            },
+          ]
+        : [
+            {
+              id: "ecriture-augmentee",
+              status: "planned",
+              visibleStatus: "Planned",
+              orientation: "WRITE",
+              title: "Augmented writing",
+              description: "Writing with AI without surrendering your voice.",
+              linkCount: 0,
+            },
+            {
+              id: "art-augmente",
+              status: "planned",
+              visibleStatus: "Planned",
+              orientation: "SEE",
+              title: "Augmented art",
+              description: "Creating with AI without giving up your gaze.",
+              linkCount: 0,
+            },
+            {
+              id: "cartographie-augmentee",
+              status: "planned",
+              visibleStatus: "Planned",
+              orientation: "CONNECT",
+              title: "Augmented mapping",
+              description: "Making relationships visible with AI.",
+              linkCount: 0,
+            },
+            {
+              id: "composer-recit-vivant-ia",
+              status: "planned",
+              visibleStatus: "Planned",
+              orientation: "COMPOSE",
+              title: "Create a Living Story with AI",
+              description: "Bringing writing, image, and mapping into dialogue.",
+              linkCount: 0,
+            },
+          ],
+    );
+    assert.equal(workshopsState.noHorizontalOverflow, true);
 
     await loadUrl(page, libraryUrl);
     await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");
@@ -569,8 +721,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       : "A habitable narrative world";
     assert.equal(libraryState.title, expectedLibraryTitle);
     assert.equal(libraryState.eyebrow, libraryState.language.toLowerCase().startsWith("fr")
-      ? "Biblioth\u00e8que des \u0153uvres immersives"
-      : "Immersive works library");
+      ? "VIVRE \u00b7 Packs narratifs"
+      : "LIVE \u00b7 Narrative Packs");
     assert.equal(
       libraryState.signature,
       libraryState.language.toLowerCase().startsWith("fr")

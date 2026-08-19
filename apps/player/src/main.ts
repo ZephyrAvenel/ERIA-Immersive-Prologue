@@ -34,6 +34,12 @@ import {
   loadCatalog,
   loadPackRegistry,
 } from "./catalog";
+import {
+  augmentedWorkshops,
+  editorialFamilies,
+  type EditorialFamilyId,
+  type LocalizedEditorialFamily,
+} from "./editorial";
 import "./styles.css";
 
 const app = document.querySelector<HTMLElement>("#app");
@@ -56,6 +62,7 @@ declare const __INE_BASE__: string;
 const applicationBaseUrl = new URL(__INE_BASE__, globalThis.location.origin);
 const registryUrl = new URL("packs/index.json", applicationBaseUrl);
 const libraryUrl = new URL("bibliotheque/", applicationBaseUrl);
+const workshopsUrl = new URL("ateliers/", applicationBaseUrl);
 
 function prefersReducedMotion(): boolean {
   return globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
@@ -113,6 +120,10 @@ function createLibraryLink(label: string, className: string): HTMLAnchorElement 
   link.href = libraryUrl.href;
   link.textContent = label;
   return link;
+}
+
+function resolveApplicationRoute(route: string): string {
+  return new URL(route.replace(/^\//, ""), applicationBaseUrl).href;
 }
 
 function renderResumePrompt(
@@ -251,24 +262,25 @@ function isLibraryRoute(): boolean {
   return path === libraryUrl.pathname || path === libraryUrl.pathname.replace(/\/$/, "");
 }
 
-async function loadPlayerConfiguration(): Promise<PlayerConfiguration | null> {
+function isWorkshopsRoute(): boolean {
+  const path = globalThis.location.pathname;
+  return path === workshopsUrl.pathname || path === workshopsUrl.pathname.replace(/\/$/, "");
+}
+
+function isHomeRoute(): boolean {
+  const path = globalThis.location.pathname;
+  return path === applicationBaseUrl.pathname || path === applicationBaseUrl.pathname.replace(/\/$/, "");
+}
+
+async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
   const requestedPack = new URL(globalThis.location.href).searchParams.get("pack");
   if (requestedPack) return { packUrl: requestedPack };
-
-  if (isLibraryRoute()) return null;
 
   const workSlug = requestedWorkSlug();
   if (workSlug) {
     const registry = await loadPackRegistry(registryUrl);
     const entry = findRegistryEntryBySlug(registry, workSlug);
     if (!entry) throw new Error("INE_PACK_ROUTE_NOT_FOUND");
-    return { packUrl: new URL(entry.manifest, registryUrl).href };
-  }
-
-  if (globalThis.location.pathname === applicationBaseUrl.pathname) {
-    const registry = await loadPackRegistry(registryUrl);
-    const entry = registry.packs.find(({ id }) => id === registry.home);
-    if (!entry) throw new Error("INE_PACK_REGISTRY_HOME_MISSING");
     return { packUrl: new URL(entry.manifest, registryUrl).href };
   }
 
@@ -291,8 +303,135 @@ async function loadPlayerConfiguration(): Promise<PlayerConfiguration | null> {
   return { packUrl: value.packUrl };
 }
 
+function findEditorialFamily(
+  families: readonly LocalizedEditorialFamily[],
+  id: EditorialFamilyId,
+): LocalizedEditorialFamily {
+  const family = families.find((candidate) => candidate.id === id);
+  if (!family) throw new Error("INE_EDITORIAL_FAMILY_MISSING");
+  return family;
+}
+
+async function renderHome(): Promise<void> {
+  const messages = resolveLocale(navigator.language);
+  const families = editorialFamilies(messages.language);
+  updateShell(messages, messages.homeTitle);
+  updateLibraryNavigation(messages, false);
+  const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
+  if (skipLink) {
+    skipLink.href = "#orientations";
+    skipLink.textContent = messages.skipToNarrative;
+  }
+  mount.removeAttribute("aria-busy");
+  mount.replaceChildren();
+
+  const home = document.createElement("section");
+  home.id = "orientations";
+  home.className = "home";
+  home.setAttribute("aria-labelledby", "home-title");
+
+  const header = document.createElement("header");
+  header.className = "home__header";
+  const title = document.createElement("h1");
+  title.id = "home-title";
+  title.textContent = messages.homeHeroTitle;
+  const description = document.createElement("p");
+  description.className = "home__description";
+  description.textContent = messages.homeHeroDescription;
+  const prompt = document.createElement("p");
+  prompt.className = "home__prompt";
+  prompt.textContent = messages.homePrompt;
+  header.append(title, description, prompt);
+
+  const doors = document.createElement("div");
+  doors.className = "home__doors";
+  for (const family of families) {
+    const article = document.createElement("article");
+    article.className = "orientation-door";
+    article.dataset.family = family.id;
+    const orientation = document.createElement("p");
+    orientation.className = "orientation-door__orientation";
+    orientation.textContent = family.orientation;
+    const familyTitle = document.createElement("h2");
+    familyTitle.textContent = family.title;
+    const familyDescription = document.createElement("p");
+    familyDescription.textContent = family.description;
+    const link = document.createElement("a");
+    link.className = "orientation-door__action";
+    link.href = resolveApplicationRoute(family.route);
+    link.textContent = messages.homeAction;
+    link.setAttribute("aria-label", `${messages.homeAction} — ${family.orientation}, ${family.title}`);
+    article.append(orientation, familyTitle, familyDescription, link);
+    doors.append(article);
+  }
+
+  home.append(header, doors);
+  mount.append(home);
+}
+
+async function renderWorkshops(): Promise<void> {
+  const messages = resolveLocale(navigator.language);
+  const families = editorialFamilies(messages.language);
+  const family = findEditorialFamily(families, "augmented-workshops");
+  const workshops = augmentedWorkshops(messages.language);
+  updateShell(messages, messages.workshopsTitle);
+  updateLibraryNavigation(messages, true);
+  const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
+  if (skipLink) {
+    skipLink.href = "#workshops";
+    skipLink.textContent = messages.skipToNarrative;
+  }
+  mount.removeAttribute("aria-busy");
+  mount.replaceChildren();
+
+  const section = document.createElement("section");
+  section.id = "workshops";
+  section.className = "workshops";
+  section.setAttribute("aria-labelledby", "workshops-title");
+
+  const header = document.createElement("header");
+  header.className = "workshops__header";
+  const eyebrow = document.createElement("p");
+  eyebrow.className = "workshops__eyebrow";
+  eyebrow.textContent = `${family.orientation} · ${family.title}`;
+  const title = document.createElement("h1");
+  title.id = "workshops-title";
+  title.textContent = messages.workshopsHeroTitle;
+  const description = document.createElement("p");
+  description.textContent = messages.workshopsDescription;
+  header.append(eyebrow, title, description);
+
+  const grid = document.createElement("div");
+  grid.className = "workshops__grid";
+  for (const workshop of workshops) {
+    const article = document.createElement("article");
+    article.className = "workshop-card";
+    article.dataset.workshopId = workshop.id;
+    article.dataset.status = workshop.status;
+    const status = document.createElement("p");
+    status.className = "workshop-card__status";
+    status.textContent = messages.workshopsStatusPlanned;
+    const orientation = document.createElement("p");
+    orientation.className = "workshop-card__orientation";
+    orientation.textContent = workshop.orientation;
+    const workshopTitle = document.createElement("h2");
+    workshopTitle.textContent = workshop.title;
+    const workshopDescription = document.createElement("p");
+    workshopDescription.textContent = workshop.description;
+    const access = document.createElement("p");
+    access.className = "workshop-card__access";
+    access.textContent = messages.workshopsNoAccess;
+    article.append(status, orientation, workshopTitle, workshopDescription, access);
+    grid.append(article);
+  }
+
+  section.append(header, grid);
+  mount.append(section);
+}
+
 async function renderLibrary(): Promise<void> {
   const messages = resolveLocale(navigator.language);
+  const narrativeFamily = findEditorialFamily(editorialFamilies(messages.language), "narrative-packs");
   const packs = await loadCatalog(registryUrl);
   updateShell(messages, messages.libraryTitle);
   updateLibraryNavigation(messages, false);
@@ -313,7 +452,7 @@ async function renderLibrary(): Promise<void> {
   header.className = "library__header";
   const heroEyebrow = document.createElement("p");
   heroEyebrow.className = "library__eyebrow";
-  heroEyebrow.textContent = messages.libraryTitle;
+  heroEyebrow.textContent = `${narrativeFamily.orientation} · ${narrativeFamily.title}`;
   const title = document.createElement("h1");
   title.id = "library-title";
   title.textContent = messages.libraryHeroTitle;
@@ -742,11 +881,20 @@ async function startLivingCardPack(packUrl: URL): Promise<void> {
 }
 
 async function start(): Promise<void> {
-  const configuration = await loadPlayerConfiguration();
-  if (!configuration) {
+  const hasPackOverride = new URL(globalThis.location.href).searchParams.has("pack");
+  if (!hasPackOverride && isHomeRoute()) {
+    await renderHome();
+    return;
+  }
+  if (!hasPackOverride && isLibraryRoute()) {
     await renderLibrary();
     return;
   }
+  if (!hasPackOverride && isWorkshopsRoute()) {
+    await renderWorkshops();
+    return;
+  }
+  const configuration = await loadPlayerConfiguration();
   const packUrl = new URL(configuration.packUrl, applicationBaseUrl);
   const format = await detectPackFormat(packUrl);
   if (format === "ine-narrative-pack") {

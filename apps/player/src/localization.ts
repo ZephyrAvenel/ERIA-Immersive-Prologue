@@ -21,6 +21,10 @@ export interface LocaleMessages {
   readonly errorTitle: string;
   readonly errorMessage: string;
   readonly unknownError: string;
+  readonly homeTitle: string;
+  readonly homeHeroTitle: string;
+  readonly homeHeroDescription: string;
+  readonly homePrompt: string;
   readonly libraryTitle: string;
   readonly libraryHeroTitle: string;
   readonly libraryHeroSignature: string;
@@ -28,6 +32,12 @@ export interface LocaleMessages {
   readonly libraryDescription: string;
   readonly exploreWork: string;
   readonly libraryAction: string;
+  readonly workshopsTitle: string;
+  readonly workshopsHeroTitle: string;
+  readonly workshopsDescription: string;
+  readonly workshopsStatusPlanned: string;
+  readonly workshopsNoAccess: string;
+  readonly homeAction: string;
   readonly continueExploration: string;
 }
 

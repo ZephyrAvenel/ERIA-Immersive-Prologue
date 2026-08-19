@@ -1,0 +1,108 @@
+{
+  "format": "ine-editorial-registry",
+  "version": "1.0",
+  "families": [
+    {
+      "id": "narrative-packs",
+      "route": "/bibliotheque/",
+      "labels": {
+        "fr": {
+          "orientation": "VIVRE",
+          "title": "Packs narratifs",
+          "description": "Des expériences narratives à traverser."
+        },
+        "en": {
+          "orientation": "LIVE",
+          "title": "Narrative Packs",
+          "description": "Narrative experiences to journey through."
+        }
+      }
+    },
+    {
+      "id": "augmented-workshops",
+      "route": "/ateliers/",
+      "labels": {
+        "fr": {
+          "orientation": "CRÉER",
+          "title": "Ateliers augmentés",
+          "description": "Des formations créatives pour apprendre à créer avec l’IA."
+        },
+        "en": {
+          "orientation": "CREATE",
+          "title": "Augmented workshops",
+          "description": "Creative learning paths for learning to create with AI."
+        }
+      }
+    }
+  ],
+  "workshops": [
+    {
+      "id": "ecriture-augmentee",
+      "family": "augmented-workshops",
+      "status": "planned",
+      "labels": {
+        "fr": {
+          "orientation": "ÉCRIRE",
+          "title": "Écriture augmentée",
+          "description": "Écrire avec l’IA sans lui abandonner sa voix."
+        },
+        "en": {
+          "orientation": "WRITE",
+          "title": "Augmented writing",
+          "description": "Writing with AI without surrendering your voice."
+        }
+      }
+    },
+    {
+      "id": "art-augmente",
+      "family": "augmented-workshops",
+      "status": "planned",
+      "labels": {
+        "fr": {
+          "orientation": "VOIR",
+          "title": "Art augmenté",
+          "description": "Créer avec l’IA sans renoncer à son regard."
+        },
+        "en": {
+          "orientation": "SEE",
+          "title": "Augmented art",
+          "description": "Creating with AI without giving up your gaze."
+        }
+      }
+    },
+    {
+      "id": "cartographie-augmentee",
+      "family": "augmented-workshops",
+      "status": "planned",
+      "labels": {
+        "fr": {
+          "orientation": "RELIER",
+          "title": "Cartographie augmentée",
+          "description": "Rendre visibles les relations avec l’IA."
+        },
+        "en": {
+          "orientation": "CONNECT",
+          "title": "Augmented mapping",
+          "description": "Making relationships visible with AI."
+        }
+      }
+    },
+    {
+      "id": "composer-recit-vivant-ia",
+      "family": "augmented-workshops",
+      "status": "planned",
+      "labels": {
+        "fr": {
+          "orientation": "COMPOSER",
+          "title": "Créer un Récit Vivant avec l’IA",
+          "description": "Faire dialoguer écriture, image et cartographie."
+        },
+        "en": {
+          "orientation": "COMPOSE",
+          "title": "Create a Living Story with AI",
+          "description": "Bringing writing, image, and mapping into dialogue."
+        }
+      }
+    }
+  ]
+}

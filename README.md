@@ -35,10 +35,12 @@ npm run typecheck
 npm run test:ci
 ```
 
-The site root opens the narrative prologue designated by `home` in
-`packs/index.json`. The immersive works library remains available at
-`/bibliotheque/`, and public works keep their stable routes under
-`/oeuvres/<slug>/`. The build derives content and social metadata from the
+The site root presents two editorial doors: **VIVRE / Packs narratifs** and
+**CRÉER / Ateliers augmentés**. Narrative Packs remain available through the
+immersive works library at `/bibliotheque/`, and public works keep their stable
+routes under `/oeuvres/<slug>/`. The Augmented Workshops orientation is exposed
+at `/ateliers/` as planned editorial entries only; no pedagogical runtime is
+implemented yet. The build derives pack routes and social metadata from the pack
 registry and each pack manifest. The `?pack=<manifest>` query remains available
 for local preview and diagnostics. Adding a conforming work never requires
 editing an engine package.
@@ -96,6 +98,8 @@ packages/ui/       Accessible reusable UI primitives
 packages/validators/ Runtime Narrative Pack validation
 examples/demo-pack/ First artistic Narrative Pack and normalized assets
 packs/             Published pack registry, PACK-002, and PACK-003
+apps/player/src/editorial-registry.json
+                   Editorial families and planned Augmented Workshops
 schemas/           Versioned JSON Schemas
 docs/              Architecture and Narrative Pack documentation
 tests/             Unit, integration, browser, accessibility, and fixture tests

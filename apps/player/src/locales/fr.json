@@ -18,6 +18,10 @@
   "errorTitle": "Impossible de charger le pack narratif",
   "errorMessage": "Le lecteur ne peut pas ouvrir ce pack narratif.",
   "unknownError": "Erreur inconnue du lecteur",
+  "homeTitle": "Accueil INE",
+  "homeHeroTitle": "Deux manières d’entrer dans l’INE",
+  "homeHeroDescription": "Choisissez une orientation : traverser une expérience narrative ou préparer une création augmentée.",
+  "homePrompt": "Deux portes, une même attention au récit vivant.",
   "libraryTitle": "Bibliothèque des œuvres immersives",
   "libraryHeroTitle": "Un monde narratif habitable",
   "libraryHeroSignature": "Les Récits Vivants ne sont pas seulement des histoires à lire. Ce sont des mondes à explorer, des passages à traverser et des expériences qui invitent chacun à habiter autrement le réel.",
@@ -25,5 +29,11 @@
   "libraryDescription": "Choisissez une porte d’entrée. Chaque parcours ouvre une manière différente d’explorer les Récits Vivants.",
   "exploreWork": "Explorer",
   "libraryAction": "Explorer les œuvres",
+  "workshopsTitle": "Ateliers augmentés",
+  "workshopsHeroTitle": "Apprendre à créer avec l’IA",
+  "workshopsDescription": "Ces ateliers sont préparés comme de futures formations créatives. Ils sont déclarés dans l’INE, mais leur contenu pédagogique n’est pas encore ouvert.",
+  "workshopsStatusPlanned": "Prévu",
+  "workshopsNoAccess": "Parcours en préparation",
+  "homeAction": "Entrer",
   "continueExploration": "Poursuivre votre exploration"
 }

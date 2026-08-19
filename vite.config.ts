@@ -47,14 +47,19 @@ function generateWorkEntryPages(): void {
   }
 
   const template = readFileSync(resolve("dist/index.html"), "utf8");
-  const libraryHtml = template
+  const applicationHtml = template
     .replace('href="./manifest.webmanifest"', `href="${base}manifest.webmanifest"`)
     .replace('href="./icon.svg"', `href="${base}icon.svg"`);
+  writeFileSync(resolve("dist/index.html"), applicationHtml);
+
   const libraryTarget = resolve("dist", "bibliotheque");
   mkdirSync(libraryTarget, { recursive: true });
-  writeFileSync(resolve(libraryTarget, "index.html"), libraryHtml);
+  writeFileSync(resolve(libraryTarget, "index.html"), applicationHtml);
 
-  let homeHtml: string | undefined;
+  const workshopsTarget = resolve("dist", "ateliers");
+  mkdirSync(workshopsTarget, { recursive: true });
+  writeFileSync(resolve(workshopsTarget, "index.html"), applicationHtml);
+
   for (const entry of registry.packs) {
     const manifestPath = resolve("packs", entry.manifest);
     const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Record<string, unknown>;
@@ -90,21 +95,7 @@ function generateWorkEntryPages(): void {
     const target = resolve("dist", "oeuvres", entry.slug);
     mkdirSync(target, { recursive: true });
     writeFileSync(resolve(target, "index.html"), html);
-    if (entry.id === registry.home) {
-      const homeCanonical = `${publicOrigin}${base}`;
-      homeHtml = html
-        .replace(
-          `<link rel="canonical" href="${escapeHtml(canonical)}" />`,
-          `<link rel="canonical" href="${escapeHtml(homeCanonical)}" />`,
-        )
-        .replace(
-          `<meta property="og:url" content="${escapeHtml(canonical)}" />`,
-          `<meta property="og:url" content="${escapeHtml(homeCanonical)}" />`,
-        );
-    }
   }
-  if (!homeHtml) throw new Error("INE_BUILD_REGISTRY_HOME_MISSING");
-  writeFileSync(resolve("dist/index.html"), homeHtml);
 }
 
 function serveDirectory(root: string) {

@@ -1,0 +1,165 @@
+import registry from "./editorial-registry.json" with { type: "json" };
+
+export type EditorialLanguage = "fr" | "en";
+export type EditorialFamilyId = "narrative-packs" | "augmented-workshops";
+export type EditorialStatus = "planned";
+
+export interface EditorialLabels {
+  readonly orientation: string;
+  readonly title: string;
+  readonly description: string;
+}
+
+interface LocalizedEditorialLabels {
+  readonly fr: EditorialLabels;
+  readonly en: EditorialLabels;
+}
+
+export interface EditorialFamily {
+  readonly id: EditorialFamilyId;
+  readonly route: string;
+  readonly labels: LocalizedEditorialLabels;
+}
+
+export interface AugmentedWorkshop {
+  readonly id: string;
+  readonly family: "augmented-workshops";
+  readonly status: EditorialStatus;
+  readonly labels: LocalizedEditorialLabels;
+}
+
+export interface EditorialRegistry {
+  readonly format: "ine-editorial-registry";
+  readonly version: "1.0";
+  readonly families: readonly EditorialFamily[];
+  readonly workshops: readonly AugmentedWorkshop[];
+}
+
+export interface LocalizedEditorialFamily {
+  readonly id: EditorialFamilyId;
+  readonly route: string;
+  readonly orientation: string;
+  readonly title: string;
+  readonly description: string;
+}
+
+export interface LocalizedAugmentedWorkshop {
+  readonly id: string;
+  readonly family: "augmented-workshops";
+  readonly status: EditorialStatus;
+  readonly orientation: string;
+  readonly title: string;
+  readonly description: string;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function nonEmptyString(value: unknown): value is string {
+  return typeof value === "string" && value.length > 0;
+}
+
+function hasLabels(value: unknown): value is LocalizedEditorialLabels {
+  if (!isRecord(value)) return false;
+  return ["fr", "en"].every((language) => {
+    const labels = value[language];
+    return (
+      isRecord(labels) &&
+      nonEmptyString(labels.orientation) &&
+      nonEmptyString(labels.title) &&
+      nonEmptyString(labels.description)
+    );
+  });
+}
+
+export function validateEditorialRegistry(value: unknown): EditorialRegistry {
+  if (
+    !isRecord(value) ||
+    value.format !== "ine-editorial-registry" ||
+    value.version !== "1.0" ||
+    !Array.isArray(value.families) ||
+    !Array.isArray(value.workshops)
+  ) {
+    throw new Error("INE_EDITORIAL_REGISTRY_INVALID");
+  }
+
+  const families = value.families;
+  if (
+    families.length !== 2 ||
+    !families.every(
+      (family) =>
+        isRecord(family) &&
+        (family.id === "narrative-packs" || family.id === "augmented-workshops") &&
+        nonEmptyString(family.route) &&
+        hasLabels(family.labels),
+    )
+  ) {
+    throw new Error("INE_EDITORIAL_FAMILIES_INVALID");
+  }
+
+  const familyIds = new Set(families.map((family) => (family as EditorialFamily).id));
+  if (familyIds.size !== families.length) throw new Error("INE_EDITORIAL_FAMILY_DUPLICATE");
+  if (!familyIds.has("narrative-packs") || !familyIds.has("augmented-workshops")) {
+    throw new Error("INE_EDITORIAL_REQUIRED_FAMILY_MISSING");
+  }
+
+  const workshops = value.workshops;
+  if (
+    workshops.length !== 4 ||
+    !workshops.every(
+      (workshop) =>
+        isRecord(workshop) &&
+        nonEmptyString(workshop.id) &&
+        workshop.family === "augmented-workshops" &&
+        workshop.status === "planned" &&
+        hasLabels(workshop.labels),
+    )
+  ) {
+    throw new Error("INE_EDITORIAL_WORKSHOPS_INVALID");
+  }
+
+  const workshopIds = new Set(workshops.map((workshop) => (workshop as AugmentedWorkshop).id));
+  if (workshopIds.size !== workshops.length) throw new Error("INE_EDITORIAL_WORKSHOP_DUPLICATE");
+
+  return value as unknown as EditorialRegistry;
+}
+
+export function resolveEditorialLanguage(language: string): EditorialLanguage {
+  return language.toLowerCase().startsWith("fr") ? "fr" : "en";
+}
+
+export function localizedFamily(
+  family: EditorialFamily,
+  language: string,
+): LocalizedEditorialFamily {
+  const labels = family.labels[resolveEditorialLanguage(language)];
+  return {
+    id: family.id,
+    route: family.route,
+    ...labels,
+  };
+}
+
+export function localizedWorkshop(
+  workshop: AugmentedWorkshop,
+  language: string,
+): LocalizedAugmentedWorkshop {
+  const labels = workshop.labels[resolveEditorialLanguage(language)];
+  return {
+    id: workshop.id,
+    family: workshop.family,
+    status: workshop.status,
+    ...labels,
+  };
+}
+
+export const editorialRegistry = validateEditorialRegistry(registry);
+
+export function editorialFamilies(language: string): readonly LocalizedEditorialFamily[] {
+  return editorialRegistry.families.map((family) => localizedFamily(family, language));
+}
+
+export function augmentedWorkshops(language: string): readonly LocalizedAugmentedWorkshop[] {
+  return editorialRegistry.workshops.map((workshop) => localizedWorkshop(workshop, language));
+}

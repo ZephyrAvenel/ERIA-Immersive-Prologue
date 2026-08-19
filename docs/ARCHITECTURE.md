@@ -44,6 +44,43 @@ resources, and optional editorial metadata. A narrative path owns only scenes,
 polarities, chapters, or other format-specific content. This prevents the
 library and engine from acquiring work-specific knowledge.
 
+## Editorial entry layer
+
+The public INE entrance is now organized around two editorial families that sit
+above the pack runtime:
+
+```text
+INE
+├── VIVRE
+│   └── Packs narratifs
+└── CRÉER
+    └── Ateliers augmentés
+```
+
+This layer is declared in `apps/player/src/editorial-registry.json` and exposed
+through `apps/player/src/editorial.ts`. It is intentionally separate from
+`packs/index.json`:
+
+- the **editorial registry** describes public orientations, families, and
+  planned non-runtime entries such as Augmented Workshops;
+- the **pack registry** keeps the existing deployment contract for published
+  packs, manifests, slugs, and static `/oeuvres/<slug>/` routes.
+
+`VIVRE / Packs narratifs` points to `/bibliotheque/`, where existing packs are
+loaded from `packs/index.json` exactly as before. `CRÉER / Ateliers augmentés`
+points to `/ateliers/`, which currently presents four planned creative training
+entries:
+
+- ÉCRIRE — Écriture augmentée;
+- VOIR — Art augmenté;
+- RELIER — Cartographie augmentée;
+- COMPOSER — Créer un Récit Vivant avec l’IA.
+
+These workshop entries are editorial metadata only. They are not
+`ine-narrative-pack`, `ine-polarity-pack`, or `ine-living-card-pack` documents,
+and there is no pedagogical runtime yet. Future workshop implementation should
+add an explicit format and renderer only when real training behavior is defined.
+
 ## UX foundation
 
 The Player presents a generic engine identity separately from the selected
