@@ -39,6 +39,11 @@ export interface LocaleMessages {
   readonly workshopsNoAccess: string;
   readonly homeAction: string;
   readonly continueExploration: string;
+  readonly workshopPackLabel: string;
+  readonly workshopNavigationLabel: string;
+  readonly workshopProgressLabel: string;
+  readonly workshopExit: string;
+  readonly workshopUnsupportedBlock: string;
 }
 
 export const locales: Readonly<Record<string, LocaleMessages>> = {

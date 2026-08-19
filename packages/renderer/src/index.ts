@@ -7,6 +7,10 @@ import type {
   NormalizedSceneTransition,
   Polarity,
   TransitionDirection,
+  WorkshopBlock,
+  WorkshopMovement,
+  WorkshopPack,
+  WorkshopPage,
 } from "@ine/core";
 
 export interface RendererMessages {
@@ -251,6 +255,125 @@ export interface RenderTransitionOptions {
 
 export function renderPlayer(target: HTMLElement, state: RenderPlayerState): void {
   target.replaceChildren(createPlayerElement(state));
+}
+
+export interface WorkshopRendererMessages {
+  readonly landmarkLabel: string;
+  readonly progressLabel: string;
+  readonly progressText: string;
+  readonly unsupportedBlockText: string;
+}
+
+export interface RenderWorkshopState {
+  readonly pack: WorkshopPack;
+  readonly page: WorkshopPage;
+  readonly movement: WorkshopMovement;
+  readonly pageIndex: number;
+  readonly pageCount: number;
+  readonly controls: HTMLElement;
+  readonly exitControl?: HTMLElement;
+  readonly messages: WorkshopRendererMessages;
+}
+
+function romanNumeral(value: number): string {
+  const numerals: readonly [number, string][] = [
+    [10, "X"],
+    [9, "IX"],
+    [5, "V"],
+    [4, "IV"],
+    [1, "I"],
+  ];
+  let remaining = value;
+  let output = "";
+  for (const [amount, numeral] of numerals) {
+    while (remaining >= amount) {
+      output += numeral;
+      remaining -= amount;
+    }
+  }
+  return output || String(value);
+}
+
+function createWorkshopBlock(block: WorkshopBlock, unsupportedBlockText: string): HTMLElement {
+  const section = document.createElement("section");
+  section.className = `workshop-block workshop-block--${block.type}`;
+  section.dataset.blockId = block.id;
+  section.dataset.blockType = block.type;
+
+  if (block.type === "text") {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = block.text;
+    section.append(paragraph);
+    return section;
+  }
+
+  section.className += " workshop-block--pending";
+  section.setAttribute("aria-disabled", "true");
+  const label = "label" in block && typeof block.label === "string" ? block.label : block.type;
+  const title = document.createElement("h2");
+  title.textContent = label;
+  const status = document.createElement("p");
+  status.textContent = unsupportedBlockText;
+  section.append(title, status);
+  return section;
+}
+
+export function renderWorkshop(target: HTMLElement, state: RenderWorkshopState): void {
+  const shell = document.createElement("section");
+  shell.className = "workshop-player";
+  shell.dataset.packId = state.pack.id;
+  shell.setAttribute("aria-labelledby", "workshop-page-title");
+  shell.setAttribute("aria-label", state.messages.landmarkLabel);
+
+  const header = document.createElement("header");
+  header.className = "workshop-player__header";
+  const packTitle = document.createElement("strong");
+  packTitle.className = "workshop-player__title";
+  packTitle.textContent = state.pack.title;
+  const subtitle = document.createElement("p");
+  subtitle.className = "workshop-player__subtitle";
+  subtitle.textContent = state.pack.subtitle;
+  header.append(packTitle, subtitle);
+
+  const article = document.createElement("article");
+  article.id = "workshop-page";
+  article.className = "workshop-page";
+  article.tabIndex = -1;
+  article.setAttribute("aria-labelledby", "workshop-page-title");
+
+  const movement = document.createElement("p");
+  movement.className = "workshop-page__movement";
+  movement.textContent = `MOUVEMENT ${romanNumeral(state.movement.order)} · ${state.movement.title}`;
+
+  const title = document.createElement("h1");
+  title.id = "workshop-page-title";
+  title.className = "workshop-page__title";
+  title.textContent = state.page.title;
+
+  const body = document.createElement("div");
+  body.className = "workshop-page__blocks";
+  for (const block of state.page.blocks) {
+    body.append(createWorkshopBlock(block, state.messages.unsupportedBlockText));
+  }
+
+  article.append(movement, title, body);
+
+  const progress = document.createElement("div");
+  progress.className = "workshop-progress";
+  progress.setAttribute("aria-label", state.messages.progressLabel);
+  const progressText = document.createElement("p");
+  progressText.className = "workshop-progress__text";
+  progressText.textContent = state.messages.progressText;
+  progress.append(progressText);
+
+  const footer = document.createElement("footer");
+  footer.className = "workshop-player__footer";
+  footer.append(progress, state.controls);
+  if (state.exitControl) footer.append(state.exitControl);
+
+  shell.append(header, article, footer);
+  target.replaceChildren(shell);
+  article.focus();
 }
 
 export interface RenderPolarityState {

@@ -6,6 +6,7 @@ import {
   renderLivingCard,
   renderPolarity,
   renderPolarityClosure,
+  renderWorkshop,
 } from "../../../.test-build/packages/renderer/src/index.js";
 import { FakeElement, findElement, findElements, withFakeDocument } from "../../helpers/fake-dom.mjs";
 
@@ -84,6 +85,108 @@ function createLivingCard() {
     locale: { fr: {}, en: { title: "Card of the First Step" } },
   };
 }
+
+function createWorkshopState(overrides = {}) {
+  const controls = new FakeElement("nav");
+  const previous = new FakeElement("button");
+  previous.textContent = "Précédent";
+  const next = new FakeElement("button");
+  next.textContent = "Suivant";
+  controls.append(previous, next);
+
+  return {
+    pack: {
+      format: "ine-workshop-pack",
+      version: "1.0",
+      id: "workshop-demo",
+      slug: "workshop-demo",
+      title: "Atelier augmenté — démonstrateur technique",
+      subtitle: "Runtime minimal des Ateliers augmentés",
+      language: "fr",
+      startPage: "page-01",
+      movements: [],
+      pages: [],
+    },
+    movement: {
+      id: "explorer",
+      order: 2,
+      title: "EXPLORER",
+      description: "Vérifier le changement de mouvement.",
+    },
+    page: {
+      id: "page-03",
+      movementId: "explorer",
+      order: 3,
+      title: "Changer de mouvement",
+      blocks: [
+        {
+          id: "movement-check",
+          type: "text",
+          text: "Cette page appartient au deuxième mouvement grâce à sa donnée movementId.",
+        },
+      ],
+    },
+    pageIndex: 2,
+    pageCount: 4,
+    controls,
+    messages: {
+      landmarkLabel: "Atelier augmenté",
+      progressLabel: "Progression de l'atelier",
+      progressText: "03 / 04",
+      unsupportedBlockText: "Cette interaction sera disponible dans une prochaine étape du moteur.",
+    },
+    ...overrides,
+  };
+}
+
+test("WorkshopRenderer renders workshop identity, movement, text blocks, and progress", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    renderWorkshop(target, createWorkshopState());
+
+    assert.equal(findElement(target, ".workshop-player__title").textContent, "Atelier augmenté — démonstrateur technique");
+    assert.equal(findElement(target, ".workshop-player__subtitle").textContent, "Runtime minimal des Ateliers augmentés");
+    assert.equal(findElement(target, ".workshop-page__movement").textContent, "MOUVEMENT II · EXPLORER");
+    assert.equal(findElement(target, ".workshop-page__title").textContent, "Changer de mouvement");
+    const textBlock = findElement(target, ".workshop-block--text");
+    assert.equal(
+      findElement(textBlock, "p").textContent,
+      "Cette page appartient au deuxième mouvement grâce à sa donnée movementId.",
+    );
+    assert.equal(findElement(target, ".workshop-progress__text").textContent, "03 / 04");
+    assert.equal(findElements(target, "button").length, 2);
+    assert.equal(findElement(target, "#workshop-page").focused, true);
+  }));
+
+test("WorkshopRenderer exposes unsupported interactive primitives safely", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    renderWorkshop(target, createWorkshopState({
+      page: {
+        id: "page-04",
+        movementId: "explorer",
+        order: 4,
+        title: "Sortir du démonstrateur",
+        blocks: [
+          { id: "note", type: "textarea", label: "Interaction future" },
+          { id: "choice", type: "choice", label: "Choix futur", options: [{ id: "a", label: "A" }, { id: "b", label: "B" }] },
+          { id: "reveal", type: "reveal", label: "Révélation future", content: "À venir." },
+          { id: "prompt", type: "promptCopy", label: "Prompt futur", text: "Questionner sans écrire à la place." },
+          { id: "recall", type: "recall", sourceBlockId: "note", label: "Rappel futur" },
+        ],
+      },
+    }));
+
+    const pendingBlocks = findElements(target, ".workshop-block--pending");
+    assert.equal(pendingBlocks.length, 5);
+    assert.equal(findElements(target, "textarea").length, 0);
+    assert.equal(findElements(target, "input").length, 0);
+    assert.equal(findElements(target, ".workshop-block--choice")[0].getAttribute("aria-disabled"), "true");
+    assert.equal(
+      pendingBlocks.every((block) => findElement(block, "p").textContent.includes("Cette interaction sera disponible")),
+      true,
+    );
+  }));
 
 test("PolarityRenderer renders authored JSON content and accessible navigation", () =>
   withFakeDocument(() => {

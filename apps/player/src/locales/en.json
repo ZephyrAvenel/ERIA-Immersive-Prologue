@@ -35,5 +35,10 @@
   "workshopsStatusPlanned": "Planned",
   "workshopsNoAccess": "Path in preparation",
   "homeAction": "Enter",
-  "continueExploration": "Continue exploring"
+  "continueExploration": "Continue exploring",
+  "workshopPackLabel": "Augmented workshop",
+  "workshopNavigationLabel": "Workshop navigation",
+  "workshopProgressLabel": "Workshop progress",
+  "workshopExit": "Back to workshops",
+  "workshopUnsupportedBlock": "This interaction will be available in a future engine step."
 }

@@ -50,3 +50,34 @@ test("workshop loader keeps the pack local and declarative", async () => {
     globalThis.fetch = previousFetch;
   }
 });
+
+test("technical workshop demo covers the minimal runtime traversal", async () => {
+  const demo = await readProjectJson("examples", "workshop-demo", "pack.json");
+  const result = validateWorkshopPack(demo);
+  assert.deepEqual(result, { valid: true, errors: [] });
+  assert.equal(demo.id, "workshop-demo");
+  assert.equal(demo.movements.length, 2);
+  assert.equal(demo.pages.length, 4);
+  assert.equal(demo.startPage, "page-01");
+  assert.equal(demo.pages[2].movementId, "explorer");
+  assert.deepEqual(
+    demo.pages.flatMap((page) => page.blocks.map((block) => block.type)),
+    ["text", "text", "textarea", "text", "choice", "text", "reveal", "promptCopy", "recall"],
+  );
+
+  const engine = new WorkshopEngine(demo);
+  assert.equal(engine.currentPage.id, "page-01");
+  assert.equal(engine.currentPageIndex, 0);
+  engine.next();
+  assert.equal(engine.currentPage.id, "page-02");
+  engine.next();
+  assert.equal(engine.currentPage.id, "page-03");
+  assert.equal(engine.currentPage.movementId, "explorer");
+  engine.next();
+  assert.equal(engine.currentPage.id, "page-04");
+  assert.equal(engine.canGoNext, false);
+  engine.next();
+  assert.equal(engine.currentPage.id, "page-04");
+  engine.previous();
+  assert.equal(engine.currentPage.id, "page-03");
+});

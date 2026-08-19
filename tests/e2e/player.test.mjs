@@ -327,6 +327,54 @@ async function waitForOrientationReady(client) {
   );
 }
 
+async function waitForWorkshopReady(client, expectedProgress, timeoutMs = 10_000) {
+  await waitForExpression(
+    client,
+    `(() => {
+      const app = document.querySelector('#app');
+      return document.querySelector('.workshop-player') !== null
+        && document.querySelector('#workshop-page') !== null
+        && document.querySelector('.workshop-progress__text')?.textContent === ${JSON.stringify(expectedProgress)}
+        && app?.getAttribute('aria-busy') === null
+        && document.querySelectorAll('.workshop-player').length === 1
+        && document.querySelector('#workshop-page') === document.activeElement;
+    })()`,
+    timeoutMs,
+  );
+}
+
+async function readWorkshopState(client) {
+  return evaluate(
+    client,
+    `(() => {
+      const next = document.querySelector('[data-workshop-navigation="next"]');
+      const previous = document.querySelector('[data-workshop-navigation="previous"]');
+      const exit = document.querySelector('.workshop-exit');
+      const page = document.querySelector('#workshop-page');
+      const controls = document.querySelector('.workshop-controls');
+      const pageRect = page?.getBoundingClientRect();
+      const controlsRect = controls?.getBoundingClientRect();
+      return {
+        title: document.querySelector('.workshop-player__title')?.textContent,
+        subtitle: document.querySelector('.workshop-player__subtitle')?.textContent,
+        movement: document.querySelector('.workshop-page__movement')?.textContent,
+        pageTitle: document.querySelector('.workshop-page__title')?.textContent,
+        progress: document.querySelector('.workshop-progress__text')?.textContent,
+        previousDisabled: previous?.disabled === true,
+        nextDisabled: next?.disabled === true,
+        pendingBlocks: document.querySelectorAll('.workshop-block--pending').length,
+        textareaCount: document.querySelectorAll('textarea').length,
+        inputCount: document.querySelectorAll('input').length,
+        exitHref: exit?.href ?? null,
+        activeId: document.activeElement?.id,
+        noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+        pageVisible: Boolean(pageRect && pageRect.width > 0 && pageRect.height > 0),
+        controlsInsideViewport: Boolean(controlsRect && controlsRect.left >= 0 && controlsRect.right <= document.documentElement.clientWidth)
+      };
+    })()`,
+  );
+}
+
 async function clearReadingProgress(client) {
   await evaluate(client, `localStorage.removeItem(${JSON.stringify(progressStorageKey)})`);
 }
@@ -761,6 +809,76 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
           ],
     );
     assert.equal(workshopsState.noHorizontalOverflow, true);
+
+    const workshopDemoUrl = `${entryUrl}?pack=examples/workshop-demo/pack.json`;
+    await loadUrl(page, workshopDemoUrl);
+    await waitForWorkshopReady(page, "01 / 04");
+    const workshopPageOne = await readWorkshopState(page);
+    assert.equal(workshopPageOne.title, "Atelier augment\u00e9 \u2014 d\u00e9monstrateur technique");
+    assert.equal(workshopPageOne.subtitle, "Runtime minimal des Ateliers augment\u00e9s");
+    assert.equal(workshopPageOne.movement, "MOUVEMENT I \u00b7 ENTRER");
+    assert.equal(workshopPageOne.pageTitle, "Entrer dans l'atelier");
+    assert.equal(workshopPageOne.previousDisabled, true);
+    assert.equal(workshopPageOne.nextDisabled, false);
+    assert.equal(workshopPageOne.activeId, "workshop-page");
+    assert.equal(workshopPageOne.noHorizontalOverflow, true);
+    assert.equal(workshopPageOne.pageVisible, true);
+    assert.equal(workshopPageOne.controlsInsideViewport, true);
+
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
+    await waitForWorkshopReady(page, "02 / 04");
+    const workshopPageTwo = await readWorkshopState(page);
+    assert.equal(workshopPageTwo.movement, "MOUVEMENT I \u00b7 ENTRER");
+    assert.equal(workshopPageTwo.pageTitle, "Pr\u00e9parer la travers\u00e9e");
+    assert.equal(workshopPageTwo.pendingBlocks, 1);
+    assert.equal(workshopPageTwo.textareaCount, 0);
+
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
+    await waitForWorkshopReady(page, "03 / 04");
+    const workshopPageThree = await readWorkshopState(page);
+    assert.equal(workshopPageThree.movement, "MOUVEMENT II \u00b7 EXPLORER");
+    assert.equal(workshopPageThree.pageTitle, "Changer de mouvement");
+    assert.equal(workshopPageThree.pendingBlocks, 1);
+    assert.equal(workshopPageThree.inputCount, 0);
+
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"previous\"]')?.click()");
+    await waitForWorkshopReady(page, "02 / 04");
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
+    await waitForWorkshopReady(page, "03 / 04");
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
+    await waitForWorkshopReady(page, "04 / 04");
+    const workshopPageFour = await readWorkshopState(page);
+    assert.equal(workshopPageFour.movement, "MOUVEMENT II \u00b7 EXPLORER");
+    assert.equal(workshopPageFour.pageTitle, "Sortir du d\u00e9monstrateur");
+    assert.equal(workshopPageFour.previousDisabled, false);
+    assert.equal(workshopPageFour.nextDisabled, true);
+    assert.equal(workshopPageFour.pendingBlocks, 3);
+    assert.equal(workshopPageFour.exitHref, workshopsUrl);
+    assert.equal(workshopPageFour.noHorizontalOverflow, true);
+
+    for (const viewport of [
+      { width: 1280, height: 800 },
+      { width: 1024, height: 768 },
+      { width: 390, height: 844 },
+    ]) {
+      await page.send("Emulation.setDeviceMetricsOverride", {
+        ...viewport,
+        deviceScaleFactor: 1,
+        mobile: viewport.width < 600,
+      });
+      await waitForWorkshopReady(page, "04 / 04");
+      const responsiveWorkshop = await readWorkshopState(page);
+      assert.equal(responsiveWorkshop.noHorizontalOverflow, true, `workshop ${viewport.width} has horizontal overflow`);
+      assert.equal(responsiveWorkshop.pageVisible, true, `workshop ${viewport.width} page is not visible`);
+      assert.equal(responsiveWorkshop.controlsInsideViewport, true, `workshop ${viewport.width} controls overflow`);
+    }
+
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
+    await waitForWorkshopReady(page, "04 / 04");
+    assert.equal((await readWorkshopState(page)).pageTitle, "Sortir du d\u00e9monstrateur");
+
+    await evaluate(page, "document.querySelector('.workshop-exit')?.click()");
+    await waitForExpression(page, "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 4");
 
     await loadUrl(page, libraryUrl);
     await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");

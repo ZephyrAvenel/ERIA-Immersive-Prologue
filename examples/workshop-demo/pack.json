@@ -1,0 +1,119 @@
+{
+  "$schema": "../../schemas/workshop-pack.schema.json",
+  "format": "ine-workshop-pack",
+  "version": "1.0",
+  "id": "workshop-demo",
+  "slug": "workshop-demo",
+  "title": "Atelier augmenté — démonstrateur technique",
+  "subtitle": "Runtime minimal des Ateliers augmentés",
+  "language": "fr",
+  "startPage": "page-01",
+  "movements": [
+    {
+      "id": "entrer",
+      "order": 1,
+      "title": "ENTRER",
+      "description": "Vérifier l'entrée dans un atelier."
+    },
+    {
+      "id": "explorer",
+      "order": 2,
+      "title": "EXPLORER",
+      "description": "Vérifier le changement de mouvement."
+    }
+  ],
+  "pages": [
+    {
+      "id": "page-01",
+      "movementId": "entrer",
+      "order": 1,
+      "title": "Entrer dans l'atelier",
+      "blocks": [
+        {
+          "id": "intro",
+          "type": "text",
+          "text": "Cette page valide l'entrée dans un Workshop Pack minimal."
+        }
+      ]
+    },
+    {
+      "id": "page-02",
+      "movementId": "entrer",
+      "order": 2,
+      "title": "Préparer la traversée",
+      "blocks": [
+        {
+          "id": "transition",
+          "type": "text",
+          "text": "La navigation reste linéaire, bornée et indépendante de tout contenu pédagogique définitif."
+        },
+        {
+          "id": "future-note",
+          "type": "textarea",
+          "label": "Interaction future",
+          "placeholder": "Cette saisie sera activée dans une prochaine mission."
+        }
+      ]
+    },
+    {
+      "id": "page-03",
+      "movementId": "explorer",
+      "order": 3,
+      "title": "Changer de mouvement",
+      "blocks": [
+        {
+          "id": "movement-check",
+          "type": "text",
+          "text": "Cette page appartient au deuxième mouvement grâce à sa donnée movementId."
+        },
+        {
+          "id": "future-choice",
+          "type": "choice",
+          "label": "Choix futur",
+          "options": [
+            {
+              "id": "option-a",
+              "label": "Option A"
+            },
+            {
+              "id": "option-b",
+              "label": "Option B"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "page-04",
+      "movementId": "explorer",
+      "order": 4,
+      "title": "Sortir du démonstrateur",
+      "blocks": [
+        {
+          "id": "closing",
+          "type": "text",
+          "text": "La dernière page vérifie l'état final, la navigation bornée et le retour vers les ateliers."
+        },
+        {
+          "id": "future-reveal",
+          "type": "reveal",
+          "label": "Révélation future",
+          "content": "Cette primitive sera rendue fonctionnelle dans une mission dédiée."
+        },
+        {
+          "id": "future-prompt",
+          "type": "promptCopy",
+          "label": "Prompt futur",
+          "text": "Propose trois questions pour approfondir cette intention sans écrire à ma place."
+        },
+        {
+          "id": "future-recall",
+          "type": "recall",
+          "sourceBlockId": "future-note",
+          "label": "Rappel futur",
+          "emptyText": "Aucune réponse locale n'est encore enregistrée."
+        }
+      ]
+    }
+  ]
+}

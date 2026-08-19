@@ -35,5 +35,10 @@
   "workshopsStatusPlanned": "Prévu",
   "workshopsNoAccess": "Parcours en préparation",
   "homeAction": "Entrer",
-  "continueExploration": "Poursuivre votre exploration"
+  "continueExploration": "Poursuivre votre exploration",
+  "workshopPackLabel": "Atelier augmenté",
+  "workshopNavigationLabel": "Navigation de l'atelier",
+  "workshopProgressLabel": "Progression de l'atelier",
+  "workshopExit": "Revenir aux ateliers",
+  "workshopUnsupportedBlock": "Cette interaction sera disponible dans une prochaine étape du moteur."
 }

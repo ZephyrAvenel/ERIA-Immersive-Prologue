@@ -8,11 +8,13 @@ import {
   loadNarrativePack,
   loadPolarity,
   loadPolarityPack,
+  loadWorkshopPack,
   type LivingCardPack,
   type NarrativeIntro,
   type NormalizedSceneTransition,
   type PolarityPack,
   type TransitionDirection,
+  WorkshopEngine,
 } from "@ine/core";
 import {
   renderPlayer,
@@ -20,9 +22,15 @@ import {
   renderLivingCard,
   renderPolarity,
   renderPolarityClosure,
+  renderWorkshop,
 } from "@ine/renderer";
 import { createButton } from "@ine/ui";
-import { validateLivingCard, validateNarrativePack, validatePolarity } from "@ine/validators";
+import {
+  validateLivingCard,
+  validateNarrativePack,
+  validatePolarity,
+  validateWorkshopPack,
+} from "@ine/validators";
 import { interpolate, resolveLocale, type LocaleMessages } from "./localization";
 import {
   createBrowserReadingProgressStore,
@@ -950,6 +958,88 @@ async function startLivingCardPack(packUrl: URL): Promise<void> {
   await showJourney();
 }
 
+async function startWorkshopPack(packUrl: URL): Promise<void> {
+  const pack = await loadWorkshopPack(packUrl, validateWorkshopPack);
+  const engine = new WorkshopEngine(pack);
+  const messages = resolveLocale(pack.language);
+  updateShell(messages, pack.title);
+  updateLibraryNavigation(messages, true);
+  const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
+  if (skipLink) {
+    skipLink.href = "#workshop-page";
+    skipLink.textContent = messages.skipToNarrative;
+  }
+  let navigationInProgress = false;
+
+  const movementForCurrentPage = () => {
+    const movement = pack.movements.find((candidate) => candidate.id === engine.currentPage.movementId);
+    if (!movement) throw new Error("INE_WORKSHOP_MOVEMENT_STATE_INVALID");
+    return movement;
+  };
+
+  const render = (): void => {
+    const controls = document.createElement("nav");
+    controls.className = "workshop-controls";
+    controls.setAttribute("aria-label", messages.workshopNavigationLabel);
+
+    const previous = createButton(messages.previous, () => navigate("previous"));
+    previous.dataset.workshopNavigation = "previous";
+    previous.disabled = navigationInProgress || !engine.canGoPrevious;
+
+    const next = createButton(messages.next, () => navigate("next"));
+    next.dataset.workshopNavigation = "next";
+    next.disabled = navigationInProgress || !engine.canGoNext;
+
+    controls.append(previous, next);
+
+    const exit = document.createElement("a");
+    exit.className = "workshop-exit";
+    exit.href = workshopsUrl.href;
+    exit.textContent = messages.workshopExit;
+    exit.setAttribute("aria-label", messages.workshopExit);
+
+    const current = engine.currentPageIndex + 1;
+    renderWorkshop(mount, {
+      pack,
+      page: engine.currentPage,
+      movement: movementForCurrentPage(),
+      pageIndex: engine.currentPageIndex,
+      pageCount: engine.pageCount,
+      controls,
+      exitControl: !engine.canGoNext ? exit : undefined,
+      messages: {
+        landmarkLabel: messages.workshopPackLabel,
+        progressLabel: messages.workshopProgressLabel,
+        progressText: `${String(current).padStart(2, "0")} / ${String(engine.pageCount).padStart(2, "0")}`,
+        unsupportedBlockText: messages.workshopUnsupportedBlock,
+      },
+    });
+    mount.removeAttribute("aria-busy");
+  };
+
+  const navigate = (target: NavigationTarget): void => {
+    if (navigationInProgress) return;
+    if (target === "previous" && !engine.canGoPrevious) return;
+    if (target === "next" && !engine.canGoNext) return;
+
+    navigationInProgress = true;
+    mount.setAttribute("aria-busy", "true");
+    try {
+      if (target === "previous") engine.previous();
+      else engine.next();
+    } finally {
+      navigationInProgress = false;
+      try {
+        render();
+      } finally {
+        mount.removeAttribute("aria-busy");
+      }
+    }
+  };
+
+  render();
+}
+
 async function start(): Promise<void> {
   const hasPackOverride = new URL(globalThis.location.href).searchParams.has("pack");
   if (!hasPackOverride && isHomeRoute()) {
@@ -977,6 +1067,10 @@ async function start(): Promise<void> {
   }
   if (format === "ine-living-card-pack") {
     await startLivingCardPack(packUrl);
+    return;
+  }
+  if (format === "ine-workshop-pack") {
+    await startWorkshopPack(packUrl);
     return;
   }
   throw new Error("INE_PACK_FORMAT_UNSUPPORTED");
