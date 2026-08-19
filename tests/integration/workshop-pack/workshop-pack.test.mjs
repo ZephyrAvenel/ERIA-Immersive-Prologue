@@ -62,10 +62,12 @@ test("technical workshop demo covers the minimal runtime traversal", async () =>
   assert.equal(demo.pages[2].movementId, "explorer");
   assert.deepEqual(
     demo.pages.flatMap((page) => page.blocks.map((block) => block.type)),
-    ["text", "text", "textarea", "text", "choice", "text", "reveal"],
+    ["text", "text", "textarea", "text", "choice", "promptCopy", "text", "recall", "reveal"],
   );
   assert.equal(demo.pages[1].blocks[1].id, "technical-note");
   assert.equal(demo.pages[2].blocks[1].options.length, 3);
+  assert.equal(demo.pages[2].blocks[2].type, "promptCopy");
+  assert.equal(demo.pages[3].blocks[1].sourceBlockId, "technical-note");
 
   const engine = new WorkshopEngine(demo);
   assert.equal(engine.currentPage.id, "page-01");

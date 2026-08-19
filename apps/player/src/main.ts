@@ -979,6 +979,16 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
     return movement;
   };
 
+  const copyText = async (text: string): Promise<boolean> => {
+    if (!navigator.clipboard?.writeText) return false;
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const render = (): void => {
     const controls = document.createElement("nav");
     controls.className = "workshop-controls";
@@ -1011,6 +1021,7 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
       onResponseChange: (blockId, value) => {
         responses.set(blockId, value);
       },
+      onCopyText: copyText,
       controls,
       exitControl: !engine.canGoNext ? exit : undefined,
       messages: {
@@ -1018,6 +1029,10 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
         progressLabel: messages.workshopProgressLabel,
         progressText: `${String(current).padStart(2, "0")} / ${String(engine.pageCount).padStart(2, "0")}`,
         unsupportedBlockText: messages.workshopUnsupportedBlock,
+        promptCopyAction: messages.workshopPromptCopyAction,
+        promptCopySuccess: messages.workshopPromptCopySuccess,
+        promptCopyFailure: messages.workshopPromptCopyFailure,
+        recallEmptyText: messages.workshopRecallEmptyText,
       },
     });
     mount.removeAttribute("aria-busy");

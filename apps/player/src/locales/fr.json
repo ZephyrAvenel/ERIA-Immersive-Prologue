@@ -40,5 +40,9 @@
   "workshopNavigationLabel": "Navigation de l'atelier",
   "workshopProgressLabel": "Progression de l'atelier",
   "workshopExit": "Revenir aux ateliers",
-  "workshopUnsupportedBlock": "Cette interaction sera disponible dans une prochaine étape du moteur."
+  "workshopUnsupportedBlock": "Cette interaction sera disponible dans une prochaine étape du moteur.",
+  "workshopPromptCopyAction": "Copier le prompt",
+  "workshopPromptCopySuccess": "Prompt copié",
+  "workshopPromptCopyFailure": "La copie automatique n'a pas fonctionné. Le prompt reste disponible pour une copie manuelle.",
+  "workshopRecallEmptyText": "Aucune réponse formulée à cette étape."
 }

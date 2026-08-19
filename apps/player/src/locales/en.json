@@ -40,5 +40,9 @@
   "workshopNavigationLabel": "Workshop navigation",
   "workshopProgressLabel": "Workshop progress",
   "workshopExit": "Back to workshops",
-  "workshopUnsupportedBlock": "This interaction will be available in a future engine step."
+  "workshopUnsupportedBlock": "This interaction will be available in a future engine step.",
+  "workshopPromptCopyAction": "Copy prompt",
+  "workshopPromptCopySuccess": "Prompt copied",
+  "workshopPromptCopyFailure": "Automatic copy did not work. The prompt remains available for manual copying.",
+  "workshopRecallEmptyText": "No response was written at this step."
 }

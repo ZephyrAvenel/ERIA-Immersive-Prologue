@@ -84,6 +84,13 @@
               "label": "Révéler"
             }
           ]
+        },
+        {
+          "id": "technical-prompt",
+          "type": "promptCopy",
+          "label": "Prompt de test",
+          "description": "Ce prompt est copiable vers l'assistant externe de votre choix. Il n'est envoyé nulle part par l'INE.",
+          "text": "À partir de cette note technique, propose trois questions pour ouvrir plusieurs pistes sans choisir à ma place."
         }
       ]
     },
@@ -97,6 +104,13 @@
           "id": "reveal-intro",
           "type": "text",
           "text": "Cette dernière page vérifie l'ouverture contrôlée d'un contenu complémentaire."
+        },
+        {
+          "id": "technical-recall",
+          "type": "recall",
+          "sourceBlockId": "technical-note",
+          "label": "Votre note retrouvée",
+          "emptyText": "Aucune note technique n'a encore été formulée."
         },
         {
           "id": "technical-reveal",

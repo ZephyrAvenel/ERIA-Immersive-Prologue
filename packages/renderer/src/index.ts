@@ -262,6 +262,10 @@ export interface WorkshopRendererMessages {
   readonly progressLabel: string;
   readonly progressText: string;
   readonly unsupportedBlockText: string;
+  readonly promptCopyAction: string;
+  readonly promptCopySuccess: string;
+  readonly promptCopyFailure: string;
+  readonly recallEmptyText: string;
 }
 
 export type WorkshopResponseValue = string | boolean;
@@ -274,6 +278,7 @@ export interface RenderWorkshopState {
   readonly pageCount: number;
   readonly responses?: ReadonlyMap<string, WorkshopResponseValue>;
   readonly onResponseChange?: (blockId: string, value: WorkshopResponseValue) => void;
+  readonly onCopyText?: (text: string) => Promise<boolean>;
   readonly controls: HTMLElement;
   readonly exitControl?: HTMLElement;
   readonly messages: WorkshopRendererMessages;
@@ -317,6 +322,8 @@ function createWorkshopBlock(
   block: WorkshopBlock,
   responses: ReadonlyMap<string, WorkshopResponseValue> | undefined,
   onResponseChange: ((blockId: string, value: WorkshopResponseValue) => void) | undefined,
+  onCopyText: ((text: string) => Promise<boolean>) | undefined,
+  messages: WorkshopRendererMessages,
   unsupportedBlockText: string,
 ): HTMLElement {
   const section = document.createElement("section");
@@ -427,9 +434,69 @@ function createWorkshopBlock(
     return section;
   }
 
+  if (block.type === "promptCopy") {
+    const promptId = createDomId(pageId, block.id, "prompt");
+    const statusId = createDomId(pageId, block.id, "status");
+
+    const title = document.createElement("h2");
+    title.className = "workshop-field__label";
+    title.textContent = block.label;
+
+    if (block.description) {
+      const description = document.createElement("p");
+      description.className = "workshop-prompt-copy__description";
+      description.textContent = block.description;
+      section.append(title, description);
+    } else {
+      section.append(title);
+    }
+
+    const prompt = document.createElement("pre");
+    prompt.id = promptId;
+    prompt.className = "workshop-prompt-copy__text";
+    const code = document.createElement("code");
+    code.textContent = block.text;
+    prompt.append(code);
+
+    const status = document.createElement("p");
+    status.id = statusId;
+    status.className = "workshop-prompt-copy__status";
+    status.setAttribute("aria-live", "polite");
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "workshop-prompt-copy__button";
+    button.textContent = messages.promptCopyAction;
+    button.setAttribute("aria-describedby", `${promptId} ${statusId}`);
+    button.addEventListener("click", () => {
+      void (async () => {
+        const copied = await onCopyText?.(block.text);
+        status.textContent = copied ? messages.promptCopySuccess : messages.promptCopyFailure;
+      })();
+    });
+
+    section.append(prompt, button, status);
+    return section;
+  }
+
+  if (block.type === "recall") {
+    const title = document.createElement("h2");
+    title.className = "workshop-field__label";
+    title.textContent = block.label ?? block.sourceBlockId;
+    const quote = document.createElement("blockquote");
+    quote.className = "workshop-recall__content";
+    const paragraph = document.createElement("p");
+    const value = getStringResponse(responses, block.sourceBlockId).trim();
+    paragraph.textContent = value.length > 0 ? value : block.emptyText ?? messages.recallEmptyText;
+    quote.append(paragraph);
+    section.append(title, quote);
+    return section;
+  }
+
+  const unknownBlock = block as { readonly type: string; readonly label?: unknown };
   section.className += " workshop-block--pending";
   section.setAttribute("aria-disabled", "true");
-  const label = "label" in block && typeof block.label === "string" ? block.label : block.type;
+  const label = typeof unknownBlock.label === "string" ? unknownBlock.label : unknownBlock.type;
   const title = document.createElement("h2");
   title.textContent = label;
   const status = document.createElement("p");
@@ -478,6 +545,8 @@ export function renderWorkshop(target: HTMLElement, state: RenderWorkshopState):
       block,
       state.responses,
       state.onResponseChange,
+      state.onCopyText,
+      state.messages,
       state.messages.unsupportedBlockText,
     ));
   }

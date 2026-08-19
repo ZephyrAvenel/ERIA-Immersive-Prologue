@@ -356,6 +356,10 @@ async function readWorkshopState(client) {
       const textareaLabel = textarea ? document.querySelector(\`label[for="\${textarea.id}"]\`) : null;
       const revealButton = document.querySelector('.workshop-reveal__button');
       const revealContent = document.querySelector('.workshop-reveal__content');
+      const prompt = document.querySelector('.workshop-prompt-copy__text');
+      const promptButton = document.querySelector('.workshop-prompt-copy__button');
+      const promptStatus = document.querySelector('.workshop-prompt-copy__status');
+      const recall = document.querySelector('.workshop-recall__content');
       const pageRect = page?.getBoundingClientRect();
       const controlsRect = controls?.getBoundingClientRect();
       return {
@@ -373,6 +377,11 @@ async function readWorkshopState(client) {
         inputCount: document.querySelectorAll('input').length,
         checkedChoices: Array.from(document.querySelectorAll('input[type="radio"]:checked')).map((input) => input.value),
         choiceLabels: Array.from(document.querySelectorAll('.workshop-choice__label')).map((label) => label.textContent),
+        promptText: prompt?.textContent ?? null,
+        promptButtonText: promptButton?.textContent ?? null,
+        promptStatus: promptStatus?.textContent ?? null,
+        copiedPrompt: window.__ineCopiedPrompt ?? null,
+        recallText: recall?.textContent ?? null,
         revealExpanded: revealButton?.getAttribute('aria-expanded') ?? null,
         revealControls: revealButton?.getAttribute('aria-controls') ?? null,
         revealContentId: revealContent?.id ?? null,
@@ -826,6 +835,17 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
 
     const workshopDemoUrl = `${entryUrl}?pack=examples/workshop-demo/pack.json`;
     await loadUrl(page, workshopDemoUrl);
+    await evaluate(
+      page,
+      `Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: {
+          async writeText(text) {
+            window.__ineCopiedPrompt = text;
+          }
+        }
+      })`,
+    );
     await waitForWorkshopReady(page, "01 / 04");
     const workshopPageOne = await readWorkshopState(page);
     assert.equal(workshopPageOne.title, "Atelier augment\u00e9 \u2014 d\u00e9monstrateur technique");
@@ -852,7 +872,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       page,
       `(() => {
         const textarea = document.querySelector('textarea');
-        textarea.value = '<img src=x onerror=alert(1)> Une note locale';
+        textarea.value = '<script>alert("test")</script> Une première trace';
         textarea.dispatchEvent(new Event('input', { bubbles: true }));
       })()`,
     );
@@ -866,12 +886,25 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(workshopPageThree.inputCount, 3);
     assert.deepEqual(workshopPageThree.choiceLabels, ["Lire", "\u00c9crire", "R\u00e9v\u00e9ler"]);
     assert.deepEqual(workshopPageThree.checkedChoices, []);
+    assert.equal(workshopPageThree.promptButtonText, "Copier le prompt");
+    assert.equal(
+      workshopPageThree.promptText,
+      "\u00c0 partir de cette note technique, propose trois questions pour ouvrir plusieurs pistes sans choisir \u00e0 ma place.",
+    );
     await evaluate(page, "document.querySelector('input[value=\"reveler\"]')?.click()");
     assert.deepEqual((await readWorkshopState(page)).checkedChoices, ["reveler"]);
+    await evaluate(page, "document.querySelector('.workshop-prompt-copy__button')?.click()");
+    await waitForExpression(
+      page,
+      "document.querySelector('.workshop-prompt-copy__status')?.textContent === 'Prompt copi\u00e9'",
+    );
+    const copiedPromptState = await readWorkshopState(page);
+    assert.equal(copiedPromptState.promptStatus, "Prompt copi\u00e9");
+    assert.equal(copiedPromptState.copiedPrompt, copiedPromptState.promptText);
 
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"previous\"]')?.click()");
     await waitForWorkshopReady(page, "02 / 04");
-    assert.equal((await readWorkshopState(page)).textareaValue, "<img src=x onerror=alert(1)> Une note locale");
+    assert.equal((await readWorkshopState(page)).textareaValue, "<script>alert(\"test\")</script> Une premi\u00e8re trace");
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
     await waitForWorkshopReady(page, "03 / 04");
     assert.deepEqual((await readWorkshopState(page)).checkedChoices, ["reveler"]);
@@ -883,6 +916,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(workshopPageFour.previousDisabled, false);
     assert.equal(workshopPageFour.nextDisabled, true);
     assert.equal(workshopPageFour.pendingBlocks, 0);
+    assert.equal(workshopPageFour.recallText, "<script>alert(\"test\")</script> Une premi\u00e8re trace");
     assert.equal(workshopPageFour.revealExpanded, "false");
     assert.equal(workshopPageFour.revealControls, workshopPageFour.revealContentId);
     assert.equal(workshopPageFour.revealHidden, true);
@@ -918,9 +952,23 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal((await readWorkshopState(page)).pageTitle, "R\u00e9v\u00e9ler une information");
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"previous\"]')?.click()");
     await waitForWorkshopReady(page, "03 / 04");
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"previous\"]')?.click()");
+    await waitForWorkshopReady(page, "02 / 04");
+    await evaluate(
+      page,
+      `(() => {
+        const textarea = document.querySelector('textarea');
+        textarea.value = 'Une trace r\u00e9\u00e9crite depuis le retour';
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+      })()`,
+    );
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
+    await waitForWorkshopReady(page, "03 / 04");
+    assert.deepEqual((await readWorkshopState(page)).checkedChoices, ["reveler"]);
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
     await waitForWorkshopReady(page, "04 / 04");
     const returnedReveal = await readWorkshopState(page);
+    assert.equal(returnedReveal.recallText, "Une trace r\u00e9\u00e9crite depuis le retour");
     assert.equal(returnedReveal.revealExpanded, "true");
     assert.equal(returnedReveal.revealHidden, false);
 
@@ -1040,7 +1088,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       "the library-origin skip intent should be consumed once",
     );
 
-    await evaluate(page, "history.back()");
+    await evaluate(page, "setTimeout(() => history.back(), 0); true");
     await waitForExpression(
       page,
       "window.location.pathname.endsWith('/bibliotheque/') && document.querySelectorAll('.work-card').length === 13",
@@ -2325,6 +2373,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await page.close();
     await stopChild(vite);
     await stopChild(chrome.child);
-    await rm(chrome.userDataDir, { recursive: true, force: true }).catch(() => undefined);
+    await Promise.race([
+      rm(chrome.userDataDir, { recursive: true, force: true }),
+      new Promise((resolve) => setTimeout(resolve, 2_000)),
+    ]).catch(() => undefined);
   }
 });

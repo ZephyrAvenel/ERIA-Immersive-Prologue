@@ -134,6 +134,10 @@ function createWorkshopState(overrides = {}) {
       progressLabel: "Progression de l'atelier",
       progressText: "03 / 04",
       unsupportedBlockText: "Cette interaction sera disponible dans une prochaine étape du moteur.",
+      promptCopyAction: "Copier le prompt",
+      promptCopySuccess: "Prompt copié",
+      promptCopyFailure: "Copie impossible",
+      recallEmptyText: "Aucune réponse.",
     },
     ...overrides,
   };
@@ -269,7 +273,173 @@ test("WorkshopRenderer renders reveal blocks as controlled accessible disclosure
     assert.equal(findElement(content, "p").textContent, "<img src=x onerror=alert(1)> Et si le regard changeait ?");
   }));
 
-test("WorkshopRenderer keeps prompt copy and recall primitives explicitly pending", () =>
+test("WorkshopRenderer copies prompt text exactly and exposes accessible feedback", async () =>
+  withFakeDocument(async () => {
+    const target = new FakeElement("main");
+    const copied = [];
+    renderWorkshop(target, createWorkshopState({
+      onCopyText: async (text) => {
+        copied.push(text);
+        return true;
+      },
+      page: {
+        id: "page-03",
+        movementId: "explorer",
+        order: 3,
+        title: "Copier un prompt",
+        blocks: [
+          {
+            id: "prompt",
+            type: "promptCopy",
+            label: "Prompt de test",
+            description: "Copie externe.",
+            text: "<script>alert('x')</script>\nNe choisis pas à ma place.",
+          },
+        ],
+      },
+      messages: {
+        ...createWorkshopState().messages,
+        promptCopyAction: "Copier le prompt",
+        promptCopySuccess: "Prompt copié",
+        promptCopyFailure: "Copie impossible",
+        recallEmptyText: "Aucune réponse.",
+      },
+    }));
+
+    const button = findElement(target, ".workshop-prompt-copy__button");
+    const prompt = findElement(target, ".workshop-prompt-copy__text");
+    const status = findElement(target, ".workshop-prompt-copy__status");
+    assert.equal(button.textContent, "Copier le prompt");
+    assert.equal(findElement(prompt, "code").textContent, "<script>alert('x')</script>\nNe choisis pas à ma place.");
+    assert.equal(findElements(target, "script").length, 0);
+    assert.equal(status.getAttribute("aria-live"), "polite");
+
+    button.dispatchEvent({ type: "click" });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.deepEqual(copied, ["<script>alert('x')</script>\nNe choisis pas à ma place."]);
+    assert.equal(status.textContent, "Prompt copié");
+
+    button.dispatchEvent({ type: "click" });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.equal(copied.length, 2);
+  }));
+
+test("WorkshopRenderer reports prompt copy failure without hiding the prompt", async () =>
+  withFakeDocument(async () => {
+    const target = new FakeElement("main");
+    renderWorkshop(target, createWorkshopState({
+      onCopyText: async () => false,
+      page: {
+        id: "page-03",
+        movementId: "explorer",
+        order: 3,
+        title: "Copier un prompt",
+        blocks: [{ id: "prompt", type: "promptCopy", label: "Prompt", text: "Texte exact." }],
+      },
+      messages: {
+        ...createWorkshopState().messages,
+        promptCopyAction: "Copier",
+        promptCopySuccess: "Copié",
+        promptCopyFailure: "Copie impossible",
+        recallEmptyText: "Aucune réponse.",
+      },
+    }));
+
+    findElement(target, ".workshop-prompt-copy__button").dispatchEvent({ type: "click" });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.equal(findElement(target, ".workshop-prompt-copy__status").textContent, "Copie impossible");
+    assert.equal(findElement(findElement(target, ".workshop-prompt-copy__text"), "code").textContent, "Texte exact.");
+  }));
+
+test("WorkshopRenderer handles missing clipboard support as a non-fatal prompt copy failure", async () =>
+  withFakeDocument(async () => {
+    const target = new FakeElement("main");
+    renderWorkshop(target, createWorkshopState({
+      page: {
+        id: "page-03",
+        movementId: "explorer",
+        order: 3,
+        title: "Copier un prompt",
+        blocks: [{ id: "prompt", type: "promptCopy", label: "Prompt", text: "Copie manuelle possible." }],
+      },
+      messages: {
+        ...createWorkshopState().messages,
+        promptCopyAction: "Copier",
+        promptCopySuccess: "Copié",
+        promptCopyFailure: "Copie impossible",
+        recallEmptyText: "Aucune réponse.",
+      },
+    }));
+
+    findElement(target, ".workshop-prompt-copy__button").dispatchEvent({ type: "click" });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.equal(findElement(target, ".workshop-prompt-copy__status").textContent, "Copie impossible");
+    assert.equal(findElement(findElement(target, ".workshop-prompt-copy__text"), "code").textContent, "Copie manuelle possible.");
+  }));
+
+test("WorkshopRenderer renders recall from the current runtime state", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    const state = createWorkshopState({
+      responses: new Map([["note", "<script>alert('x')</script>\nUne trace modifiée."]]),
+      page: {
+        id: "page-04",
+        movementId: "explorer",
+        order: 4,
+        title: "Retrouver une trace",
+        blocks: [{ id: "recall", type: "recall", sourceBlockId: "note", label: "Votre note" }],
+      },
+      messages: {
+        ...createWorkshopState().messages,
+        promptCopyAction: "Copier",
+        promptCopySuccess: "Copié",
+        promptCopyFailure: "Copie impossible",
+        recallEmptyText: "Aucune réponse.",
+      },
+    });
+
+    renderWorkshop(target, state);
+    assert.equal(findElement(target, ".workshop-field__label").textContent, "Votre note");
+    assert.equal(findElement(findElement(target, ".workshop-recall__content"), "p").textContent, "<script>alert('x')</script>\nUne trace modifiée.");
+    assert.equal(findElements(target, "script").length, 0);
+
+    renderWorkshop(target, {
+      ...state,
+      responses: new Map([["note", "Une trace réécrite."]]),
+    });
+    assert.equal(findElement(findElement(target, ".workshop-recall__content"), "p").textContent, "Une trace réécrite.");
+  }));
+
+test("WorkshopRenderer renders a recall fallback when the source is empty", () =>
+  withFakeDocument(() => {
+    const target = new FakeElement("main");
+    renderWorkshop(target, createWorkshopState({
+      responses: new Map([["note", "   "]]),
+      page: {
+        id: "page-04",
+        movementId: "explorer",
+        order: 4,
+        title: "Retrouver une trace",
+        blocks: [
+          { id: "recall-a", type: "recall", sourceBlockId: "note", label: "Trace A", emptyText: "Rien à rappeler." },
+          { id: "recall-b", type: "recall", sourceBlockId: "missing", label: "Trace B" },
+        ],
+      },
+      messages: {
+        ...createWorkshopState().messages,
+        promptCopyAction: "Copier",
+        promptCopySuccess: "Copié",
+        promptCopyFailure: "Copie impossible",
+        recallEmptyText: "Aucune réponse.",
+      },
+    }));
+
+    const recalls = findElements(target, ".workshop-recall__content");
+    assert.equal(findElement(recalls[0], "p").textContent, "Rien à rappeler.");
+    assert.equal(findElement(recalls[1], "p").textContent, "Aucune réponse.");
+  }));
+
+test("WorkshopRenderer renders every V1 workshop primitive without pending placeholders", () =>
   withFakeDocument(() => {
     const target = new FakeElement("main");
     renderWorkshop(target, createWorkshopState({
@@ -279,6 +449,7 @@ test("WorkshopRenderer keeps prompt copy and recall primitives explicitly pendin
         order: 4,
         title: "Sortir du démonstrateur",
         blocks: [
+          { id: "intro", type: "text", text: "Lire avant d'agir." },
           { id: "note", type: "textarea", label: "Interaction future" },
           { id: "choice", type: "choice", label: "Choix futur", options: [{ id: "a", label: "A" }, { id: "b", label: "B" }] },
           { id: "reveal", type: "reveal", label: "Révélation future", content: "À venir." },
@@ -289,14 +460,12 @@ test("WorkshopRenderer keeps prompt copy and recall primitives explicitly pendin
     }));
 
     const pendingBlocks = findElements(target, ".workshop-block--pending");
-    assert.equal(pendingBlocks.length, 2);
+    assert.equal(pendingBlocks.length, 0);
     assert.equal(findElements(target, "textarea").length, 1);
     assert.equal(findElements(target, "input").length, 2);
     assert.equal(findElement(target, ".workshop-reveal__button").getAttribute("aria-expanded"), "false");
-    assert.equal(
-      pendingBlocks.every((block) => findElement(block, "p").textContent.includes("Cette interaction sera disponible")),
-      true,
-    );
+    assert.equal(findElements(target, ".workshop-prompt-copy__button").length, 1);
+    assert.equal(findElements(target, ".workshop-recall__content").length, 1);
   }));
 
 test("PolarityRenderer renders authored JSON content and accessible navigation", () =>
