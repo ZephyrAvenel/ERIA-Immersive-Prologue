@@ -448,6 +448,49 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pack.pages[9].movementId, "exploration");
   assert.equal(pack.pages[9].blocks.some((block) => block.type === "promptCopy"), true);
 
+  const pageTen = pack.pages[9];
+  assert.equal(pageTen.id, "page-10");
+  assert.equal(pageTen.title, "D\u00e9placer le regard");
+  assert.equal(pageTen.movementId, "exploration");
+  assert.deepEqual(pageTen.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "promptCopy",
+    "text",
+    "textarea",
+    "text",
+  ]);
+  const pageTenRecalls = pageTen.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageTenRecalls.length, 2);
+  assert.deepEqual(
+    pageTenRecalls.map((block) => block.id),
+    ["rappel-piste-regard", "rappel-boussole-regard"],
+  );
+  assert.deepEqual(
+    pageTenRecalls.map((block) => block.sourceBlockId),
+    ["piste-provisoire", "boussole"],
+  );
+  const pageTenPrompts = pageTen.blocks.filter((block) => block.type === "promptCopy");
+  assert.equal(pageTenPrompts.length, 1);
+  assert.equal(pageTenPrompts[0].id, "prompt-deplacer-regard");
+  assert.equal(pageTenPrompts[0].label, "D\u00e9placer le regard");
+  assert.equal(pageTenPrompts[0].text.includes("[COLLEZ ICI VOTRE PISTE PROVISOIRE]"), true);
+  assert.equal(pageTenPrompts[0].text.includes("[COLLEZ ICI VOTRE BOUSSOLE \u2014 FACULTATIF]"), true);
+  assert.equal(pageTenPrompts[0].text.includes("Ne poursuis pas l'histoire."), true);
+  assert.equal(pageTenPrompts[0].text.includes("N'\u00e9cris pas de sc\u00e8ne."), true);
+  assert.equal(pageTenPrompts[0].text.includes("Ne r\u00e9\u00e9cris pas ma proposition."), true);
+  assert.equal(pageTenPrompts[0].text.includes("Ne d\u00e9cide pas quelle position est la meilleure."), true);
+  const pageTenTextareas = pageTen.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageTenTextareas.length, 1);
+  assert.equal(pageTenTextareas[0].id, "regard-deplace");
+  assert.equal(pageTenTextareas[0].label, "Ce que ce d\u00e9placement vous a permis de voir");
+  assert.equal(pageTenTextareas[0].placeholder.includes("Avec vos propres mots"), true);
+  assert.equal(pageTen.blocks.some((block) => ["choice", "reveal"].includes(block.type)), false);
+  assert.equal(pack.pages[10].movementId, "exploration");
+  assert.equal(pack.pages[10].blocks.some((block) => block.id === "hypothese-forte"), true);
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [

@@ -504,20 +504,49 @@
         {
           "id": "regard-intro",
           "type": "text",
-          "text": "Observer la même situation depuis plusieurs positions narratives."
+          "text": "Vous avez choisi une possibilité à explorer.\n\nNous pourrions maintenant chercher ce qui arrive ensuite.\n\nMais ce serait peut-être encore trop tôt.\n\nAvant de faire avancer cette piste, nous pouvons déplacer l'endroit depuis lequel nous la regardons.\n\nCar une même situation ne révèle pas la même chose selon la position depuis laquelle elle devient visible."
         },
         {
-          "id": "regard-prompt",
+          "id": "rappel-piste-regard",
+          "type": "recall",
+          "sourceBlockId": "piste-provisoire",
+          "label": "La possibilité que vous explorez",
+          "emptyText": "Votre piste provisoire n'est pas encore formulée. Vous pouvez revenir à la page précédente, ou poursuivre avec la possibilité que vous avez actuellement en tête."
+        },
+        {
+          "id": "rappel-boussole-regard",
+          "type": "recall",
+          "sourceBlockId": "boussole",
+          "label": "Ce que vous ne voulez pas perdre",
+          "emptyText": "Votre boussole n'est pas encore formulée. Vous pouvez néanmoins poursuivre en gardant à l'esprit ce qui doit rester vivant pour vous."
+        },
+        {
+          "id": "regard-decentrement",
+          "type": "text",
+          "text": "Déplacer le regard ne signifie pas nécessairement changer de narrateur.\n\nNous pouvons regarder une même possibilité depuis quelqu'un qui la vit, quelqu'un qui l'observe, ce qui lui résiste, ce qui manque, ce qu'elle produira plus tard — parfois même depuis un lieu ou une présence qui semblait secondaire.\n\nL'enjeu n'est pas de multiplier les effets.\n\nIl est de rendre perceptible ce que notre première position laissait hors champ."
+        },
+        {
+          "id": "prompt-deplacer-regard",
           "type": "promptCopy",
-          "label": "Copier un prompt de déplacement du regard",
-          "description": "Le prompt invite l'assistant extérieur à proposer des angles, sans écrire à votre place.",
-          "text": "À partir de cette piste, propose trois points de vue qui transformeraient profondément la perception de la situation. Décris l'effet de chaque point de vue sans rédiger la scène."
+          "label": "Déplacer le regard",
+          "description": "Si vous souhaitez utiliser une IA extérieure, copiez ce prompt dans l'assistant de votre choix puis remplacez les parties indiquées par votre piste et, si vous le souhaitez, votre boussole.",
+          "text": "Je souhaite explorer cette possibilité sans encore écrire l'histoire :\n\n[COLLEZ ICI VOTRE PISTE PROVISOIRE]\n\nVoici, si cela peut servir de repère, ce que je ne voudrais pas perdre :\n\n[COLLEZ ICI VOTRE BOUSSOLE — FACULTATIF]\n\nNe poursuis pas l'histoire.\nN'écris pas de scène.\nNe réécris pas ma proposition.\nNe choisis pas à ma place ce qu'elle devrait devenir.\n\nAide-moi seulement à déplacer le regard.\n\nPropose 6 positions très différentes depuis lesquelles cette même possibilité pourrait être observée.\n\nTu peux notamment explorer :\n- le regard d'une autre personne impliquée ;\n- le regard d'un témoin extérieur ;\n- ce qui manque ou reste absent ;\n- ce qui résiste à la situation ;\n- ce que cette situation produira plus tard ;\n- le lieu dans lequel elle se déroule ;\n- une conséquence que personne ne remarque encore ;\n- une présence apparemment secondaire.\n\nPour chaque position, indique brièvement :\n\n1. depuis où nous regardons ;\n2. ce que cette position rend visible ;\n3. ce que le regard initial risquait de laisser hors champ.\n\nNe décide pas quelle position est la meilleure.\n\nJe cherche seulement à voir ce que ma première manière de regarder ne me permettait pas encore de percevoir."
+        },
+        {
+          "id": "regard-retour-auteur",
+          "type": "text",
+          "text": "Ne cherchez pas maintenant quelle proposition de l'assistant serait la plus brillante.\n\nRegardez plutôt ce qui s'est déplacé en vous.\n\nUne position vous a peut-être permis de voir une absence.\nUne contradiction.\nUne relation.\nUne conséquence.\nQuelque chose qui était déjà là, mais que vous ne regardiez pas encore.\n\nC'est ce déplacement qui nous intéresse."
         },
         {
           "id": "regard-deplace",
           "type": "textarea",
-          "label": "Quel déplacement du regard vous intéresse ?",
-          "placeholder": "Regarder depuis..."
+          "label": "Ce que ce déplacement vous a permis de voir",
+          "placeholder": "Avec vos propres mots, notez ce que vous percevez maintenant et qui restait hors champ auparavant…"
+        },
+        {
+          "id": "regard-cloture",
+          "type": "text",
+          "text": "La piste n'a peut-être pas changé.\n\nMais votre manière de la voir, oui.\n\nC'est parfois ainsi qu'une possibilité commence à devenir habitable :\nnon parce que nous lui ajoutons davantage de matière, mais parce que nous découvrons ce qu'elle contenait déjà depuis un endroit que nous n'avions pas encore occupé.\n\nGardez ce déplacement.\n\nNous allons maintenant apprendre à poser une autre sorte de question."
         }
       ]
     },
