@@ -222,6 +222,17 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
     creation: ["page-25", "page-26"],
   });
 
+  const pageOne = pack.pages[0];
+  assert.equal(pageOne.id, "page-01");
+  assert.equal(pageOne.title, "Le seuil de l'écriture");
+  assert.equal(pageOne.movementId, "intention");
+  assert.deepEqual(pageOne.blocks.map((block) => block.type), ["text", "text", "text", "reveal", "text"]);
+  assert.equal(pageOne.blocks.filter((block) => block.type === "reveal").length, 1);
+  assert.equal(
+    pageOne.blocks.some((block) => ["textarea", "choice", "promptCopy", "recall"].includes(block.type)),
+    false,
+  );
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
@@ -263,9 +274,10 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   );
 
   const serialized = JSON.stringify(pack).toLowerCase();
-  for (const forbidden of ["apikey", "api_key", "endpoint", "chatbot", "streaming", "openaikey"]) {
+  for (const forbidden of ["apikey", "api_key", "endpoint", "streaming", "openaikey"]) {
     assert.equal(serialized.includes(forbidden), false, `pack should not contain ${forbidden}`);
   }
+  assert.equal(pack.pages.some((page) => page.blocks.some((block) => block.type === "chatbot")), false);
 
   const registry = await readProjectJson("apps", "player", "src", "editorial-registry.json");
   const writingWorkshop = registry.workshops.find((workshop) => workshop.id === "ecriture-augmentee");

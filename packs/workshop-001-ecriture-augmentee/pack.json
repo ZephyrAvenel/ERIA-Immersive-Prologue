@@ -62,13 +62,28 @@
         {
           "id": "seuil-intro",
           "type": "text",
-          "text": "Entrer dans l'atelier. Cette page précisera que l'IA reste extérieure à l'INE et que l'auteur conserve ses décisions."
+          "text": "Avant d'écrire avec une intelligence artificielle, il y a peut-être une question plus simple.\n\nQu'est-ce qui, en vous, cherche à être écrit ?\n\nUne image.\n\nUne sensation.\n\nUne phrase.\n\nUne tension.\n\nUn souvenir.\n\nUne question qui revient.\n\nQuelque chose existe souvent avant le texte.\n\nPas encore une histoire.\n\nPas nécessairement une idée claire.\n\nSeulement une présence, parfois fragile, que l'écriture pourrait commencer à rendre perceptible."
+        },
+        {
+          "id": "seuil-ia-ne-commence-pas",
+          "type": "text",
+          "text": "Dans cet atelier, nous n'allons pas demander à une intelligence artificielle de trouver à notre place ce que nous voulons raconter.\n\nNous allons faire autrement.\n\nNous commencerons par écouter.\n\nPuis nous ouvrirons des possibles.\n\nNous divergerons.\n\nNous déplacerons certains regards.\n\nNous confronterons des propositions.\n\nEt peu à peu, nous choisirons.\n\nL'IA pourra nous accompagner dans certains de ces déplacements.\n\nMais elle ne décidera pas de ce qui mérite d'être écrit.\n\nCette place reste la vôtre."
+        },
+        {
+          "id": "seuil-ia-exterieure",
+          "type": "text",
+          "text": "Cet atelier ne contient aucun chatbot.\n\nIl n'utilise aucune clé API et ne communique avec aucun service d'intelligence artificielle.\n\nÀ certains moments, un prompt pourra vous être proposé.\n\nVous pourrez le copier et l'utiliser dans l'assistant IA de votre choix, puis revenir ici poursuivre votre cheminement.\n\nL'important ne sera jamais seulement ce que l'IA aura répondu.\n\nL'important sera :\n\nce que sa réponse vous aura permis de voir."
         },
         {
           "id": "seuil-reveal",
           "type": "reveal",
-          "label": "Lire le principe de l'atelier",
-          "content": "L'atelier n'apprend pas à faire écrire l'IA à votre place. Il prépare une manière d'ouvrir des possibles sans abandonner votre voix."
+          "label": "Avant de commencer",
+          "content": "Vous n'avez pas besoin de connaître les techniques du prompting.\n\nVous n'avez pas besoin de savoir comment fonctionne un modèle d'intelligence artificielle.\n\nVous avez seulement besoin d'un endroit où noter ce qui apparaît, d'un assistant IA si vous souhaitez réaliser les explorations proposées — et de votre propre discernement.\n\nVous pouvez aussi traverser certaines étapes sans utiliser l'IA.\n\nVous restez libre de ce que vous gardez, de ce que vous transformez et de ce que vous laissez de côté."
+        },
+        {
+          "id": "seuil-cloture",
+          "type": "text",
+          "text": "Nous pouvons maintenant chercher ce qui demande à commencer."
         }
       ]
     },
