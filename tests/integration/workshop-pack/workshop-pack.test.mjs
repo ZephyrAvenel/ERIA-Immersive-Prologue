@@ -313,6 +313,38 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pageFivePrompts[0].text.includes("Propose 6 directions"), true);
   assert.equal(pageFive.blocks.some((block) => ["textarea", "choice", "reveal"].includes(block.type)), false);
 
+  const pageSix = pack.pages[5];
+  assert.equal(pageSix.id, "page-06");
+  assert.equal(pageSix.title, "Une id\u00e9e, plusieurs directions");
+  assert.equal(pageSix.movementId, "divergence");
+  assert.deepEqual(pageSix.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "text",
+    "promptCopy",
+    "text",
+    "textarea",
+    "text",
+  ]);
+  const pageSixRecalls = pageSix.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageSixRecalls.length, 1);
+  assert.equal(pageSixRecalls[0].id, "rappel-etincelle-directions");
+  assert.equal(pageSixRecalls[0].sourceBlockId, "etincelle");
+  const pageSixPrompts = pageSix.blocks.filter((block) => block.type === "promptCopy");
+  assert.equal(pageSixPrompts.length, 1);
+  assert.equal(pageSixPrompts[0].id, "prompt-directions-contrastees");
+  assert.equal(pageSixPrompts[0].label, "\u00c9loigner les directions");
+  assert.equal(pageSixPrompts[0].text.includes("[COLLEZ ICI VOTRE \u00c9TINCELLE]"), true);
+  assert.equal(pageSixPrompts[0].text.includes("Ne d\u00e9veloppe aucune histoire compl\u00e8te."), true);
+  assert.equal(pageSixPrompts[0].text.includes("Ne choisis pas la meilleure direction."), true);
+  assert.equal(pageSixPrompts[0].text.includes("Ne classe pas les propositions."), true);
+  const pageSixTextareas = pageSix.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageSixTextareas.length, 1);
+  assert.equal(pageSixTextareas[0].id, "directions-brutes");
+  assert.equal(pageSixTextareas[0].label, "Quelques directions \u00e0 garder sous les yeux");
+  assert.equal(pageSixTextareas[0].placeholder.includes("avec vos propres mots"), true);
+  assert.equal(pageSix.blocks.some((block) => ["choice", "reveal"].includes(block.type)), false);
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [

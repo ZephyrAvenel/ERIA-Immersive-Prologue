@@ -274,20 +274,42 @@
         {
           "id": "directions-intro",
           "type": "text",
-          "text": "Observer qu'une même étincelle peut produire plusieurs trajectoires narratives."
+          "text": "Plusieurs directions ne signifient pas nécessairement plusieurs possibles.\n\nNous pouvons changer quelques détails et rester pourtant dans la même histoire.\n\nDiverger demande parfois d'éloigner davantage les chemins."
         },
         {
-          "id": "directions-prompt",
+          "id": "rappel-etincelle-directions",
+          "type": "recall",
+          "sourceBlockId": "etincelle",
+          "label": "Votre étincelle",
+          "emptyText": "Votre étincelle n'est pas encore formulée. Vous pouvez revenir au mouvement précédent, ou poursuivre avec l'idée qui vous accompagne maintenant."
+        },
+        {
+          "id": "directions-contraste-intro",
+          "type": "text",
+          "text": "Si les premières pistes restent trop proches les unes des autres, vous pouvez demander à votre assistant IA de pousser plus loin les écarts.\n\nIl ne s'agit toujours pas de lui demander quoi écrire.\n\nIl s'agit de rendre visibles des chemins suffisamment différents pour pouvoir réellement les regarder."
+        },
+        {
+          "id": "prompt-directions-contrastees",
           "type": "promptCopy",
-          "label": "Copier un prompt pour multiplier les directions",
-          "description": "Le prompt demande des directions, pas un texte terminé.",
-          "text": "Propose quatre trajectoires narratives distinctes à partir de cette idée. Pour chaque trajectoire, indique seulement son angle, sa tension principale et ce qu'elle rendrait possible. Ne choisis pas à ma place."
+          "label": "Éloigner les directions",
+          "description": "Si vous souhaitez poursuivre avec une IA extérieure, copiez ce prompt dans l'assistant de votre choix et remplacez la partie indiquée par votre étincelle.",
+          "text": "Je pars de cette étincelle :\n\n[COLLEZ ICI VOTRE ÉTINCELLE]\n\nJe veux maintenant explorer des directions qui ne soient pas de simples variantes les unes des autres.\n\nPropose plusieurs chemins réellement contrastés.\n\nPour créer de véritables écarts, tu peux faire varier fortement :\n- la logique du récit ;\n- le point de vue ;\n- l'échelle ;\n- la relation centrale ;\n- le type de tension ou de conflit ;\n- le lieu ou l'époque ;\n- les règles du monde ;\n- la tonalité ;\n- ce que cette étincelle pourrait finalement mettre en jeu.\n\nÉvite six versions d'une même idée.\n\nNe développe aucune histoire complète.\nNe choisis pas la meilleure direction.\nNe classe pas les propositions.\nNe cherche pas encore à résoudre quoi que ce soit.\n\nJe cherche des écarts féconds : des directions assez différentes pour déplacer ma manière de regarder mon point de départ.\n\nReste relativement bref pour chaque proposition."
+        },
+        {
+          "id": "directions-retour-auteur",
+          "type": "text",
+          "text": "Regardez maintenant ce qui est apparu.\n\nNe cherchez pas à tout conserver.\n\nCertaines directions vous attireront.\nD'autres vous laisseront indifférent.\nD'autres encore pourront vous déranger tout en ouvrant quelque chose.\n\nCe qui importe maintenant n'est pas ce que l'IA a produit.\n\nC'est ce que vous choisissez de garder vivant."
         },
         {
           "id": "directions-brutes",
           "type": "textarea",
-          "label": "Notez les directions qui méritent d'être gardées.",
-          "placeholder": "Direction 1, direction 2, direction 3..."
+          "label": "Quelques directions à garder sous les yeux",
+          "placeholder": "Reformulez ici, avec vos propres mots, quelques directions qui vous intriguent, vous déplacent ou vous résistent…"
+        },
+        {
+          "id": "directions-cloture",
+          "type": "text",
+          "text": "Vous n'avez encore rien à choisir définitivement.\n\nPour l'instant, quelques chemins sont simplement devenus visibles.\n\nÀ l'étape suivante, nous allons regarder ce qui change lorsqu'une direction commence à varier."
         }
       ]
     },
