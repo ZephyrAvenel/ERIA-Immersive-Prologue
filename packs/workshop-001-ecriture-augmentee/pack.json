@@ -405,27 +405,44 @@
         {
           "id": "boussole-intro",
           "type": "text",
-          "text": "Conserver l'intention initiale comme boussole."
+          "text": "Nous pourrions continuer longtemps.\n\nOuvrir d'autres directions.\nDéplacer encore le point de vue.\nChanger le lieu, l'époque, la tonalité.\nFaire apparaître de nouvelles possibilités.\n\nMais diverger n'a pas pour fonction de produire toujours davantage.\n\nÀ un moment, il faut regarder ce que tous ces déplacements ont rendu perceptible."
         },
         {
-          "id": "etincelle-recall-page-08",
+          "id": "rappel-etincelle-boussole",
           "type": "recall",
           "sourceBlockId": "etincelle",
-          "label": "Votre étincelle",
-          "emptyText": "Votre étincelle sera rappelée ici."
+          "label": "L'étincelle de départ",
+          "emptyText": "Votre étincelle n'est pas encore formulée. Vous pouvez néanmoins poursuivre avec ce qui vous avait donné envie de commencer."
         },
         {
-          "id": "directions-recall-page-08",
+          "id": "rappel-directions-boussole",
           "type": "recall",
           "sourceBlockId": "directions-brutes",
-          "label": "Directions ouvertes",
-          "emptyText": "Les directions retenues seront rappelées ici."
+          "label": "Ce qui s'est ouvert",
+          "emptyText": "Vous n'avez pas encore conservé de directions. Regardez simplement les possibilités dont vous vous souvenez ou ce qui s'est déplacé pour vous."
+        },
+        {
+          "id": "rappel-variation-boussole",
+          "type": "recall",
+          "sourceBlockId": "variation-retenue",
+          "label": "Ce qu'un déplacement vous a fait voir",
+          "emptyText": "Vous n'avez pas encore formulé ce qu'une variation vous a fait percevoir. Vous pouvez poursuivre avec ce qui vous paraît maintenant plus visible qu'au début."
+        },
+        {
+          "id": "boussole-question",
+          "type": "text",
+          "text": "Regardez maintenant ces trois traces ensemble.\n\nElles ne racontent pas encore votre récit.\n\nElles montrent plutôt le chemin par lequel quelque chose commence à devenir perceptible.\n\nDans tout ce qui vient de s'ouvrir, qu'est-ce que vous ne voulez pas perdre ?\n\nCela peut être une tension, une présence, une question, une sensation, une relation, une image ou une manière de regarder le monde.\n\nLe reste pourra encore changer.\n\nCherchez moins ce que vous allez écrire que ce qui devra pouvoir rester vivant pendant que vous l'écrirez."
         },
         {
           "id": "boussole",
           "type": "textarea",
-          "label": "Quelle boussole vous évitera de vous perdre ?",
-          "placeholder": "Ce à quoi je veux rester fidèle..."
+          "label": "Ce que vous ne voulez pas perdre",
+          "placeholder": "Une tension, une présence, une question, une sensation, une relation, une image, une manière de regarder le monde… Ce qui doit pouvoir rester vivant même si le récit continue de changer."
+        },
+        {
+          "id": "boussole-cloture",
+          "type": "text",
+          "text": "Vous n'avez pas fermé les possibles.\n\nVous avez simplement reconnu quelque chose qui pourra vous aider à les traverser.\n\nUne boussole ne décide pas du chemin.\nElle permet de ne pas perdre le nord.\n\nNous pouvons maintenant entrer dans une possibilité sans avoir besoin de croire qu'elle sera définitive."
         }
       ]
     },

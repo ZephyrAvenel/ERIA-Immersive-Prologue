@@ -382,6 +382,37 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pageSevenTextareas[0].placeholder.includes("avec vos propres mots"), true);
   assert.equal(pageSeven.blocks.some((block) => block.type === "reveal"), false);
 
+  const pageEight = pack.pages[7];
+  assert.equal(pageEight.id, "page-08");
+  assert.equal(pageEight.title, "Diverger sans se perdre");
+  assert.equal(pageEight.movementId, "divergence");
+  assert.deepEqual(pageEight.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "recall",
+    "text",
+    "textarea",
+    "text",
+  ]);
+  const pageEightRecalls = pageEight.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageEightRecalls.length, 3);
+  assert.deepEqual(
+    pageEightRecalls.map((block) => block.sourceBlockId),
+    ["etincelle", "directions-brutes", "variation-retenue"],
+  );
+  assert.deepEqual(
+    pageEightRecalls.map((block) => block.id),
+    ["rappel-etincelle-boussole", "rappel-directions-boussole", "rappel-variation-boussole"],
+  );
+  const pageEightTextareas = pageEight.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageEightTextareas.length, 1);
+  assert.equal(pageEightTextareas[0].id, "boussole");
+  assert.equal(pageEightTextareas[0].label, "Ce que vous ne voulez pas perdre");
+  assert.equal(pageEight.blocks.some((block) => ["choice", "reveal", "promptCopy"].includes(block.type)), false);
+  assert.equal(pack.pages[7].movementId, "divergence");
+  assert.equal(pack.pages[8].movementId, "exploration");
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
