@@ -345,6 +345,43 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pageSixTextareas[0].placeholder.includes("avec vos propres mots"), true);
   assert.equal(pageSix.blocks.some((block) => ["choice", "reveal"].includes(block.type)), false);
 
+  const pageSeven = pack.pages[6];
+  assert.equal(pageSeven.id, "page-07");
+  assert.equal(pageSeven.title, "Faire varier");
+  assert.equal(pageSeven.movementId, "divergence");
+  assert.deepEqual(pageSeven.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "text",
+    "choice",
+    "promptCopy",
+    "text",
+    "textarea",
+    "text",
+  ]);
+  const pageSevenRecalls = pageSeven.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageSevenRecalls.length, 1);
+  assert.equal(pageSevenRecalls[0].id, "rappel-directions-variation");
+  assert.equal(pageSevenRecalls[0].sourceBlockId, "directions-brutes");
+  const pageSevenChoices = pageSeven.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageSevenChoices.length, 1);
+  assert.equal(pageSevenChoices[0].id, "variation-parametre");
+  assert.equal(pageSevenChoices[0].options.length, 7);
+  const pageSevenPrompts = pageSeven.blocks.filter((block) => block.type === "promptCopy");
+  assert.equal(pageSevenPrompts.length, 1);
+  assert.equal(pageSevenPrompts[0].id, "prompt-faire-varier");
+  assert.equal(pageSevenPrompts[0].text.includes("[COLLEZ ICI UNE DIRECTION QUE VOUS VOULEZ EXPLORER]"), true);
+  assert.equal(pageSevenPrompts[0].text.includes("[INDIQUEZ ICI LE PARAM\u00c8TRE QUE VOUS VOULEZ FAIRE VARIER]"), true);
+  assert.equal(pageSevenPrompts[0].text.includes("Ne d\u00e9veloppe aucune histoire compl\u00e8te."), true);
+  assert.equal(pageSevenPrompts[0].text.includes("Ne choisis pas la meilleure variation."), true);
+  assert.equal(pageSevenPrompts[0].text.includes("Ne classe pas les propositions."), true);
+  assert.equal(pageSevenPrompts[0].text.includes("Ne fusionne pas les variations."), true);
+  const pageSevenTextareas = pageSeven.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageSevenTextareas.length, 1);
+  assert.equal(pageSevenTextareas[0].id, "variation-retenue");
+  assert.equal(pageSevenTextareas[0].placeholder.includes("avec vos propres mots"), true);
+  assert.equal(pageSeven.blocks.some((block) => block.type === "reveal"), false);
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [

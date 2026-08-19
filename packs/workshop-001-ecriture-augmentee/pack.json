@@ -322,43 +322,77 @@
         {
           "id": "variation-intro",
           "type": "text",
-          "text": "Explorer des variations de point de vue, d'époque, de lieu, de tonalité, de conflit, de forme ou de narrateur."
+          "text": "Diverger ne signifie pas produire toujours plus de possibilités.\n\nPrenez maintenant une direction parmi celles qui restent présentes pour vous.\n\nNous allons simplement déplacer quelque chose en elle.\n\nParfois, un seul déplacement suffit pour faire apparaître un récit que nous ne pouvions pas encore voir."
         },
         {
-          "id": "variation-angle",
+          "id": "rappel-directions-variation",
+          "type": "recall",
+          "sourceBlockId": "directions-brutes",
+          "label": "Quelques directions sous vos yeux",
+          "emptyText": "Vous n'avez encore noté aucune direction. Vous pouvez revenir à la page précédente, ou poursuivre avec une possibilité qui vous accompagne déjà."
+        },
+        {
+          "id": "variation-consigne",
+          "type": "text",
+          "text": "Parmi ces directions, retenez-en une pour cette expérience.\n\nPas nécessairement celle qui vous paraît la meilleure.\n\nChoisissez plutôt celle dont vous avez envie d'observer le mouvement.\n\nNous allons maintenant faire varier un seul de ses paramètres."
+        },
+        {
+          "id": "variation-parametre",
           "type": "choice",
-          "label": "Quelle variation souhaitez-vous tester en premier ?",
+          "label": "Que souhaitez-vous déplacer ?",
           "options": [
             {
               "id": "point-de-vue",
-              "label": "Changer de point de vue"
+              "label": "Le point de vue"
             },
             {
               "id": "lieu",
-              "label": "Déplacer le lieu"
+              "label": "Le lieu"
+            },
+            {
+              "id": "epoque",
+              "label": "L'époque"
             },
             {
               "id": "tonalite",
-              "label": "Modifier la tonalité"
+              "label": "La tonalité"
             },
             {
-              "id": "forme",
-              "label": "Changer la forme"
+              "id": "echelle",
+              "label": "L'échelle"
+            },
+            {
+              "id": "relation-centrale",
+              "label": "La relation centrale"
+            },
+            {
+              "id": "regle-du-monde",
+              "label": "Une règle du monde"
             }
           ]
         },
         {
-          "id": "variation-prompt",
+          "id": "prompt-faire-varier",
           "type": "promptCopy",
-          "label": "Copier un prompt de variation",
-          "description": "À utiliser pour tester des déplacements sans déléguer le choix final.",
-          "text": "À partir de cette direction, propose trois variations radicalement différentes : une variation de point de vue, une variation de lieu et une variation de tonalité. Ne rédige pas l'histoire."
+          "label": "Faire varier une direction",
+          "description": "Si vous souhaitez expérimenter cette variation avec une IA extérieure, copiez ce prompt dans l'assistant de votre choix puis complétez les deux parties indiquées.",
+          "text": "Je souhaite explorer cette direction :\n\n[COLLEZ ICI UNE DIRECTION QUE VOUS VOULEZ EXPLORER]\n\nJe veux faire varier principalement ce paramètre :\n\n[INDIQUEZ ICI LE PARAMÈTRE QUE VOUS VOULEZ FAIRE VARIER]\n\nPropose plusieurs variations de cette même direction en modifiant principalement ce paramètre.\n\nEssaie de préserver autant que possible les autres éléments afin que je puisse percevoir ce que ce déplacement change réellement.\n\nLes variations doivent être suffisamment différentes pour rendre le déplacement perceptible, mais elles doivent rester reconnaissables comme des transformations d'une même direction.\n\nNe développe aucune histoire complète.\nNe choisis pas la meilleure variation.\nNe classe pas les propositions.\nNe fusionne pas les variations.\nNe cherche pas à décider à ma place ce qui doit être conservé.\n\nReste bref pour chaque proposition.\n\nJe ne cherche pas encore une version définitive.\nJe cherche à voir ce que ce déplacement rend perceptible."
+        },
+        {
+          "id": "variation-retour-auteur",
+          "type": "text",
+          "text": "Regardez moins les variantes elles-mêmes que ce que leur déplacement vous permet de percevoir.\n\nQu'est-ce qui apparaît lorsque le point de vue change ?\n\nQu'est-ce qui devient possible lorsque l'échelle, le lieu, l'époque ou la relation se déplacent ?\n\nVous n'avez pas besoin de conserver une proposition entière.\n\nUne transformation, une tension ou une possibilité nouvelle peut suffire."
         },
         {
           "id": "variation-retenue",
           "type": "textarea",
-          "label": "Quelle variation souhaitez-vous garder provisoirement ?",
-          "placeholder": "Je garde..."
+          "label": "Ce que cette variation vous a fait voir",
+          "placeholder": "Reformulez avec vos propres mots le déplacement, la transformation ou la possibilité qui a fait apparaître quelque chose que vous n'aviez pas encore perçu…"
+        },
+        {
+          "id": "variation-cloture",
+          "type": "text",
+          "text": "Nous avons ouvert, éloigné, déplacé.\n\nIl est maintenant temps de regarder ce qui demeure lorsque les possibles se multiplient.\n\nCar diverger n'a de sens que si nous pouvons encore reconnaître ce que nous cherchons à préserver."
         }
       ]
     },
