@@ -455,20 +455,43 @@
         {
           "id": "possibilite-intro",
           "type": "text",
-          "text": "Choisir provisoirement une piste sans la considérer comme définitive."
+          "text": "Jusqu'ici, nous avons ouvert.\n\nNous avons laissé apparaître plusieurs directions, puis observé ce qui changeait lorsque l'une d'elles se déplaçait.\n\nNous allons maintenant faire autre chose.\n\nNon plus multiplier les chemins, mais entrer provisoirement dans l'un d'eux.\n\nPas pour décider.\n\nPour voir ce qu'il devient lorsque nous acceptons de l'habiter un moment."
         },
         {
-          "id": "boussole-recall-page-09",
+          "id": "rappel-directions-exploration",
+          "type": "recall",
+          "sourceBlockId": "directions-brutes",
+          "label": "Les directions qui se sont ouvertes",
+          "emptyText": "Vous n'avez pas encore conservé de directions. Vous pouvez revenir au mouvement précédent, ou poursuivre avec une possibilité dont vous vous souvenez."
+        },
+        {
+          "id": "rappel-boussole-exploration",
           "type": "recall",
           "sourceBlockId": "boussole",
           "label": "Votre boussole",
-          "emptyText": "Votre boussole sera rappelée ici."
+          "emptyText": "Votre boussole n'est pas encore formulée. Vous pouvez néanmoins poursuivre en gardant à l'esprit ce que vous ne voudriez pas perdre."
+        },
+        {
+          "id": "piste-provisoire-consigne",
+          "type": "text",
+          "text": "Regardez ce qui s'est ouvert et gardez votre boussole à proximité.\n\nUne possibilité vous attire peut-être davantage.\nUne autre vous résiste.\nUne autre encore vous semble étrange mais difficile à écarter.\n\nVous n'avez pas besoin de savoir si elle est la bonne.\n\nChoisir pour explorer n'est pas choisir définitivement.\n\nRetenez simplement une possibilité dans laquelle vous acceptez d'entrer pour quelques étapes."
         },
         {
           "id": "piste-provisoire",
           "type": "textarea",
-          "label": "Formulez la piste que vous acceptez d'explorer.",
-          "placeholder": "Je vais explorer..."
+          "label": "La possibilité que vous allez explorer",
+          "placeholder": "Reformulez avec vos propres mots une direction dans laquelle vous acceptez d'entrer provisoirement. Quelques phrases suffisent."
+        },
+        {
+          "id": "piste-provisoire-suite",
+          "type": "text",
+          "text": "Cette piste n'est pas une promesse.\n\nVous pourrez la déplacer.\nLa quitter.\nRevenir en arrière.\nDécouvrir qu'elle ne tient pas.\nOu comprendre, précisément en l'explorant, pourquoi une autre direction vous appelle davantage.\n\nPour l'instant, une seule chose compte :\n\nlui donner assez de présence pour pouvoir la regarder de l'intérieur."
+        },
+        {
+          "id": "exploration-provisoire-reveal",
+          "type": "reveal",
+          "label": "Et si je ne sais pas laquelle choisir ?",
+          "content": "Ne cherchez pas nécessairement celle qui paraît la plus forte.\n\nVous pouvez entrer dans celle qui vous intrigue le plus, celle qui vous résiste, ou celle dont vous comprenez encore mal pourquoi elle reste présente.\n\nExplorer n'est pas récompenser une idée.\n\nC'est lui donner assez de temps pour découvrir ce qu'elle contient.\n\nEt si aucune direction ne s'impose, choisissez-en simplement une que vous n'avez pas envie d'écarter tout de suite."
         }
       ]
     },

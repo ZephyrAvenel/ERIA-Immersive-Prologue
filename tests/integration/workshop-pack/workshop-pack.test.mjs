@@ -413,6 +413,41 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pack.pages[7].movementId, "divergence");
   assert.equal(pack.pages[8].movementId, "exploration");
 
+  const pageNine = pack.pages[8];
+  assert.equal(pageNine.id, "page-09");
+  assert.equal(pageNine.title, "Entrer dans une possibilit\u00e9");
+  assert.equal(pageNine.movementId, "exploration");
+  assert.deepEqual(pageNine.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "textarea",
+    "text",
+    "reveal",
+  ]);
+  const pageNineRecalls = pageNine.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageNineRecalls.length, 2);
+  assert.deepEqual(
+    pageNineRecalls.map((block) => block.sourceBlockId),
+    ["directions-brutes", "boussole"],
+  );
+  assert.deepEqual(
+    pageNineRecalls.map((block) => block.id),
+    ["rappel-directions-exploration", "rappel-boussole-exploration"],
+  );
+  const pageNineTextareas = pageNine.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageNineTextareas.length, 1);
+  assert.equal(pageNineTextareas[0].id, "piste-provisoire");
+  assert.equal(pageNineTextareas[0].label, "La possibilit\u00e9 que vous allez explorer");
+  assert.equal(pageNineTextareas[0].placeholder.includes("avec vos propres mots"), true);
+  const pageNineReveals = pageNine.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageNineReveals.length, 1);
+  assert.equal(pageNineReveals[0].id, "exploration-provisoire-reveal");
+  assert.equal(pageNine.blocks.some((block) => ["choice", "promptCopy"].includes(block.type)), false);
+  assert.equal(pack.pages[9].movementId, "exploration");
+  assert.equal(pack.pages[9].blocks.some((block) => block.type === "promptCopy"), true);
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
