@@ -52,6 +52,7 @@ import {
   findPublishedAugmentedWorkshopBySlug,
   type EditorialFamilyId,
   type LocalizedEditorialFamily,
+  type PublishedAugmentedWorkshop,
 } from "./editorial";
 import { createBrowserPublicThresholdSession } from "./threshold-session";
 import "./styles.css";
@@ -1001,6 +1002,156 @@ async function startLivingCardPack(packUrl: URL): Promise<void> {
   await showJourney();
 }
 
+async function renderWorkshopEntryGate(
+  workshop: PublishedAugmentedWorkshop,
+  packUrl: URL,
+): Promise<void> {
+  const pack = await loadWorkshopPack(packUrl, validateWorkshopPack);
+  const messages = resolveLocale(pack.language);
+  const labels = workshop.labels[messages.language === "fr" ? "fr" : "en"];
+  const progressStore = createBrowserWorkshopProgressStore();
+  const savedProgress = progressStore.load(pack.id, pack.version, pack.pages);
+  const savedPageIndex = savedProgress ? pack.pages.findIndex((page) => page.id === savedProgress.pageId) : -1;
+  const hasProgress = savedProgress !== null && savedPageIndex >= 0;
+  const completed = savedProgress?.completed === true;
+
+  updateShell(messages, pack.title);
+  updateLibraryNavigation(messages, true);
+  const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
+  if (skipLink) {
+    skipLink.href = "#workshop-entry";
+    skipLink.textContent = messages.skipToNarrative;
+  }
+
+  const startWorkshop = async (restart = false): Promise<void> => {
+    if (restart) progressStore.clear(pack.id);
+    await startWorkshopPack(packUrl);
+  };
+
+  const section = document.createElement("section");
+  section.id = "workshop-entry";
+  section.className = "workshop-entry";
+  section.setAttribute("aria-labelledby", "workshop-entry-title");
+
+  const media = document.createElement("figure");
+  media.className = "workshop-entry__cover";
+  const image = document.createElement("img");
+  image.src = resolveApplicationRoute(workshop.coverImage);
+  image.alt = workshop.coverImageAlt;
+  image.decoding = "async";
+  media.append(image);
+
+  const content = document.createElement("div");
+  content.className = "workshop-entry__content";
+
+  const eyebrow = document.createElement("p");
+  eyebrow.className = "workshop-entry__eyebrow";
+  eyebrow.textContent = labels.orientation;
+
+  const title = document.createElement("h1");
+  title.id = "workshop-entry-title";
+  title.textContent = labels.title.toUpperCase();
+
+  const subtitle = document.createElement("p");
+  subtitle.className = "workshop-entry__subtitle";
+  subtitle.textContent = pack.subtitle;
+
+  const description = document.createElement("p");
+  description.className = "workshop-entry__description";
+  description.textContent = labels.description;
+
+  const steps = document.createElement("p");
+  steps.className = "workshop-entry__steps";
+  steps.textContent = messages.workshopEntrySteps;
+
+  const intro = document.createElement("div");
+  intro.className = "workshop-entry__intro";
+  for (const paragraphText of messages.workshopEntryIntro.split("\n\n")) {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = paragraphText;
+    intro.append(paragraph);
+  }
+
+  const privacy = document.createElement("p");
+  privacy.className = "workshop-entry__privacy";
+  privacy.textContent = messages.workshopEntryPrivacy;
+
+  const actions = document.createElement("div");
+  actions.className = "workshop-entry__actions";
+
+  const primary = createButton(
+    hasProgress
+      ? completed
+        ? messages.workshopEntryReview
+        : messages.workshopEntryResume
+      : messages.workshopEntryStart,
+    () => {
+      void startWorkshop(false);
+    },
+  );
+  primary.className = "workshop-entry__primary";
+  actions.append(primary);
+
+  if (hasProgress) {
+    const resumeHint = document.createElement("p");
+    resumeHint.className = "workshop-entry__resume";
+    resumeHint.textContent = interpolate(
+      completed ? messages.workshopEntryCompletedProgress : messages.workshopEntryResumeProgress,
+      { current: savedPageIndex + 1, total: pack.pages.length },
+    );
+    actions.append(resumeHint);
+
+    const restart = createButton(messages.workshopEntryRestart, () => {
+      if (section.querySelector(".workshop-entry__confirm")) return;
+      const confirmation = document.createElement("section");
+      confirmation.className = "workshop-entry__confirm";
+      confirmation.setAttribute("role", "dialog");
+      confirmation.setAttribute("aria-labelledby", "workshop-entry-restart-title");
+      confirmation.setAttribute("aria-describedby", "workshop-entry-restart-description");
+      confirmation.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        event.preventDefault();
+        confirmation.remove();
+        restart.focus();
+      });
+
+      const confirmTitle = document.createElement("h2");
+      confirmTitle.id = "workshop-entry-restart-title";
+      confirmTitle.textContent = messages.workshopEntryRestartTitle;
+      const confirmDescription = document.createElement("p");
+      confirmDescription.id = "workshop-entry-restart-description";
+      confirmDescription.textContent = messages.workshopEntryRestartDescription;
+      const confirmActions = document.createElement("div");
+      confirmActions.className = "workshop-entry__confirm-actions";
+      const cancel = createButton(messages.workshopEntryRestartCancel, () => {
+        confirmation.remove();
+        restart.focus();
+      });
+      const confirm = createButton(messages.workshopEntryRestartConfirm, () => {
+        void startWorkshop(true);
+      });
+      confirm.className = "workshop-entry__danger";
+      confirmActions.append(cancel, confirm);
+      confirmation.append(confirmTitle, confirmDescription, confirmActions);
+      actions.append(confirmation);
+      cancel.focus();
+    });
+    restart.className = "workshop-entry__secondary";
+    actions.append(restart);
+  }
+
+  const back = document.createElement("a");
+  back.className = "workshop-entry__back";
+  back.href = workshopsUrl.href;
+  back.textContent = messages.workshopEntryBack;
+
+  content.append(eyebrow, title, subtitle, description, steps, intro, privacy, actions, back);
+  section.append(media, content);
+  mount.removeAttribute("aria-busy");
+  mount.replaceChildren(section);
+  primary.focus();
+}
+
 async function startWorkshopPack(packUrl: URL): Promise<void> {
   const pack = await loadWorkshopPack(packUrl, validateWorkshopPack);
   const engine = new WorkshopEngine(pack);
@@ -1166,6 +1317,13 @@ async function start(): Promise<void> {
   }
   if (!hasPackOverride && isWorkshopsRoute()) {
     await renderWorkshops();
+    return;
+  }
+  const workshopSlug = hasPackOverride ? null : requestedWorkshopSlug();
+  if (workshopSlug) {
+    const workshop = findPublishedAugmentedWorkshopBySlug(workshopSlug);
+    if (!workshop) throw new Error("INE_WORKSHOP_ROUTE_NOT_FOUND");
+    await renderWorkshopEntryGate(workshop, new URL(workshop.manifest, applicationBaseUrl));
     return;
   }
   const configuration = await loadPlayerConfiguration();

@@ -402,6 +402,47 @@ async function readWorkshopState(client) {
   );
 }
 
+async function readWorkshopEntryState(client) {
+  return evaluate(
+    client,
+    `(() => {
+      const entry = document.querySelector('.workshop-entry');
+      const primary = document.querySelector('.workshop-entry__primary');
+      const secondary = document.querySelector('.workshop-entry__secondary');
+      const confirmation = document.querySelector('.workshop-entry__confirm');
+      const cover = document.querySelector('.workshop-entry__cover img');
+      const rect = entry?.getBoundingClientRect();
+      return {
+        present: Boolean(entry),
+        path: window.location.pathname,
+        search: window.location.search,
+        title: document.querySelector('#workshop-entry-title')?.textContent,
+        subtitle: document.querySelector('.workshop-entry__subtitle')?.textContent,
+        description: document.querySelector('.workshop-entry__description')?.textContent,
+        steps: document.querySelector('.workshop-entry__steps')?.textContent,
+        intro: Array.from(document.querySelectorAll('.workshop-entry__intro p')).map((paragraph) => paragraph.textContent),
+        privacy: document.querySelector('.workshop-entry__privacy')?.textContent,
+        primary: primary?.textContent ?? null,
+        secondary: secondary?.textContent ?? null,
+        resume: document.querySelector('.workshop-entry__resume')?.textContent ?? null,
+        backHref: document.querySelector('.workshop-entry__back')?.href ?? null,
+        coverPresent: Boolean(cover),
+        coverAlt: cover?.getAttribute('alt') ?? null,
+        coverNaturalWidth: cover?.naturalWidth ?? 0,
+        coverNaturalHeight: cover?.naturalHeight ?? 0,
+        coverObjectFit: cover ? getComputedStyle(cover).objectFit : null,
+        confirmationPresent: Boolean(confirmation),
+        confirmationTitle: confirmation?.querySelector('h2')?.textContent ?? null,
+        confirmationDescription: confirmation?.querySelector('p')?.textContent ?? null,
+        confirmationButtons: Array.from(confirmation?.querySelectorAll('button') ?? []).map((button) => button.textContent),
+        activeText: document.activeElement?.textContent ?? null,
+        noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+        visible: Boolean(rect && rect.width > 0 && rect.height > 0),
+      };
+    })()`,
+  );
+}
+
 async function clearReadingProgress(client) {
   await evaluate(client, `localStorage.removeItem(${JSON.stringify(progressStorageKey)})`);
 }
@@ -955,12 +996,37 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(workshopsState.noHorizontalOverflow, true);
 
     await evaluate(page, `localStorage.removeItem(${JSON.stringify(augmentedWritingWorkshopProgressStorageKey)})`);
+    await evaluate(page, `localStorage.setItem(${JSON.stringify(`${augmentedWritingWorkshopProgressStorageKey}:sentinel`)}, "keep")`);
     await evaluate(page, "document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] a')?.focus()");
     assert.equal(
       await evaluate(page, "document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] a') === document.activeElement"),
       true,
     );
     await evaluate(page, "document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] a')?.click()");
+    await waitForExpression(page, "document.querySelector('.workshop-entry') !== null");
+    const emptyEntry = await readWorkshopEntryState(page);
+    assert.equal(emptyEntry.present, true);
+    assert.equal(emptyEntry.path.endsWith("/ateliers/ecriture-augmentee/"), true);
+    assert.equal(emptyEntry.search, "");
+    assert.equal(emptyEntry.title, "\u00c9CRITURE AUGMENT\u00c9E");
+    assert.equal(emptyEntry.subtitle, "\u00c9crire avec l'IA sans lui abandonner sa voix");
+    assert.equal(
+      emptyEntry.description,
+      "Un atelier d\u2019\u00e9criture en 7 mouvements pour apprendre \u00e0 dialoguer avec l\u2019IA sans lui abandonner le geste d\u2019auteur.",
+    );
+    assert.equal(emptyEntry.steps, "7 mouvements \u00b7 26 \u00e9tapes");
+    assert.equal(emptyEntry.coverPresent, true);
+    assert.equal(emptyEntry.coverAlt, "Couverture verticale de l'atelier \u00c9criture augment\u00e9e montrant un carnet ouvert, une plume et des lettres lumineuses pr\u00e8s d'une fen\u00eatre.");
+    assert.equal(emptyEntry.coverNaturalWidth, 853);
+    assert.equal(emptyEntry.coverNaturalHeight, 1280);
+    assert.equal(emptyEntry.coverObjectFit, "contain");
+    assert.equal(emptyEntry.primary, "Commencer l\u2019atelier");
+    assert.equal(emptyEntry.secondary, null);
+    assert.equal(emptyEntry.resume, null);
+    assert.equal(emptyEntry.backHref, workshopsUrl);
+    assert.equal(emptyEntry.noHorizontalOverflow, true);
+
+    await evaluate(page, "document.querySelector('.workshop-entry__primary')?.click()");
     await waitForWorkshopReady(page, "01 / 26");
     const writingWorkshopPageOne = await readWorkshopState(page);
     assert.equal(new URL(await evaluate(page, "window.location.href")).pathname.endsWith("/ateliers/ecriture-augmentee/"), true);
@@ -974,11 +1040,89 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(writingWorkshopPageOne.noHorizontalOverflow, true);
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
     await waitForWorkshopReady(page, "02 / 26");
+    await evaluate(
+      page,
+      `(() => {
+        const textarea = document.querySelector('textarea');
+        textarea.value = '<script>alert(1)</script>';
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+      })()`,
+    );
+    const savedWritingProgress = await evaluate(
+      page,
+      `JSON.parse(localStorage.getItem(${JSON.stringify(augmentedWritingWorkshopProgressStorageKey)}))`,
+    );
+    assert.equal(savedWritingProgress.pageId, "page-02");
+    assert.equal(savedWritingProgress.completed, false);
     await loadUrl(page, `${entryUrl}ateliers/ecriture-augmentee/`);
+    await waitForExpression(page, "document.querySelector('.workshop-entry') !== null");
+    const resumableEntry = await readWorkshopEntryState(page);
+    assert.equal(resumableEntry.primary, "Reprendre l\u2019atelier");
+    assert.equal(resumableEntry.secondary, "Recommencer");
+    assert.equal(resumableEntry.resume, "Reprendre \u00e0 l\u2019\u00e9tape 2 sur 26");
+    assert.equal(resumableEntry.confirmationPresent, false);
+
+    await evaluate(page, "document.querySelector('.workshop-entry__primary')?.click()");
     await waitForWorkshopReady(page, "02 / 26");
     const writingWorkshopResumed = await readWorkshopState(page);
     assert.equal(writingWorkshopResumed.progress, "02 / 26");
+    assert.equal(writingWorkshopResumed.textareaValue, "<script>alert(1)</script>");
     assert.equal(writingWorkshopResumed.noHorizontalOverflow, true);
+    assert.equal(await evaluate(page, "document.body.textContent.includes('alert(1)')"), false);
+
+    await loadUrl(page, `${entryUrl}ateliers/ecriture-augmentee/`);
+    await waitForExpression(page, "document.querySelector('.workshop-entry') !== null");
+    await evaluate(page, "document.querySelector('.workshop-entry__secondary')?.click()");
+    const confirmEntry = await readWorkshopEntryState(page);
+    assert.equal(confirmEntry.confirmationPresent, true);
+    assert.equal(confirmEntry.confirmationTitle, "Recommencer l\u2019atelier ?");
+    assert.deepEqual(confirmEntry.confirmationButtons, ["Annuler", "Recommencer"]);
+    assert.equal(confirmEntry.activeText, "Annuler");
+    assert.equal(
+      await evaluate(page, `localStorage.getItem(${JSON.stringify(augmentedWritingWorkshopProgressStorageKey)}) !== null`),
+      true,
+    );
+    await evaluate(page, "document.querySelector('.workshop-entry__confirm button')?.click()");
+    const cancelledEntry = await readWorkshopEntryState(page);
+    assert.equal(cancelledEntry.confirmationPresent, false);
+    assert.equal(cancelledEntry.activeText, "Recommencer");
+    assert.equal(
+      await evaluate(page, `localStorage.getItem(${JSON.stringify(augmentedWritingWorkshopProgressStorageKey)}) !== null`),
+      true,
+    );
+    await evaluate(page, "document.querySelector('.workshop-entry__secondary')?.click()");
+    await evaluate(page, "Array.from(document.querySelectorAll('.workshop-entry__confirm button')).at(1)?.click()");
+    await waitForWorkshopReady(page, "01 / 26");
+    assert.equal(await evaluate(page, `localStorage.getItem(${JSON.stringify(augmentedWritingWorkshopProgressStorageKey)})`), null);
+    assert.equal(
+      await evaluate(page, `localStorage.getItem(${JSON.stringify(`${augmentedWritingWorkshopProgressStorageKey}:sentinel`)})`),
+      "keep",
+    );
+
+    await loadUrl(page, `${entryUrl}ateliers/ecriture-augmentee/`);
+    await waitForExpression(page, "document.querySelector('.workshop-entry') !== null");
+    await evaluate(
+      page,
+      `localStorage.setItem(${JSON.stringify(augmentedWritingWorkshopProgressStorageKey)}, JSON.stringify({
+        schemaVersion: 1,
+        workshopId: 'ecriture-augmentee',
+        workshopVersion: '1.0',
+        pageId: 'page-26',
+        updatedAt: new Date().toISOString(),
+        completed: true,
+        responses: {}
+      }))`,
+    );
+    await loadUrl(page, `${entryUrl}ateliers/ecriture-augmentee/`);
+    await waitForExpression(page, "document.querySelector('.workshop-entry') !== null");
+    const completedEntry = await readWorkshopEntryState(page);
+    assert.equal(completedEntry.primary, "Revoir l\u2019atelier");
+    assert.equal(completedEntry.secondary, "Recommencer");
+    assert.equal(completedEntry.resume, "Derni\u00e8re \u00e9tape atteinte : 26 sur 26");
+    await evaluate(page, "document.querySelector('.workshop-entry__primary')?.click()");
+    await waitForWorkshopReady(page, "26 / 26");
+    const completedWorkshop = await readWorkshopState(page);
+    assert.equal(completedWorkshop.pageTitle, "Continuer sans l'atelier");
 
     await loadUrl(page, `${entryUrl}ateliers/art-augmente/`);
     await waitForExpression(page, "document.querySelector('.error-panel') !== null");
