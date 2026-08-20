@@ -61,6 +61,10 @@ export interface LocalizedAugmentedWorkshop {
   readonly id: string;
   readonly family: "augmented-workshops";
   readonly status: EditorialStatus;
+  readonly slug?: string;
+  readonly manifest?: string;
+  readonly coverImage?: string;
+  readonly coverImageAlt?: string;
   readonly orientation: string;
   readonly title: string;
   readonly description: string;
@@ -206,6 +210,14 @@ export function localizedWorkshop(
     id: workshop.id,
     family: workshop.family,
     status: workshop.status,
+    ...(workshop.status === "published"
+      ? {
+          slug: workshop.slug,
+          manifest: workshop.manifest,
+          coverImage: workshop.coverImage,
+          coverImageAlt: workshop.coverImageAlt,
+        }
+      : {}),
     ...labels,
   };
 }

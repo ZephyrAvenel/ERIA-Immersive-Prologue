@@ -36,39 +36,60 @@ test("editorial registry declares the two content families", () => {
   );
 });
 
-test("editorial registry declares planned augmented workshops only", () => {
+test("editorial registry declares the augmented writing workshop as published", () => {
   const workshops = augmentedWorkshops("fr");
   assert.deepEqual(
-    workshops.map(({ orientation, title, description, status }) => ({
+    workshops.map(({ orientation, title, description, status, slug, manifest, coverImage, coverImageAlt }) => ({
       orientation,
       title,
       description,
       status,
+      slug,
+      manifest,
+      coverImage,
+      coverImageAlt,
     })),
     [
       {
         orientation: "ÉCRIRE",
         title: "Écriture augmentée",
         description: "Un atelier d’écriture en 7 mouvements pour apprendre à dialoguer avec l’IA sans lui abandonner le geste d’auteur.",
-        status: "planned",
+        status: "published",
+        slug: "ecriture-augmentee",
+        manifest: "packs/workshop-001-ecriture-augmentee/pack.json",
+        coverImage: "packs/workshop-001-ecriture-augmentee/assets/images/00-couverture-ecriture-augmentee.webp",
+        coverImageAlt:
+          "Couverture verticale de l'atelier Écriture augmentée montrant un carnet ouvert, une plume et des lettres lumineuses près d'une fenêtre.",
       },
       {
         orientation: "VOIR",
         title: "Art augmenté",
         description: "Créer avec l’IA sans renoncer à son regard.",
         status: "planned",
+        slug: undefined,
+        manifest: undefined,
+        coverImage: undefined,
+        coverImageAlt: undefined,
       },
       {
         orientation: "RELIER",
         title: "Cartographie augmentée",
         description: "Rendre visibles les relations avec l’IA.",
         status: "planned",
+        slug: undefined,
+        manifest: undefined,
+        coverImage: undefined,
+        coverImageAlt: undefined,
       },
       {
         orientation: "COMPOSER",
         title: "Créer un Récit Vivant avec l’IA",
         description: "Faire dialoguer écriture, image et cartographie.",
         status: "planned",
+        slug: undefined,
+        manifest: undefined,
+        coverImage: undefined,
+        coverImageAlt: undefined,
       },
     ],
   );
@@ -156,9 +177,9 @@ test("editorial registry rejects invalid workshop publication states", () => {
   }
 
   const plannedWithPublicationMetadata = structuredClone(editorialRegistry);
-  plannedWithPublicationMetadata.workshops[0] = {
-    ...plannedWithPublicationMetadata.workshops[0],
-    slug: "ecriture-augmentee",
+  plannedWithPublicationMetadata.workshops[1] = {
+    ...plannedWithPublicationMetadata.workshops[1],
+    slug: "art-augmente",
   };
   assert.throws(
     () => validateEditorialRegistry(plannedWithPublicationMetadata),

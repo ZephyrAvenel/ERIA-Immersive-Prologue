@@ -463,9 +463,21 @@ async function renderWorkshops(): Promise<void> {
     article.className = "workshop-card";
     article.dataset.workshopId = workshop.id;
     article.dataset.status = workshop.status;
+    if (workshop.status === "published" && workshop.coverImage) {
+      const figure = document.createElement("figure");
+      figure.className = "workshop-card__cover";
+      const image = document.createElement("img");
+      image.src = resolveApplicationRoute(workshop.coverImage);
+      image.alt = workshop.coverImageAlt ?? "";
+      image.loading = "lazy";
+      image.decoding = "async";
+      figure.append(image);
+      article.append(figure);
+    }
     const status = document.createElement("p");
     status.className = "workshop-card__status";
-    status.textContent = messages.workshopsStatusPlanned;
+    status.textContent =
+      workshop.status === "published" ? messages.workshopsStatusPublished : messages.workshopsStatusPlanned;
     const orientation = document.createElement("p");
     orientation.className = "workshop-card__orientation";
     orientation.textContent = workshop.orientation;
@@ -475,7 +487,8 @@ async function renderWorkshops(): Promise<void> {
     workshopDescription.textContent = workshop.description;
     const access = document.createElement("p");
     access.className = "workshop-card__access";
-    access.textContent = messages.workshopsNoAccess;
+    access.textContent =
+      workshop.status === "published" ? messages.workshopsPublishedAccessPending : messages.workshopsNoAccess;
     article.append(status, orientation, workshopTitle, workshopDescription, access);
     grid.append(article);
   }

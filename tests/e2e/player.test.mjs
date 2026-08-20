@@ -746,6 +746,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
 
     await loadUrl(page, workshopsUrl);
     await waitForExpression(page, "document.querySelectorAll('.workshop-card').length === 4");
+    await waitForExpression(
+      page,
+      "document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] .workshop-card__cover img')?.complete === true && document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] .workshop-card__cover img')?.naturalWidth === 853",
+    );
     const workshopsState = await evaluate(
       page,
       `({
@@ -758,8 +762,21 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
           orientation: card.querySelector('.workshop-card__orientation')?.textContent,
           title: card.querySelector('h2')?.textContent,
           description: Array.from(card.querySelectorAll('p')).at(-2)?.textContent,
-          linkCount: card.querySelectorAll('a').length
+          access: card.querySelector('.workshop-card__access')?.textContent,
+          linkCount: card.querySelectorAll('a').length,
+          role: card.getAttribute('role'),
+          tabIndex: card.getAttribute('tabindex'),
+          coverPresent: Boolean(card.querySelector('.workshop-card__cover img')),
+          coverAlt: card.querySelector('.workshop-card__cover img')?.getAttribute('alt') ?? null,
+          coverSrc: card.querySelector('.workshop-card__cover img')?.currentSrc ?? '',
+          coverNaturalWidth: card.querySelector('.workshop-card__cover img')?.naturalWidth ?? 0,
+          coverNaturalHeight: card.querySelector('.workshop-card__cover img')?.naturalHeight ?? 0,
+          coverObjectFit: card.querySelector('.workshop-card__cover img')
+            ? getComputedStyle(card.querySelector('.workshop-card__cover img')).objectFit
+            : null,
         })),
+        workshopHrefCount: Array.from(document.querySelectorAll('.workshop-card a')).length,
+        workshopPackLinkCount: Array.from(document.querySelectorAll('.workshop-card a')).filter((link) => link.href.includes('?pack=')).length,
         noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
       })`,
     );
@@ -774,12 +791,22 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         ? [
             {
               id: "ecriture-augmentee",
-              status: "planned",
-              visibleStatus: "Pr\u00e9vu",
+              status: "published",
+              visibleStatus: "Atelier publi\u00e9",
               orientation: "\u00c9CRIRE",
               title: "\u00c9criture augment\u00e9e",
               description: "Un atelier d\u2019\u00e9criture en 7 mouvements pour apprendre \u00e0 dialoguer avec l\u2019IA sans lui abandonner le geste d\u2019auteur.",
+              access: "Entr\u00e9e publique \u00e0 venir",
               linkCount: 0,
+              role: null,
+              tabIndex: null,
+              coverPresent: true,
+              coverAlt:
+                "Couverture verticale de l'atelier \u00c9criture augment\u00e9e montrant un carnet ouvert, une plume et des lettres lumineuses pr\u00e8s d'une fen\u00eatre.",
+              coverSrc: workshopsState.cards[0].coverSrc,
+              coverNaturalWidth: 853,
+              coverNaturalHeight: 1280,
+              coverObjectFit: "contain",
             },
             {
               id: "art-augmente",
@@ -788,7 +815,16 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               orientation: "VOIR",
               title: "Art augment\u00e9",
               description: "Cr\u00e9er avec l\u2019IA sans renoncer \u00e0 son regard.",
+              access: "Parcours en pr\u00e9paration",
               linkCount: 0,
+              role: null,
+              tabIndex: null,
+              coverPresent: false,
+              coverAlt: null,
+              coverSrc: "",
+              coverNaturalWidth: 0,
+              coverNaturalHeight: 0,
+              coverObjectFit: null,
             },
             {
               id: "cartographie-augmentee",
@@ -797,7 +833,16 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               orientation: "RELIER",
               title: "Cartographie augment\u00e9e",
               description: "Rendre visibles les relations avec l\u2019IA.",
+              access: "Parcours en pr\u00e9paration",
               linkCount: 0,
+              role: null,
+              tabIndex: null,
+              coverPresent: false,
+              coverAlt: null,
+              coverSrc: "",
+              coverNaturalWidth: 0,
+              coverNaturalHeight: 0,
+              coverObjectFit: null,
             },
             {
               id: "composer-recit-vivant-ia",
@@ -806,18 +851,37 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               orientation: "COMPOSER",
               title: "Cr\u00e9er un R\u00e9cit Vivant avec l\u2019IA",
               description: "Faire dialoguer \u00e9criture, image et cartographie.",
+              access: "Parcours en pr\u00e9paration",
               linkCount: 0,
+              role: null,
+              tabIndex: null,
+              coverPresent: false,
+              coverAlt: null,
+              coverSrc: "",
+              coverNaturalWidth: 0,
+              coverNaturalHeight: 0,
+              coverObjectFit: null,
             },
           ]
         : [
             {
               id: "ecriture-augmentee",
-              status: "planned",
-              visibleStatus: "Planned",
+              status: "published",
+              visibleStatus: "Published workshop",
               orientation: "WRITE",
               title: "Augmented writing",
               description: "A 7-movement writing workshop for learning to dialogue with AI without surrendering the authorial gesture.",
+              access: "Public entry coming soon",
               linkCount: 0,
+              role: null,
+              tabIndex: null,
+              coverPresent: true,
+              coverAlt:
+                "Couverture verticale de l'atelier \u00c9criture augment\u00e9e montrant un carnet ouvert, une plume et des lettres lumineuses pr\u00e8s d'une fen\u00eatre.",
+              coverSrc: workshopsState.cards[0].coverSrc,
+              coverNaturalWidth: 853,
+              coverNaturalHeight: 1280,
+              coverObjectFit: "contain",
             },
             {
               id: "art-augmente",
@@ -826,7 +890,16 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               orientation: "SEE",
               title: "Augmented art",
               description: "Creating with AI without giving up your gaze.",
+              access: "Path in preparation",
               linkCount: 0,
+              role: null,
+              tabIndex: null,
+              coverPresent: false,
+              coverAlt: null,
+              coverSrc: "",
+              coverNaturalWidth: 0,
+              coverNaturalHeight: 0,
+              coverObjectFit: null,
             },
             {
               id: "cartographie-augmentee",
@@ -835,7 +908,16 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               orientation: "CONNECT",
               title: "Augmented mapping",
               description: "Making relationships visible with AI.",
+              access: "Path in preparation",
               linkCount: 0,
+              role: null,
+              tabIndex: null,
+              coverPresent: false,
+              coverAlt: null,
+              coverSrc: "",
+              coverNaturalWidth: 0,
+              coverNaturalHeight: 0,
+              coverObjectFit: null,
             },
             {
               id: "composer-recit-vivant-ia",
@@ -844,10 +926,22 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               orientation: "COMPOSE",
               title: "Create a Living Story with AI",
               description: "Bringing writing, image, and mapping into dialogue.",
+              access: "Path in preparation",
               linkCount: 0,
+              role: null,
+              tabIndex: null,
+              coverPresent: false,
+              coverAlt: null,
+              coverSrc: "",
+              coverNaturalWidth: 0,
+              coverNaturalHeight: 0,
+              coverObjectFit: null,
             },
           ],
     );
+    assert.equal(workshopsState.cards[0].coverSrc.endsWith("/packs/workshop-001-ecriture-augmentee/assets/images/00-couverture-ecriture-augmentee.webp"), true);
+    assert.equal(workshopsState.workshopHrefCount, 0);
+    assert.equal(workshopsState.workshopPackLinkCount, 0);
     assert.equal(workshopsState.noHorizontalOverflow, true);
 
     const workshopDemoUrl = `${entryUrl}?pack=examples/workshop-demo/pack.json`;

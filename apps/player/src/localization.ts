@@ -36,7 +36,9 @@ export interface LocaleMessages {
   readonly workshopsHeroTitle: string;
   readonly workshopsDescription: string;
   readonly workshopsStatusPlanned: string;
+  readonly workshopsStatusPublished: string;
   readonly workshopsNoAccess: string;
+  readonly workshopsPublishedAccessPending: string;
   readonly homeAction: string;
   readonly continueExploration: string;
   readonly workshopPackLabel: string;

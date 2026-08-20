@@ -1653,7 +1653,7 @@ button:disabled {
 }
 
 .workshops__grid {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
   margin-top: clamp(2rem, 5vw, 4rem);
 }
 
@@ -1667,6 +1667,30 @@ button:disabled {
   display: grid;
   align-content: start;
   gap: 0.8rem;
+}
+
+.workshop-card[data-status="published"] {
+  grid-row: span 2;
+}
+
+.workshop-card__cover {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 0 clamp(0.35rem, 1vw, 0.75rem);
+  border: 1px solid rgb(255 249 233 / 18%);
+  border-radius: 1.1rem;
+  background: rgb(1 8 14 / 42%);
+  overflow: hidden;
+}
+
+.workshop-card__cover img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .workshop-card__status,

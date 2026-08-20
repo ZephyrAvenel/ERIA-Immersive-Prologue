@@ -148,7 +148,7 @@ test("workshop progress restores local responses into a new traversal instance",
   assert.equal(store.load(demo.id, demo.version, demo.pages), null);
 });
 
-test("augmented writing workshop structural draft is valid and unpublished", async () => {
+test("augmented writing workshop remains a valid declarative pack", async () => {
   const pack = await readProjectJson("packs", "workshop-001-ecriture-augmentee", "pack.json");
   const result = validateWorkshopPack(pack);
   assert.deepEqual(result, { valid: true, errors: [] });
@@ -1417,7 +1417,14 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
 
   const registry = await readProjectJson("apps", "player", "src", "editorial-registry.json");
   const writingWorkshop = registry.workshops.find((workshop) => workshop.id === "ecriture-augmentee");
-  assert.equal(writingWorkshop.status, "planned");
+  assert.equal(writingWorkshop.status, "published");
+  assert.equal(writingWorkshop.slug, "ecriture-augmentee");
+  assert.equal(writingWorkshop.manifest, "packs/workshop-001-ecriture-augmentee/pack.json");
+  assert.equal(
+    writingWorkshop.coverImage,
+    "packs/workshop-001-ecriture-augmentee/assets/images/00-couverture-ecriture-augmentee.webp",
+  );
+  assert.equal(writingWorkshop.coverImageAlt.length > 0, true);
 
   const engine = new WorkshopEngine(pack);
   assert.equal(engine.currentPage.id, "page-01");

@@ -39,7 +39,11 @@
     {
       "id": "ecriture-augmentee",
       "family": "augmented-workshops",
-      "status": "planned",
+      "status": "published",
+      "slug": "ecriture-augmentee",
+      "manifest": "packs/workshop-001-ecriture-augmentee/pack.json",
+      "coverImage": "packs/workshop-001-ecriture-augmentee/assets/images/00-couverture-ecriture-augmentee.webp",
+      "coverImageAlt": "Couverture verticale de l'atelier Écriture augmentée montrant un carnet ouvert, une plume et des lettres lumineuses près d'une fenêtre.",
       "labels": {
         "fr": {
           "orientation": "ÉCRIRE",
