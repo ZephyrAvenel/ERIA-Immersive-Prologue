@@ -199,7 +199,7 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
       ["page-20", 20, "ecriture", "Revenir au texte"],
       ["page-21", 21, "transformation", "Ce que l'écriture a déplacé"],
       ["page-22", 22, "transformation", "Mettre la transformation à l'épreuve"],
-      ["page-23", 23, "transformation", "Faire sien"],
+      ["page-23", 23, "transformation", "Ce qui demeure, ce qui a changé"],
       ["page-24", 24, "transformation", "Savoir s'arrêter"],
       ["page-25", 25, "creation", "Votre récit"],
       ["page-26", 26, "creation", "Continuer sans l'atelier"],
@@ -1129,7 +1129,64 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pageTwentyTwoTextareas[0].label, "Ce que vous retenez de cette mise \u00e0 l'\u00e9preuve");
   assert.equal(pageTwentyTwo.blocks.some((block) => block.type === "reveal"), false);
   assert.equal(pack.pages.slice(22).some((page) => page.blocks.some((block) => block.type === "promptCopy")), false);
-  assert.equal(pack.pages[22].title, "Faire sien");
+  const pageTwentyThree = pack.pages[22];
+  assert.equal(pageTwentyThree.id, "page-23");
+  assert.equal(pageTwentyThree.title, "Ce qui demeure, ce qui a chang\u00e9");
+  assert.equal(pageTwentyThree.movementId, "transformation");
+  assert.deepEqual(pageTwentyThree.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "choice",
+    "textarea",
+    "reveal",
+    "text",
+  ]);
+  const pageTwentyThreeRecalls = pageTwentyThree.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageTwentyThreeRecalls.length, 2);
+  assert.deepEqual(
+    pageTwentyThreeRecalls.map((block) => block.id),
+    ["rappel-boussole-demeurer", "rappel-epreuve-demeurer"],
+  );
+  assert.deepEqual(
+    pageTwentyThreeRecalls.map((block) => block.sourceBlockId),
+    ["boussole", "epreuve-retenue"],
+  );
+  const pageTwentyThreeChoices = pageTwentyThree.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageTwentyThreeChoices.length, 1);
+  assert.equal(pageTwentyThreeChoices[0].id, "transformation-percue");
+  assert.equal(
+    pageTwentyThreeChoices[0].label,
+    "En regardant le chemin parcouru, qu'est-ce qui vous semble le plus juste aujourd'hui ?",
+  );
+  assert.equal(pageTwentyThreeChoices[0].options.length, 7);
+  assert.equal(
+    pageTwentyThreeChoices[0].options.some(
+      (option) => option.label === "Ma relation \u00e0 l'IA est devenue plus consciente",
+    ),
+    true,
+  );
+  assert.equal(
+    pageTwentyThreeChoices[0].options.some(
+      (option) => option.label === "Je ne per\u00e7ois pas encore clairement ce qui a chang\u00e9",
+    ),
+    true,
+  );
+  const pageTwentyThreeTextareas = pageTwentyThree.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageTwentyThreeTextareas.length, 1);
+  assert.equal(pageTwentyThreeTextareas[0].id, "version-a-moi");
+  assert.equal(pageTwentyThreeTextareas[0].label, "Ce que vous reconnaissez maintenant");
+  const pageTwentyThreeReveals = pageTwentyThree.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageTwentyThreeReveals.length, 1);
+  assert.equal(pageTwentyThreeReveals[0].id, "transformation-demeurer-reveal");
+  assert.equal(pageTwentyThreeReveals[0].label, "Tout n'a pas besoin de changer");
+  assert.equal(typeof pageTwentyThreeReveals[0].content, "string");
+  assert.equal(pageTwentyThree.blocks.some((block) => block.type === "promptCopy"), false);
+  assert.equal(pack.pages.slice(22).some((page) => page.blocks.some((block) => block.type === "promptCopy")), false);
+  assert.equal(pack.pages[23].title, "Savoir s'arr\u00eater");
+  assert.equal(pack.pages[23].movementId, "transformation");
+  assert.equal(pack.pages[24].movementId, "creation");
 
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);

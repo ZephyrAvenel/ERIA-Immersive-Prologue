@@ -1441,25 +1441,83 @@
       "id": "page-23",
       "movementId": "transformation",
       "order": 23,
-      "title": "Faire sien",
+      "title": "Ce qui demeure, ce qui a changé",
       "blocks": [
         {
-          "id": "faire-sien-intro",
+          "id": "demeurer-changer-intro",
           "type": "text",
-          "text": "Retravailler ce qui a éventuellement émergé du dialogue avec l'IA jusqu'à ce que le texte appartienne réellement à l'auteur."
+          "text": "Une transformation n'efface pas nécessairement ce qui était là.\n\nParfois, ce qui change permet au contraire de reconnaître plus précisément ce qui devait demeurer.\n\nRevenez un instant à votre boussole de départ et à ce que vous venez de mettre à l'épreuve.\n\nNe cherchez pas à mesurer votre progression.\n\nRegardez simplement ce qui n'occupe plus tout à fait la même place.\n\nIl peut s'agir de votre texte.\n\nDe votre regard.\n\nDe votre manière de choisir.\n\nDe votre relation à l'écriture ou à l'IA.\n\nOu de la découverte, tout aussi importante, que quelque chose n'a pas eu besoin de changer."
         },
         {
-          "id": "voix-recall-page-23",
+          "id": "rappel-boussole-demeurer",
           "type": "recall",
-          "sourceBlockId": "voix-recherchee",
-          "label": "Votre voix comme repère",
-          "emptyText": "Votre repère de voix sera rappelé ici."
+          "sourceBlockId": "boussole",
+          "label": "Ce que vous ne vouliez pas perdre",
+          "emptyText": "Votre boussole n'est pas encore formulée. Vous pouvez néanmoins poursuivre en gardant simplement à l'esprit ce qui vous semblait important de préserver."
+        },
+        {
+          "id": "rappel-epreuve-demeurer",
+          "type": "recall",
+          "sourceBlockId": "epreuve-retenue",
+          "label": "Ce que vous avez retenu de la mise à l'épreuve",
+          "emptyText": "Vous n'avez pas encore noté ce que vous reteniez de la mise à l'épreuve. Vous pouvez poursuivre à partir de ce qui vous accompagne maintenant."
+        },
+        {
+          "id": "transformation-continuite",
+          "type": "text",
+          "text": "Entre ce que vous vouliez préserver et ce que vous retenez maintenant, la transformation n'a peut-être pas pris la forme d'une rupture.\n\nElle peut être une précision.\n\nUn déplacement d'attention.\n\nUne question qui insiste autrement.\n\nUne manière plus consciente d'utiliser — ou de ne pas utiliser — l'IA.\n\nOu simplement la reconnaissance que certaines choses devaient traverser tout le parcours sans être remplacées."
+        },
+        {
+          "id": "transformation-percue",
+          "type": "choice",
+          "label": "En regardant le chemin parcouru, qu'est-ce qui vous semble le plus juste aujourd'hui ?",
+          "options": [
+            {
+              "id": "intention-precisee",
+              "label": "Mon intention s'est précisée"
+            },
+            {
+              "id": "texte-plus-change",
+              "label": "Mon texte a changé davantage que mon intention"
+            },
+            {
+              "id": "regard-deplace",
+              "label": "Mon regard sur ce que j'écris s'est déplacé"
+            },
+            {
+              "id": "choix-precise",
+              "label": "Ma manière de choisir s'est précisée"
+            },
+            {
+              "id": "ia-plus-consciente",
+              "label": "Ma relation à l'IA est devenue plus consciente"
+            },
+            {
+              "id": "changer-et-demeurer",
+              "label": "Certaines choses ont changé, d'autres devaient justement demeurer"
+            },
+            {
+              "id": "pas-encore-clair",
+              "label": "Je ne perçois pas encore clairement ce qui a changé"
+            }
+          ]
         },
         {
           "id": "version-a-moi",
           "type": "textarea",
-          "label": "Formulez ce qui devient vraiment vôtre.",
-          "placeholder": "Cette version m'appartient parce que..."
+          "label": "Ce que vous reconnaissez maintenant",
+          "placeholder": "Avec vos propres mots, notez ce qui vous paraît différent aujourd'hui — ou ce qui, au contraire, vous semble avoir traversé tout le parcours sans devoir changer. Il peut s'agir de votre texte, de votre regard, de votre manière de choisir, d'écrire, d'utiliser l'IA ou de rester avec une question."
+        },
+        {
+          "id": "transformation-demeurer-reveal",
+          "type": "reveal",
+          "label": "Tout n'a pas besoin de changer",
+          "content": "Transformer ne signifie pas devenir autre à tout prix.\n\nCertaines traversées déplacent profondément une manière de voir.\n\nD'autres permettent surtout de reconnaître ce qui était déjà là et méritait d'être préservé.\n\nCe qui demeure n'est pas nécessairement ce qui a résisté au changement.\n\nCela peut être ce qui a traversé l'expérience et en ressort plus clairement perceptible."
+        },
+        {
+          "id": "demeurer-changer-cloture",
+          "type": "text",
+          "text": "Vous n'avez pas besoin de conclure ce qui vient de se passer.\n\nIl suffit peut-être de reconnaître ce avec quoi vous continuez.\n\nCe qui a changé.\n\nCe qui demeure.\n\nCe qui reste encore difficile à nommer.\n\nLa transformation peut poursuivre son travail sans avoir besoin d'être résolue tout de suite."
         }
       ]
     },
