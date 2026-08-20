@@ -195,7 +195,7 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
       ["page-16", 16, "discernement", "Retrouver sa voix"],
       ["page-17", 17, "ecriture", "Reprendre la main"],
       ["page-18", 18, "ecriture", "Composer"],
-      ["page-19", 19, "ecriture", "Écrire ensemble sans déléguer"],
+      ["page-19", 19, "ecriture", "Faire lire sans faire écrire"],
       ["page-20", 20, "ecriture", "Laisser une place à l'auteur"],
       ["page-21", 21, "transformation", "Le texte n'est pas terminé"],
       ["page-22", 22, "transformation", "Transformer plutôt que corriger"],
@@ -879,6 +879,61 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pack.pages[18].movementId, "ecriture");
   assert.equal(pack.pages[19].movementId, "ecriture");
 
+  const pageNineteen = pack.pages[18];
+  assert.equal(pageNineteen.id, "page-19");
+  assert.equal(pageNineteen.title, "Faire lire sans faire \u00e9crire");
+  assert.equal(pageNineteen.movementId, "ecriture");
+  assert.deepEqual(pageNineteen.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "promptCopy",
+    "text",
+    "textarea",
+    "text",
+  ]);
+  const pageNineteenRecalls = pageNineteen.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageNineteenRecalls.length, 2);
+  assert.deepEqual(
+    pageNineteenRecalls.map((block) => block.id),
+    ["rappel-premiere-forme-lecture", "rappel-voix-lecture"],
+  );
+  assert.deepEqual(
+    pageNineteenRecalls.map((block) => block.sourceBlockId),
+    ["premiere-forme", "voix-recherchee"],
+  );
+  const pageNineteenPromptCopies = pageNineteen.blocks.filter((block) => block.type === "promptCopy");
+  assert.equal(pageNineteenPromptCopies.length, 1);
+  assert.equal(pageNineteenPromptCopies[0].id, "prompt-lire-sans-ecrire");
+  assert.equal(pageNineteenPromptCopies[0].label, "Demander une lecture, pas une r\u00e9\u00e9criture");
+  assert.equal(pageNineteenPromptCopies[0].text.includes("[COLLEZ ICI VOTRE PREMI\u00c8RE FORME]"), true);
+  assert.equal(
+    pageNineteenPromptCopies[0].text.includes(
+      "[COLLEZ ICI CE QUE VOUS VOULEZ PR\u00c9SERVER DANS VOTRE VOIX \u2014 FACULTATIF]",
+    ),
+    true,
+  );
+  assert.equal(pageNineteenPromptCopies[0].text.includes("Lis-le plut\u00f4t comme un regard ext\u00e9rieur attentif."), true);
+  assert.equal(pageNineteenPromptCopies[0].text.includes("Je ne te demande pas de r\u00e9\u00e9crire ce texte."), true);
+  assert.equal(pageNineteenPromptCopies[0].text.includes("Ne le corrige pas."), true);
+  assert.equal(pageNineteenPromptCopies[0].text.includes("Ne l'am\u00e9liore pas."), true);
+  assert.equal(pageNineteenPromptCopies[0].text.includes("Ne le continue pas."), true);
+  assert.equal(pageNineteenPromptCopies[0].text.includes("Ne propose pas une nouvelle version."), true);
+  assert.equal(pageNineteenPromptCopies[0].text.includes("Ne d\u00e9cide pas ce que je dois conserver ou supprimer."), true);
+  assert.equal(
+    pageNineteenPromptCopies[0].text.includes("Appuie tes observations sur ce qui est r\u00e9ellement pr\u00e9sent dans le texte."),
+    true,
+  );
+  assert.equal(pageNineteenPromptCopies[0].text.includes("trois questions que ce texte pourrait me poser"), true);
+  const pageNineteenTextareas = pageNineteen.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageNineteenTextareas.length, 1);
+  assert.equal(pageNineteenTextareas[0].id, "lecture-retenue");
+  assert.equal(pageNineteenTextareas[0].label, "Ce que cette lecture vous a permis de voir");
+  assert.equal(pageNineteen.blocks.some((block) => ["choice", "reveal"].includes(block.type)), false);
+  assert.equal(pack.pages[18].movementId, "ecriture");
+  assert.equal(pack.pages[19].movementId, "ecriture");
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
@@ -895,6 +950,7 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
     "voix-recherchee",
     "matiere-premiere",
     "premiere-forme",
+    "lecture-retenue",
     "version-a-moi",
     "critere-arret",
   ]) {

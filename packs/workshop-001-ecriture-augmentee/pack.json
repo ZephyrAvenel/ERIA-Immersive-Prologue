@@ -1108,49 +1108,54 @@
       "id": "page-19",
       "movementId": "ecriture",
       "order": 19,
-      "title": "Écrire ensemble sans déléguer",
+      "title": "Faire lire sans faire écrire",
       "blocks": [
         {
-          "id": "sans-deleguer-intro",
+          "id": "faire-lire-intro",
           "type": "text",
-          "text": "Explorer plusieurs usages possibles de l'IA : contradiction, variantes, questions, alternatives ou critique, plutôt que substitution."
+          "text": "Quelque chose existe désormais.\n\nCe n'est plus seulement une intention, une piste ou une matière.\n\nVous avez commencé à lui donner une forme avec vos mots.\n\nÀ partir de maintenant, une IA extérieure peut éventuellement devenir utile d'une autre manière :\n\nnon plus pour produire,\n\nmais pour lire."
         },
         {
-          "id": "premiere-forme-recall-page-19",
+          "id": "rappel-premiere-forme-lecture",
           "type": "recall",
           "sourceBlockId": "premiere-forme",
           "label": "Votre première forme",
-          "emptyText": "Votre première forme sera rappelée ici."
+          "emptyText": "Votre première forme n'est pas encore écrite. Vous pouvez revenir à la page précédente, ou poursuivre en gardant sous les yeux le texte que vous souhaitez faire lire."
         },
         {
-          "id": "dialogue-ia-prompt",
+          "id": "rappel-voix-lecture",
+          "type": "recall",
+          "sourceBlockId": "voix-recherchee",
+          "label": "Ce que vous vouliez entendre dans votre texte",
+          "emptyText": "Votre repère de voix n'est pas encore formulé. Vous pouvez néanmoins poursuivre en gardant à l'esprit ce que vous aimeriez reconnaître dans votre texte."
+        },
+        {
+          "id": "lecture-sans-reecriture",
+          "type": "text",
+          "text": "Demander :\n\n« Comment améliorer ce texte ? »\n\net demander :\n\n« Qu'est-ce que tu vois dans ce texte ? »\n\nne produisent pas le même geste.\n\nUne lecture extérieure peut faire apparaître des choses que l'on ne perçoit plus lorsqu'on est plongé dans son propre texte.\n\nMais observer n'est pas corriger.\n\nVous pouvez écouter, contester, retenir, ou laisser de côté.\n\nLa réponse de l'assistant n'est pas un diagnostic objectif.\n\nElle est seulement un regard de plus posé sur une forme qui vous appartient déjà."
+        },
+        {
+          "id": "prompt-lire-sans-ecrire",
           "type": "promptCopy",
-          "label": "Copier un prompt de confrontation",
-          "description": "Le prompt demande un retour critique sans déléguer l'écriture.",
-          "text": "À partir de cette première forme, pose cinq questions qui pourraient la rendre plus précise. Propose ensuite trois alternatives possibles sans réécrire le texte à ma place."
+          "label": "Demander une lecture, pas une réécriture",
+          "description": "Copiez ce prompt dans l'assistant IA de votre choix, puis remplacez les parties indiquées par votre texte et, si vous le souhaitez, par ce que vous cherchez à préserver dans votre voix.",
+          "text": "Je vais te confier un texte en cours d'écriture.\n\nVoici sa première forme :\n\n[COLLEZ ICI VOTRE PREMIÈRE FORME]\n\nVoici, si cela peut éclairer ta lecture, quelque chose que je cherche à préserver dans ma voix :\n\n[COLLEZ ICI CE QUE VOUS VOULEZ PRÉSERVER DANS VOTRE VOIX — FACULTATIF]\n\nJe ne te demande pas de réécrire ce texte.\n\nNe le corrige pas.\nNe l'améliore pas.\nNe le continue pas.\nNe propose pas une nouvelle version.\nNe remplace pas mes formulations par les tiennes.\nNe cherche pas à produire un texte plus efficace à ma place.\n\nLis-le plutôt comme un regard extérieur attentif.\n\nFais apparaître, de manière précise et concise :\n\n1. les passages ou éléments qui semblent porter le plus de présence, de tension ou de singularité ;\n\n2. les endroits où quelque chose paraît encore chercher sa forme ;\n\n3. les passages qui deviennent plus génériques, explicatifs ou prévisibles, s'il y en a ;\n\n4. les tensions, questions ou contradictions que le texte contient sans nécessairement les résoudre ;\n\n5. ce qui semble cohérent — ou éventuellement en tension — avec la voix que je cherche à préserver ;\n\n6. trois questions que ce texte pourrait me poser à moi, son auteur.\n\nAppuie tes observations sur ce qui est réellement présent dans le texte.\n\nNe décide pas ce que je dois conserver ou supprimer.\n\nNe classe pas tes observations par importance.\n\nNe conclus pas par une version corrigée.\n\nTon rôle ici est de m'aider à voir mon texte autrement.\n\nLe choix de ce qui mérite d'être transformé reste le mien."
         },
         {
-          "id": "usage-ia-choisi",
-          "type": "choice",
-          "label": "Quel usage de l'IA reste acceptable ici ?",
-          "options": [
-            {
-              "id": "questions",
-              "label": "Recevoir des questions"
-            },
-            {
-              "id": "contradiction",
-              "label": "Chercher une contradiction"
-            },
-            {
-              "id": "alternatives",
-              "label": "Voir des alternatives"
-            },
-            {
-              "id": "aucun",
-              "label": "Ne pas utiliser l'IA ici"
-            }
-          ]
+          "id": "retour-auteur-lecture",
+          "type": "text",
+          "text": "Une lecture extérieure n'a pas le dernier mot.\n\nCertaines observations pourront sembler justes.\n\nD'autres non.\n\nCertaines ouvriront peut-être quelque chose.\n\nD'autres pourront simplement être laissées de côté.\n\nCe qui importe maintenant n'est pas ce que l'IA pense de votre texte.\n\nC'est ce que sa lecture vous permet, ou non, de voir."
+        },
+        {
+          "id": "lecture-retenue",
+          "type": "textarea",
+          "label": "Ce que cette lecture vous a permis de voir",
+          "placeholder": "Avec vos propres mots, notez ce que vous retenez de cette lecture : une tension devenue plus visible, un passage que vous voulez préserver, quelque chose qui demande encore à trouver sa forme, une question qui demeure… Vous pouvez aussi noter ce que vous choisissez de ne pas retenir."
+        },
+        {
+          "id": "faire-lire-cloture",
+          "type": "text",
+          "text": "Lire autrement n'est utile que si l'on revient ensuite au texte.\n\nLa lecture extérieure n'était qu'un détour.\n\nLe prochain geste vous appartient de nouveau.\n\nC'est vous qui allez décider ce qui doit maintenant bouger — ou rester intact."
         }
       ]
     },
