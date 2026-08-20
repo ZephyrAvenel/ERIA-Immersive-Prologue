@@ -914,26 +914,85 @@
         {
           "id": "voix-intro",
           "type": "text",
-          "text": "Identifier ce qui appartient réellement au projet de l'auteur et ce qui semble seulement séduisant, efficace ou générique."
+          "text": "Vous avez choisi une direction.\n\nMais choisir ce que l'on va poursuivre ne suffit pas encore à faire entendre une voix.\n\nIci, nous pouvons considérer que la voix n'est pas seulement une manière originale d'écrire.\n\nElle ne se réduit pas au vocabulaire, au ton ou à un effet de style.\n\nElle commence peut-être plus tôt :\n\ndans ce que vous voyez,\n\ndans ce qui vous touche,\n\ndans ce que vous refusez de simplifier,\n\ndans les questions que vous choisissez de garder ouvertes."
         },
         {
-          "id": "choix-recall-page-16",
+          "id": "rappel-boussole-voix",
+          "type": "recall",
+          "sourceBlockId": "boussole",
+          "label": "Ce que vous vouliez préserver",
+          "emptyText": "Votre boussole n'est pas encore formulée. Vous pouvez revenir aux étapes précédentes, ou garder simplement à l'esprit ce qui doit rester vivant pour vous."
+        },
+        {
+          "id": "rappel-criteres-voix",
+          "type": "recall",
+          "sourceBlockId": "criteres-resonance",
+          "label": "Ce qui vous aide à reconnaître ce qui compte",
+          "emptyText": "Vos critères de résonance ne sont pas encore formulés. Vous pouvez néanmoins poursuivre en observant ce qui vous aide à reconnaître ce qui compte."
+        },
+        {
+          "id": "rappel-choix-voix",
           "type": "recall",
           "sourceBlockId": "choix-assume",
-          "label": "Votre choix assumé",
-          "emptyText": "Votre choix sera rappelé ici."
+          "label": "La direction que vous avez choisie",
+          "emptyText": "Votre direction choisie n'est pas encore formulée. Vous pouvez revenir à la page précédente, ou poursuivre avec la direction qui vous accompagne maintenant."
+        },
+        {
+          "id": "voix-reperes",
+          "type": "text",
+          "text": "Pour reconnaître ce qui vous appartient, quelques repères peuvent aider.\n\nLe générique : quelque chose fonctionne, mais pourrait appartenir à presque n'importe quel récit.\n\nLe séduisant : quelque chose attire immédiatement, sans que cette attraction suffise à dire que cela vous appartient.\n\nLe juste : quelque chose n'est peut-être ni spectaculaire ni parfaitement formulé, mais vous reconnaissez qu'il touche à ce que vous cherchez réellement.\n\nCes repères ne servent pas à classer vos idées.\n\nIls servent seulement à mieux écouter ce que votre choix fait résonner."
+        },
+        {
+          "id": "voix-signe",
+          "type": "choice",
+          "label": "Dans ce que vous avez choisi, qu'est-ce qui vous semble le plus proche de votre voix ?",
+          "options": [
+            {
+              "id": "regard-situation",
+              "label": "Une manière particulière de regarder la situation"
+            },
+            {
+              "id": "tension-preservee",
+              "label": "Une tension que je ne veux pas simplifier"
+            },
+            {
+              "id": "question-ouverte",
+              "label": "Une question que je veux laisser ouverte"
+            },
+            {
+              "id": "emotion-sensation",
+              "label": "Une émotion ou une sensation que je reconnais"
+            },
+            {
+              "id": "relation-presence",
+              "label": "Une relation ou une présence qui compte pour moi"
+            },
+            {
+              "id": "dire-ne-pas-dire",
+              "label": "Une manière de dire ou de ne pas dire"
+            },
+            {
+              "id": "chercher-encore",
+              "label": "Je ne sais pas encore, mais je sens qu'il y a quelque chose à chercher"
+            }
+          ]
         },
         {
           "id": "voix-recherchee",
           "type": "textarea",
-          "label": "Comment reconnaissez-vous votre voix dans ce projet ?",
-          "placeholder": "Ma voix tient à..."
+          "label": "Ce que vous voulez entendre dans votre texte",
+          "placeholder": "Avec vos propres mots, notez ce que vous aimeriez reconnaître dans le texte à venir : une manière de regarder, une tension, un rythme, une retenue, une question, une sensation, quelque chose qui vous appartient sans que vous sachiez encore exactement comment l'écrire…"
         },
         {
-          "id": "voix-reveal",
+          "id": "voix-signature-reveal",
           "type": "reveal",
-          "label": "Lire un repère pour reconnaître sa voix",
-          "content": "Une proposition peut être brillante et ne pas être juste. La voix de l'auteur se reconnaît parfois à ce qu'il refuse."
+          "label": "La voix n'est pas une signature à fabriquer",
+          "content": "Chercher sa voix ne signifie pas fabriquer artificiellement une manière d'écrire reconnaissable.\n\nUne voix peut être discrète.\n\nElle peut apparaître dans un rythme, mais aussi dans une attention.\n\nDans une phrase, mais aussi dans ce que l'on choisit de ne pas expliquer.\n\nDans une image, mais aussi dans une question que l'on refuse de refermer trop vite.\n\nElle n'a pas besoin d'être spectaculaire pour être singulière.\n\nDans cet atelier, nous ne chercherons donc pas à produire un « style personnel » à la demande.\n\nNous chercherons plutôt à rester attentifs à ce qui, dans le texte, semble réellement nous appartenir."
+        },
+        {
+          "id": "voix-cloture",
+          "type": "text",
+          "text": "Vous avez maintenant ouvert des possibles,\n\nexploré,\n\nécarté,\n\nchoisi,\n\net commencé à reconnaître ce que vous souhaitez préserver dans votre manière d'écrire.\n\nIl est temps de quitter l'exploration.\n\nLa prochaine étape ne consiste plus à demander ce que le récit pourrait devenir.\n\nElle consiste à écrire.\n\nLa prochaine page commence avec vos mots."
         }
       ]
     },

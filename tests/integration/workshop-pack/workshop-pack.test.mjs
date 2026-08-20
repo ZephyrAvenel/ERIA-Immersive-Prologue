@@ -748,6 +748,61 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pageFifteenTextareas[1].label, "Ce que vous acceptez de laisser de c\u00f4t\u00e9");
   assert.equal(pageFifteen.blocks.some((block) => ["promptCopy", "reveal"].includes(block.type)), false);
 
+  const pageSixteen = pack.pages[15];
+  assert.equal(pageSixteen.id, "page-16");
+  assert.equal(pageSixteen.title, "Retrouver sa voix");
+  assert.equal(pageSixteen.movementId, "discernement");
+  assert.deepEqual(pageSixteen.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "recall",
+    "text",
+    "choice",
+    "textarea",
+    "reveal",
+    "text",
+  ]);
+  const pageSixteenRecalls = pageSixteen.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageSixteenRecalls.length, 3);
+  assert.deepEqual(
+    pageSixteenRecalls.map((block) => block.id),
+    ["rappel-boussole-voix", "rappel-criteres-voix", "rappel-choix-voix"],
+  );
+  assert.deepEqual(
+    pageSixteenRecalls.map((block) => block.sourceBlockId),
+    ["boussole", "criteres-resonance", "choix-assume"],
+  );
+  const pageSixteenChoices = pageSixteen.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageSixteenChoices.length, 1);
+  assert.equal(pageSixteenChoices[0].id, "voix-signe");
+  assert.equal(pageSixteenChoices[0].options.length, 7);
+  assert.equal(
+    pageSixteenChoices[0].options.some(
+      (option) => option.label === "Une mani\u00e8re particuli\u00e8re de regarder la situation",
+    ),
+    true,
+  );
+  assert.equal(
+    pageSixteenChoices[0].options.some(
+      (option) =>
+        option.label === "Je ne sais pas encore, mais je sens qu'il y a quelque chose \u00e0 chercher",
+    ),
+    true,
+  );
+  const pageSixteenTextareas = pageSixteen.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageSixteenTextareas.length, 1);
+  assert.equal(pageSixteenTextareas[0].id, "voix-recherchee");
+  assert.equal(pageSixteenTextareas[0].label, "Ce que vous voulez entendre dans votre texte");
+  const pageSixteenReveals = pageSixteen.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageSixteenReveals.length, 1);
+  assert.equal(pageSixteenReveals[0].id, "voix-signature-reveal");
+  assert.equal(pageSixteenReveals[0].label, "La voix n'est pas une signature \u00e0 fabriquer");
+  assert.equal(typeof pageSixteenReveals[0].content, "string");
+  assert.equal(pageSixteen.blocks.some((block) => block.type === "promptCopy"), false);
+  assert.equal(pack.pages[15].movementId, "discernement");
+  assert.equal(pack.pages[16].movementId, "ecriture");
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
