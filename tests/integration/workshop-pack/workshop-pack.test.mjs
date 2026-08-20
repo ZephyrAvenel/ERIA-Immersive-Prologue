@@ -702,6 +702,52 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pack.pages[13].movementId, "discernement");
   assert.equal(pack.pages[14].movementId, "discernement");
 
+  const pageFifteen = pack.pages[14];
+  assert.equal(pageFifteen.id, "page-15");
+  assert.equal(pageFifteen.title, "Choisir et renoncer");
+  assert.equal(pageFifteen.movementId, "discernement");
+  assert.deepEqual(pageFifteen.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "recall",
+    "text",
+    "choice",
+    "textarea",
+    "textarea",
+    "text",
+  ]);
+  const pageFifteenRecalls = pageFifteen.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageFifteenRecalls.length, 3);
+  assert.deepEqual(
+    pageFifteenRecalls.map((block) => block.id),
+    ["rappel-boussole-choix", "rappel-piste-choix", "rappel-criteres-choix"],
+  );
+  assert.deepEqual(
+    pageFifteenRecalls.map((block) => block.sourceBlockId),
+    ["boussole", "piste-provisoire", "criteres-resonance"],
+  );
+  const pageFifteenChoices = pageFifteen.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageFifteenChoices.length, 1);
+  assert.equal(pageFifteenChoices[0].id, "choix-geste");
+  assert.equal(pageFifteenChoices[0].label, "\u00c0 cet instant, votre d\u00e9cision ressemble plut\u00f4t \u00e0\u2026");
+  assert.equal(pageFifteenChoices[0].options.length, 6);
+  assert.equal(
+    pageFifteenChoices[0].options.some(
+      (option) => option.label === "Je ne sais pas encore, mais je peux choisir provisoirement",
+    ),
+    true,
+  );
+  const pageFifteenTextareas = pageFifteen.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageFifteenTextareas.length, 2);
+  assert.deepEqual(
+    pageFifteenTextareas.map((block) => block.id),
+    ["choix-assume", "renoncement-assume"],
+  );
+  assert.equal(pageFifteenTextareas[0].label, "La direction que vous choisissez de poursuivre");
+  assert.equal(pageFifteenTextareas[1].label, "Ce que vous acceptez de laisser de c\u00f4t\u00e9");
+  assert.equal(pageFifteen.blocks.some((block) => ["promptCopy", "reveal"].includes(block.type)), false);
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [

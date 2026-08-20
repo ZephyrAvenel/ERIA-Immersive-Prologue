@@ -827,38 +827,81 @@
         {
           "id": "choisir-renoncer-intro",
           "type": "text",
-          "text": "Créer signifie également écarter."
+          "text": "Jusqu'ici, vous avez ouvert des possibilités.\n\nCertaines vous ont attiré.\n\nCertaines vous ont déplacé.\n\nCertaines ont révélé quelque chose que vous n'aviez pas encore formulé.\n\nMais un récit ne peut pas demeurer indéfiniment dans tous ses possibles.\n\nÀ un moment, écrire demande de choisir."
         },
         {
-          "id": "choix-direction",
+          "id": "rappel-boussole-choix",
+          "type": "recall",
+          "sourceBlockId": "boussole",
+          "label": "Ce que vous ne vouliez pas perdre",
+          "emptyText": "Votre boussole n'est pas encore formulée. Vous pouvez revenir aux étapes précédentes, ou garder simplement à l'esprit ce qui doit rester vivant pour vous dans ce récit."
+        },
+        {
+          "id": "rappel-piste-choix",
+          "type": "recall",
+          "sourceBlockId": "piste-provisoire",
+          "label": "La possibilité que vous avez explorée",
+          "emptyText": "Votre piste provisoire n'est pas encore formulée. Vous pouvez revenir à la page 09, ou poursuivre avec la possibilité qui vous accompagne maintenant."
+        },
+        {
+          "id": "rappel-criteres-choix",
+          "type": "recall",
+          "sourceBlockId": "criteres-resonance",
+          "label": "Ce qui vous aide à reconnaître ce qui compte",
+          "emptyText": "Vos critères de résonance ne sont pas encore formulés. Vous pouvez revenir à la page précédente, ou choisir en gardant près de vous ce qui vous semble compter."
+        },
+        {
+          "id": "choisir-renoncer-sens",
+          "type": "text",
+          "text": "Choisir ne signifie pas déclarer qu'une possibilité était meilleure que toutes les autres.\n\nCela signifie décider :\n\n« C'est celle-ci que je vais poursuivre maintenant. »\n\nLes autres possibilités ne deviennent pas mauvaises ou inutiles.\n\nCertaines pourront revenir ailleurs.\n\nCertaines appartiendront peut-être à un autre récit.\n\nCertaines peuvent simplement rester derrière.\n\nRenoncer, ici, n'est pas appauvrir la création.\n\nC'est lui donner une direction."
+        },
+        {
+          "id": "choix-geste",
           "type": "choice",
-          "label": "Quel geste de choix devez-vous poser maintenant ?",
+          "label": "À cet instant, votre décision ressemble plutôt à…",
           "options": [
             {
-              "id": "conserver",
-              "label": "Conserver une piste"
+              "id": "poursuivre-piste",
+              "label": "Je poursuis la piste que j'explore déjà"
             },
             {
-              "id": "fusionner",
-              "label": "Fusionner deux pistes"
+              "id": "deplacer-piste",
+              "label": "Je garde cette piste, mais je veux la déplacer"
             },
             {
-              "id": "renoncer",
-              "label": "Renoncer à une piste séduisante"
+              "id": "autre-plus-juste",
+              "label": "Une autre possibilité me paraît maintenant plus juste"
+            },
+            {
+              "id": "ne-plus-poursuivre",
+              "label": "Je sais surtout ce que je ne veux plus poursuivre"
+            },
+            {
+              "id": "une-s-impose",
+              "label": "Plusieurs possibilités restent présentes, mais l'une d'elles commence à s'imposer"
+            },
+            {
+              "id": "choisir-provisoirement",
+              "label": "Je ne sais pas encore, mais je peux choisir provisoirement"
             }
           ]
         },
         {
           "id": "choix-assume",
           "type": "textarea",
-          "label": "Formulez le choix que vous assumez.",
-          "placeholder": "Je choisis..."
+          "label": "La direction que vous choisissez de poursuivre",
+          "placeholder": "Avec vos propres mots, formulez la direction que vous décidez de poursuivre maintenant. Elle n'a pas besoin d'être définitive : elle doit seulement être assez claire pour vous permettre d'écrire."
         },
         {
-          "id": "renoncement",
+          "id": "renoncement-assume",
           "type": "textarea",
-          "label": "Formulez ce à quoi vous acceptez de renoncer.",
-          "placeholder": "Je laisse de côté..."
+          "label": "Ce que vous acceptez de laisser de côté",
+          "placeholder": "Notez, si cela vous aide, une piste, une possibilité ou une direction que vous choisissez de ne pas poursuivre maintenant. Vous ne la condamnez pas : vous lui permettez simplement de rester ailleurs."
+        },
+        {
+          "id": "choisir-renoncer-cloture",
+          "type": "text",
+          "text": "Vous venez de faire quelque chose qu'aucune génération de possibilités ne peut faire à votre place :\n\nprendre position dans votre propre récit.\n\nLe choix pourra encore évoluer.\n\nMais désormais, quelque chose possède une direction.\n\nEt cette direction peut commencer à devenir une voix."
         }
       ]
     },
