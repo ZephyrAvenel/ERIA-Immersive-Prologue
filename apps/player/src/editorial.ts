@@ -2,7 +2,7 @@ import registry from "./editorial-registry.json" with { type: "json" };
 
 export type EditorialLanguage = "fr" | "en";
 export type EditorialFamilyId = "narrative-packs" | "augmented-workshops";
-export type EditorialStatus = "planned";
+export type EditorialStatus = "planned" | "published";
 
 export interface EditorialLabels {
   readonly orientation: string;
@@ -21,12 +21,26 @@ export interface EditorialFamily {
   readonly labels: LocalizedEditorialLabels;
 }
 
-export interface AugmentedWorkshop {
+interface AugmentedWorkshopBase {
   readonly id: string;
   readonly family: "augmented-workshops";
   readonly status: EditorialStatus;
   readonly labels: LocalizedEditorialLabels;
 }
+
+export interface PlannedAugmentedWorkshop extends AugmentedWorkshopBase {
+  readonly status: "planned";
+}
+
+export interface PublishedAugmentedWorkshop extends AugmentedWorkshopBase {
+  readonly status: "published";
+  readonly slug: string;
+  readonly manifest: string;
+  readonly coverImage: string;
+  readonly coverImageAlt: string;
+}
+
+export type AugmentedWorkshop = PlannedAugmentedWorkshop | PublishedAugmentedWorkshop;
 
 export interface EditorialRegistry {
   readonly format: "ine-editorial-registry";
@@ -58,6 +72,26 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function nonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.length > 0;
+}
+
+function isRouteSlug(value: unknown): value is string {
+  return typeof value === "string" && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
+}
+
+function isInternalPath(value: unknown): value is string {
+  return (
+    typeof value === "string" &&
+    value.length > 0 &&
+    !/^[a-z][a-z0-9+.-]*:/i.test(value) &&
+    !value.startsWith("/") &&
+    !value.includes("..") &&
+    !value.includes("?") &&
+    !value.includes("#")
+  );
+}
+
+function isWorkshopManifestPath(value: unknown): value is string {
+  return isInternalPath(value) && value.endsWith("/pack.json");
 }
 
 function hasLabels(value: unknown): value is LocalizedEditorialLabels {
@@ -107,14 +141,36 @@ export function validateEditorialRegistry(value: unknown): EditorialRegistry {
   const workshops = value.workshops;
   if (
     workshops.length !== 4 ||
-    !workshops.every(
-      (workshop) =>
-        isRecord(workshop) &&
-        nonEmptyString(workshop.id) &&
-        workshop.family === "augmented-workshops" &&
-        workshop.status === "planned" &&
-        hasLabels(workshop.labels),
-    )
+    !workshops.every((workshop) => {
+      if (
+        !isRecord(workshop) ||
+        !nonEmptyString(workshop.id) ||
+        workshop.family !== "augmented-workshops" ||
+        !hasLabels(workshop.labels)
+      ) {
+        return false;
+      }
+
+      if (workshop.status === "planned") {
+        return (
+          !("slug" in workshop) &&
+          !("manifest" in workshop) &&
+          !("coverImage" in workshop) &&
+          !("coverImageAlt" in workshop)
+        );
+      }
+
+      if (workshop.status === "published") {
+        return (
+          isRouteSlug(workshop.slug) &&
+          isWorkshopManifestPath(workshop.manifest) &&
+          isInternalPath(workshop.coverImage) &&
+          nonEmptyString(workshop.coverImageAlt)
+        );
+      }
+
+      return false;
+    })
   ) {
     throw new Error("INE_EDITORIAL_WORKSHOPS_INVALID");
   }
