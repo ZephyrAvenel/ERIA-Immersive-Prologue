@@ -49,6 +49,7 @@ import {
 import {
   augmentedWorkshops,
   editorialFamilies,
+  findPublishedAugmentedWorkshopBySlug,
   type EditorialFamilyId,
   type LocalizedEditorialFamily,
 } from "./editorial";
@@ -275,6 +276,16 @@ function requestedWorkSlug(): string | null {
   return match?.[1] ? decodeURIComponent(match[1]) : null;
 }
 
+function requestedWorkshopSlug(): string | null {
+  const basePath = applicationBaseUrl.pathname.endsWith("/")
+    ? applicationBaseUrl.pathname
+    : `${applicationBaseUrl.pathname}/`;
+  if (!globalThis.location.pathname.startsWith(basePath)) return null;
+  const relativePath = globalThis.location.pathname.slice(basePath.length);
+  const match = /^ateliers\/([^/]+)\/?$/.exec(relativePath);
+  return match?.[1] ? decodeURIComponent(match[1]) : null;
+}
+
 function isLibraryRoute(): boolean {
   const path = globalThis.location.pathname;
   return path === libraryUrl.pathname || path === libraryUrl.pathname.replace(/\/$/, "");
@@ -300,6 +311,13 @@ async function loadPlayerConfiguration(): Promise<PlayerConfiguration> {
     const entry = findRegistryEntryBySlug(registry, workSlug);
     if (!entry) throw new Error("INE_PACK_ROUTE_NOT_FOUND");
     return { packUrl: new URL(entry.manifest, registryUrl).href };
+  }
+
+  const workshopSlug = requestedWorkshopSlug();
+  if (workshopSlug) {
+    const workshop = findPublishedAugmentedWorkshopBySlug(workshopSlug);
+    if (!workshop) throw new Error("INE_WORKSHOP_ROUTE_NOT_FOUND");
+    return { packUrl: resolveApplicationRoute(workshop.manifest) };
   }
 
   const response = await fetch(new URL("player.config.json", document.baseURI));
@@ -463,6 +481,13 @@ async function renderWorkshops(): Promise<void> {
     article.className = "workshop-card";
     article.dataset.workshopId = workshop.id;
     article.dataset.status = workshop.status;
+    const cardContent =
+      workshop.status === "published" && workshop.slug ? document.createElement("a") : article;
+    if (cardContent instanceof HTMLAnchorElement) {
+      cardContent.className = "workshop-card__link";
+      cardContent.href = resolveApplicationRoute(`ateliers/${workshop.slug}/`);
+      article.append(cardContent);
+    }
     if (workshop.status === "published" && workshop.coverImage) {
       const figure = document.createElement("figure");
       figure.className = "workshop-card__cover";
@@ -472,7 +497,7 @@ async function renderWorkshops(): Promise<void> {
       image.loading = "lazy";
       image.decoding = "async";
       figure.append(image);
-      article.append(figure);
+      cardContent.append(figure);
     }
     const status = document.createElement("p");
     status.className = "workshop-card__status";
@@ -489,7 +514,7 @@ async function renderWorkshops(): Promise<void> {
     access.className = "workshop-card__access";
     access.textContent =
       workshop.status === "published" ? messages.workshopsPublishedAccessPending : messages.workshopsNoAccess;
-    article.append(status, orientation, workshopTitle, workshopDescription, access);
+    cardContent.append(status, orientation, workshopTitle, workshopDescription, access);
     grid.append(article);
   }
 

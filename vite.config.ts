@@ -26,6 +26,23 @@ interface Registry {
   readonly packs: readonly RegistryEntry[];
 }
 
+interface EditorialWorkshopEntry {
+  readonly id: string;
+  readonly family: "augmented-workshops";
+  readonly status: "planned" | "published";
+  readonly slug?: string;
+  readonly manifest?: string;
+  readonly coverImage?: string;
+  readonly coverImageAlt?: string;
+  readonly labels: Readonly<Record<string, { readonly title: string; readonly description: string }>>;
+}
+
+interface EditorialRegistry {
+  readonly format: "ine-editorial-registry";
+  readonly version: "1.0";
+  readonly workshops: readonly EditorialWorkshopEntry[];
+}
+
 function escapeHtml(value: string): string {
   return value
     .replaceAll("&", "&amp;")
@@ -93,6 +110,43 @@ function generateWorkEntryPages(): void {
         `<meta name="description" content="${escapeHtml(manifest.description)}" />\n    ${socialMetadata}`,
       );
     const target = resolve("dist", "oeuvres", entry.slug);
+    mkdirSync(target, { recursive: true });
+    writeFileSync(resolve(target, "index.html"), html);
+  }
+
+  const editorialRegistryPath = resolve("apps", "player", "src", "editorial-registry.json");
+  const editorialRegistry = JSON.parse(readFileSync(editorialRegistryPath, "utf8")) as EditorialRegistry;
+  if (
+    editorialRegistry.format !== "ine-editorial-registry" ||
+    editorialRegistry.version !== "1.0" ||
+    !Array.isArray(editorialRegistry.workshops)
+  ) {
+    throw new Error("INE_BUILD_EDITORIAL_REGISTRY_INVALID");
+  }
+
+  for (const workshop of editorialRegistry.workshops) {
+    if (workshop.status !== "published") continue;
+    if (
+      workshop.family !== "augmented-workshops" ||
+      typeof workshop.slug !== "string" ||
+      typeof workshop.manifest !== "string"
+    ) {
+      throw new Error(`INE_BUILD_WORKSHOP_PUBLICATION_INVALID:${workshop.id}`);
+    }
+
+    const labels = workshop.labels.fr ?? workshop.labels.en;
+    const title = labels?.title ?? workshop.id;
+    const description = labels?.description ?? "";
+    const canonical = `${publicOrigin}${base}ateliers/${workshop.slug}/`;
+    const html = template
+      .replace("<title>Bibliothèque des œuvres immersives</title>", `<title>${escapeHtml(title)} — Zéphyr Avenel</title>`)
+      .replace('href="./manifest.webmanifest"', `href="${base}manifest.webmanifest"`)
+      .replace('href="./icon.svg"', `href="${base}icon.svg"`)
+      .replace(
+        '<meta name="description" content="Bibliothèque des œuvres immersives" />',
+        `<meta name="description" content="${escapeHtml(description)}" />\n    <link rel="canonical" href="${escapeHtml(canonical)}" />`,
+      );
+    const target = resolve("dist", "ateliers", workshop.slug);
     mkdirSync(target, { recursive: true });
     writeFileSync(resolve(target, "index.html"), html);
   }

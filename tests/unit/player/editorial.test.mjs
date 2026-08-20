@@ -4,6 +4,8 @@ import {
   augmentedWorkshops,
   editorialFamilies,
   editorialRegistry,
+  findPublishedAugmentedWorkshopBySlug,
+  publishedAugmentedWorkshops,
   validateEditorialRegistry,
 } from "../../../.test-build/apps/player/src/editorial.js";
 
@@ -93,6 +95,39 @@ test("editorial registry declares the augmented writing workshop as published", 
       },
     ],
   );
+});
+
+test("editorial registry resolves only published workshops by canonical slug", () => {
+  assert.deepEqual(
+    publishedAugmentedWorkshops().map(({ id, slug, manifest }) => ({ id, slug, manifest })),
+    [
+      {
+        id: "ecriture-augmentee",
+        slug: "ecriture-augmentee",
+        manifest: "packs/workshop-001-ecriture-augmentee/pack.json",
+      },
+    ],
+  );
+
+  const writingWorkshop = findPublishedAugmentedWorkshopBySlug("ecriture-augmentee");
+  assert.equal(writingWorkshop?.id, "ecriture-augmentee");
+  assert.equal(writingWorkshop?.manifest, "packs/workshop-001-ecriture-augmentee/pack.json");
+  assert.equal(findPublishedAugmentedWorkshopBySlug("art-augmente"), undefined);
+  assert.equal(findPublishedAugmentedWorkshopBySlug("slug-inconnu"), undefined);
+});
+
+test("editorial registry keeps planned workshops without public routes", () => {
+  const planned = editorialRegistry.workshops.filter((workshop) => workshop.status === "planned");
+  assert.deepEqual(
+    planned.map((workshop) => workshop.id),
+    ["art-augmente", "cartographie-augmentee", "composer-recit-vivant-ia"],
+  );
+  for (const workshop of planned) {
+    assert.equal("slug" in workshop, false);
+    assert.equal("manifest" in workshop, false);
+    assert.equal("coverImage" in workshop, false);
+    assert.equal("coverImageAlt" in workshop, false);
+  }
 });
 
 test("editorial registry rejects duplicate or missing family declarations", () => {

@@ -11,6 +11,7 @@ const baseUrl = "/ERIA-Immersive-Prologue/";
 const artifactsDir = "test-results/e2e";
 const progressStorageKey = "ine:progress:v1:les-gardiens-des-recits-vivants";
 const workshopProgressStorageKey = "ine:workshop-progress:v1:workshop-demo";
+const augmentedWritingWorkshopProgressStorageKey = "ine:workshop-progress:v1:ecriture-augmentee";
 const publicThresholdSessionKey = "ine:public-threshold:v1:recits-vivants";
 const publicThresholdSkipHomeIntroKey = `${publicThresholdSessionKey}:skip-home-intro-once`;
 
@@ -764,6 +765,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
           description: Array.from(card.querySelectorAll('p')).at(-2)?.textContent,
           access: card.querySelector('.workshop-card__access')?.textContent,
           linkCount: card.querySelectorAll('a').length,
+          href: card.querySelector('a')?.href ?? null,
           role: card.getAttribute('role'),
           tabIndex: card.getAttribute('tabindex'),
           coverPresent: Boolean(card.querySelector('.workshop-card__cover img')),
@@ -796,8 +798,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               orientation: "\u00c9CRIRE",
               title: "\u00c9criture augment\u00e9e",
               description: "Un atelier d\u2019\u00e9criture en 7 mouvements pour apprendre \u00e0 dialoguer avec l\u2019IA sans lui abandonner le geste d\u2019auteur.",
-              access: "Entr\u00e9e publique \u00e0 venir",
-              linkCount: 0,
+              access: "Ouvrir l\u2019atelier",
+              linkCount: 1,
+              href: `${entryUrl}ateliers/ecriture-augmentee/`,
               role: null,
               tabIndex: null,
               coverPresent: true,
@@ -817,6 +820,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               description: "Cr\u00e9er avec l\u2019IA sans renoncer \u00e0 son regard.",
               access: "Parcours en pr\u00e9paration",
               linkCount: 0,
+              href: null,
               role: null,
               tabIndex: null,
               coverPresent: false,
@@ -835,6 +839,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               description: "Rendre visibles les relations avec l\u2019IA.",
               access: "Parcours en pr\u00e9paration",
               linkCount: 0,
+              href: null,
               role: null,
               tabIndex: null,
               coverPresent: false,
@@ -853,6 +858,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               description: "Faire dialoguer \u00e9criture, image et cartographie.",
               access: "Parcours en pr\u00e9paration",
               linkCount: 0,
+              href: null,
               role: null,
               tabIndex: null,
               coverPresent: false,
@@ -871,8 +877,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               orientation: "WRITE",
               title: "Augmented writing",
               description: "A 7-movement writing workshop for learning to dialogue with AI without surrendering the authorial gesture.",
-              access: "Public entry coming soon",
-              linkCount: 0,
+              access: "Open workshop",
+              linkCount: 1,
+              href: `${entryUrl}ateliers/ecriture-augmentee/`,
               role: null,
               tabIndex: null,
               coverPresent: true,
@@ -892,6 +899,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               description: "Creating with AI without giving up your gaze.",
               access: "Path in preparation",
               linkCount: 0,
+              href: null,
               role: null,
               tabIndex: null,
               coverPresent: false,
@@ -910,6 +918,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               description: "Making relationships visible with AI.",
               access: "Path in preparation",
               linkCount: 0,
+              href: null,
               role: null,
               tabIndex: null,
               coverPresent: false,
@@ -928,6 +937,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               description: "Bringing writing, image, and mapping into dialogue.",
               access: "Path in preparation",
               linkCount: 0,
+              href: null,
               role: null,
               tabIndex: null,
               coverPresent: false,
@@ -940,9 +950,51 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
           ],
     );
     assert.equal(workshopsState.cards[0].coverSrc.endsWith("/packs/workshop-001-ecriture-augmentee/assets/images/00-couverture-ecriture-augmentee.webp"), true);
-    assert.equal(workshopsState.workshopHrefCount, 0);
+    assert.equal(workshopsState.workshopHrefCount, 1);
     assert.equal(workshopsState.workshopPackLinkCount, 0);
     assert.equal(workshopsState.noHorizontalOverflow, true);
+
+    await evaluate(page, `localStorage.removeItem(${JSON.stringify(augmentedWritingWorkshopProgressStorageKey)})`);
+    await evaluate(page, "document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] a')?.focus()");
+    assert.equal(
+      await evaluate(page, "document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] a') === document.activeElement"),
+      true,
+    );
+    await evaluate(page, "document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] a')?.click()");
+    await waitForWorkshopReady(page, "01 / 26");
+    const writingWorkshopPageOne = await readWorkshopState(page);
+    assert.equal(new URL(await evaluate(page, "window.location.href")).pathname.endsWith("/ateliers/ecriture-augmentee/"), true);
+    assert.equal(new URL(await evaluate(page, "window.location.href")).search, "");
+    assert.equal(writingWorkshopPageOne.title, "\u00c9criture augment\u00e9e");
+    assert.equal(writingWorkshopPageOne.subtitle, "\u00c9crire avec l'IA sans lui abandonner sa voix");
+    assert.equal(writingWorkshopPageOne.movement, "MOUVEMENT I \u00b7 INTENTION");
+    assert.equal(writingWorkshopPageOne.progress, "01 / 26");
+    assert.equal(writingWorkshopPageOne.previousDisabled, true);
+    assert.equal(writingWorkshopPageOne.nextDisabled, false);
+    assert.equal(writingWorkshopPageOne.noHorizontalOverflow, true);
+    await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
+    await waitForWorkshopReady(page, "02 / 26");
+    await loadUrl(page, `${entryUrl}ateliers/ecriture-augmentee/`);
+    await waitForWorkshopReady(page, "02 / 26");
+    const writingWorkshopResumed = await readWorkshopState(page);
+    assert.equal(writingWorkshopResumed.progress, "02 / 26");
+    assert.equal(writingWorkshopResumed.noHorizontalOverflow, true);
+
+    await loadUrl(page, `${entryUrl}ateliers/art-augmente/`);
+    await waitForExpression(page, "document.querySelector('.error-panel') !== null");
+    assert.equal(
+      await evaluate(page, "document.querySelector('.workshop-player') === null && document.querySelector('.error-panel') !== null"),
+      true,
+      "a planned workshop slug must not load a workshop",
+    );
+
+    await loadUrl(page, `${entryUrl}ateliers/slug-inconnu/`);
+    await waitForExpression(page, "document.querySelector('.error-panel') !== null");
+    assert.equal(
+      await evaluate(page, "document.querySelector('.workshop-player') === null && document.querySelector('.error-panel') !== null"),
+      true,
+      "an unknown workshop slug must not load a workshop",
+    );
 
     const workshopDemoUrl = `${entryUrl}?pack=examples/workshop-demo/pack.json`;
     await loadUrl(page, workshopDemoUrl);

@@ -231,3 +231,13 @@ export function editorialFamilies(language: string): readonly LocalizedEditorial
 export function augmentedWorkshops(language: string): readonly LocalizedAugmentedWorkshop[] {
   return editorialRegistry.workshops.map((workshop) => localizedWorkshop(workshop, language));
 }
+
+export function publishedAugmentedWorkshops(): readonly PublishedAugmentedWorkshop[] {
+  return editorialRegistry.workshops.filter(
+    (workshop): workshop is PublishedAugmentedWorkshop => workshop.status === "published",
+  );
+}
+
+export function findPublishedAugmentedWorkshopBySlug(slug: string): PublishedAugmentedWorkshop | undefined {
+  return publishedAugmentedWorkshops().find((workshop) => workshop.slug === slug);
+}
