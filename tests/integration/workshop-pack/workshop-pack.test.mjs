@@ -197,7 +197,7 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
       ["page-18", 18, "ecriture", "Composer"],
       ["page-19", 19, "ecriture", "Faire lire sans faire écrire"],
       ["page-20", 20, "ecriture", "Revenir au texte"],
-      ["page-21", 21, "transformation", "Le texte n'est pas terminé"],
+      ["page-21", 21, "transformation", "Ce que l'écriture a déplacé"],
       ["page-22", 22, "transformation", "Transformer plutôt que corriger"],
       ["page-23", 23, "transformation", "Faire sien"],
       ["page-24", 24, "transformation", "Savoir s'arrêter"],
@@ -993,9 +993,69 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(typeof pageTwentyReveals[0].content, "string");
   assert.equal(pageTwenty.blocks.some((block) => block.type === "promptCopy"), false);
   assert.equal(pack.pages[18].title, "Faire lire sans faire \u00e9crire");
-  assert.equal(pack.pages[20].title, "Le texte n'est pas termin\u00e9");
+  assert.equal(pack.pages[20].title, "Ce que l'\u00e9criture a d\u00e9plac\u00e9");
   assert.equal(pack.pages[19].movementId, "ecriture");
   assert.equal(pack.pages[20].movementId, "transformation");
+
+  const pageTwentyOne = pack.pages[20];
+  assert.equal(pageTwentyOne.id, "page-21");
+  assert.equal(pageTwentyOne.title, "Ce que l'\u00e9criture a d\u00e9plac\u00e9");
+  assert.equal(pageTwentyOne.movementId, "transformation");
+  assert.deepEqual(pageTwentyOne.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "choice",
+    "textarea",
+    "text",
+    "reveal",
+    "text",
+  ]);
+  const pageTwentyOneRecalls = pageTwentyOne.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageTwentyOneRecalls.length, 2);
+  assert.deepEqual(
+    pageTwentyOneRecalls.map((block) => block.id),
+    ["rappel-boussole-transformation", "rappel-texte-repris-transformation"],
+  );
+  assert.deepEqual(
+    pageTwentyOneRecalls.map((block) => block.sourceBlockId),
+    ["boussole", "texte-repris"],
+  );
+  const pageTwentyOneChoices = pageTwentyOne.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageTwentyOneChoices.length, 1);
+  assert.equal(pageTwentyOneChoices[0].id, "transformation-lieu");
+  assert.equal(
+    pageTwentyOneChoices[0].label,
+    "Si quelque chose s'est d\u00e9plac\u00e9, o\u00f9 le percevez-vous surtout ?",
+  );
+  assert.equal(pageTwentyOneChoices[0].options.length, 8);
+  assert.equal(
+    pageTwentyOneChoices[0].options.some(
+      (option) => option.label === "Dans ma mani\u00e8re d'utiliser \u2014 ou de ne pas utiliser \u2014 l'IA",
+    ),
+    true,
+  );
+  assert.equal(
+    pageTwentyOneChoices[0].options.some(
+      (option) => option.label === "Je ne per\u00e7ois pas encore de d\u00e9placement particulier",
+    ),
+    true,
+  );
+  const pageTwentyOneTextareas = pageTwentyOne.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageTwentyOneTextareas.length, 1);
+  assert.equal(pageTwentyOneTextareas[0].id, "deplacement-percu");
+  assert.equal(pageTwentyOneTextareas[0].label, "Ce qui a peut-\u00eatre chang\u00e9");
+  const pageTwentyOneReveals = pageTwentyOne.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageTwentyOneReveals.length, 1);
+  assert.equal(pageTwentyOneReveals[0].id, "transformation-pas-progres-reveal");
+  assert.equal(pageTwentyOneReveals[0].label, "Transformer ne veut pas dire progresser");
+  assert.equal(typeof pageTwentyOneReveals[0].content, "string");
+  assert.equal(pageTwentyOne.blocks.some((block) => block.type === "promptCopy"), false);
+  assert.equal(pack.pages[19].title, "Revenir au texte");
+  assert.equal(pack.pages[21].title, "Transformer plut\u00f4t que corriger");
+  assert.equal(pack.pages[21].movementId, "transformation");
+  assert.equal(pack.pages[21].blocks.some((block) => block.type === "promptCopy"), true);
 
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
@@ -1016,6 +1076,7 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
     "lecture-retenue",
     "reprise-decidee",
     "texte-repris",
+    "deplacement-percu",
     "version-a-moi",
     "critere-arret",
   ]) {

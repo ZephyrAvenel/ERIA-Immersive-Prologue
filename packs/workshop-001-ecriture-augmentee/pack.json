@@ -1258,25 +1258,92 @@
       "id": "page-21",
       "movementId": "transformation",
       "order": 21,
-      "title": "Le texte n'est pas terminé",
+      "title": "Ce que l'écriture a déplacé",
       "blocks": [
         {
-          "id": "texte-pas-termine-intro",
+          "id": "ecriture-deplacee-intro",
           "type": "text",
-          "text": "Introduire la réécriture."
+          "text": "Vous êtes revenu à votre texte.\n\nVous avez peut-être déplacé une phrase, approfondi une tension, retiré quelque chose, préservé un passage — ou découvert que certaines choses n'avaient pas besoin d'être changées.\n\nMais une autre question apparaît maintenant.\n\nQu'est-ce que le fait d'écrire vous a permis de voir autrement ?\n\nParfois, la transformation la plus importante n'est pas immédiatement visible dans le texte.\n\nElle se produit dans le regard que nous portons sur ce que nous cherchions à écrire."
         },
         {
-          "id": "premiere-forme-recall-page-21",
+          "id": "rappel-boussole-transformation",
           "type": "recall",
-          "sourceBlockId": "premiere-forme",
-          "label": "La première forme à transformer",
-          "emptyText": "Votre première forme sera rappelée ici."
+          "sourceBlockId": "boussole",
+          "label": "Ce que vous ne vouliez pas perdre",
+          "emptyText": "Votre boussole n'est pas encore formulée. Vous pouvez poursuivre en gardant simplement à l'esprit ce qui comptait pour vous au début de ce parcours."
         },
         {
-          "id": "relecture-note",
+          "id": "rappel-texte-repris-transformation",
+          "type": "recall",
+          "sourceBlockId": "texte-repris",
+          "label": "Le texte auquel vous êtes revenu",
+          "emptyText": "Vous n'avez pas encore écrit de nouvelle forme à la page précédente. Vous pouvez néanmoins observer ce que le parcours a déplacé dans votre manière de regarder votre texte."
+        },
+        {
+          "id": "deplacement-transformation-texte",
+          "type": "text",
+          "text": "Entre votre boussole de départ et le texte auquel vous êtes revenu, quelque chose a peut-être bougé.\n\nPas nécessairement votre intention.\n\nPas nécessairement votre texte.\n\nPeut-être votre manière de comprendre une relation, une tension, une question ou ce qui compte vraiment.\n\nEt peut-être rien de spectaculaire.\n\nLa transformation peut être minuscule :\n\nune nuance,\nune résistance devenue visible,\nune certitude devenue question,\nune possibilité abandonnée,\nune fidélité devenue plus claire."
+        },
+        {
+          "id": "transformation-lieu",
+          "type": "choice",
+          "label": "Si quelque chose s'est déplacé, où le percevez-vous surtout ?",
+          "options": [
+            {
+              "id": "comprehension-voulais-ecrire",
+              "label": "Dans ma compréhension de ce que je voulais écrire"
+            },
+            {
+              "id": "central-desormais",
+              "label": "Dans ce qui me paraît désormais central"
+            },
+            {
+              "id": "tension-question-visible",
+              "label": "Dans une tension ou une question devenue plus visible"
+            },
+            {
+              "id": "regard-relation-situation",
+              "label": "Dans mon regard sur une personne, une relation ou une situation"
+            },
+            {
+              "id": "entendre-voix",
+              "label": "Dans ma manière d'entendre ma propre voix"
+            },
+            {
+              "id": "choisir-possibilites",
+              "label": "Dans ma manière de choisir entre plusieurs possibilités"
+            },
+            {
+              "id": "utiliser-ou-non-ia",
+              "label": "Dans ma manière d'utiliser — ou de ne pas utiliser — l'IA"
+            },
+            {
+              "id": "pas-de-deplacement",
+              "label": "Je ne perçois pas encore de déplacement particulier"
+            }
+          ]
+        },
+        {
+          "id": "deplacement-percu",
           "type": "textarea",
-          "label": "Que voyez-vous maintenant dans cette première forme ?",
-          "placeholder": "Je remarque..."
+          "label": "Ce qui a peut-être changé",
+          "placeholder": "Avec vos propres mots, notez ce que vous percevez aujourd'hui différemment — dans votre texte, votre intention, votre regard ou votre manière d'écrire. Cela peut être très léger. Vous pouvez aussi noter que rien ne vous paraît encore avoir changé."
+        },
+        {
+          "id": "ne-pas-fabriquer-transformation",
+          "type": "text",
+          "text": "Il n'est pas nécessaire de produire une révélation pour que ce parcours ait eu lieu.\n\nParfois, ce que l'écriture transforme n'apparaît qu'après coup.\n\nParfois, elle confirme simplement quelque chose que nous savions déjà sans parvenir à le formuler.\n\nEt parfois, elle ne transforme rien que nous puissions encore nommer.\n\nNe cherchez pas à fabriquer un changement.\n\nObservez seulement ce qui est là."
+        },
+        {
+          "id": "transformation-pas-progres-reveal",
+          "type": "reveal",
+          "label": "Transformer ne veut pas dire progresser",
+          "content": "La transformation n'est pas nécessairement un progrès linéaire.\n\nUn texte peut devenir plus incertain et gagner en justesse.\n\nUne question peut devenir moins facile à résoudre et plus importante à habiter.\n\nUne possibilité peut être abandonnée.\n\nUne conviction peut demeurer intacte après avoir été éprouvée.\n\nTransformer ne signifie donc pas obligatoirement :\n\naméliorer,\ncorriger,\ncomplexifier,\nmoderniser,\nrendre plus efficace.\n\nIl s'agit ici d'observer ce qui a changé de place — ou ce qui, après le parcours, mérite précisément de rester à sa place."
+        },
+        {
+          "id": "deplacement-cloture",
+          "type": "text",
+          "text": "Vous n'avez pas besoin de conclure maintenant.\n\nGardez simplement cette trace du déplacement — ou de l'absence de déplacement.\n\nLa transformation peut aussi commencer par une question :\n\nqu'est-ce que je vois maintenant que je ne voyais pas de cette manière au début ?\n\nLa page suivante pourra ouvrir un nouveau geste."
         }
       ]
     },
