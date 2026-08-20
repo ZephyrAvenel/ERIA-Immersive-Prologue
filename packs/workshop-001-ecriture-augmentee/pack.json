@@ -1351,25 +1351,89 @@
       "id": "page-22",
       "movementId": "transformation",
       "order": 22,
-      "title": "Transformer plutôt que corriger",
+      "title": "Mettre la transformation à l'épreuve",
       "blocks": [
         {
-          "id": "transformer-intro",
+          "id": "transformation-epreuve-intro",
           "type": "text",
-          "text": "Déplacer rythme, structure, voix, images ou tension."
+          "text": "Vous avez peut-être perçu un déplacement.\n\nIl ne s'agit pas maintenant de demander à quelqu'un — humain ou machine — s'il est bon.\n\nIl s'agit de l'éprouver.\n\nUne transformation peut ouvrir quelque chose et, dans le même mouvement, en masquer autre chose.\n\nElle peut rendre une intention plus claire tout en simplifiant une tension.\n\nElle peut libérer une possibilité tout en éloignant le texte de ce que vous vouliez préserver.\n\nAvant de poursuivre, vous pouvez donc soumettre ce déplacement à quelques questions.\n\nEt si rien de décisif ne semble avoir bougé, cette étape peut aussi vous aider à reconnaître ce qui demeure, ce qui résiste ou ce que vous ne souhaitez pas modifier."
         },
         {
-          "id": "transformation-prompt",
+          "id": "rappel-deplacement-epreuve",
+          "type": "recall",
+          "sourceBlockId": "deplacement-percu",
+          "label": "Ce qui a peut-être changé",
+          "emptyText": "Vous n'avez pas encore identifié de déplacement particulier. Vous pouvez néanmoins utiliser cette étape pour interroger ce qui demeure, ce qui résiste ou ce que vous ne souhaitez pas modifier."
+        },
+        {
+          "id": "rappel-boussole-epreuve",
+          "type": "recall",
+          "sourceBlockId": "boussole",
+          "label": "Ce que vous ne vouliez pas perdre",
+          "emptyText": "Votre boussole n'est pas encore formulée. Vous pouvez poursuivre en gardant simplement à l'esprit ce qui vous semble important de préserver."
+        },
+        {
+          "id": "dernier-detour-ia",
+          "type": "text",
+          "text": "Si vous le souhaitez, vous pouvez faire ici un dernier détour par une IA extérieure.\n\nPas pour lui confier votre texte.\n\nPas pour lui demander de le transformer.\n\nMais pour mettre à l'épreuve ce que vous croyez avoir découvert.\n\nCe détour est facultatif.\n\nVous pouvez aussi formuler vous-même les questions proposées et poursuivre sans IA."
+        },
+        {
+          "id": "prompt-mettre-transformation-epreuve",
           "type": "promptCopy",
-          "label": "Copier un prompt de transformation",
-          "description": "Le prompt propose des transformations sans imposer une correction automatique.",
-          "text": "À partir de cette première forme, propose trois transformations possibles : une transformation de rythme, une transformation de structure et une transformation de voix. Explique ce que chaque transformation change sans produire de version finale."
+          "label": "Mettre un déplacement à l'épreuve",
+          "description": "Copiez ce prompt dans l'assistant IA de votre choix si vous souhaitez interroger le déplacement que vous percevez. Remplacez les parties indiquées avec vos propres mots.",
+          "text": "Je travaille sur un texte et j'essaie de comprendre ce que mon parcours d'écriture a déplacé.\n\nVoici ce qui me semble avoir changé — ou ce qui demeure :\n\n[COLLEZ ICI CE QUI VOUS SEMBLE AVOIR CHANGÉ — OU CE QUI DEMEURE]\n\nVoici, si je peux le formuler, ce que je ne veux pas perdre :\n\n[COLLEZ ICI CE QUE VOUS NE VOULEZ PAS PERDRE — FACULTATIF]\n\nNe réécris pas mon texte.\nNe le corrige pas.\nNe l'améliore pas.\nNe le continue pas.\nNe propose pas une nouvelle version.\nNe décide pas à ma place de ce que je dois conserver ou transformer.\n\nAide-moi seulement à mettre ce déplacement à l'épreuve.\n\nÀ partir de ce que je t'ai donné :\n\n1. formule 3 questions qui pourraient révéler ce que ce déplacement rend possible ;\n\n2. formule 3 questions qui pourraient révéler ce qu'il risque de simplifier, masquer ou faire perdre ;\n\n3. indique une tension éventuelle entre ce qui change et ce que je souhaite préserver, sans chercher à la résoudre ;\n\n4. indique ce qui, dans les éléments fournis, reste impossible à déterminer sans mon propre jugement d'auteur.\n\nReste bref.\n\nNe conclus pas à ma place.\n\nNe classe aucune possibilité.\n\nNe cherche pas la meilleure version du texte.\n\nJe veux repartir avec de meilleures questions, pas avec un texte écrit par toi."
         },
         {
-          "id": "transformation-choisie",
+          "id": "retour-epreuve-participant",
+          "type": "text",
+          "text": "Une réponse extérieure n'a de valeur ici que si elle vous aide à mieux voir.\n\nVous n'avez rien à accepter parce que cela semble pertinent, intelligent ou bien formulé.\n\nUne question peut vous déplacer.\n\nUne autre peut ne rien ouvrir.\n\nUne remarque peut même confirmer que vous préférez maintenir votre texte exactement là où il est.\n\nCe qui compte maintenant est ce que vous choisissez d'en faire."
+        },
+        {
+          "id": "epreuve-reaction",
+          "type": "choice",
+          "label": "Après cette mise à l'épreuve, que remarquez-vous ?",
+          "options": [
+            {
+              "id": "possibilite-visible",
+              "label": "Une possibilité devient plus visible"
+            },
+            {
+              "id": "tension-preserver",
+              "label": "Une tension que je veux préserver apparaît plus clairement"
+            },
+            {
+              "id": "risque-perte",
+              "label": "Je vois mieux ce que je risque de perdre"
+            },
+            {
+              "id": "maintenir",
+              "label": "Je comprends mieux ce que je veux maintenir"
+            },
+            {
+              "id": "nouvelle-question",
+              "label": "Une nouvelle question devient importante"
+            },
+            {
+              "id": "ne-rien-modifier",
+              "label": "Je préfère ne rien modifier à partir de cette lecture"
+            },
+            {
+              "id": "sans-ia",
+              "label": "Je n'ai pas utilisé l'IA et j'ai fait ce travail de questionnement moi-même"
+            }
+          ]
+        },
+        {
+          "id": "epreuve-retenue",
           "type": "textarea",
-          "label": "Quelle transformation souhaitez-vous tenter ?",
-          "placeholder": "Je transforme..."
+          "label": "Ce que vous retenez de cette mise à l'épreuve",
+          "placeholder": "Avec vos propres mots, notez ce que vous voulez garder : une question, une tension, une limite, quelque chose à préserver, une possibilité devenue plus claire — ou simplement la décision de ne rien changer."
+        },
+        {
+          "id": "epreuve-cloture",
+          "type": "text",
+          "text": "Vous pouvez maintenant laisser l'outil extérieur derrière vous.\n\nCe qui reste du parcours vous appartient :\n\nce que vous avez choisi,\nce que vous avez écrit,\nce que vous avez refusé,\nce que vous avez transformé,\net ce que vous avez décidé de préserver.\n\nLa suite ne consiste plus à demander davantage.\n\nElle consiste à regarder ce qui mérite maintenant de demeurer vivant."
         }
       ]
     },
