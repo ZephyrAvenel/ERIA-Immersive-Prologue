@@ -1298,6 +1298,55 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pageTwentySix.id, "page-26");
   assert.equal(pageTwentySix.title, "Continuer sans l'atelier");
   assert.equal(pageTwentySix.movementId, "creation");
+  assert.deepEqual(pageTwentySix.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "choice",
+    "text",
+    "reveal",
+    "text",
+  ]);
+  const pageTwentySixRecalls = pageTwentySix.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageTwentySixRecalls.length, 2);
+  assert.deepEqual(
+    pageTwentySixRecalls.map((block) => block.id),
+    ["version-recall-page-26", "critere-arret-recall-page-26"],
+  );
+  assert.deepEqual(
+    pageTwentySixRecalls.map((block) => block.sourceBlockId),
+    ["version-a-moi", "critere-arret"],
+  );
+  assert.deepEqual(
+    pageTwentySixRecalls.map((block) => block.label),
+    ["Ce qui est devenu v\u00f4tre", "Votre mani\u00e8re de savoir quand vous arr\u00eater"],
+  );
+  const pageTwentySixChoices = pageTwentySix.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageTwentySixChoices.length, 1);
+  assert.equal(pageTwentySixChoices[0].id, "continuer-geste");
+  assert.equal(pageTwentySixChoices[0].label, "Quel geste aimeriez-vous emporter avec vous ?");
+  assert.equal(pageTwentySixChoices[0].options.length, 8);
+  assert.equal(
+    pageTwentySixChoices[0].options.some(
+      (option) => option.label === "Utiliser l'IA pour questionner plut\u00f4t que d\u00e9cider",
+    ),
+    true,
+  );
+  assert.equal(
+    pageTwentySixChoices[0].options.some((option) => option.label === "Savoir m'arr\u00eater"),
+    true,
+  );
+  const pageTwentySixReveals = pageTwentySix.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageTwentySixReveals.length, 1);
+  assert.equal(pageTwentySixReveals[0].id, "atelier-effacement-reveal");
+  assert.equal(
+    pageTwentySixReveals[0].label,
+    "Le meilleur usage de cet atelier est peut-\u00eatre de l'oublier",
+  );
+  assert.equal(typeof pageTwentySixReveals[0].content, "string");
+  assert.equal(pageTwentySix.blocks.some((block) => block.type === "textarea"), false);
+  assert.equal(pageTwentySix.blocks.some((block) => block.type === "promptCopy"), false);
   assert.equal(
     pageTwentyFive.blocks.some((block) => block.type === "recall" && block.sourceBlockId === "version-a-moi"),
     true,

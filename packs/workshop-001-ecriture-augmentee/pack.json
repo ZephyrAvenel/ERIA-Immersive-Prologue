@@ -1700,27 +1700,81 @@
         {
           "id": "cloture-intro",
           "type": "text",
-          "text": "Clôturer le parcours en rappelant que l'objectif est une manière de travailler librement réutilisable."
+          "text": "Vous êtes arrivé au bout de cet atelier.\n\nMais écrire ne consiste pas à reproduire les vingt-six pages que vous venez de traverser.\n\nAvec le temps, certaines étapes disparaîtront.\n\nD'autres reviendront spontanément.\n\nVous pourrez diverger sans le nommer, discerner sans grille, reprendre un texte sans demander d'abord comment le reprendre.\n\nL'atelier peut maintenant commencer à s'effacer."
         },
         {
           "id": "version-recall-page-26",
           "type": "recall",
           "sourceBlockId": "version-a-moi",
-          "label": "Votre trace de création",
-          "emptyText": "Votre trace de création sera rappelée ici."
+          "label": "Ce qui est devenu vôtre",
+          "emptyText": "Ce que vous reconnaissez comme vôtre n'est pas encore formulé. Vous pouvez néanmoins repartir avec ce qui, dans le parcours, commence à vous appartenir."
         },
         {
           "id": "critere-arret-recall-page-26",
           "type": "recall",
           "sourceBlockId": "critere-arret",
-          "label": "Votre critère d'arrêt",
-          "emptyText": "Votre critère d'arrêt sera rappelé ici."
+          "label": "Votre manière de savoir quand vous arrêter",
+          "emptyText": "Votre critère d'arrêt n'est pas encore formulé. Vous pouvez néanmoins garder le droit de laisser une forme exister sans continuer à la transformer."
         },
         {
-          "id": "cloture-reveal",
+          "id": "gestes-continuation",
+          "type": "text",
+          "text": "Vous n'avez pas besoin de conserver toutes les étapes.\n\nGardez seulement les gestes qui vous sont utiles.\n\nQuand quelque chose cherche à commencer : revenez à l'étincelle.\n\nQuand une première idée semble trop évidente : ouvrez plusieurs directions.\n\nQuand tout devient possible : retrouvez votre boussole.\n\nQuand vous hésitez entre plusieurs pistes : demandez-vous ce qui résonne plutôt que ce qui paraît meilleur.\n\nQuand le texte n'existe pas encore : écrivez avant de faire écrire.\n\nQuand un outil vous répond : gardez le droit de retenir, déplacer ou refuser ce qu'il vous montre.\n\nQuand le texte a changé : regardez aussi ce qui devait demeurer.\n\nEt quand quelque chose tient : autorisez-vous à vous arrêter.\n\nCes gestes peuvent revenir séparément, dans un autre ordre, ou ne pas revenir du tout. Ils sont disponibles, pas obligatoires."
+        },
+        {
+          "id": "continuer-geste",
+          "type": "choice",
+          "label": "Quel geste aimeriez-vous emporter avec vous ?",
+          "options": [
+            {
+              "id": "revenir-ce-qui-compte",
+              "label": "Revenir à ce qui compte avant de chercher des idées"
+            },
+            {
+              "id": "ouvrir-directions",
+              "label": "Ouvrir plusieurs directions avant de choisir"
+            },
+            {
+              "id": "garder-boussole",
+              "label": "Garder une boussole quand les possibilités se multiplient"
+            },
+            {
+              "id": "ecrire-mes-mots",
+              "label": "Écrire d'abord avec mes mots"
+            },
+            {
+              "id": "ia-questionner",
+              "label": "Utiliser l'IA pour questionner plutôt que décider"
+            },
+            {
+              "id": "revenir-texte",
+              "label": "Revenir au texte après les suggestions extérieures"
+            },
+            {
+              "id": "reconnaitre-demeurer",
+              "label": "Reconnaître ce qui doit demeurer"
+            },
+            {
+              "id": "savoir-arreter",
+              "label": "Savoir m'arrêter"
+            }
+          ]
+        },
+        {
+          "id": "sortie-dispositif",
+          "type": "text",
+          "text": "Ce choix n'est pas une certification.\n\nIl ne dit pas ce que vous avez réussi.\n\nIl indique seulement un geste que vous pouvez reconnaître et reprendre ailleurs, sans avoir besoin que l'atelier soit là pour le nommer."
+        },
+        {
+          "id": "atelier-effacement-reveal",
           "type": "reveal",
-          "label": "Lire la phrase de sortie",
-          "content": "L'IA peut ouvrir des possibles. C'est encore à vous de décider lesquels méritent de devenir un récit."
+          "label": "Le meilleur usage de cet atelier est peut-être de l'oublier",
+          "content": "Pas tout oublier.\n\nOublier la succession exacte des pages.\n\nOublier les noms des mouvements.\n\nOublier l'idée qu'il faudrait reproduire correctement le parcours.\n\nCe qui peut rester est plus simple :\n\nla capacité d'ouvrir sans se disperser,\nde choisir sans tout fermer,\nd'utiliser un outil sans lui abandonner son jugement,\nd'écrire sans attendre qu'une machine trouve sa voix,\net de reconnaître quand quelque chose commence à devenir sien.\n\nUn atelier devient réellement utile lorsqu'il cesse d'être nécessaire à chaque geste."
+        },
+        {
+          "id": "cloture-finale",
+          "type": "text",
+          "text": "Vous pouvez maintenant fermer cet atelier.\n\nVotre prochain texte n'a pas besoin de commencer ici.\n\nIl peut commencer par une phrase.\n\nUne image.\n\nUne tension.\n\nUne question.\n\nQuelque chose qui insiste.\n\nEt cette fois,\nvous saurez peut-être mieux\nce que vous voulez laisser entrer.\n\nEt ce que vous voulez garder entre vos mains."
         }
       ]
     }
