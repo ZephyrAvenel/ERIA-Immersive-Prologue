@@ -696,21 +696,44 @@
         {
           "id": "discernement-intro",
           "type": "text",
-          "text": "Introduire le discernement : une possibilité séduisante n'est pas forcément juste pour ce récit."
+          "text": "Jusqu'ici, nous avons surtout ouvert.\n\nDes directions.\nDes variations.\nDes regards.\nDes hypothèses.\nDe l'inattendu.\n\nCette abondance est précieuse.\n\nMais elle contient aussi un piège :\n\ncroire que tout ce qui devient possible mérite d'être poursuivi.\n\nCréer ne consiste pas seulement à faire apparaître des possibles.\n\nCréer, c'est aussi apprendre à ne pas tous les garder.\n\nNous entrons maintenant dans un autre geste :\n\nle discernement."
         },
         {
-          "id": "boussole-recall-page-13",
+          "id": "rappel-boussole-discernement",
           "type": "recall",
           "sourceBlockId": "boussole",
-          "label": "Votre boussole de discernement",
-          "emptyText": "Votre boussole sera rappelée ici."
+          "label": "Ce que vous ne vouliez pas perdre",
+          "emptyText": "Votre boussole n'est pas encore formulée. Vous pouvez revenir aux étapes précédentes, ou garder simplement à l'esprit ce qui compte encore pour vous dans cette exploration."
         },
         {
-          "id": "piste-recall-page-13",
+          "id": "rappel-hypothese-discernement",
           "type": "recall",
-          "sourceBlockId": "piste-provisoire",
-          "label": "La piste explorée",
-          "emptyText": "Votre piste sera rappelée ici."
+          "sourceBlockId": "hypothese-forte",
+          "label": "Une hypothèse qui a déplacé quelque chose",
+          "emptyText": "Vous n'avez pas encore formulé d'hypothèse forte. Cela n'empêche pas de poursuivre : le discernement peut aussi porter sur ce qui s'est ouvert autrement dans votre parcours."
+        },
+        {
+          "id": "rappel-inattendu-discernement",
+          "type": "recall",
+          "sourceBlockId": "inattendu-retenu",
+          "label": "Ce que vous avez gardé sous les yeux",
+          "emptyText": "Vous n'avez rien conservé de particulier à l'étape précédente. Vous pouvez néanmoins observer ce qui, dans l'ensemble du parcours, continue à vous accompagner."
+        },
+        {
+          "id": "attirance-et-justesse",
+          "type": "text",
+          "text": "Regardez ces traces sans chercher immédiatement à décider.\n\nCertaines idées attirent parce qu'elles sont nouvelles.\n\nD'autres parce qu'elles sont élégantes.\n\nD'autres encore parce qu'elles semblent résoudre quelque chose.\n\nMais l'attraction n'est pas encore un critère suffisant.\n\nUne proposition peut être brillante et vous éloigner de votre boussole.\n\nUne autre peut être moins spectaculaire et pourtant continuer à résonner longtemps après sa formulation.\n\nLe discernement commence peut-être ici :\n\nlorsque nous cessons de demander seulement\n\n“Est-ce intéressant ?”\n\npour commencer à demander\n\n“Qu'est-ce que cela fait à ce que je cherche à écrire ?”"
+        },
+        {
+          "id": "juste-ne-veut-pas-dire-meilleur",
+          "type": "reveal",
+          "label": "« Juste » ne veut pas dire « meilleur »",
+          "content": "Il n'existe pas nécessairement une meilleure possibilité cachée parmi toutes les autres.\n\nChercher ce qui est juste ne consiste pas à établir un classement.\n\nCe qui est juste peut être :\n\nce qui reste fidèle à votre étincelle ;\n\nce qui respecte votre boussole ;\n\nce qui ouvre une question plutôt que de la fermer ;\n\nce qui donne davantage de nécessité à une relation, une image ou une tension ;\n\nce qui vous oblige à écrire plutôt qu'à simplement admirer une idée.\n\nEt parfois, discerner consiste simplement à reconnaître :\n\n“Cette proposition est intéressante, mais elle n'est pas à moi.”\n\nLa laisser de côté n'est alors pas perdre une possibilité.\n\nC'est reprendre la responsabilité du récit."
+        },
+        {
+          "id": "discernement-cloture",
+          "type": "text",
+          "text": "Pour l'instant, ne tranchez rien.\n\nObservez seulement ce qui demeure lorsque l'effet de nouveauté s'atténue.\n\nCe qui revient.\nCe qui résiste.\nCe qui continue à faire signe.\nCe qui semble étranger malgré son intérêt.\n\nÀ l'étape suivante, nous allons commencer à donner des mots à ces différences.\n\nNon pour découvrir une règle universelle du bon récit.\n\nPour reconnaître vos propres critères de résonance."
         }
       ]
     },

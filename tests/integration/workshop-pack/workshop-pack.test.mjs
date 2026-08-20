@@ -608,6 +608,53 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pack.pages[12].movementId, "discernement");
   assert.equal(pack.pages[12].title, "Tout ce qui est possible n'est pas juste");
 
+  const pageThirteen = pack.pages[12];
+  assert.equal(pageThirteen.id, "page-13");
+  assert.equal(pageThirteen.title, "Tout ce qui est possible n'est pas juste");
+  assert.equal(pageThirteen.movementId, "discernement");
+  assert.deepEqual(pageThirteen.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "recall",
+    "text",
+    "reveal",
+    "text",
+  ]);
+  const pageThirteenRecalls = pageThirteen.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageThirteenRecalls.length, 3);
+  assert.deepEqual(
+    pageThirteenRecalls.map((block) => block.id),
+    [
+      "rappel-boussole-discernement",
+      "rappel-hypothese-discernement",
+      "rappel-inattendu-discernement",
+    ],
+  );
+  assert.deepEqual(
+    pageThirteenRecalls.map((block) => block.sourceBlockId),
+    ["boussole", "hypothese-forte", "inattendu-retenu"],
+  );
+  assert.deepEqual(
+    pageThirteenRecalls.map((block) => block.label),
+    [
+      "Ce que vous ne vouliez pas perdre",
+      "Une hypoth\u00e8se qui a d\u00e9plac\u00e9 quelque chose",
+      "Ce que vous avez gard\u00e9 sous les yeux",
+    ],
+  );
+  const pageThirteenReveals = pageThirteen.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageThirteenReveals.length, 1);
+  assert.equal(pageThirteenReveals[0].id, "juste-ne-veut-pas-dire-meilleur");
+  assert.equal(pageThirteenReveals[0].label, "\u00ab Juste \u00bb ne veut pas dire \u00ab meilleur \u00bb");
+  assert.equal(pageThirteen.blocks.some((block) => ["textarea", "choice", "promptCopy"].includes(block.type)), false);
+  assert.equal(pageThirteen.blocks.some((block) => block.id === "choix-assume"), false);
+  assert.equal(pageThirteen.blocks.some((block) => block.id === "voix-recherchee"), false);
+  assert.equal(pack.pages[11].movementId, "exploration");
+  assert.equal(pack.pages[12].movementId, "discernement");
+  assert.equal(pack.pages[13].movementId, "discernement");
+  assert.equal(pack.pages[13].title, "Reconna\u00eetre ce qui r\u00e9sonne");
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
