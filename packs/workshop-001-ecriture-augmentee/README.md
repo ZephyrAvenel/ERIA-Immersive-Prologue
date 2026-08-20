@@ -1,8 +1,10 @@
 # Écriture augmentée
 
-Status: structural draft
+Status: planned
 
 Sous-titre : **Écrire avec l'IA sans lui abandonner sa voix**
+
+Description courte : **Un atelier d’écriture en 7 mouvements pour apprendre à dialoguer avec l’IA sans lui abandonner le geste d’auteur.**
 
 Ce dossier contient le squelette éditorial du premier Atelier augmenté de l'INE. Il utilise le format déclaratif `ine-workshop-pack` V1 et reste volontairement non publié dans l'interface publique à ce stade.
 
@@ -49,9 +51,32 @@ Le pack ne contient :
 
 Le runtime Workshop existant peut conserver localement la progression et certaines réponses pédagogiques nécessaires à la continuité du parcours. Cette mémoire reste locale au navigateur et ne transforme pas l'INE en traitement de texte.
 
+## Description longue préparée
+
+Écriture augmentée est un atelier en sept mouvements consacré à une question simple : comment utiliser l’intelligence artificielle dans un processus d’écriture sans lui abandonner sa voix ?
+
+Le parcours ne propose pas de faire écrire un texte par une IA. Il invite d’abord à faire apparaître une intention, ouvrir plusieurs directions, construire une boussole, explorer des possibilités et discerner ce qui mérite réellement d’être poursuivi.
+
+L’IA intervient ponctuellement comme outil de divergence, de déplacement du regard, de lecture ou de mise à l’épreuve. Elle ne choisit pas à la place de l’auteur et ne reçoit automatiquement aucune réponse écrite dans l’atelier.
+
+Puis vient le moment essentiel : reprendre la main, écrire avec ses propres mots, faire lire sans faire écrire, revenir au texte, reconnaître ce qui s’est transformé et savoir quand s’arrêter.
+
+Au terme des 26 pages, l’objectif n’est pas d’avoir appris à dépendre d’un outil, mais d’avoir développé quelques gestes que l’on peut emporter avec soi — avec ou sans IA.
+
+Cette description longue n’est pas intégrée au manifeste `pack.json` : le format `ine-workshop-pack` V1 ne possède pas de champ prévu pour une description longue.
+
 ## Couverture
 
-La couverture artistique n'est pas intégrée dans cette mission. Le format `ine-workshop-pack` V1 ne possède pas encore de champ `coverImage` ou `coverImageAlt`. L'identité visuelle sera traitée lors d'une mission publique ultérieure.
+La couverture artistique validée est présente dans le dossier du Workshop, mais elle n'est pas encore exposée par le manifeste `pack.json` : le format `ine-workshop-pack` V1 ne possède pas de champ `coverImage` ou `coverImageAlt`.
+
+- Couverture Web : `assets/images/00-couverture-ecriture-augmentee.webp`
+- Source originale : `assets/images/originals/couverture-ecriture-augmentee-original.jpg`
+- Dimensions originales : 853 × 1280 px
+- Dimensions Web : 853 × 1280 px
+- Format source : JPEG
+- Format Web : WebP
+- Poids source : 126 255 octets
+- Poids Web : 122 714 octets
 
 ## Publication
 

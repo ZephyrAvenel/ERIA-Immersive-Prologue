@@ -49,7 +49,7 @@ test("editorial registry declares planned augmented workshops only", () => {
       {
         orientation: "ÉCRIRE",
         title: "Écriture augmentée",
-        description: "Écrire avec l’IA sans lui abandonner sa voix.",
+        description: "Un atelier d’écriture en 7 mouvements pour apprendre à dialoguer avec l’IA sans lui abandonner le geste d’auteur.",
         status: "planned",
       },
       {

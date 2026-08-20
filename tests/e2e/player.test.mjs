@@ -778,7 +778,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               visibleStatus: "Pr\u00e9vu",
               orientation: "\u00c9CRIRE",
               title: "\u00c9criture augment\u00e9e",
-              description: "\u00c9crire avec l\u2019IA sans lui abandonner sa voix.",
+              description: "Un atelier d\u2019\u00e9criture en 7 mouvements pour apprendre \u00e0 dialoguer avec l\u2019IA sans lui abandonner le geste d\u2019auteur.",
               linkCount: 0,
             },
             {
@@ -816,7 +816,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               visibleStatus: "Planned",
               orientation: "WRITE",
               title: "Augmented writing",
-              description: "Writing with AI without surrendering your voice.",
+              description: "A 7-movement writing workshop for learning to dialogue with AI without surrendering the authorial gesture.",
               linkCount: 0,
             },
             {
