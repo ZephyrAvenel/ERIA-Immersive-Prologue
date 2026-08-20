@@ -1050,32 +1050,60 @@
         }
       ]
     },
-    {
-      "id": "page-18",
-      "movementId": "ecriture",
-      "order": 18,
-      "title": "Composer",
-      "blocks": [
-        {
-          "id": "composer-intro",
-          "type": "text",
-          "text": "Réunir les éléments retenus dans une première forme."
-        },
-        {
-          "id": "choix-recall-page-18",
-          "type": "recall",
-          "sourceBlockId": "choix-assume",
-          "label": "Le choix qui guide la composition",
-          "emptyText": "Votre choix sera rappelé ici."
-        },
-        {
-          "id": "premiere-forme",
-          "type": "textarea",
-          "label": "Écrivez une première forme, même brève.",
-          "placeholder": "Première forme..."
-        }
-      ]
-    },
+      {
+        "id": "page-18",
+        "movementId": "ecriture",
+        "order": 18,
+        "title": "Composer",
+        "blocks": [
+          {
+            "id": "composer-intro",
+            "type": "text",
+            "text": "Vous avez maintenant quelque chose devant vous.\n\nPeut-être quelques lignes.\n\nUne image.\n\nUne voix.\n\nUne situation.\n\nUn fragment encore fragile.\n\nCette matière n'a pas besoin d'être complète pour commencer à être travaillée.\n\nComposer ne signifie pas encore achever.\n\nComposer consiste à commencer à reconnaître une forme possible dans ce qui est apparu."
+          },
+          {
+            "id": "rappel-matiere-composition",
+            "type": "recall",
+            "sourceBlockId": "matiere-premiere",
+            "label": "Votre première matière",
+            "emptyText": "Vous n'avez encore rien écrit ici. Vous pouvez revenir à la page précédente, ou commencer maintenant à partir de ce qui vous vient."
+          },
+          {
+            "id": "rappel-voix-composition",
+            "type": "recall",
+            "sourceBlockId": "voix-recherchee",
+            "label": "Ce que vous voulez entendre dans votre texte",
+            "emptyText": "Votre repère de voix n'est pas encore formulé. Vous pouvez néanmoins composer en gardant près de vous ce que vous aimeriez reconnaître dans votre texte."
+          },
+          {
+            "id": "composer-geste",
+            "type": "text",
+            "text": "Vous pouvez maintenant agir sur cette matière.\n\nGarder une phrase.\n\nDéplacer un élément.\n\nDévelopper une image.\n\nRetirer ce qui explique trop.\n\nRapprocher deux fragments.\n\nFaire entendre davantage une présence ou une voix.\n\nIntroduire un silence.\n\nLaisser volontairement quelque chose incomplet.\n\nComposer, ce n'est pas remplir tous les espaces.\n\nC'est commencer à décider de la relation entre ce qui est là."
+          },
+          {
+            "id": "premiere-forme",
+            "type": "textarea",
+            "label": "Donnez une première forme à votre matière",
+            "placeholder": "Reprenez ce que vous avez commencé. Gardez, déplacez, développez, retirez ou rapprochez ce qui vous semble nécessaire. Vous n'avez pas à terminer le texte : cherchez simplement une première forme qui vous permette de continuer."
+          },
+          {
+            "id": "composer-ce-qui-change",
+            "type": "text",
+            "text": "La différence entre la matière première et la première forme ne tient pas nécessairement à la longueur.\n\nQuelques lignes peuvent suffire.\n\nCe qui change, c'est qu'un geste de composition a eu lieu.\n\nQuelque chose a été gardé, déplacé, rapproché, développé, retiré ou laissé volontairement ouvert.\n\nComposer, c'est déjà choisir ce qui entre en relation."
+          },
+          {
+            "id": "composer-pas-corriger-reveal",
+            "type": "reveal",
+            "label": "Composer n'est pas encore corriger",
+            "content": "Corriger demande souvent :\n\n« Est-ce bien écrit ? »\n\nComposer pose d'abord une autre question :\n\n« De quoi ce texte a-t-il besoin pour commencer à tenir ? »\n\nÀ ce stade, ne cherchez pas nécessairement la phrase parfaite.\n\nRegardez plutôt les relations :\n\nce qui appelle autre chose,\n\nce qui prend trop de place,\n\nce qui manque peut-être,\n\nce qui mérite de rester seul,\n\nce qui devient plus vivant lorsqu'il est rapproché d'un autre élément.\n\nLa correction viendra si elle est nécessaire.\n\nPour l'instant, vous travaillez la forme avant de chercher à la polir."
+          },
+          {
+            "id": "composer-cloture",
+            "type": "text",
+            "text": "Vous avez maintenant une matière qui vient de vous.\n\nEt une première forme que vous avez composée vous-même.\n\nÀ la page suivante, l'IA extérieure pourra éventuellement revenir.\n\nMais elle rencontrera désormais un texte qui a déjà commencé sans elle.\n\nElle ne devra pas prendre la main.\n\nElle pourra questionner, confronter, proposer des variations limitées ou faire apparaître un angle mort.\n\nVous resterez celui ou celle qui décide.\n\nVous avez maintenant quelque chose à mettre en dialogue sans avoir à le lui abandonner."
+          }
+        ]
+      },
     {
       "id": "page-19",
       "movementId": "ecriture",

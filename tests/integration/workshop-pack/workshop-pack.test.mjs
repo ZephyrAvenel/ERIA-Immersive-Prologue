@@ -840,6 +840,45 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pack.pages[16].movementId, "ecriture");
   assert.equal(pack.pages[17].movementId, "ecriture");
 
+  const pageEighteen = pack.pages[17];
+  assert.equal(pageEighteen.id, "page-18");
+  assert.equal(pageEighteen.title, "Composer");
+  assert.equal(pageEighteen.movementId, "ecriture");
+  assert.deepEqual(pageEighteen.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "textarea",
+    "text",
+    "reveal",
+    "text",
+  ]);
+  const pageEighteenRecalls = pageEighteen.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageEighteenRecalls.length, 2);
+  assert.deepEqual(
+    pageEighteenRecalls.map((block) => block.id),
+    ["rappel-matiere-composition", "rappel-voix-composition"],
+  );
+  assert.deepEqual(
+    pageEighteenRecalls.map((block) => block.sourceBlockId),
+    ["matiere-premiere", "voix-recherchee"],
+  );
+  const pageEighteenTextareas = pageEighteen.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageEighteenTextareas.length, 1);
+  assert.equal(pageEighteenTextareas[0].id, "premiere-forme");
+  assert.equal(pageEighteenTextareas[0].label, "Donnez une premi\u00e8re forme \u00e0 votre mati\u00e8re");
+  const pageEighteenReveals = pageEighteen.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageEighteenReveals.length, 1);
+  assert.equal(pageEighteenReveals[0].id, "composer-pas-corriger-reveal");
+  assert.equal(pageEighteenReveals[0].label, "Composer n'est pas encore corriger");
+  assert.equal(typeof pageEighteenReveals[0].content, "string");
+  assert.equal(pageEighteen.blocks.some((block) => ["choice", "promptCopy"].includes(block.type)), false);
+  assert.equal(pack.pages[16].movementId, "ecriture");
+  assert.equal(pack.pages[17].movementId, "ecriture");
+  assert.equal(pack.pages[18].movementId, "ecriture");
+  assert.equal(pack.pages[19].movementId, "ecriture");
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
