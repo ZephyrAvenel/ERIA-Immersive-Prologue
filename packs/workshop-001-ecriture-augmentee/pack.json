@@ -1614,34 +1614,80 @@
         {
           "id": "votre-recit-intro",
           "type": "text",
-          "text": "Revenir à l'étincelle initiale et observer le chemin parcouru."
+          "text": "Vous êtes parti d'une étincelle.\n\nElle ne contenait pas encore ce qui allait suivre.\n\nDes possibilités se sont ouvertes.\n\nCertaines ont été abandonnées.\n\nD'autres ont déplacé votre regard.\n\nVous avez choisi, écrit, repris, laissé certaines choses demeurer.\n\nCe qui apparaît maintenant n'est peut-être pas ce que vous auriez imaginé au commencement.\n\nMais quelque chose existe."
         },
         {
           "id": "etincelle-recall-page-25",
           "type": "recall",
           "sourceBlockId": "etincelle",
-          "label": "Ce dont vous êtes parti",
-          "emptyText": "Votre étincelle sera rappelée ici."
+          "label": "Au commencement",
+          "emptyText": "Votre étincelle n'est pas encore formulée. Vous pouvez néanmoins regarder ce qui, aujourd'hui, semble avoir commencé le mouvement."
         },
         {
           "id": "choix-recall-page-25",
           "type": "recall",
           "sourceBlockId": "choix-assume",
-          "label": "Ce que vous avez choisi",
-          "emptyText": "Votre choix sera rappelé ici."
+          "label": "La direction que vous avez choisie",
+          "emptyText": "Votre direction choisie n'est pas encore formulée. Vous pouvez poursuivre en gardant simplement à l'esprit ce que vous avez décidé de suivre."
         },
         {
           "id": "version-recall-page-25",
           "type": "recall",
           "sourceBlockId": "version-a-moi",
-          "label": "Ce qui vous appartient désormais",
-          "emptyText": "Votre version personnelle sera rappelée ici."
+          "label": "Ce qui est devenu vôtre",
+          "emptyText": "Ce que vous reconnaissez comme vôtre n'est pas encore formulé. Vous pouvez néanmoins observer la forme qui existe maintenant."
         },
         {
-          "id": "chemin-parcouru",
+          "id": "recit-reconnaissance",
+          "type": "choice",
+          "label": "En regardant ce chemin, qu'est-ce qui vous frappe le plus ?",
+          "options": [
+            {
+              "id": "pressenti-debut",
+              "label": "Quelque chose que je pressentais était déjà présent dès le début"
+            },
+            {
+              "id": "alle-ailleurs",
+              "label": "Mon récit est allé ailleurs que ce que j'imaginais"
+            },
+            {
+              "id": "choix-forme",
+              "label": "Ce sont surtout mes choix qui lui ont donné sa forme"
+            },
+            {
+              "id": "abandons-necessaires",
+              "label": "Certaines choses abandonnées ont été nécessaires pour arriver ici"
+            },
+            {
+              "id": "voix-reconnue",
+              "label": "Je reconnais davantage ma voix dans ce qui existe maintenant"
+            },
+            {
+              "id": "ouvert-appartient",
+              "label": "Le texte reste ouvert, mais il m'appartient davantage"
+            },
+            {
+              "id": "regard-incertain",
+              "label": "Je ne sais pas encore comment regarder ce chemin"
+            }
+          ]
+        },
+        {
+          "id": "recit-reconnu",
           "type": "textarea",
-          "label": "Que percevez-vous du chemin parcouru ?",
-          "placeholder": "Je vois maintenant..."
+          "label": "Ce que vous voyez maintenant",
+          "placeholder": "Une phrase suffit. Qu'est-ce que vous reconnaissez aujourd'hui dans ce récit que vous ne pouviez pas encore voir au moment de l'étincelle ?"
+        },
+        {
+          "id": "recit-appartenance-reveal",
+          "type": "reveal",
+          "label": "Un récit n'appartient pas à celui qui a tout prévu",
+          "content": "Votre récit ne vous appartient pas parce que vous auriez contrôlé chacune de ses étapes.\n\nIl vous appartient parce que vous avez choisi ce que vous vouliez suivre, ce que vous vouliez laisser, ce que vous vouliez reprendre et le moment où vous pouviez vous arrêter.\n\nDes outils ont pu ouvrir des possibilités ou déplacer votre regard.\n\nMais ils n'ont pas vécu le chemin à votre place.\n\nLa forme qui existe maintenant porte la trace de vos décisions."
+        },
+        {
+          "id": "votre-recit-cloture",
+          "type": "text",
+          "text": "Ne cherchez pas encore ce qu'il faudrait en faire.\n\nRegardez-le simplement.\n\nC'est votre récit."
         }
       ]
     },

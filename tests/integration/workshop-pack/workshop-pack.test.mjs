@@ -1244,6 +1244,57 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pageTwentyFive.id, "page-25");
   assert.equal(pageTwentyFive.title, "Votre r\u00e9cit");
   assert.equal(pageTwentyFive.movementId, "creation");
+  assert.deepEqual(pageTwentyFive.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "recall",
+    "choice",
+    "textarea",
+    "reveal",
+    "text",
+  ]);
+  const pageTwentyFiveRecalls = pageTwentyFive.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageTwentyFiveRecalls.length, 3);
+  assert.deepEqual(
+    pageTwentyFiveRecalls.map((block) => block.sourceBlockId),
+    ["etincelle", "choix-assume", "version-a-moi"],
+  );
+  assert.deepEqual(
+    pageTwentyFiveRecalls.map((block) => block.label),
+    ["Au commencement", "La direction que vous avez choisie", "Ce qui est devenu v\u00f4tre"],
+  );
+  const pageTwentyFiveChoices = pageTwentyFive.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageTwentyFiveChoices.length, 1);
+  assert.equal(pageTwentyFiveChoices[0].id, "recit-reconnaissance");
+  assert.equal(
+    pageTwentyFiveChoices[0].label,
+    "En regardant ce chemin, qu'est-ce qui vous frappe le plus ?",
+  );
+  assert.equal(pageTwentyFiveChoices[0].options.length, 7);
+  assert.equal(
+    pageTwentyFiveChoices[0].options.some(
+      (option) => option.label === "Le texte reste ouvert, mais il m'appartient davantage",
+    ),
+    true,
+  );
+  assert.equal(
+    pageTwentyFiveChoices[0].options.some(
+      (option) => option.label === "Je ne sais pas encore comment regarder ce chemin",
+    ),
+    true,
+  );
+  const pageTwentyFiveTextareas = pageTwentyFive.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageTwentyFiveTextareas.length, 1);
+  assert.equal(pageTwentyFiveTextareas[0].id, "recit-reconnu");
+  assert.equal(pageTwentyFiveTextareas[0].label, "Ce que vous voyez maintenant");
+  const pageTwentyFiveReveals = pageTwentyFive.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageTwentyFiveReveals.length, 1);
+  assert.equal(pageTwentyFiveReveals[0].id, "recit-appartenance-reveal");
+  assert.equal(pageTwentyFiveReveals[0].label, "Un r\u00e9cit n'appartient pas \u00e0 celui qui a tout pr\u00e9vu");
+  assert.equal(typeof pageTwentyFiveReveals[0].content, "string");
+  assert.equal(pageTwentyFive.blocks.some((block) => block.type === "promptCopy"), false);
+
   assert.equal(pageTwentySix.id, "page-26");
   assert.equal(pageTwentySix.title, "Continuer sans l'atelier");
   assert.equal(pageTwentySix.movementId, "creation");
@@ -1283,6 +1334,7 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
     "epreuve-retenue",
     "version-a-moi",
     "critere-arret",
+    "recit-reconnu",
   ]) {
     assert.equal(blockIds.includes(traceId), true, `${traceId} should exist as a structural trace`);
   }
