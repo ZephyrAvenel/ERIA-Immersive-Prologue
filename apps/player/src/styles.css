@@ -2464,6 +2464,40 @@ button:disabled {
   .workshop-entry h1 {
     font-size: clamp(2.55rem, 14vw, 4.4rem);
   }
+
+  .workshop-player__footer {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .workshop-progress {
+    min-width: max-content;
+  }
+
+  .workshop-controls {
+    min-width: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: 0.55rem;
+  }
+
+  .workshop-controls button {
+    white-space: nowrap;
+  }
+
+  .workshop-reset,
+  .workshop-exit {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+
+  .workshop-reset {
+    max-width: min(100%, 22rem);
+    text-align: center;
+    white-space: normal;
+  }
 }
 
 @media (orientation: landscape) and (max-height: 32rem) {

@@ -363,8 +363,13 @@ async function readWorkshopState(client) {
       const promptStatus = document.querySelector('.workshop-prompt-copy__status');
       const recall = document.querySelector('.workshop-recall__content');
       const reset = document.querySelector('.workshop-reset');
+      const progress = document.querySelector('.workshop-progress');
       const pageRect = page?.getBoundingClientRect();
       const controlsRect = controls?.getBoundingClientRect();
+      const progressRect = progress?.getBoundingClientRect();
+      const previousRect = previous?.getBoundingClientRect();
+      const nextRect = next?.getBoundingClientRect();
+      const resetRect = reset?.getBoundingClientRect();
       return {
         title: document.querySelector('.workshop-player__title')?.textContent,
         subtitle: document.querySelector('.workshop-player__subtitle')?.textContent,
@@ -396,7 +401,16 @@ async function readWorkshopState(client) {
         activeTag: document.activeElement?.tagName,
         noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth,
         pageVisible: Boolean(pageRect && pageRect.width > 0 && pageRect.height > 0),
-        controlsInsideViewport: Boolean(controlsRect && controlsRect.left >= 0 && controlsRect.right <= document.documentElement.clientWidth)
+        controlsInsideViewport: Boolean(controlsRect && controlsRect.left >= 0 && controlsRect.right <= document.documentElement.clientWidth),
+        progressInsideViewport: Boolean(progressRect && progressRect.left >= 0 && progressRect.right <= document.documentElement.clientWidth),
+        previousInsideViewport: Boolean(previousRect && previousRect.left >= 0 && previousRect.right <= document.documentElement.clientWidth),
+        nextInsideViewport: Boolean(nextRect && nextRect.left >= 0 && nextRect.right <= document.documentElement.clientWidth),
+        resetInsideViewport: Boolean(resetRect && resetRect.left >= 0 && resetRect.right <= document.documentElement.clientWidth),
+        resetBelowControls: Boolean(resetRect && controlsRect && resetRect.top >= controlsRect.bottom),
+        resetCentered: Boolean(
+          resetRect
+            && Math.abs((resetRect.left + resetRect.width / 2) - document.documentElement.clientWidth / 2) <= 8
+        )
       };
     })()`,
   );
@@ -1166,11 +1180,32 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(workshopPageOne.pageVisible, true);
     assert.equal(workshopPageOne.controlsInsideViewport, true);
 
+    const assertMobileWorkshopNavigation = (state, label) => {
+      assert.equal(state.noHorizontalOverflow, true, `${label} has horizontal overflow`);
+      assert.equal(state.progressInsideViewport, true, `${label} progress overflows`);
+      assert.equal(state.previousInsideViewport, true, `${label} previous button overflows`);
+      assert.equal(state.nextInsideViewport, true, `${label} next button overflows`);
+      assert.equal(state.resetInsideViewport, true, `${label} reset button overflows`);
+      assert.equal(state.resetBelowControls, true, `${label} reset button is not on its own row`);
+      assert.equal(state.resetCentered, true, `${label} reset button is not centered`);
+    };
+
+    await page.send("Emulation.setDeviceMetricsOverride", {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+    await waitForWorkshopReady(page, "01 / 04");
+    assertMobileWorkshopNavigation(await readWorkshopState(page), "mobile workshop page 01");
+
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
     await waitForWorkshopReady(page, "02 / 04");
     const workshopPageTwo = await readWorkshopState(page);
     assert.equal(workshopPageTwo.movement, "MOUVEMENT I \u00b7 ENTRER");
     assert.equal(workshopPageTwo.pageTitle, "\u00c9crire quelques mots");
+    assert.equal(workshopPageTwo.previousDisabled, false);
+    assertMobileWorkshopNavigation(workshopPageTwo, "mobile workshop page 02");
     assert.equal(workshopPageTwo.pendingBlocks, 0);
     assert.equal(workshopPageTwo.textareaCount, 1);
     assert.equal(workshopPageTwo.textareaLabel, "Note technique temporaire");
@@ -1266,6 +1301,14 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       assert.equal(responsiveWorkshop.noHorizontalOverflow, true, `workshop ${viewport.width} has horizontal overflow`);
       assert.equal(responsiveWorkshop.pageVisible, true, `workshop ${viewport.width} page is not visible`);
       assert.equal(responsiveWorkshop.controlsInsideViewport, true, `workshop ${viewport.width} controls overflow`);
+      if (viewport.width === 390) {
+        assert.equal(responsiveWorkshop.progressInsideViewport, true, "mobile workshop progress overflows");
+        assert.equal(responsiveWorkshop.previousInsideViewport, true, "mobile workshop previous button overflows");
+        assert.equal(responsiveWorkshop.nextInsideViewport, true, "mobile workshop next button overflows");
+        assert.equal(responsiveWorkshop.resetInsideViewport, true, "mobile workshop reset button overflows");
+        assert.equal(responsiveWorkshop.resetBelowControls, true, "mobile workshop reset button is not on its own row");
+        assert.equal(responsiveWorkshop.resetCentered, true, "mobile workshop reset button is not centered");
+      }
     }
 
     await evaluate(page, "document.querySelector('[data-workshop-navigation=\"next\"]')?.click()");
