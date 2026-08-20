@@ -655,6 +655,53 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pack.pages[13].movementId, "discernement");
   assert.equal(pack.pages[13].title, "Reconna\u00eetre ce qui r\u00e9sonne");
 
+  const pageFourteen = pack.pages[13];
+  assert.equal(pageFourteen.id, "page-14");
+  assert.equal(pageFourteen.title, "Reconna\u00eetre ce qui r\u00e9sonne");
+  assert.equal(pageFourteen.movementId, "discernement");
+  assert.deepEqual(pageFourteen.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "recall",
+    "text",
+    "choice",
+    "textarea",
+    "text",
+  ]);
+  const pageFourteenRecalls = pageFourteen.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageFourteenRecalls.length, 3);
+  assert.deepEqual(
+    pageFourteenRecalls.map((block) => block.id),
+    ["rappel-boussole-resonance", "rappel-piste-resonance", "rappel-inattendu-resonance"],
+  );
+  assert.deepEqual(
+    pageFourteenRecalls.map((block) => block.sourceBlockId),
+    ["boussole", "piste-provisoire", "inattendu-retenu"],
+  );
+  const pageFourteenChoices = pageFourteen.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageFourteenChoices.length, 1);
+  assert.equal(pageFourteenChoices[0].id, "resonance-signe");
+  assert.equal(pageFourteenChoices[0].label, "Quand quelque chose r\u00e9sonne, qu'est-ce qui vous le fait sentir ?");
+  assert.equal(pageFourteenChoices[0].options.length, 6);
+  assert.equal(
+    pageFourteenChoices[0].options.some((option) => option.label === "Cela me donne envie d'\u00e9crire moi-m\u00eame"),
+    true,
+  );
+  assert.equal(
+    pageFourteenChoices[0].options.some((option) => option.label === "Je ne sais pas encore"),
+    true,
+  );
+  const pageFourteenTextareas = pageFourteen.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageFourteenTextareas.length, 1);
+  assert.equal(pageFourteenTextareas[0].id, "criteres-resonance");
+  assert.equal(pageFourteenTextareas[0].label, "Ce qui vous aide \u00e0 reconna\u00eetre ce qui compte");
+  assert.equal(pageFourteenTextareas[0].placeholder.includes("Avec vos propres mots"), true);
+  assert.equal(pageFourteen.blocks.some((block) => ["promptCopy", "reveal"].includes(block.type)), false);
+  assert.equal(pack.pages[12].movementId, "discernement");
+  assert.equal(pack.pages[13].movementId, "discernement");
+  assert.equal(pack.pages[14].movementId, "discernement");
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
@@ -666,6 +713,7 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
     "piste-provisoire",
     "hypothese-forte",
     "inattendu-retenu",
+    "criteres-resonance",
     "choix-assume",
     "voix-recherchee",
     "premiere-forme",

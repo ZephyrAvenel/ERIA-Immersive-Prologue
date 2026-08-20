@@ -746,20 +746,75 @@
         {
           "id": "resonance-intro",
           "type": "text",
-          "text": "Comparer différentes propositions en revenant à ce qui résonne vraiment."
+          "text": "Certaines possibilités attirent immédiatement.\n\nD'autres résistent.\n\nCertaines semblent brillantes mais nous éloignent de ce que nous cherchions.\n\nEt parfois, une possibilité beaucoup plus discrète continue de revenir.\n\nLe discernement commence peut-être là :\n\nnon pas lorsque nous savons déjà quoi choisir,\n\nmais lorsque nous commençons à reconnaître ce qui résonne."
         },
         {
-          "id": "directions-recall-page-14",
+          "id": "rappel-boussole-resonance",
           "type": "recall",
-          "sourceBlockId": "directions-brutes",
-          "label": "Possibles encore présents",
-          "emptyText": "Les possibles retenus seront rappelés ici."
+          "sourceBlockId": "boussole",
+          "label": "Ce que vous ne voulez pas perdre",
+          "emptyText": "Votre boussole n'est pas encore formulée. Vous pouvez revenir à la page 08, ou simplement garder à l'esprit ce qui doit rester vivant pour vous dans ce récit."
+        },
+        {
+          "id": "rappel-piste-resonance",
+          "type": "recall",
+          "sourceBlockId": "piste-provisoire",
+          "label": "La possibilité que vous avez explorée",
+          "emptyText": "Vous n'avez pas encore formulé de piste provisoire. Vous pouvez revenir à la page 09, ou poursuivre avec la possibilité qui vous accompagne maintenant."
+        },
+        {
+          "id": "rappel-inattendu-resonance",
+          "type": "recall",
+          "sourceBlockId": "inattendu-retenu",
+          "label": "Ce que l'inattendu vous a laissé",
+          "emptyText": "Vous n'avez rien conservé de cette exploration de l'inattendu. Ce n'est pas un problème : quelque chose peut aussi devenir plus clair parce que vous avez décidé de ne pas le garder."
+        },
+        {
+          "id": "resonance-signes-intro",
+          "type": "text",
+          "text": "Regardez maintenant ces traces ensemble.\n\nNe cherchez pas encore laquelle est la meilleure.\n\nDemandez-vous plutôt ce qui vous indique qu'une possibilité mérite votre attention.\n\nLa résonance peut être immédiate.\n\nElle peut aussi apparaître comme une résistance, une tension, une question persistante ou simplement l'envie de continuer."
+        },
+        {
+          "id": "resonance-signe",
+          "type": "choice",
+          "label": "Quand quelque chose résonne, qu'est-ce qui vous le fait sentir ?",
+          "options": [
+            {
+              "id": "preserver-proche",
+              "label": "Cela reste proche de ce que je veux préserver"
+            },
+            {
+              "id": "ouvre-non-formule",
+              "label": "Cela ouvre quelque chose que je n'avais pas encore formulé"
+            },
+            {
+              "id": "tension-feconde",
+              "label": "Cela fait apparaître une tension ou une question féconde"
+            },
+            {
+              "id": "envie-ecrire",
+              "label": "Cela me donne envie d'écrire moi-même"
+            },
+            {
+              "id": "juste-sans-savoir",
+              "label": "Cela semble juste sans que je sache encore pourquoi"
+            },
+            {
+              "id": "ne-sais-pas",
+              "label": "Je ne sais pas encore"
+            }
+          ]
         },
         {
           "id": "criteres-resonance",
           "type": "textarea",
-          "label": "À quoi reconnaissez-vous qu'une piste résonne ?",
-          "placeholder": "Je reconnais une piste juste quand..."
+          "label": "Ce qui vous aide à reconnaître ce qui compte",
+          "placeholder": "Avec vos propres mots, notez quelques signes qui vous permettent de sentir qu'une piste mérite d'être poursuivie : une tension, une envie, une fidélité à votre intention, une question qui demeure, quelque chose que vous ne voulez pas perdre…"
+        },
+        {
+          "id": "resonance-cloture",
+          "type": "text",
+          "text": "Vous n'avez pas encore choisi.\n\nVous avez fait quelque chose de plus discret :\n\nvous avez commencé à reconnaître comment vous choisissez.\n\nÀ la page suivante, il faudra aller un peu plus loin.\n\nChoisir signifie aussi laisser certaines possibilités derrière soi."
         }
       ]
     },
