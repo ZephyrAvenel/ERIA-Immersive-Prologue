@@ -614,39 +614,76 @@
         {
           "id": "inattendu-intro",
           "type": "text",
-          "text": "Introduire volontairement un déplacement susceptible de surprendre l'auteur."
+          "text": "Vous avez choisi une possibilité.\n\nVous avez déplacé le regard.\n\nVous avez modifié une condition.\n\nIl reste encore un geste avant de commencer à choisir ce qui mérite vraiment de rester :\n\nlaisser apparaître quelque chose que vous n'aviez pas prévu.\n\nPas nécessairement quelque chose de spectaculaire.\n\nParfois, l'inattendu est beaucoup plus discret.\n\nUne relation que nous avions laissée à l'arrière-plan.\nUne conséquence que nous n'avions pas suivie.\nUne absence.\nUne contradiction.\nUne possibilité silencieuse.\n\nL'inattendu devient fécond lorsqu'il ne détourne pas simplement le récit :\n\nil nous permet de le voir autrement."
         },
         {
-          "id": "inattendu-prompt",
+          "id": "rappel-piste-inattendu",
+          "type": "recall",
+          "sourceBlockId": "piste-provisoire",
+          "label": "La possibilité que vous explorez",
+          "emptyText": "Votre piste provisoire n'est pas encore formulée. Vous pouvez revenir aux étapes précédentes, ou poursuivre avec la possibilité que vous avez actuellement en tête."
+        },
+        {
+          "id": "rappel-hypothese-inattendu",
+          "type": "recall",
+          "sourceBlockId": "hypothese-forte",
+          "label": "L'hypothèse qui a ouvert quelque chose",
+          "emptyText": "Vous n'avez pas encore formulé d'hypothèse forte. Vous pouvez néanmoins poursuivre et observer ce qui pourrait encore vous surprendre dans votre piste."
+        },
+        {
+          "id": "inattendu-angle-mort",
+          "type": "text",
+          "text": "Chercher l'inattendu ne signifie pas demander :\n\n“Qu'est-ce qui serait le plus surprenant ?”\n\nUne meilleure question serait :\n\n“Qu'est-ce que je n'ai peut-être pas encore regardé ?”\n\nIl peut s'agir d'une conséquence négligée.\nD'un personnage ou d'une présence restée en marge.\nD'une contradiction.\nD'un coût invisible.\nD'une possibilité que notre première formulation excluait.\nD'une relation qui change le sens de l'ensemble.\n\nNous ne cherchons donc pas un effet.\n\nNous cherchons un angle mort."
+        },
+        {
+          "id": "prompt-faire-apparaitre-inattendu",
           "type": "promptCopy",
-          "label": "Copier un prompt pour chercher l'inattendu",
-          "description": "Le prompt ouvre une surprise possible sans la transformer en obligation.",
-          "text": "Propose trois déplacements inattendus qui pourraient surprendre l'auteur de cette piste. Pour chacun, précise ce qu'il révèle et ce qu'il risque d'abîmer."
+          "label": "Chercher un angle mort",
+          "description": "Si vous souhaitez utiliser une IA extérieure, copiez ce prompt dans l'assistant de votre choix puis remplacez les parties indiquées avec les éléments que vous souhaitez lui confier.",
+          "text": "Je travaille à partir de cette possibilité :\n\n[COLLEZ ICI VOTRE PISTE PROVISOIRE]\n\nUne hypothèse a éventuellement commencé à déplacer cette possibilité :\n\n[COLLEZ ICI VOTRE HYPOTHÈSE — FACULTATIF]\n\nJe ne te demande pas d'écrire la suite.\n\nJe cherche à repérer ce que je n'ai peut-être pas encore regardé.\n\nPropose 6 éléments inattendus mais plausibles à l'intérieur de la matière déjà présente.\n\nIls peuvent faire apparaître, par exemple :\n- une conséquence négligée ;\n- une relation restée à l'arrière-plan ;\n- une absence significative ;\n- une contradiction ;\n- un coût invisible ;\n- une possibilité silencieuse ;\n- quelque chose qu'un personnage ne voit pas ;\n- quelque chose que ma formulation actuelle tient pour acquis.\n\nNe cherche pas le spectaculaire.\nN'ajoute pas un twist uniquement pour surprendre.\nN'écris pas de scène.\nNe continue pas l'histoire.\nNe produis pas de synopsis.\nNe réécris pas ma proposition.\nNe résous pas mon hypothèse.\nNe classe pas les propositions.\nNe choisis pas à ma place.\n\nPour chaque proposition, indique brièvement :\n\n1. ce qui n'avait peut-être pas encore été regardé ;\n2. pourquoi cet élément reste relié à la matière existante ;\n3. ce qu'il pourrait déplacer dans ma perception de la possibilité.\n\nLes 6 propositions doivent être réellement différentes.\n\nJe ne cherche pas ce qui rendrait mon récit plus spectaculaire.\n\nJe cherche ce que je n'avais pas encore vu."
         },
         {
-          "id": "inattendu-retenu",
+          "id": "inattendu-retour-discernement",
+          "type": "text",
+          "text": "Regardez maintenant ce qui est apparu.\n\nTout ce qui vous surprend ne mérite pas d'être conservé.\n\nUne proposition peut être brillante et pourtant étrangère à ce que vous cherchez.\n\nUne autre peut sembler presque insignifiante et déplacer profondément votre perception.\n\nAvant de retenir quoi que ce soit, observez simplement votre réaction."
+        },
+        {
+          "id": "inattendu-reaction",
           "type": "choice",
-          "label": "Que souhaitez-vous faire de l'inattendu ?",
+          "label": "Face à ce qui est apparu, quelque chose…",
           "options": [
             {
-              "id": "garder",
-              "label": "Le garder"
+              "id": "possibilite-nouvelle",
+              "label": "M'ouvre une possibilité que je n'avais pas vue"
             },
             {
-              "id": "transformer",
-              "label": "Le transformer"
+              "id": "comprehension-deplacee",
+              "label": "Déplace ma manière de comprendre la piste"
             },
             {
-              "id": "ecarter",
-              "label": "L'écarter"
+              "id": "tension-revelee",
+              "label": "Révèle une tension ou une question importante"
+            },
+            {
+              "id": "surprise-etrangere",
+              "label": "Me surprend, mais ne semble pas m'appartenir"
+            },
+            {
+              "id": "ne-pas-conserver",
+              "label": "Ne demande pas à être conservé"
             }
           ]
         },
         {
-          "id": "inattendu-note",
+          "id": "inattendu-retenu",
           "type": "textarea",
-          "label": "Notez ce que cet inattendu déplace.",
-          "placeholder": "Cela change..."
+          "label": "Ce que vous voulez garder sous les yeux",
+          "placeholder": "Avec vos propres mots, notez ici un élément inattendu, une question ou un déplacement que vous souhaitez garder sous les yeux — sans décider encore s'il entrera dans votre récit…"
+        },
+        {
+          "id": "inattendu-cloture",
+          "type": "text",
+          "text": "Vous avez maintenant laissé plusieurs possibles apparaître.\n\nCertains vous attirent.\nCertains vous déplacent.\nCertains résistent.\nCertains peuvent être laissés là.\n\nExplorer ne signifie pas tout garder.\n\nÀ partir d'ici, le geste change.\n\nIl ne s'agira plus seulement de demander :\n\n“Qu'est-ce qui est possible ?”\n\nMais :\n\n“Parmi tout ce qui est devenu possible, qu'est-ce qui est juste pour ce que je cherche à écrire ?”"
         }
       ]
     },

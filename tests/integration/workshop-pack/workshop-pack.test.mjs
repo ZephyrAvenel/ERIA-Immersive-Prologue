@@ -541,6 +541,73 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pack.pages[10].movementId, "exploration");
   assert.equal(pack.pages[11].movementId, "exploration");
 
+  const pageTwelve = pack.pages[11];
+  assert.equal(pageTwelve.id, "page-12");
+  assert.equal(pageTwelve.title, "Faire appara\u00eetre l'inattendu");
+  assert.equal(pageTwelve.movementId, "exploration");
+  assert.deepEqual(pageTwelve.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "promptCopy",
+    "text",
+    "choice",
+    "textarea",
+    "text",
+  ]);
+  const pageTwelveRecalls = pageTwelve.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageTwelveRecalls.length, 2);
+  assert.deepEqual(
+    pageTwelveRecalls.map((block) => block.id),
+    ["rappel-piste-inattendu", "rappel-hypothese-inattendu"],
+  );
+  assert.deepEqual(
+    pageTwelveRecalls.map((block) => block.sourceBlockId),
+    ["piste-provisoire", "hypothese-forte"],
+  );
+  const pageTwelvePrompts = pageTwelve.blocks.filter((block) => block.type === "promptCopy");
+  assert.equal(pageTwelvePrompts.length, 1);
+  assert.equal(pageTwelvePrompts[0].id, "prompt-faire-apparaitre-inattendu");
+  assert.equal(pageTwelvePrompts[0].label, "Chercher un angle mort");
+  assert.equal(pageTwelvePrompts[0].text.includes("[COLLEZ ICI VOTRE PISTE PROVISOIRE]"), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("[COLLEZ ICI VOTRE HYPOTH\u00c8SE \u2014 FACULTATIF]"), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("Propose 6 \u00e9l\u00e9ments inattendus"), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("reli\u00e9 \u00e0 la mati\u00e8re existante"), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("Ne cherche pas le spectaculaire."), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("N'ajoute pas un twist uniquement pour surprendre."), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("N'\u00e9cris pas de sc\u00e8ne."), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("Ne continue pas l'histoire."), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("Ne produis pas de synopsis."), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("Ne r\u00e9\u00e9cris pas ma proposition."), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("Ne r\u00e9sous pas mon hypoth\u00e8se."), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("Ne classe pas les propositions."), true);
+  assert.equal(pageTwelvePrompts[0].text.includes("Ne choisis pas \u00e0 ma place."), true);
+  const pageTwelveChoices = pageTwelve.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageTwelveChoices.length, 1);
+  assert.equal(pageTwelveChoices[0].id, "inattendu-reaction");
+  assert.equal(pageTwelveChoices[0].label, "Face \u00e0 ce qui est apparu, quelque chose\u2026");
+  assert.deepEqual(
+    pageTwelveChoices[0].options.map((option) => option.label),
+    [
+      "M'ouvre une possibilit\u00e9 que je n'avais pas vue",
+      "D\u00e9place ma mani\u00e8re de comprendre la piste",
+      "R\u00e9v\u00e8le une tension ou une question importante",
+      "Me surprend, mais ne semble pas m'appartenir",
+      "Ne demande pas \u00e0 \u00eatre conserv\u00e9",
+    ],
+  );
+  const pageTwelveTextareas = pageTwelve.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageTwelveTextareas.length, 1);
+  assert.equal(pageTwelveTextareas[0].id, "inattendu-retenu");
+  assert.equal(pageTwelveTextareas[0].label, "Ce que vous voulez garder sous les yeux");
+  assert.equal(pageTwelveTextareas[0].placeholder.includes("Avec vos propres mots"), true);
+  assert.equal(pageTwelve.blocks.some((block) => block.type === "reveal"), false);
+  assert.equal(pack.pages[10].movementId, "exploration");
+  assert.equal(pack.pages[11].movementId, "exploration");
+  assert.equal(pack.pages[12].movementId, "discernement");
+  assert.equal(pack.pages[12].title, "Tout ce qui est possible n'est pas juste");
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
@@ -551,6 +618,7 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
     "boussole",
     "piste-provisoire",
     "hypothese-forte",
+    "inattendu-retenu",
     "choix-assume",
     "voix-recherchee",
     "premiere-forme",
