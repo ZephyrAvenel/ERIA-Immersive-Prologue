@@ -803,6 +803,43 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pack.pages[15].movementId, "discernement");
   assert.equal(pack.pages[16].movementId, "ecriture");
 
+  const pageSeventeen = pack.pages[16];
+  assert.equal(pageSeventeen.id, "page-17");
+  assert.equal(pageSeventeen.title, "Reprendre la main");
+  assert.equal(pageSeventeen.movementId, "ecriture");
+  assert.deepEqual(pageSeventeen.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "textarea",
+    "text",
+    "reveal",
+    "text",
+  ]);
+  const pageSeventeenRecalls = pageSeventeen.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageSeventeenRecalls.length, 2);
+  assert.deepEqual(
+    pageSeventeenRecalls.map((block) => block.id),
+    ["rappel-choix-ecriture", "rappel-voix-ecriture"],
+  );
+  assert.deepEqual(
+    pageSeventeenRecalls.map((block) => block.sourceBlockId),
+    ["choix-assume", "voix-recherchee"],
+  );
+  const pageSeventeenTextareas = pageSeventeen.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageSeventeenTextareas.length, 1);
+  assert.equal(pageSeventeenTextareas[0].id, "matiere-premiere");
+  assert.equal(pageSeventeenTextareas[0].label, "Commencez avec vos mots");
+  const pageSeventeenReveals = pageSeventeen.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageSeventeenReveals.length, 1);
+  assert.equal(pageSeventeenReveals[0].id, "ecriture-ia-efface-reveal");
+  assert.equal(pageSeventeenReveals[0].label, "Pourquoi ne pas demander \u00e0 l'IA d'\u00e9crire maintenant ?");
+  assert.equal(typeof pageSeventeenReveals[0].content, "string");
+  assert.equal(pageSeventeen.blocks.some((block) => ["choice", "promptCopy"].includes(block.type)), false);
+  assert.equal(pack.pages[16].movementId, "ecriture");
+  assert.equal(pack.pages[17].movementId, "ecriture");
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
@@ -817,6 +854,7 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
     "criteres-resonance",
     "choix-assume",
     "voix-recherchee",
+    "matiere-premiere",
     "premiere-forme",
     "version-a-moi",
     "critere-arret",

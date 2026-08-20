@@ -1005,20 +1005,48 @@
         {
           "id": "reprendre-main-intro",
           "type": "text",
-          "text": "Passer de l'exploration assistée à l'acte d'écriture."
+          "text": "Vous avez beaucoup regardé.\n\nVous avez ouvert des possibilités,\n\ndéplacé votre regard,\n\nchoisi une direction,\n\net commencé à reconnaître ce que vous souhaitez entendre dans votre texte.\n\nÀ présent, quelque chose doit changer.\n\nIl ne s'agit plus seulement de réfléchir à ce que vous pourriez écrire.\n\nIl faut laisser apparaître des mots."
         },
         {
-          "id": "voix-recall-page-17",
+          "id": "rappel-choix-ecriture",
+          "type": "recall",
+          "sourceBlockId": "choix-assume",
+          "label": "La direction que vous avez choisie",
+          "emptyText": "Votre direction choisie n'est pas encore formulée. Vous pouvez revenir aux étapes précédentes, ou écrire à partir de la direction qui vous accompagne maintenant."
+        },
+        {
+          "id": "rappel-voix-ecriture",
           "type": "recall",
           "sourceBlockId": "voix-recherchee",
-          "label": "Votre repère de voix",
-          "emptyText": "Votre repère de voix sera rappelé ici."
+          "label": "Ce que vous voulez entendre dans votre texte",
+          "emptyText": "Votre repère de voix n'est pas encore formulé. Vous pouvez néanmoins commencer avec ce que vous aimeriez reconnaître dans vos mots."
+        },
+        {
+          "id": "matiere-avant-ecrire",
+          "type": "text",
+          "text": "Ne cherchez pas encore à écrire une version définitive.\n\nNe cherchez pas non plus à tout expliquer.\n\nVous pouvez commencer par une phrase, quelques lignes, une image, une voix, un geste, une sensation, une situation, un fragment de dialogue, une description.\n\nQuelque chose d'incomplet peut suffire.\n\nL'important n'est pas que ce soit terminé.\n\nL'important est que cette première matière vienne de vous."
         },
         {
           "id": "matiere-premiere",
           "type": "textarea",
-          "label": "Quelle matière gardez-vous pour écrire ?",
-          "placeholder": "Je garde..."
+          "label": "Commencez avec vos mots",
+          "placeholder": "Écrivez ici quelques lignes, une image, une phrase, une voix, un geste, une situation… Ne cherchez pas encore à bien écrire. Laissez simplement apparaître une première matière qui vous appartient."
+        },
+        {
+          "id": "matiere-ne-pas-corriger",
+          "type": "text",
+          "text": "Résistez quelques instants à l'envie de corriger.\n\nCette première matière peut être maladroite,\n\nincomplète,\n\ntrop courte,\n\nirrégulière\n\nou encore incertaine.\n\nElle n'a pas besoin de prouver quoi que ce soit.\n\nElle doit seulement exister.\n\nUne première forme peut être imparfaite sans être fausse."
+        },
+        {
+          "id": "ecriture-ia-efface-reveal",
+          "type": "reveal",
+          "label": "Pourquoi ne pas demander à l'IA d'écrire maintenant ?",
+          "content": "Parce que cette étape cherche quelque chose que l'IA ne peut pas décider à votre place : le premier geste par lequel votre intention devient matière.\n\nUne IA pourrait produire immédiatement une scène, un paragraphe ou une ouverture plausible.\n\nMais si elle intervient avant que vous ayez posé vos propres mots, sa proposition risque de devenir le centre de gravité du texte.\n\nVous pourriez alors vous retrouver à corriger, sélectionner ou améliorer une matière que vous n'avez pas commencée.\n\nIci, nous faisons l'inverse.\n\nÉcrivez d'abord quelque chose, même très peu.\n\nL'IA pourra revenir ensuite comme interlocutrice, contradictrice ou source de variations.\n\nMais elle rencontrera alors une matière qui existe déjà.\n\nEt cette matière aura commencé avec vous."
+        },
+        {
+          "id": "reprendre-main-cloture",
+          "type": "text",
+          "text": "Vous n'avez pas besoin d'avoir écrit beaucoup.\n\nQuelques lignes suffisent pour que quelque chose ait changé :\n\nvous n'êtes plus seulement devant les possibilités du récit.\n\nVous êtes maintenant dans sa matière.\n\nLa page suivante vous proposera de commencer à composer avec ce qui vient d'apparaître.\n\nVous avez commencé. Maintenant, regardons ce que cette matière peut devenir entre vos mains."
         }
       ]
     },
