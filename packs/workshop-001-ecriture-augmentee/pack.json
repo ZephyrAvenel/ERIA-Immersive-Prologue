@@ -1163,24 +1163,94 @@
       "id": "page-20",
       "movementId": "ecriture",
       "order": 20,
-      "title": "Laisser une place à l'auteur",
+      "title": "Revenir au texte",
       "blocks": [
         {
-          "id": "place-auteur-intro",
+          "id": "revenir-texte-intro",
           "type": "text",
-          "text": "Préserver volontairement des espaces que l'IA ne remplit pas."
+          "text": "Une lecture extérieure peut rendre visibles des choses que nous ne percevions plus dans notre propre texte.\n\nMais voir quelque chose ne signifie pas devoir le modifier.\n\nVous pouvez maintenant revenir à votre texte avec ce qui vous a été rendu perceptible — et décider vous-même de ce qui mérite d'être repris, déplacé, approfondi ou laissé intact.\n\nLa lecture précédente n'était pas un diagnostic.\n\nElle n'était pas une vérité.\n\nElle n'était pas une correction.\n\nElle était un regard extérieur."
         },
         {
-          "id": "part-auteur",
+          "id": "rappel-premiere-forme-retour",
+          "type": "recall",
+          "sourceBlockId": "premiere-forme",
+          "label": "Votre première forme",
+          "emptyText": "Votre première forme n'est pas encore écrite. Vous pouvez revenir à la page précédente du mouvement, ou poursuivre à partir de ce que vous avez maintenant envie d'écrire."
+        },
+        {
+          "id": "rappel-lecture-retour",
+          "type": "recall",
+          "sourceBlockId": "lecture-retenue",
+          "label": "Ce que la lecture vous a permis de voir",
+          "emptyText": "Vous n'avez encore rien retenu de cette lecture. Ce n'est pas un obstacle : vous pouvez revenir directement à votre texte et décider à partir de votre propre regard."
+        },
+        {
+          "id": "distance-critique-retour",
+          "type": "text",
+          "text": "Tout ce qui a été remarqué ne mérite pas nécessairement d'entrer dans votre texte.\n\nUne observation peut être pertinente sans appeler de modification.\n\nUne autre peut révéler quelque chose que vous voulez approfondir.\n\nUne autre encore peut vous éloigner de ce que vous cherchiez à écrire.\n\nLe geste d'auteur consiste maintenant à choisir ce que vous reprenez — et ce que vous laissez à distance."
+        },
+        {
+          "id": "retour-texte-geste",
+          "type": "choice",
+          "label": "En revenant à votre texte, que souhaitez-vous faire ?",
+          "options": [
+            {
+              "id": "approfondir-deja-la",
+              "label": "Je veux approfondir quelque chose qui était déjà là"
+            },
+            {
+              "id": "deplacer-reformuler",
+              "label": "Je veux déplacer ou reformuler un passage"
+            },
+            {
+              "id": "rendre-tension-visible",
+              "label": "Je veux rendre une tension plus perceptible"
+            },
+            {
+              "id": "retirer-eloignement",
+              "label": "Je veux retirer quelque chose qui éloigne le texte de mon intention"
+            },
+            {
+              "id": "preserver-intact",
+              "label": "Je veux préserver certains passages exactement comme ils sont"
+            },
+            {
+              "id": "reprendre-librement",
+              "label": "Je veux reprendre le texte plus librement, sans suivre directement la lecture reçue"
+            },
+            {
+              "id": "ecrire-voir",
+              "label": "Je ne sais pas encore : je vais recommencer à écrire et voir ce qui se déplace"
+            }
+          ]
+        },
+        {
+          "id": "reprise-decidee",
           "type": "textarea",
-          "label": "Quelle part doit rester seulement à vous ?",
-          "placeholder": "Ce que je ne délègue pas..."
+          "label": "Ce que vous choisissez de reprendre",
+          "placeholder": "Avec vos propres mots, notez ce que vous souhaitez réellement reprendre dans votre texte — ou ce que vous voulez regarder autrement. Vous n'avez pas à suivre tout ce qui vous a été suggéré ou rendu visible."
         },
         {
-          "id": "place-auteur-reveal",
+          "id": "texte-repris",
+          "type": "textarea",
+          "label": "Reprenez votre texte",
+          "placeholder": "Réécrivez ici avec vos mots. Vous pouvez déplacer, approfondir, retirer, préserver — ou découvrir en écrivant que votre première forme avait déjà trouvé quelque chose de juste."
+        },
+        {
+          "id": "apres-texte-repris",
+          "type": "text",
+          "text": "Relisez ce que vous venez d'écrire sans chercher immédiatement à savoir si cette version est « meilleure ».\n\nDemandez-vous plutôt :\n\nEst-elle plus proche de ce que je cherche à faire entendre ?\n\nEst-ce que je reconnais encore mon regard, ma tension, ma manière d'habiter ce texte ?\n\nLe but n'est pas d'obtenir une version optimisée.\n\nLe but est que le texte reste vôtre."
+        },
+        {
+          "id": "revenir-texte-reveal",
           "type": "reveal",
-          "label": "Lire une note sur la part de l'auteur",
-          "content": "Ne pas tout déléguer n'est pas une faiblesse du parcours. C'est le lieu même de la création."
+          "label": "Vous n'êtes pas obligé de suivre une bonne remarque",
+          "content": "Une remarque peut être intelligente, pertinente ou exacte et pourtant ne pas appartenir au texte que vous êtes en train d'écrire.\n\nÉcrire implique aussi de renoncer à certaines possibilités, y compris de bonnes possibilités.\n\nPréserver une maladresse provisoire, une ambiguïté, un silence ou une tension peut parfois être plus fidèle au texte que de chercher à tout résoudre.\n\nLe discernement de l'auteur ne consiste pas à accepter les meilleures suggestions.\n\nIl consiste à reconnaître ce qui appartient — ou non — au mouvement de son texte.\n\nVous pouvez donc écouter.\n\nExaminer.\n\nPuis choisir."
+        },
+        {
+          "id": "revenir-texte-cloture",
+          "type": "text",
+          "text": "Vous avez ouvert des possibles.\n\nVous en avez choisi certains.\n\nVous avez écrit.\n\nVous avez laissé un regard extérieur rencontrer votre texte.\n\nPuis vous êtes revenu à lui.\n\nCe retour est essentiel.\n\nL'écriture augmentée ne consiste pas à laisser une machine écrire davantage.\n\nElle consiste aussi à apprendre quand l'écouter — et quand reprendre pleinement la main.\n\nÀ partir d'ici, un autre mouvement commence : non plus seulement écrire, mais transformer ce qui existe déjà."
         }
       ]
     },

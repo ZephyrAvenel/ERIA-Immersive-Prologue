@@ -196,7 +196,7 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
       ["page-17", 17, "ecriture", "Reprendre la main"],
       ["page-18", 18, "ecriture", "Composer"],
       ["page-19", 19, "ecriture", "Faire lire sans faire écrire"],
-      ["page-20", 20, "ecriture", "Laisser une place à l'auteur"],
+      ["page-20", 20, "ecriture", "Revenir au texte"],
       ["page-21", 21, "transformation", "Le texte n'est pas terminé"],
       ["page-22", 22, "transformation", "Transformer plutôt que corriger"],
       ["page-23", 23, "transformation", "Faire sien"],
@@ -934,6 +934,69 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(pack.pages[18].movementId, "ecriture");
   assert.equal(pack.pages[19].movementId, "ecriture");
 
+  const pageTwenty = pack.pages[19];
+  assert.equal(pageTwenty.id, "page-20");
+  assert.equal(pageTwenty.title, "Revenir au texte");
+  assert.equal(pageTwenty.movementId, "ecriture");
+  assert.deepEqual(pageTwenty.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "choice",
+    "textarea",
+    "textarea",
+    "text",
+    "reveal",
+    "text",
+  ]);
+  const pageTwentyRecalls = pageTwenty.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageTwentyRecalls.length, 2);
+  assert.deepEqual(
+    pageTwentyRecalls.map((block) => block.id),
+    ["rappel-premiere-forme-retour", "rappel-lecture-retour"],
+  );
+  assert.deepEqual(
+    pageTwentyRecalls.map((block) => block.sourceBlockId),
+    ["premiere-forme", "lecture-retenue"],
+  );
+  const pageTwentyChoices = pageTwenty.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageTwentyChoices.length, 1);
+  assert.equal(pageTwentyChoices[0].id, "retour-texte-geste");
+  assert.equal(pageTwentyChoices[0].label, "En revenant \u00e0 votre texte, que souhaitez-vous faire ?");
+  assert.equal(pageTwentyChoices[0].options.length, 7);
+  assert.equal(
+    pageTwentyChoices[0].options.some(
+      (option) => option.label === "Je veux pr\u00e9server certains passages exactement comme ils sont",
+    ),
+    true,
+  );
+  assert.equal(
+    pageTwentyChoices[0].options.some(
+      (option) =>
+        option.label === "Je ne sais pas encore : je vais recommencer \u00e0 \u00e9crire et voir ce qui se d\u00e9place",
+    ),
+    true,
+  );
+  const pageTwentyTextareas = pageTwenty.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageTwentyTextareas.length, 2);
+  assert.deepEqual(
+    pageTwentyTextareas.map((block) => block.id),
+    ["reprise-decidee", "texte-repris"],
+  );
+  assert.equal(pageTwentyTextareas[0].label, "Ce que vous choisissez de reprendre");
+  assert.equal(pageTwentyTextareas[1].label, "Reprenez votre texte");
+  const pageTwentyReveals = pageTwenty.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageTwentyReveals.length, 1);
+  assert.equal(pageTwentyReveals[0].id, "revenir-texte-reveal");
+  assert.equal(pageTwentyReveals[0].label, "Vous n'\u00eates pas oblig\u00e9 de suivre une bonne remarque");
+  assert.equal(typeof pageTwentyReveals[0].content, "string");
+  assert.equal(pageTwenty.blocks.some((block) => block.type === "promptCopy"), false);
+  assert.equal(pack.pages[18].title, "Faire lire sans faire \u00e9crire");
+  assert.equal(pack.pages[20].title, "Le texte n'est pas termin\u00e9");
+  assert.equal(pack.pages[19].movementId, "ecriture");
+  assert.equal(pack.pages[20].movementId, "transformation");
+
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
   for (const traceId of [
@@ -951,6 +1014,8 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
     "matiere-premiere",
     "premiere-forme",
     "lecture-retenue",
+    "reprise-decidee",
+    "texte-repris",
     "version-a-moi",
     "critere-arret",
   ]) {
