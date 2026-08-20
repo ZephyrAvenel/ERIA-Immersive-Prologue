@@ -1530,32 +1530,78 @@
         {
           "id": "savoir-arreter-intro",
           "type": "text",
-          "text": "Reconnaître le moment où davantage d'assistance ou de variations n'améliore plus le texte."
+          "text": "Un texte peut toujours être modifié.\n\nUne phrase peut toujours être déplacée.\n\nUn passage peut toujours être développé.\n\nUne autre possibilité peut toujours être ouverte.\n\nMais cette possibilité infinie n'est pas nécessairement une invitation à continuer.\n\nÉcrire demande aussi de reconnaître le moment où l'on cesse d'intervenir.\n\nNon parce que le texte serait parfait.\n\nParce qu'une forme existe désormais suffisamment pour être laissée vivre."
         },
         {
-          "id": "arret-choice",
+          "id": "rappel-version-arret",
+          "type": "recall",
+          "sourceBlockId": "version-a-moi",
+          "label": "Ce que vous reconnaissez maintenant",
+          "emptyText": "Vous n'avez pas encore formulé ce que vous reconnaissez maintenant. Vous pouvez néanmoins observer ce qui, dans votre texte, semble déjà pouvoir demeurer."
+        },
+        {
+          "id": "rappel-boussole-arret",
+          "type": "recall",
+          "sourceBlockId": "boussole",
+          "label": "Ce que vous ne vouliez pas perdre",
+          "emptyText": "Votre boussole n'est pas encore formulée. Vous pouvez poursuivre en gardant simplement à l'esprit ce que vous souhaitez préserver."
+        },
+        {
+          "id": "arret-geste-auteur",
+          "type": "text",
+          "text": "S'arrêter peut être un acte d'auteur.\n\nContinuer à modifier n'est pas toujours approfondir.\n\nCorriger peut parfois lisser ce qui reste vivant.\n\nEnrichir peut surcharger.\n\nChercher encore peut devenir une manière d'éviter de choisir.\n\nDemander davantage de retours peut éloigner de sa propre perception.\n\nFaire intervenir encore l'IA pourrait maintenir artificiellement le texte dans un état de variation permanente.\n\nCe n'est pas une règle.\n\nC'est un point d'attention : parfois, le geste juste consiste à cesser de transformer."
+        },
+        {
+          "id": "arret-signe",
           "type": "choice",
-          "label": "Quel signal vous indique qu'il faut s'arrêter ?",
+          "label": "Qu'est-ce qui pourrait vous indiquer qu'il est temps de vous arrêter, pour maintenant ?",
           "options": [
             {
-              "id": "clarte",
-              "label": "Le texte devient plus clair"
+              "id": "porte-suffisamment",
+              "label": "Le texte porte suffisamment ce que je voulais préserver"
             },
             {
-              "id": "saturation",
-              "label": "Les variations n'ajoutent plus rien"
+              "id": "lisser-vivant",
+              "label": "Continuer commencerait surtout à lisser ce qui reste vivant"
             },
             {
-              "id": "justesse",
-              "label": "La voix semble juste"
+              "id": "modifier-sans-decouvrir",
+              "label": "Je sens que je modifie désormais sans découvrir réellement autre chose"
+            },
+            {
+              "id": "imperfections-appartiennent",
+              "label": "Certaines imperfections appartiennent peut-être à cette forme"
+            },
+            {
+              "id": "laisser-reposer",
+              "label": "J'ai besoin de laisser le texte reposer avant d'y revenir"
+            },
+            {
+              "id": "questions-ouvertes",
+              "label": "Je peux accepter qu'il reste des questions ouvertes"
+            },
+            {
+              "id": "pas-encore-reconnaitre",
+              "label": "Je ne sais pas encore reconnaître ce moment"
             }
           ]
         },
         {
           "id": "critere-arret",
           "type": "textarea",
-          "label": "Formulez votre critère d'arrêt.",
-          "placeholder": "Je m'arrête lorsque..."
+          "label": "Ce qui vous dira que vous pouvez vous arrêter",
+          "placeholder": "Avec vos propres mots, notez ce qui pourrait vous permettre de reconnaître qu'une forme peut être laissée telle quelle, au moins pour maintenant. Il ne s'agit pas de savoir si elle est parfaite, mais de reconnaître ce que vous ne voulez plus déplacer simplement parce qu'il serait encore possible de le faire."
+        },
+        {
+          "id": "arret-inachevement-reveal",
+          "type": "reveal",
+          "label": "Un texte peut être achevé sans être épuisé",
+          "content": "Achever une forme ne signifie pas avoir épuisé tout ce qu'elle contient.\n\nUn texte peut conserver des tensions, des silences, des imperfections, des questions.\n\nS'arrêter consiste parfois simplement à reconnaître que continuer maintenant ne rendrait pas nécessairement le texte plus juste.\n\nCe qui reste ouvert pourra devenir autre chose :\n\nune reprise,\nun autre texte,\nune autre question,\nou simplement une part laissée au lecteur."
+        },
+        {
+          "id": "arret-cloture-transformation",
+          "type": "text",
+          "text": "Vous avez ouvert des possibles.\n\nVous en avez choisi certains.\n\nVous avez écrit.\n\nVous avez repris.\n\nVous avez laissé votre texte vous déplacer à son tour.\n\nIl reste maintenant un dernier geste :\n\nlaisser ce qui a pris forme exister sans continuer immédiatement à le transformer.\n\nLa page suivante ouvrira un autre mouvement : celui de la création que vous pouvez désormais regarder comme vôtre."
         }
       ]
     },

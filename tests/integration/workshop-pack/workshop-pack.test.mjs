@@ -1184,9 +1184,81 @@ test("augmented writing workshop structural draft is valid and unpublished", asy
   assert.equal(typeof pageTwentyThreeReveals[0].content, "string");
   assert.equal(pageTwentyThree.blocks.some((block) => block.type === "promptCopy"), false);
   assert.equal(pack.pages.slice(22).some((page) => page.blocks.some((block) => block.type === "promptCopy")), false);
-  assert.equal(pack.pages[23].title, "Savoir s'arr\u00eater");
-  assert.equal(pack.pages[23].movementId, "transformation");
-  assert.equal(pack.pages[24].movementId, "creation");
+  const pageTwentyFour = pack.pages[23];
+  assert.equal(pageTwentyFour.id, "page-24");
+  assert.equal(pageTwentyFour.title, "Savoir s'arr\u00eater");
+  assert.equal(pageTwentyFour.movementId, "transformation");
+  assert.deepEqual(pageTwentyFour.blocks.map((block) => block.type), [
+    "text",
+    "recall",
+    "recall",
+    "text",
+    "choice",
+    "textarea",
+    "reveal",
+    "text",
+  ]);
+  const pageTwentyFourRecalls = pageTwentyFour.blocks.filter((block) => block.type === "recall");
+  assert.equal(pageTwentyFourRecalls.length, 2);
+  assert.deepEqual(
+    pageTwentyFourRecalls.map((block) => block.id),
+    ["rappel-version-arret", "rappel-boussole-arret"],
+  );
+  assert.deepEqual(
+    pageTwentyFourRecalls.map((block) => block.sourceBlockId),
+    ["version-a-moi", "boussole"],
+  );
+  const pageTwentyFourChoices = pageTwentyFour.blocks.filter((block) => block.type === "choice");
+  assert.equal(pageTwentyFourChoices.length, 1);
+  assert.equal(pageTwentyFourChoices[0].id, "arret-signe");
+  assert.equal(
+    pageTwentyFourChoices[0].label,
+    "Qu'est-ce qui pourrait vous indiquer qu'il est temps de vous arr\u00eater, pour maintenant ?",
+  );
+  assert.equal(pageTwentyFourChoices[0].options.length, 7);
+  assert.equal(
+    pageTwentyFourChoices[0].options.some(
+      (option) => option.label === "Continuer commencerait surtout \u00e0 lisser ce qui reste vivant",
+    ),
+    true,
+  );
+  assert.equal(
+    pageTwentyFourChoices[0].options.some(
+      (option) => option.label === "Je ne sais pas encore reconna\u00eetre ce moment",
+    ),
+    true,
+  );
+  const pageTwentyFourTextareas = pageTwentyFour.blocks.filter((block) => block.type === "textarea");
+  assert.equal(pageTwentyFourTextareas.length, 1);
+  assert.equal(pageTwentyFourTextareas[0].id, "critere-arret");
+  assert.equal(pageTwentyFourTextareas[0].label, "Ce qui vous dira que vous pouvez vous arr\u00eater");
+  const pageTwentyFourReveals = pageTwentyFour.blocks.filter((block) => block.type === "reveal");
+  assert.equal(pageTwentyFourReveals.length, 1);
+  assert.equal(pageTwentyFourReveals[0].id, "arret-inachevement-reveal");
+  assert.equal(pageTwentyFourReveals[0].label, "Un texte peut \u00eatre achev\u00e9 sans \u00eatre \u00e9puis\u00e9");
+  assert.equal(typeof pageTwentyFourReveals[0].content, "string");
+  assert.equal(pageTwentyFour.blocks.some((block) => block.type === "promptCopy"), false);
+
+  const pageTwentyFive = pack.pages[24];
+  const pageTwentySix = pack.pages[25];
+  assert.equal(pageTwentyFive.id, "page-25");
+  assert.equal(pageTwentyFive.title, "Votre r\u00e9cit");
+  assert.equal(pageTwentyFive.movementId, "creation");
+  assert.equal(pageTwentySix.id, "page-26");
+  assert.equal(pageTwentySix.title, "Continuer sans l'atelier");
+  assert.equal(pageTwentySix.movementId, "creation");
+  assert.equal(
+    pageTwentyFive.blocks.some((block) => block.type === "recall" && block.sourceBlockId === "version-a-moi"),
+    true,
+  );
+  assert.equal(
+    pageTwentySix.blocks.some((block) => block.type === "recall" && block.sourceBlockId === "version-a-moi"),
+    true,
+  );
+  assert.equal(
+    pageTwentySix.blocks.some((block) => block.type === "recall" && block.sourceBlockId === "critere-arret"),
+    true,
+  );
 
   const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
   assert.equal(new Set(blockIds).size, blockIds.length);
