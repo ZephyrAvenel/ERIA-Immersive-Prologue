@@ -19,6 +19,22 @@
       }
     },
     {
+      "id": "living-review",
+      "route": "https://zephyravenel.github.io/Recits-Vivants-Revue/Numero-1.html",
+      "labels": {
+        "fr": {
+          "orientation": "LIRE",
+          "title": "Revue Récits Vivants",
+          "description": "Des numéros pour penser, éprouver et rouvrir nos récits."
+        },
+        "en": {
+          "orientation": "READ",
+          "title": "Récits Vivants Review",
+          "description": "Issues for thinking through, experiencing, and reopening our narratives."
+        }
+      }
+    },
+    {
       "id": "augmented-workshops",
       "route": "/ateliers/",
       "labels": {
