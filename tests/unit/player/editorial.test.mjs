@@ -9,7 +9,7 @@ import {
   validateEditorialRegistry,
 } from "../../../.test-build/apps/player/src/editorial.js";
 
-test("editorial registry declares the two content families", () => {
+test("editorial registry declares the three content families", () => {
   const families = editorialFamilies("fr");
   assert.deepEqual(
     families.map(({ id, orientation, title, description, route }) => ({
@@ -26,6 +26,13 @@ test("editorial registry declares the two content families", () => {
         title: "Packs narratifs",
         description: "Des expériences narratives à traverser.",
         route: "/bibliotheque/",
+      },
+      {
+        id: "living-review",
+        orientation: "LIRE",
+        title: "Revue Récits Vivants",
+        description: "Des numéros pour penser, éprouver et rouvrir nos récits.",
+        route: "https://zephyravenel.github.io/Recits-Vivants-Revue/Numero-1.html",
       },
       {
         id: "augmented-workshops",
@@ -139,7 +146,7 @@ test("editorial registry rejects duplicate or missing family declarations", () =
     () =>
       validateEditorialRegistry({
         ...editorialRegistry,
-        families: [editorialRegistry.families[0], editorialRegistry.families[0]],
+        families: [editorialRegistry.families[0], editorialRegistry.families[0], editorialRegistry.families[2]],
       }),
     /INE_EDITORIAL_FAMILY_DUPLICATE/,
   );
