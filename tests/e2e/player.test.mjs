@@ -1533,6 +1533,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
         signature: document.querySelector('.library__signature')?.textContent,
         orientation: document.querySelector('.library__orientation')?.textContent,
         prompt: document.querySelector('.library__prompt')?.textContent,
+        globalNavigationHref: document.querySelector('.site-navigation a')?.href ?? null,
+        globalNavigationLabel: document.querySelector('.site-navigation a')?.getAttribute('aria-label') ?? null,
         cards: Array.from(document.querySelectorAll('.work-card')).map((card) => ({
           title: card.querySelector('h2')?.textContent,
           slug: card.getAttribute('data-work-slug'),
@@ -1559,6 +1561,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     );
     assert.equal(libraryState.orientation.includes("porte d\u2019entr\u00e9e") || libraryState.orientation.includes("entryway"), true);
     assert.equal(libraryState.prompt.includes("R\u00e9cits Vivants") || libraryState.prompt.includes("Living Stories"), true);
+    assert.equal(libraryState.globalNavigationHref, entryUrl);
+    assert.equal(libraryState.globalNavigationLabel, libraryState.language.toLowerCase().startsWith("fr") ? "Explorer les œuvres" : "Explore the works");
     assert.deepEqual(
       libraryState.cards.map(({ title }) => title),
       [
@@ -1618,6 +1622,13 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(libraryState.cards[11].imagePosition, "50% 50%");
     assert.equal(libraryState.cards[12].imagePosition, "50% 50%");
     assert.equal(libraryState.noHorizontalOverflow, true);
+    await evaluate(page, "document.querySelector('.site-navigation a')?.click()");
+    await waitForExpression(
+      page,
+      `window.location.href === ${JSON.stringify(entryUrl)} && Array.from(document.querySelectorAll('.orientation-door__orientation')).map((element) => element.textContent).join('|') === ${JSON.stringify(libraryState.language.toLowerCase().startsWith("fr") ? "VIVRE|PENSER|CRÉER" : "LIVE|THINK|CREATE")}`,
+    );
+    await loadUrl(page, libraryUrl);
+    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");
 
     await evaluate(
       page,

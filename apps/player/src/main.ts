@@ -626,7 +626,7 @@ async function renderLibrary(): Promise<void> {
   const packs = await loadCatalog(registryUrl);
   const thresholdSession = createBrowserPublicThresholdSession();
   updateShell(messages, messages.libraryTitle);
-  updateLibraryNavigation(messages, false);
+  updateLibraryNavigation(messages, true);
   const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
   if (skipLink) {
     skipLink.href = "#works";
