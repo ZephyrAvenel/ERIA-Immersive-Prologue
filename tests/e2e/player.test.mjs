@@ -2203,9 +2203,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       true,
     );
     await evaluate(page, "document.querySelector('.site-navigation a')?.click()");
+    const expectedEditorialHomeOrientations = entryIsFrench ? "VIVRE|PENSER|CRÉER" : "LIVE|THINK|CREATE";
     await waitForExpression(
       page,
-      `window.location.href === ${JSON.stringify(entryUrl)} && Array.from(document.querySelectorAll('.orientation-door__orientation')).map((element) => element.textContent).join('|') === 'VIVRE|PENSER|CRÉER'`,
+      `window.location.href === ${JSON.stringify(entryUrl)} && Array.from(document.querySelectorAll('.orientation-door__orientation')).map((element) => element.textContent).join('|') === ${JSON.stringify(expectedEditorialHomeOrientations)}`,
     );
 
     const metamorphosisPackUrl = `${entryUrl}oeuvres/la-metamorphose/`;
