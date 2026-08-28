@@ -112,7 +112,7 @@ function updateLibraryNavigation(messages: LocaleMessages, visible: boolean): vo
   navigation.className = "site-navigation";
   navigation.setAttribute("aria-label", messages.libraryAction);
   const link = document.createElement("a");
-  link.href = libraryUrl.href;
+  link.href = applicationBaseUrl.href;
   link.setAttribute("aria-label", messages.libraryAction);
   link.title = messages.libraryAction;
 

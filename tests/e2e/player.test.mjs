@@ -2203,7 +2203,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       true,
     );
     await evaluate(page, "document.querySelector('.site-navigation a')?.click()");
-    await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");
+    await waitForExpression(
+      page,
+      `window.location.href === ${JSON.stringify(entryUrl)} && Array.from(document.querySelectorAll('.orientation-door__orientation')).map((element) => element.textContent).join('|') === 'VIVRE|PENSER|CRÉER'`,
+    );
 
     const metamorphosisPackUrl = `${entryUrl}oeuvres/la-metamorphose/`;
     await page.send("Emulation.setDeviceMetricsOverride", {
