@@ -148,6 +148,10 @@ function resolveApplicationRoute(route: string): string {
   return new URL(route.replace(/^\//, ""), applicationBaseUrl).href;
 }
 
+function resolveReviewCoverImage(coverImage: string): string {
+  return /^https:\/\//.test(coverImage) ? coverImage : resolveApplicationRoute(coverImage);
+}
+
 function renderResumePrompt(
   messages: LocaleMessages,
   sceneIndex: number,
@@ -577,7 +581,7 @@ async function renderReview(): Promise<void> {
       const figure = document.createElement("figure");
       figure.className = "review-card__cover";
       const image = document.createElement("img");
-      image.src = issue.coverImage;
+      image.src = resolveReviewCoverImage(issue.coverImage);
       image.alt = issue.coverImageAlt;
       image.loading = "lazy";
       image.decoding = "async";

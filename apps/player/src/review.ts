@@ -39,6 +39,19 @@ function isHttpUrl(value: unknown): value is string {
   }
 }
 
+function isInternalAssetPath(value: unknown): value is string {
+  return (
+    nonEmptyString(value) &&
+    !value.startsWith("/") &&
+    !value.includes("..") &&
+    /^[A-Za-z0-9][A-Za-z0-9/_-]*\.(?:avif|webp|png|jpe?g|svg)$/.test(value)
+  );
+}
+
+function isCoverImagePath(value: unknown): value is string {
+  return isHttpUrl(value) || isInternalAssetPath(value);
+}
+
 function isPublishedDate(value: unknown): value is string {
   return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
@@ -72,7 +85,7 @@ export function validateReviewRegistry(value: unknown): ReviewRegistry {
       }
 
       if ("subtitle" in issue && issue.subtitle !== undefined && !nonEmptyString(issue.subtitle)) return false;
-      if ("coverImage" in issue && issue.coverImage !== undefined && !isHttpUrl(issue.coverImage)) return false;
+      if ("coverImage" in issue && issue.coverImage !== undefined && !isCoverImagePath(issue.coverImage)) return false;
       if ("publishedAt" in issue && issue.publishedAt !== undefined && !isPublishedDate(issue.publishedAt)) {
         return false;
       }

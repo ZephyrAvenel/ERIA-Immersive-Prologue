@@ -47,11 +47,15 @@ test("review registry exposes the three published issues", () => {
   );
 });
 
-test("review registry validates issue metadata without requiring duplicated covers", () => {
+test("review registry validates issue metadata and keeps cover fallbacks optional", () => {
   assert.doesNotThrow(() => validateReviewRegistry(reviewRegistry));
   assert.equal(reviewRegistry.issues[0].coverImage?.endsWith("/rv-n01-cover.webp"), true);
-  assert.equal("coverImage" in reviewRegistry.issues[1], false);
-  assert.equal("coverImage" in reviewRegistry.issues[2], false);
+  assert.equal(reviewRegistry.issues[1].coverImage, "review/rv-n02-cover.webp");
+  assert.equal(reviewRegistry.issues[2].coverImage, "review/rv-n03-cover.webp");
+
+  const missingCover = structuredClone(reviewRegistry);
+  delete missingCover.issues[1].coverImage;
+  assert.doesNotThrow(() => validateReviewRegistry(missingCover));
 });
 
 test("review registry rejects invalid issue URLs and duplicates", () => {
@@ -68,4 +72,11 @@ test("review registry rejects invalid issue URLs and duplicates", () => {
     number: duplicateNumber.issues[0].number,
   };
   assert.throws(() => validateReviewRegistry(duplicateNumber), /INE_REVIEW_ISSUE_NUMBER_DUPLICATE/);
+
+  const invalidCover = structuredClone(reviewRegistry);
+  invalidCover.issues[1] = {
+    ...invalidCover.issues[1],
+    coverImage: "../rv-n02-cover.webp",
+  };
+  assert.throws(() => validateReviewRegistry(invalidCover), /INE_REVIEW_ISSUES_INVALID/);
 });

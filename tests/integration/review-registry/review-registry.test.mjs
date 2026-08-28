@@ -48,6 +48,14 @@ test("living review registry remains a threshold and does not duplicate issue HT
   const registry = await readProjectJson("apps", "player", "src", "review-registry.json");
   const publishedIssues = registry.issues.filter(({ status }) => status === "published");
   assert.equal(publishedIssues.length, 3);
+  assert.deepEqual(
+    publishedIssues.map(({ coverImage }) => coverImage),
+    [
+      "https://zephyravenel.github.io/Recits-Vivants-Revue/rv-n01-cover.webp",
+      "review/rv-n02-cover.webp",
+      "review/rv-n03-cover.webp",
+    ],
+  );
   assert.equal(
     publishedIssues.every(({ url }) => new URL(url).hostname === "zephyravenel.github.io"),
     true,

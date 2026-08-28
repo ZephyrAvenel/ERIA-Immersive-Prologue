@@ -17,6 +17,7 @@
       "number": 2,
       "title": "La carte n’est pas le territoire",
       "status": "published",
+      "coverImage": "review/rv-n02-cover.webp",
       "coverImageAlt": "Couverture de Récits Vivants N°02 — La carte n’est pas le territoire.",
       "url": "https://zephyravenel.github.io/Recits-Vivants-Revue/Numero-2.html",
       "language": "fr"
@@ -26,6 +27,7 @@
       "number": 3,
       "title": "Ce qui nous échappe",
       "status": "published",
+      "coverImage": "review/rv-n03-cover.webp",
       "coverImageAlt": "Couverture de Récits Vivants N°03 — Ce qui nous échappe.",
       "url": "https://zephyravenel.github.io/Recits-Vivants-Revue/Numero-3.html",
       "language": "fr"
