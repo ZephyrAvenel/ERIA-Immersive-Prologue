@@ -54,6 +54,7 @@ import {
   type LocalizedEditorialFamily,
   type PublishedAugmentedWorkshop,
 } from "./editorial";
+import { publishedReviewIssues } from "./review";
 import { createBrowserPublicThresholdSession } from "./threshold-session";
 import "./styles.css";
 
@@ -78,6 +79,7 @@ declare const __INE_BASE__: string;
 const applicationBaseUrl = new URL(__INE_BASE__, globalThis.location.origin);
 const registryUrl = new URL("packs/index.json", applicationBaseUrl);
 const libraryUrl = new URL("bibliotheque/", applicationBaseUrl);
+const reviewUrl = new URL("revue/", applicationBaseUrl);
 const workshopsUrl = new URL("ateliers/", applicationBaseUrl);
 
 function prefersReducedMotion(): boolean {
@@ -295,6 +297,11 @@ function isLibraryRoute(): boolean {
 function isWorkshopsRoute(): boolean {
   const path = globalThis.location.pathname;
   return path === workshopsUrl.pathname || path === workshopsUrl.pathname.replace(/\/$/, "");
+}
+
+function isReviewRoute(): boolean {
+  const path = globalThis.location.pathname;
+  return path === reviewUrl.pathname || path === reviewUrl.pathname.replace(/\/$/, "");
 }
 
 function isHomeRoute(): boolean {
@@ -516,6 +523,91 @@ async function renderWorkshops(): Promise<void> {
     access.textContent =
       workshop.status === "published" ? messages.workshopsPublishedAccessPending : messages.workshopsNoAccess;
     cardContent.append(status, orientation, workshopTitle, workshopDescription, access);
+    grid.append(article);
+  }
+
+  section.append(header, grid);
+  mount.append(section);
+}
+
+async function renderReview(): Promise<void> {
+  const messages = resolveLocale(navigator.language);
+  const family = findEditorialFamily(editorialFamilies(messages.language), "living-review");
+  const issues = publishedReviewIssues();
+  updateShell(messages, messages.reviewTitle);
+  updateLibraryNavigation(messages, true);
+  const skipLink = document.querySelector<HTMLAnchorElement>(".skip-link");
+  if (skipLink) {
+    skipLink.href = "#review";
+    skipLink.textContent = messages.skipToNarrative;
+  }
+  mount.removeAttribute("aria-busy");
+  mount.replaceChildren();
+
+  const section = document.createElement("section");
+  section.id = "review";
+  section.className = "review";
+  section.setAttribute("aria-labelledby", "review-title");
+
+  const header = document.createElement("header");
+  header.className = "review__header";
+  const eyebrow = document.createElement("p");
+  eyebrow.className = "review__eyebrow";
+  eyebrow.textContent = `${family.orientation} · ${family.title}`;
+  const title = document.createElement("h1");
+  title.id = "review-title";
+  title.textContent = messages.reviewHeroTitle;
+  const description = document.createElement("p");
+  description.textContent = messages.reviewDescription;
+  header.append(eyebrow, title, description);
+
+  const grid = document.createElement("div");
+  grid.className = "review__grid";
+  for (const issue of issues) {
+    const article = document.createElement("article");
+    article.className = "review-card";
+    article.dataset.reviewIssueId = issue.id;
+    article.dataset.reviewIssueNumber = String(issue.number);
+
+    const link = document.createElement("a");
+    link.className = "review-card__link";
+    link.href = issue.url;
+
+    if (issue.coverImage) {
+      const figure = document.createElement("figure");
+      figure.className = "review-card__cover";
+      const image = document.createElement("img");
+      image.src = issue.coverImage;
+      image.alt = issue.coverImageAlt;
+      image.loading = "lazy";
+      image.decoding = "async";
+      figure.append(image);
+      link.append(figure);
+    } else {
+      const coverFallback = document.createElement("div");
+      coverFallback.className = "review-card__cover review-card__cover--typographic";
+      coverFallback.setAttribute("role", "img");
+      coverFallback.setAttribute("aria-label", issue.coverImageAlt);
+      const coverLabel = document.createElement("span");
+      coverLabel.textContent = `N°${String(issue.number).padStart(2, "0")}`;
+      coverFallback.append(coverLabel);
+      link.append(coverFallback);
+    }
+
+    const issueNumber = document.createElement("p");
+    issueNumber.className = "review-card__number";
+    issueNumber.textContent = `N°${String(issue.number).padStart(2, "0")}`;
+    const issueTitle = document.createElement("h2");
+    issueTitle.textContent = issue.title;
+    const subtitle = document.createElement("p");
+    subtitle.className = "review-card__subtitle";
+    subtitle.textContent = issue.subtitle ?? messages.reviewIssueFallbackSubtitle;
+    const access = document.createElement("p");
+    access.className = "review-card__access";
+    access.textContent = messages.reviewIssueAccess;
+    link.setAttribute("aria-label", `${messages.reviewIssueAccess} — N°${String(issue.number).padStart(2, "0")}, ${issue.title}`);
+    link.append(issueNumber, issueTitle, subtitle, access);
+    article.append(link);
     grid.append(article);
   }
 
@@ -1313,6 +1405,10 @@ async function start(): Promise<void> {
   }
   if (!hasPackOverride && isLibraryRoute()) {
     await renderLibrary();
+    return;
+  }
+  if (!hasPackOverride && isReviewRoute()) {
+    await renderReview();
     return;
   }
   if (!hasPackOverride && isWorkshopsRoute()) {

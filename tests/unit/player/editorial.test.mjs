@@ -9,7 +9,7 @@ import {
   validateEditorialRegistry,
 } from "../../../.test-build/apps/player/src/editorial.js";
 
-test("editorial registry declares the two content families", () => {
+test("editorial registry declares the three content families in editorial order", () => {
   const families = editorialFamilies("fr");
   assert.deepEqual(
     families.map(({ id, orientation, title, description, route }) => ({
@@ -28,10 +28,53 @@ test("editorial registry declares the two content families", () => {
         route: "/bibliotheque/",
       },
       {
+        id: "living-review",
+        orientation: "PENSER",
+        title: "Récits Vivants · La Revue",
+        description: "Des questions à explorer pour déplacer notre manière de voir.",
+        route: "/revue/",
+      },
+      {
         id: "augmented-workshops",
         orientation: "CRÉER",
         title: "Ateliers augmentés",
         description: "Des formations créatives pour apprendre à créer avec l’IA.",
+        route: "/ateliers/",
+      },
+    ],
+  );
+});
+
+test("editorial registry localizes the living review family in English", () => {
+  const families = editorialFamilies("en");
+  assert.deepEqual(
+    families.map(({ id, orientation, title, description, route }) => ({
+      id,
+      orientation,
+      title,
+      description,
+      route,
+    })),
+    [
+      {
+        id: "narrative-packs",
+        orientation: "LIVE",
+        title: "Narrative Packs",
+        description: "Narrative experiences to journey through.",
+        route: "/bibliotheque/",
+      },
+      {
+        id: "living-review",
+        orientation: "THINK",
+        title: "Living Stories · The Review",
+        description: "Questions to explore and shift the way we see.",
+        route: "/revue/",
+      },
+      {
+        id: "augmented-workshops",
+        orientation: "CREATE",
+        title: "Augmented workshops",
+        description: "Creative learning paths for learning to create with AI.",
         route: "/ateliers/",
       },
     ],
@@ -139,10 +182,16 @@ test("editorial registry rejects duplicate or missing family declarations", () =
     () =>
       validateEditorialRegistry({
         ...editorialRegistry,
-        families: [editorialRegistry.families[0], editorialRegistry.families[0]],
+        families: [editorialRegistry.families[0], editorialRegistry.families[0], editorialRegistry.families[2]],
       }),
     /INE_EDITORIAL_FAMILY_DUPLICATE/,
   );
+});
+
+test("editorial registry rejects families declared out of order", () => {
+  const registry = structuredClone(editorialRegistry);
+  registry.families = [registry.families[1], registry.families[0], registry.families[2]];
+  assert.throws(() => validateEditorialRegistry(registry), /INE_EDITORIAL_FAMILY_ORDER_INVALID/);
 });
 
 test("editorial registry accepts a complete published workshop contract", () => {

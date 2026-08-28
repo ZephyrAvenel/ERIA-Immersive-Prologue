@@ -35,6 +35,11 @@ export interface LocaleMessages {
   readonly workshopsTitle: string;
   readonly workshopsHeroTitle: string;
   readonly workshopsDescription: string;
+  readonly reviewTitle: string;
+  readonly reviewHeroTitle: string;
+  readonly reviewDescription: string;
+  readonly reviewIssueFallbackSubtitle: string;
+  readonly reviewIssueAccess: string;
   readonly workshopsStatusPlanned: string;
   readonly workshopsStatusPublished: string;
   readonly workshopsNoAccess: string;

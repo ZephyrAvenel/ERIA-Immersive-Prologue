@@ -320,9 +320,10 @@ async function waitForOrientationReady(client) {
     client,
     `(() => {
       const firstAction = document.querySelector('.orientation-door__action');
-      return document.querySelectorAll('.orientation-door').length === 2
-        && ['Deux manières de poursuivre', 'Two ways to continue'].includes(document.querySelector('#home-title')?.textContent ?? '')
+      return document.querySelectorAll('.orientation-door').length === 3
+        && ['Choisir une manière de poursuivre', 'Choose a way to continue'].includes(document.querySelector('#home-title')?.textContent ?? '')
         && (document.body.textContent?.includes('VIVRE') || document.body.textContent?.includes('LIVE'))
+        && (document.body.textContent?.includes('PENSER') || document.body.textContent?.includes('THINK'))
         && (document.body.textContent?.includes('CRÉER') || document.body.textContent?.includes('CREATE'))
         && firstAction instanceof HTMLAnchorElement;
     })()`,
@@ -678,6 +679,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
 
     const entryUrl = `http://127.0.0.1:${port}${baseUrl}`;
     const libraryUrl = `${entryUrl}bibliotheque/`;
+    const reviewUrl = `${entryUrl}revue/`;
     const workshopsUrl = `${entryUrl}ateliers/`;
     const url = `${entryUrl}oeuvres/les-gardiens-des-recits-vivants/`;
     await page.send("Emulation.setEmulatedMedia", {
@@ -720,7 +722,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     const entryIsFrench = entryState.language.toLowerCase().startsWith("fr");
     assert.equal(
       entryState.title,
-      entryIsFrench ? "Deux mani\u00e8res de poursuivre" : "Two ways to continue",
+      entryIsFrench ? "Choisir une mani\u00e8re de poursuivre" : "Choose a way to continue",
     );
     assert.deepEqual(
       entryState.doors,
@@ -733,6 +735,14 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               description: "Des exp\u00e9riences narratives \u00e0 traverser.",
               href: libraryUrl,
               linkLabel: "Entrer \u2014 VIVRE, Packs narratifs",
+            },
+            {
+              family: "living-review",
+              orientation: "PENSER",
+              title: "R\u00e9cits Vivants \u00b7 La Revue",
+              description: "Des questions \u00e0 explorer pour d\u00e9placer notre mani\u00e8re de voir.",
+              href: reviewUrl,
+              linkLabel: "Entrer \u2014 PENSER, R\u00e9cits Vivants \u00b7 La Revue",
             },
             {
               family: "augmented-workshops",
@@ -751,6 +761,14 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               description: "Narrative experiences to journey through.",
               href: libraryUrl,
               linkLabel: "Enter \u2014 LIVE, Narrative Packs",
+            },
+            {
+              family: "living-review",
+              orientation: "THINK",
+              title: "Living Stories \u00b7 The Review",
+              description: "Questions to explore and shift the way we see.",
+              href: reviewUrl,
+              linkLabel: "Enter \u2014 THINK, Living Stories \u00b7 The Review",
             },
             {
               family: "augmented-workshops",
@@ -782,6 +800,148 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       true,
       "returning to the public root in the same session should not replay the threshold",
     );
+
+    await evaluate(page, "document.querySelector('[data-family=\"living-review\"] a')?.click()");
+    await waitForExpression(
+      page,
+      "window.location.pathname.endsWith('/revue/') && document.querySelectorAll('.review-card').length === 3",
+    );
+    const reviewState = await evaluate(
+      page,
+      `({
+        path: window.location.pathname,
+        title: document.querySelector('#review-title')?.textContent,
+        cards: Array.from(document.querySelectorAll('.review-card')).map((card) => ({
+          number: card.getAttribute('data-review-issue-number'),
+          title: card.querySelector('h2')?.textContent,
+          href: card.querySelector('a')?.href,
+          linkLabel: card.querySelector('a')?.getAttribute('aria-label'),
+          coverPresent: card.querySelector('.review-card__cover') !== null
+        })),
+        noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth
+      })`,
+    );
+    assert.equal(reviewState.path.endsWith("/revue/"), true);
+    assert.equal(reviewState.title, entryIsFrench ? "R\u00e9cits Vivants \u00b7 La Revue" : "Living Stories \u00b7 The Review");
+    assert.deepEqual(
+      reviewState.cards,
+      entryIsFrench
+        ? [
+            {
+              number: "1",
+              title: "Habiter le d\u00e9saccord",
+              href: "https://zephyravenel.github.io/Recits-Vivants-Revue/Numero-1.html",
+              linkLabel: "Lire le num\u00e9ro \u2014 N\u00b001, Habiter le d\u00e9saccord",
+              coverPresent: true,
+            },
+            {
+              number: "2",
+              title: "La carte n\u2019est pas le territoire",
+              href: "https://zephyravenel.github.io/Recits-Vivants-Revue/Numero-2.html",
+              linkLabel: "Lire le num\u00e9ro \u2014 N\u00b002, La carte n\u2019est pas le territoire",
+              coverPresent: true,
+            },
+            {
+              number: "3",
+              title: "Ce qui nous \u00e9chappe",
+              href: "https://zephyravenel.github.io/Recits-Vivants-Revue/Numero-3.html",
+              linkLabel: "Lire le num\u00e9ro \u2014 N\u00b003, Ce qui nous \u00e9chappe",
+              coverPresent: true,
+            },
+          ]
+        : [
+            {
+              number: "1",
+              title: "Habiter le d\u00e9saccord",
+              href: "https://zephyravenel.github.io/Recits-Vivants-Revue/Numero-1.html",
+              linkLabel: "Read the issue \u2014 N\u00b001, Habiter le d\u00e9saccord",
+              coverPresent: true,
+            },
+            {
+              number: "2",
+              title: "La carte n\u2019est pas le territoire",
+              href: "https://zephyravenel.github.io/Recits-Vivants-Revue/Numero-2.html",
+              linkLabel: "Read the issue \u2014 N\u00b002, La carte n\u2019est pas le territoire",
+              coverPresent: true,
+            },
+            {
+              number: "3",
+              title: "Ce qui nous \u00e9chappe",
+              href: "https://zephyravenel.github.io/Recits-Vivants-Revue/Numero-3.html",
+              linkLabel: "Read the issue \u2014 N\u00b003, Ce qui nous \u00e9chappe",
+              coverPresent: true,
+            },
+          ],
+    );
+    assert.equal(reviewState.noHorizontalOverflow, true);
+
+    const reviewResponsiveViewports = [
+      { label: "desktop large", width: 1440, height: 900, mobile: false },
+      { label: "laptop", width: 1280, height: 800, mobile: false },
+      { label: "tablette paysage", width: 1024, height: 768, mobile: false },
+      { label: "tablette portrait", width: 768, height: 1024, mobile: false },
+      { label: "smartphone paysage", width: 844, height: 390, mobile: true },
+      { label: "smartphone portrait", width: 390, height: 844, mobile: true },
+    ];
+    for (const viewport of reviewResponsiveViewports) {
+      await page.send("Emulation.setDeviceMetricsOverride", {
+        width: viewport.width,
+        height: viewport.height,
+        deviceScaleFactor: 1,
+        mobile: viewport.mobile,
+      });
+      await loadUrl(page, reviewUrl);
+      await waitForExpression(
+        page,
+        "window.location.pathname.endsWith('/revue/') && document.querySelectorAll('.review-card').length === 3",
+      );
+      const responsiveReviewState = await evaluate(
+        page,
+        `(() => {
+          const links = Array.from(document.querySelectorAll('.review-card__link'));
+          const grid = document.querySelector('.review__grid');
+          return {
+            cardCount: document.querySelectorAll('.review-card').length,
+            issueNumbers: Array.from(document.querySelectorAll('.review-card')).map((card) => card.getAttribute('data-review-issue-number')),
+            noHorizontalOverflow: document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+            hasReadableGrid: Boolean(grid && grid.getBoundingClientRect().width > 0),
+            linksUsable: links.length === 3 && links.every((link) => {
+              const rect = link.getBoundingClientRect();
+              return rect.width > 0 && rect.height >= 44 && link instanceof HTMLAnchorElement && link.href.startsWith('https://zephyravenel.github.io/Recits-Vivants-Revue/');
+            })
+          };
+        })()`,
+      );
+      assert.equal(
+        responsiveReviewState.cardCount,
+        3,
+        `/revue/ should keep the three published issues on ${viewport.label}`,
+      );
+      assert.deepEqual(
+        responsiveReviewState.issueNumbers,
+        ["1", "2", "3"],
+        `/revue/ should preserve issue order on ${viewport.label}`,
+      );
+      assert.equal(
+        responsiveReviewState.noHorizontalOverflow,
+        true,
+        `/revue/ should not overflow horizontally on ${viewport.label}`,
+      );
+      assert.equal(
+        responsiveReviewState.hasReadableGrid,
+        true,
+        `/revue/ should keep a readable issue grid on ${viewport.label}`,
+      );
+      assert.equal(
+        responsiveReviewState.linksUsable,
+        true,
+        `/revue/ issue links should remain usable on ${viewport.label}`,
+      );
+    }
+    await page.send("Emulation.clearDeviceMetricsOverride");
+
+    await loadUrl(page, entryUrl);
+    await waitForOrientationReady(page);
 
     await evaluate(page, "document.querySelector('[data-family=\"augmented-workshops\"] a')?.click()");
     await waitForExpression(

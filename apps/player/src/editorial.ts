@@ -1,8 +1,14 @@
 import registry from "./editorial-registry.json" with { type: "json" };
 
 export type EditorialLanguage = "fr" | "en";
-export type EditorialFamilyId = "narrative-packs" | "augmented-workshops";
+export type EditorialFamilyId = "narrative-packs" | "living-review" | "augmented-workshops";
 export type EditorialStatus = "planned" | "published";
+
+const requiredEditorialFamilies: readonly EditorialFamilyId[] = [
+  "narrative-packs",
+  "living-review",
+  "augmented-workshops",
+];
 
 export interface EditorialLabels {
   readonly orientation: string;
@@ -124,11 +130,11 @@ export function validateEditorialRegistry(value: unknown): EditorialRegistry {
 
   const families = value.families;
   if (
-    families.length !== 2 ||
+    families.length !== requiredEditorialFamilies.length ||
     !families.every(
       (family) =>
         isRecord(family) &&
-        (family.id === "narrative-packs" || family.id === "augmented-workshops") &&
+        requiredEditorialFamilies.includes(family.id as EditorialFamilyId) &&
         nonEmptyString(family.route) &&
         hasLabels(family.labels),
     )
@@ -138,8 +144,11 @@ export function validateEditorialRegistry(value: unknown): EditorialRegistry {
 
   const familyIds = new Set(families.map((family) => (family as EditorialFamily).id));
   if (familyIds.size !== families.length) throw new Error("INE_EDITORIAL_FAMILY_DUPLICATE");
-  if (!familyIds.has("narrative-packs") || !familyIds.has("augmented-workshops")) {
+  if (!requiredEditorialFamilies.every((familyId) => familyIds.has(familyId))) {
     throw new Error("INE_EDITORIAL_REQUIRED_FAMILY_MISSING");
+  }
+  if (!requiredEditorialFamilies.every((familyId, index) => (families[index] as EditorialFamily).id === familyId)) {
+    throw new Error("INE_EDITORIAL_FAMILY_ORDER_INVALID");
   }
 
   const workshops = value.workshops;

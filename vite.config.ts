@@ -77,6 +77,10 @@ function generateWorkEntryPages(): void {
   mkdirSync(workshopsTarget, { recursive: true });
   writeFileSync(resolve(workshopsTarget, "index.html"), applicationHtml);
 
+  const reviewTarget = resolve("dist", "revue");
+  mkdirSync(reviewTarget, { recursive: true });
+  writeFileSync(resolve(reviewTarget, "index.html"), applicationHtml);
+
   for (const entry of registry.packs) {
     const manifestPath = resolve("packs", entry.manifest);
     const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Record<string, unknown>;

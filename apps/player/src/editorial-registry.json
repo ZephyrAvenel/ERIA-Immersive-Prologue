@@ -19,6 +19,22 @@
       }
     },
     {
+      "id": "living-review",
+      "route": "/revue/",
+      "labels": {
+        "fr": {
+          "orientation": "PENSER",
+          "title": "Récits Vivants · La Revue",
+          "description": "Des questions à explorer pour déplacer notre manière de voir."
+        },
+        "en": {
+          "orientation": "THINK",
+          "title": "Living Stories · The Review",
+          "description": "Questions to explore and shift the way we see."
+        }
+      }
+    },
+    {
       "id": "augmented-workshops",
       "route": "/ateliers/",
       "labels": {
