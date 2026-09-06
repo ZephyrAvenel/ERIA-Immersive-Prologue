@@ -1600,3 +1600,167 @@ test("augmented mapping workshop is valid, registered, and declarative", async (
   assert.equal(engine.currentPage.id, "page-26");
   assert.equal(engine.canGoNext, false);
 });
+
+test("augmented art workshop is valid, complete, registered, and route-ready", async () => {
+  const pack = await readProjectJson("packs", "workshop-003-art-augmente", "pack.json");
+  const result = validateWorkshopPack(pack);
+  assert.deepEqual(result, { valid: true, errors: [] });
+  assert.equal(pack.format, "ine-workshop-pack");
+  assert.equal(pack.id, "art-augmente");
+  assert.equal(pack.slug, "art-augmente");
+  assert.equal(pack.version, "1.0");
+  assert.equal(pack.language, "fr");
+  assert.equal(pack.startPage, "page-01");
+  assert.equal(pack.movements.length, 7);
+  assert.equal(pack.pages.length, 26);
+
+  assert.deepEqual(
+    pack.movements.map((movement) => [movement.id, movement.order, movement.title]),
+    [
+      ["intention", 1, "Intention"],
+      ["atmosphere", 2, "Atmosphère"],
+      ["signes", 3, "Signes"],
+      ["variations", 4, "Variations"],
+      ["regard", 5, "Regard"],
+      ["affinage", 6, "Affinage"],
+      ["image-seuil", 7, "Image-seuil"],
+    ],
+  );
+
+  assert.deepEqual(
+    pack.pages.map((page) => [page.id, page.order, page.movementId, page.title]),
+    [
+      ["page-01", 1, "intention", "L’impulsion"],
+      ["page-02", 2, "intention", "Ce que l’image doit faire ressentir"],
+      ["page-03", 3, "intention", "Ce qu’elle doit laisser ouvert"],
+      ["page-04", 4, "intention", "L’intention visuelle"],
+      ["page-05", 5, "atmosphere", "La lumière"],
+      ["page-06", 6, "atmosphere", "La matière"],
+      ["page-07", 7, "atmosphere", "La distance"],
+      ["page-08", 8, "atmosphere", "La palette sensible"],
+      ["page-09", 9, "signes", "Les objets porteurs"],
+      ["page-10", 10, "signes", "Les motifs"],
+      ["page-11", 11, "signes", "Présence et absence"],
+      ["page-12", 12, "signes", "Le signe juste"],
+      ["page-13", 13, "variations", "Première direction"],
+      ["page-14", 14, "variations", "Changer le point de vue"],
+      ["page-15", 15, "variations", "Changer l’échelle"],
+      ["page-16", 16, "variations", "Changer de langage visuel"],
+      ["page-17", 17, "regard", "Première impression"],
+      ["page-18", 18, "regard", "Fidélité à l’intention"],
+      ["page-19", 19, "regard", "Ce que l’image dit trop"],
+      ["page-20", 20, "regard", "Ce qu’elle laisse encore ouvert"],
+      ["page-21", 21, "affinage", "Ce qu’il faut conserver"],
+      ["page-22", 22, "affinage", "Ce qui doit changer"],
+      ["page-23", 23, "affinage", "Modifier sans tout refaire"],
+      ["page-24", 24, "affinage", "Ce que la nouvelle version gagne et perd"],
+      ["page-25", 25, "image-seuil", "Ce que cette image ouvre"],
+      ["page-26", 26, "image-seuil", "Ce qu’elle laisse hors champ"],
+    ],
+  );
+
+  const supportedTypes = new Set(["text", "textarea", "choice", "reveal", "promptCopy", "recall"]);
+  assert.equal(pack.pages.every((page) => page.blocks.every((block) => supportedTypes.has(block.type))), true);
+  assert.equal(JSON.stringify(pack).includes("[TEMPORAIRE]"), false);
+
+  const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
+  const blockIdSet = new Set(blockIds);
+  for (const traceId of [
+    "visual_impulse",
+    "desired_feeling",
+    "open_space",
+    "visual_intention",
+    "light",
+    "material",
+    "distance",
+    "sensitive_palette",
+    "visual_objects",
+    "visual_motifs",
+    "presence_absence",
+    "core_signs",
+    "direction_a",
+    "direction_b",
+    "direction_c",
+    "direction_d",
+    "first_impression",
+    "intention_fidelity",
+    "too_explicit",
+    "remaining_openness",
+    "visual_invariants",
+    "change_target",
+    "refinement_options",
+    "refinement_gain",
+    "refinement_loss",
+    "refined_version_choice",
+    "image_opening",
+    "final_opening",
+    "final_out_of_frame",
+    "stop_reason",
+  ]) {
+    assert.equal(blockIds.includes(traceId), true, `${traceId} should exist as a prepared memory trace`);
+  }
+
+  assert.equal(blockIdSet.size, blockIds.length, "block ids should be unique");
+  const recalls = pack.pages.flatMap((page) => page.blocks.filter((block) => block.type === "recall"));
+  assert.equal(
+    recalls.every((block) => blockIdSet.has(block.sourceBlockId)),
+    true,
+    "recall sourceBlockId values should reference existing blocks",
+  );
+
+  const promptCopies = pack.pages.flatMap((page) =>
+    page.blocks.filter((block) => block.type === "promptCopy").map((block) => [page.order, block.id]),
+  );
+  assert.deepEqual(
+    promptCopies,
+    [
+      [3, "prompt-open-space"],
+      [7, "prompt-distance"],
+      [10, "prompt-visual-motifs"],
+      [11, "prompt-presence-absence"],
+      [14, "prompt-point-of-view"],
+      [15, "prompt-scale"],
+      [16, "prompt-visual-language"],
+      [18, "prompt-intention-fidelity"],
+      [20, "prompt-remaining-openness"],
+      [23, "prompt-refinement"],
+    ],
+  );
+  assert.equal(promptCopies.length, 10);
+  const humanOnlyPages = new Set([1, 2, 4, 5, 6, 8, 9, 12, 13, 17, 19, 21, 22, 24, 25, 26]);
+  assert.equal(
+    pack.pages
+      .filter((page) => humanOnlyPages.has(page.order))
+      .every((page) => page.blocks.every((block) => block.type !== "promptCopy")),
+    true,
+    "human-only pages should not contain promptCopy blocks",
+  );
+  assert.equal(
+    pack.pages
+      .find((page) => page.order === 26)
+      .blocks.filter((block) => block.type === "recall")
+      .every((block) => !["final_opening", "final_out_of_frame", "stop_reason"].includes(block.sourceBlockId)),
+    true,
+    "page 26 should not recall textarea values from the same page",
+  );
+
+  const registry = await readProjectJson("apps", "player", "src", "editorial-registry.json");
+  const workshops = registry.workshops.map((workshop) => workshop.id);
+  assert.deepEqual(workshops, [
+    "ecriture-augmentee",
+    "cartographie-augmentee",
+    "art-augmente",
+    "composer-recit-vivant-ia",
+  ]);
+  const artWorkshop = registry.workshops.find((workshop) => workshop.id === "art-augmente");
+  assert.equal(artWorkshop.status, "published");
+  assert.equal(artWorkshop.slug, "art-augmente");
+  assert.equal(artWorkshop.manifest, "packs/workshop-003-art-augmente/pack.json");
+  assert.equal(artWorkshop.coverImage, "packs/workshop-003-art-augmente/assets/images/00-couverture-art-augmente.png");
+
+  const engine = new WorkshopEngine(pack);
+  assert.equal(engine.currentPage.id, "page-01");
+  for (let index = 1; index < pack.pages.length; index += 1) engine.next();
+  assert.equal(engine.currentPage.id, "page-26");
+  assert.equal(engine.canGoNext, false);
+});

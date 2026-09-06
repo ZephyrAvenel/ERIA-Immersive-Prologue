@@ -1,0 +1,403 @@
+{
+  "$schema": "../../schemas/workshop-pack.schema.json",
+  "format": "ine-workshop-pack",
+  "version": "1.0",
+  "id": "art-augmente",
+  "slug": "art-augmente",
+  "title": "Art augmenté",
+  "subtitle": "Créer avec l’IA sans renoncer à son regard.",
+  "language": "fr",
+  "startPage": "page-01",
+  "movements": [
+    { "id": "intention", "order": 1, "title": "Intention", "description": "Savoir ce que l’image doit faire avant de décider ce qu’elle doit montrer." },
+    { "id": "atmosphere", "order": 2, "title": "Atmosphère", "description": "Construire un climat avant de construire une scène." },
+    { "id": "signes", "order": 3, "title": "Signes", "description": "Choisir ce qui porte le sens sans tout montrer." },
+    { "id": "variations", "order": 4, "title": "Variations", "description": "Produire plusieurs hypothèses réellement différentes." },
+    { "id": "regard", "order": 5, "title": "Regard", "description": "Apprendre à comparer sans confondre spectaculaire et juste." },
+    { "id": "affinage", "order": 6, "title": "Affinage", "description": "Modifier sans détruire ce qui fonctionne." },
+    { "id": "image-seuil", "order": 7, "title": "Image-seuil", "description": "Choisir une image qui ouvre plutôt qu’une image qui clôt." }
+  ],
+  "pages": [
+    {
+      "id": "page-01",
+      "movementId": "intention",
+      "order": 1,
+      "title": "L’impulsion",
+      "blocks": [
+        { "id": "page-01-text-01", "type": "text", "text": "Parfois, une image commence avant sa forme." },
+        { "id": "page-01-text-02", "type": "text", "text": "Une scène insiste. Une sensation revient. Une présence apparaît. Un espace cherche à devenir visible." },
+        { "id": "visual_impulse", "type": "textarea", "label": "Quelle image cherchez-vous à faire naître ?", "placeholder": "Une scène, un moment, une présence, un lieu, une tension, une apparition…" },
+        { "id": "page-01-text-03", "type": "text", "text": "Ne cherchez pas encore le bon prompt. Commencez par ce qui cherche à apparaître." }
+      ]
+    },
+    {
+      "id": "page-02",
+      "movementId": "intention",
+      "order": 2,
+      "title": "Ce que l’image doit faire ressentir",
+      "blocks": [
+        { "id": "page-02-recall-visual-impulse", "type": "recall", "sourceBlockId": "visual_impulse", "label": "Image cherchée", "emptyText": "Vous n’avez encore rien noté à l’étape précédente." },
+        { "id": "page-02-text-01", "type": "text", "text": "Une image ne se réduit pas à ce qu’elle montre." },
+        { "id": "page-02-text-02", "type": "text", "text": "Elle agit aussi par ce qu’elle fait éprouver." },
+        { "id": "desired_feeling", "type": "textarea", "label": "Que voulez-vous que quelqu’un puisse ressentir devant cette image ?", "placeholder": "Une tension, un apaisement, un appel, une étrangeté, un vertige, une présence…" },
+        { "id": "page-02-text-03", "type": "text", "text": "Avant de choisir les objets, commencez par choisir la qualité de l’expérience." }
+      ]
+    },
+    {
+      "id": "page-03",
+      "movementId": "intention",
+      "order": 3,
+      "title": "Ce qu’elle doit laisser ouvert",
+      "blocks": [
+        { "id": "page-03-recall-visual-impulse", "type": "recall", "sourceBlockId": "visual_impulse", "label": "Impulsion visuelle", "emptyText": "Aucune impulsion n’a encore été notée." },
+        { "id": "page-03-recall-desired-feeling", "type": "recall", "sourceBlockId": "desired_feeling", "label": "Effet sensible recherché", "emptyText": "Aucun effet sensible n’a encore été noté." },
+        { "id": "page-03-text-01", "type": "text", "text": "Une image peut devenir trop explicative." },
+        { "id": "page-03-text-02", "type": "text", "text": "À force de tout montrer, elle peut ne plus laisser aucune place au regard." },
+        { "id": "open_space", "type": "textarea", "label": "Qu’est-ce que cette image ne doit pas résoudre ou expliquer complètement ?", "placeholder": "Ce qui doit rester ambigu, hors champ, à imaginer, à rencontrer…" },
+        { "id": "prompt-open-space", "type": "promptCopy", "label": "Explorer avec l’IA", "description": "Copiez votre impulsion et l’effet sensible recherché ci-dessus avant d’utiliser ce prompt.", "text": "Je cherche à faire naître cette image :\n\n[COLLEZ ICI VOTRE IMPULSION VISUELLE]\n\nEt je veux qu’elle fasse ressentir :\n\n[COLLEZ ICI L’EFFET SENSIBLE RECHERCHÉ]\n\nJe cherche maintenant ce que l’image devrait laisser ouvert plutôt que d’expliquer.\n\nNe me donne pas directement une solution.\n\nPose-moi 5 questions courtes qui pourraient m’aider à repérer :\n- ce qui risquerait de devenir trop littéral ;\n- ce qui mérite de rester ambigu ;\n- ce qui gagnerait à rester hors champ ;\n- ce que le regardeur devrait pouvoir imaginer lui-même ;\n- ce qui ne doit pas être transformé en symbole trop explicite.\n\nImportant :\n- ne décide pas à ma place ce qui doit être caché ;\n- ne cherche pas à rendre l’image mystérieuse artificiellement ;\n- ne suppose pas qu’une zone floue est toujours préférable ;\n- ne reformule pas mon intention comme si tu savais mieux ce que je cherche.\n\nLe but est seulement de m’aider à protéger un espace d’ouverture dans l’image." }
+      ]
+    },
+    {
+      "id": "page-04",
+      "movementId": "intention",
+      "order": 4,
+      "title": "L’intention visuelle",
+      "blocks": [
+        { "id": "page-04-recall-visual-impulse", "type": "recall", "sourceBlockId": "visual_impulse", "label": "Impulsion visuelle", "emptyText": "Aucune impulsion n’a encore été notée." },
+        { "id": "page-04-recall-desired-feeling", "type": "recall", "sourceBlockId": "desired_feeling", "label": "Effet sensible recherché", "emptyText": "Aucun effet sensible n’a encore été noté." },
+        { "id": "page-04-recall-open-space", "type": "recall", "sourceBlockId": "open_space", "label": "Espace d’ouverture", "emptyText": "Aucun espace d’ouverture n’a encore été noté." },
+        { "id": "page-04-text-01", "type": "text", "text": "Vous avez maintenant ce qui cherche à apparaître, ce que l’image doit faire ressentir et ce qu’elle doit laisser ouvert." },
+        { "id": "visual_intention", "type": "textarea", "label": "Complétez : Cette image doit faire sentir… sans expliquer…", "placeholder": "Cette image doit faire sentir… sans expliquer…" },
+        { "id": "page-04-text-02", "type": "text", "text": "Cette phrase devient votre intention visuelle. Elle servira de repère tout au long du parcours." }
+      ]
+    },
+    {
+      "id": "page-05",
+      "movementId": "atmosphere",
+      "order": 5,
+      "title": "La lumière",
+      "blocks": [
+        { "id": "page-05-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-05-text-01", "type": "text", "text": "La lumière ne sert pas seulement à rendre les choses visibles." },
+        { "id": "page-05-text-02", "type": "text", "text": "Elle décide aussi de ce qui apparaît, de ce qui disparaît et de la manière dont l’espace respire." },
+        { "id": "light", "type": "textarea", "label": "Quelle lumière habite cette image ?", "placeholder": "Lumière rasante, diffuse, froide, nocturne, ponctuelle, traversée d’ombre…" }
+      ]
+    },
+    {
+      "id": "page-06",
+      "movementId": "atmosphere",
+      "order": 6,
+      "title": "La matière",
+      "blocks": [
+        { "id": "page-06-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-06-recall-light", "type": "recall", "sourceBlockId": "light", "label": "Lumière", "emptyText": "Votre lumière apparaîtra ici." },
+        { "id": "page-06-text-01", "type": "text", "text": "Une image possède aussi une matière." },
+        { "id": "page-06-text-02", "type": "text", "text": "Elle peut sembler faite de verre, de poussière, d’eau, de pierre, de brume, de métal ou de végétal." },
+        { "id": "material", "type": "textarea", "label": "De quoi cette image semble-t-elle faite ?", "placeholder": "Pierre, verre, papier, brume, eau, poussière, métal, végétal…" },
+        { "id": "page-06-text-03", "type": "text", "text": "La matière n’est pas un décor. Elle change la manière dont l’image peut être habitée." }
+      ]
+    },
+    {
+      "id": "page-07",
+      "movementId": "atmosphere",
+      "order": 7,
+      "title": "La distance",
+      "blocks": [
+        { "id": "page-07-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-07-recall-light", "type": "recall", "sourceBlockId": "light", "label": "Lumière", "emptyText": "Votre lumière apparaîtra ici." },
+        { "id": "page-07-recall-material", "type": "recall", "sourceBlockId": "material", "label": "Matière", "emptyText": "Votre matière apparaîtra ici." },
+        { "id": "page-07-text-01", "type": "text", "text": "Le même monde n’est pas perçu de la même manière lorsqu’on le regarde de très près ou depuis très loin." },
+        { "id": "prompt-distance", "type": "promptCopy", "label": "Explorer plusieurs distances avec l’IA", "description": "Copiez votre intention, votre lumière et votre matière ci-dessus.", "text": "Voici mon intention visuelle :\n\n[COLLEZ ICI VOTRE INTENTION VISUELLE]\n\nVoici la lumière envisagée :\n\n[COLLEZ ICI VOTRE LUMIÈRE]\n\nVoici la matière dominante :\n\n[COLLEZ ICI VOTRE MATIÈRE]\n\nPropose-moi 4 positions de regard réellement différentes pour cette image.\n\nPar exemple :\n- très proche ;\n- à distance humaine ;\n- en retrait ;\n- immergé dans la scène ;\n- vue depuis l’intérieur ;\n- vue depuis l’extérieur ;\n- regard bas ;\n- regard surplombant.\n\nPour chaque position :\n1. décris brièvement où se trouve le regard ;\n2. indique ce qu’elle rend plus sensible ;\n3. indique ce qu’elle risque de faire disparaître.\n\nNe choisis pas la meilleure.\nNe transforme pas ces propositions en cadrages définitifs.\nNe change pas mon intention visuelle.\n\nLe but est seulement de tester comment la distance modifie ce que l’image peut faire ressentir." },
+        { "id": "distance", "type": "textarea", "label": "Quelle distance vous paraît réellement appartenir à cette image ?" }
+      ]
+    },
+    {
+      "id": "page-08",
+      "movementId": "atmosphere",
+      "order": 8,
+      "title": "La palette sensible",
+      "blocks": [
+        { "id": "page-08-recall-light", "type": "recall", "sourceBlockId": "light", "label": "Lumière", "emptyText": "Votre lumière apparaîtra ici." },
+        { "id": "page-08-recall-material", "type": "recall", "sourceBlockId": "material", "label": "Matière", "emptyText": "Votre matière apparaîtra ici." },
+        { "id": "page-08-recall-distance", "type": "recall", "sourceBlockId": "distance", "label": "Distance", "emptyText": "Votre distance apparaîtra ici." },
+        { "id": "page-08-text-01", "type": "text", "text": "Vous avez maintenant une lumière, une matière et une distance." },
+        { "id": "page-08-text-02", "type": "text", "text": "Ajoutez-y ce qui donne au climat son rythme." },
+        { "id": "sensitive_palette", "type": "textarea", "label": "Comment décririez-vous l’atmosphère générale de l’image ?", "placeholder": "Température, densité, silence, mouvement, netteté, brume, profondeur…" },
+        { "id": "page-08-text-03", "type": "text", "text": "Vous avez désormais un climat. Il reste à décider quels signes peuvent l’habiter." }
+      ]
+    },
+    {
+      "id": "page-09",
+      "movementId": "signes",
+      "order": 9,
+      "title": "Les objets porteurs",
+      "blocks": [
+        { "id": "page-09-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-09-recall-sensitive-palette", "type": "recall", "sourceBlockId": "sensitive_palette", "label": "Palette sensible", "emptyText": "Votre palette sensible apparaîtra ici." },
+        { "id": "page-09-text-01", "type": "text", "text": "Certains objets, formes ou présences peuvent condenser une grande part du récit." },
+        { "id": "visual_objects", "type": "textarea", "label": "Quels objets ou formes pourraient porter quelque chose d’essentiel ?", "placeholder": "Porte, fil, arbre, miroir, chaise, fenêtre, pierre, escalier, silhouette…" }
+      ]
+    },
+    {
+      "id": "page-10",
+      "movementId": "signes",
+      "order": 10,
+      "title": "Les motifs",
+      "blocks": [
+        { "id": "page-10-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-10-recall-visual-objects", "type": "recall", "sourceBlockId": "visual_objects", "label": "Objets ou formes", "emptyText": "Vos objets ou formes apparaîtront ici." },
+        { "id": "page-10-text-01", "type": "text", "text": "Un motif peut relier plusieurs parties de l’image sans devenir un message explicite." },
+        { "id": "prompt-visual-motifs", "type": "promptCopy", "label": "Élargir les motifs avec l’IA", "description": "Copiez votre intention visuelle et vos objets porteurs ci-dessus.", "text": "Voici mon intention visuelle :\n\n[COLLEZ ICI VOTRE INTENTION VISUELLE]\n\nVoici les objets ou formes que j’ai déjà retenus :\n\n[COLLEZ ICI VOS OBJETS OU FORMES]\n\nAide-moi à élargir le vocabulaire visuel sans surcharger l’image.\n\nPropose au maximum 6 familles de motifs possibles, par exemple :\n- répétitions ;\n- lignes ;\n- cercles ;\n- fissures ;\n- réseaux ;\n- seuils ;\n- spirales ;\n- traces ;\n- ombres ;\n- reflets ;\n- fragments ;\n- vides.\n\nPour chaque motif proposé :\n- indique ce qu’il pourrait renforcer visuellement ;\n- précise si son usage risque de devenir trop démonstratif ou décoratif.\n\nImportant :\n- ne donne pas de signification symbolique absolue ;\n- ne transforme pas un motif en message ;\n- ne suppose pas qu’il doit être ajouté ;\n- ne choisis pas à ma place.\n\nTermine par :\n\n« Gardez seulement les motifs qui semblent appartenir naturellement à votre image. »" },
+        { "id": "visual_motifs", "type": "textarea", "label": "Quels motifs voulez-vous réellement retenir ?" }
+      ]
+    },
+    {
+      "id": "page-11",
+      "movementId": "signes",
+      "order": 11,
+      "title": "Présence et absence",
+      "blocks": [
+        { "id": "page-11-recall-visual-objects", "type": "recall", "sourceBlockId": "visual_objects", "label": "Objets ou formes", "emptyText": "Vos objets ou formes apparaîtront ici." },
+        { "id": "page-11-recall-visual-motifs", "type": "recall", "sourceBlockId": "visual_motifs", "label": "Motifs", "emptyText": "Vos motifs apparaîtront ici." },
+        { "id": "page-11-recall-open-space", "type": "recall", "sourceBlockId": "open_space", "label": "Espace d’ouverture", "emptyText": "Votre espace d’ouverture apparaîtra ici." },
+        { "id": "page-11-text-01", "type": "text", "text": "Tout ce qui appartient au récit n’a pas besoin d’être visible." },
+        { "id": "page-11-text-02", "type": "text", "text": "Certaines choses peuvent être seulement suggérées." },
+        { "id": "presence_absence", "type": "textarea", "label": "Qu’est-ce qui doit être présent ? Et qu’est-ce qui doit rester absent mais sensible ?" },
+        { "id": "prompt-presence-absence", "type": "promptCopy", "label": "Interroger présence et absence avec l’IA", "description": "Utilisez ce prompt seulement si vous souhaitez questionner la densité de l’image.", "text": "Voici les éléments que j’envisage de montrer :\n\n[COLLEZ ICI VOS OBJETS OU FORMES]\n\nVoici les motifs envisagés :\n\n[COLLEZ ICI VOS MOTIFS]\n\nEt voici ce que je souhaite laisser ouvert :\n\n[COLLEZ ICI CE QUI DOIT RESTER OUVERT]\n\nNe me dis pas quoi supprimer ou ajouter.\n\nPose-moi plutôt 5 questions permettant d’examiner :\n- ce qui doit vraiment être présent ;\n- ce qui peut être seulement suggéré ;\n- ce qui gagnerait à rester hors champ ;\n- ce qui devient redondant ;\n- ce qui occupe trop de place par rapport à l’intention initiale.\n\nNe décide pas à ma place.\nNe cherche pas systématiquement à simplifier.\nNe suppose pas que le vide est meilleur que la présence.\n\nLe but est de m’aider à distinguer présence nécessaire et surcharge." }
+      ]
+    },
+    {
+      "id": "page-12",
+      "movementId": "signes",
+      "order": 12,
+      "title": "Le signe juste",
+      "blocks": [
+        { "id": "page-12-recall-visual-objects", "type": "recall", "sourceBlockId": "visual_objects", "label": "Objets ou formes", "emptyText": "Vos objets ou formes apparaîtront ici." },
+        { "id": "page-12-recall-visual-motifs", "type": "recall", "sourceBlockId": "visual_motifs", "label": "Motifs", "emptyText": "Vos motifs apparaîtront ici." },
+        { "id": "page-12-recall-presence-absence", "type": "recall", "sourceBlockId": "presence_absence", "label": "Présence et absence", "emptyText": "Votre distinction présence/absence apparaîtra ici." },
+        { "id": "page-12-text-01", "type": "text", "text": "Une image devient rarement plus forte en accumulant les symboles." },
+        { "id": "core_signs", "type": "textarea", "label": "Si vous ne pouviez garder qu’un ou deux signes, lesquels resteraient ?" },
+        { "id": "page-12-text-02", "type": "text", "text": "Un signe juste ne résume pas l’image. Il lui donne une densité supplémentaire." }
+      ]
+    },
+    {
+      "id": "page-13",
+      "movementId": "variations",
+      "order": 13,
+      "title": "Première direction",
+      "blocks": [
+        { "id": "page-13-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-13-recall-sensitive-palette", "type": "recall", "sourceBlockId": "sensitive_palette", "label": "Palette sensible", "emptyText": "Votre palette sensible apparaîtra ici." },
+        { "id": "page-13-recall-core-signs", "type": "recall", "sourceBlockId": "core_signs", "label": "Signes retenus", "emptyText": "Vos signes retenus apparaîtront ici." },
+        { "id": "page-13-text-01", "type": "text", "text": "Vous disposez maintenant de suffisamment de matière pour formuler une première proposition visuelle." },
+        { "id": "direction_a", "type": "textarea", "label": "Décrivez votre première direction visuelle.", "placeholder": "Sujet, cadrage, lumière, matière, signes, atmosphère…" },
+        { "id": "page-13-text-02", "type": "text", "text": "Cette direction n’est pas la réponse. Elle est un point de départ." }
+      ]
+    },
+    {
+      "id": "page-14",
+      "movementId": "variations",
+      "order": 14,
+      "title": "Changer le point de vue",
+      "blocks": [
+        { "id": "page-14-recall-direction-a", "type": "recall", "sourceBlockId": "direction_a", "label": "Direction A", "emptyText": "Votre première direction apparaîtra ici." },
+        { "id": "page-14-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-14-recall-sensitive-palette", "type": "recall", "sourceBlockId": "sensitive_palette", "label": "Palette sensible", "emptyText": "Votre palette sensible apparaîtra ici." },
+        { "id": "page-14-text-01", "type": "text", "text": "Une image peut rester fidèle à son intention tout en changeant complètement de position de regard." },
+        { "id": "prompt-point-of-view", "type": "promptCopy", "label": "Varier le point de vue avec l’IA", "description": "Copiez la direction A, l’intention et la palette sensible.", "text": "Voici ma première direction visuelle :\n\n[COLLEZ ICI VOTRE PREMIÈRE DIRECTION]\n\nVoici mon intention visuelle :\n\n[COLLEZ ICI VOTRE INTENTION]\n\nVoici ma palette sensible :\n\n[COLLEZ ICI VOTRE PALETTE SENSIBLE]\n\nPropose 4 variations qui changent réellement le point de vue sans modifier l’intention fondamentale.\n\nChaque variation doit agir principalement sur un élément différent :\n- distance ;\n- hauteur ;\n- angle ;\n- position intérieur / extérieur ;\n- présence ou absence du sujet au centre ;\n- relation premier plan / arrière-plan.\n\nPour chaque variation :\n1. donne un titre très court ;\n2. décris le nouveau point de vue ;\n3. indique ce qu’il rend plus visible ;\n4. indique ce qu’il risque de perdre.\n\nNe choisis pas la meilleure.\nNe transforme pas mon image en une autre œuvre.\nNe change pas les signes centraux sans le signaler explicitement." },
+        { "id": "direction_b", "type": "textarea", "label": "Quelle variation mérite d’être conservée comme seconde direction ?" }
+      ]
+    },
+    {
+      "id": "page-15",
+      "movementId": "variations",
+      "order": 15,
+      "title": "Changer l’échelle",
+      "blocks": [
+        { "id": "page-15-recall-direction-a", "type": "recall", "sourceBlockId": "direction_a", "label": "Direction A", "emptyText": "Votre première direction apparaîtra ici." },
+        { "id": "page-15-recall-direction-b", "type": "recall", "sourceBlockId": "direction_b", "label": "Direction B", "emptyText": "Votre seconde direction apparaîtra ici." },
+        { "id": "page-15-text-01", "type": "text", "text": "Un détail et un paysage peuvent parler du même récit sans produire la même expérience." },
+        { "id": "direction_c", "type": "textarea", "label": "Quelle autre échelle voulez-vous tester ?", "placeholder": "Très proche, échelle du corps, architecture, paysage, territoire…" },
+        { "id": "prompt-scale", "type": "promptCopy", "label": "Explorer d’autres échelles avec l’IA", "description": "Copiez vos directions A et B.", "text": "Voici deux directions déjà explorées :\n\nDIRECTION A\n[COLLEZ ICI LA DIRECTION A]\n\nDIRECTION B\n[COLLEZ ICI LA DIRECTION B]\n\nJe souhaite maintenant tester un changement d’échelle.\n\nPropose 4 échelles possibles, réellement différentes, par exemple :\n- détail très proche ;\n- échelle du corps ;\n- pièce ou architecture ;\n- paysage ;\n- territoire vaste ;\n- détail microscopique.\n\nPour chaque échelle :\n- explique ce qu’elle rend plus perceptible ;\n- indique ce qu’elle éloigne ou rend moins sensible ;\n- garde mon intention générale intacte.\n\nNe recommande aucune option.\nNe transforme pas ce changement d’échelle en changement de sujet.\n\nLe but est seulement de comprendre comment l’échelle modifie la relation au récit." }
+      ]
+    },
+    {
+      "id": "page-16",
+      "movementId": "variations",
+      "order": 16,
+      "title": "Changer de langage visuel",
+      "blocks": [
+        { "id": "page-16-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-16-recall-direction-a", "type": "recall", "sourceBlockId": "direction_a", "label": "Direction A", "emptyText": "Votre direction A apparaîtra ici." },
+        { "id": "page-16-recall-direction-b", "type": "recall", "sourceBlockId": "direction_b", "label": "Direction B", "emptyText": "Votre direction B apparaîtra ici." },
+        { "id": "page-16-recall-direction-c", "type": "recall", "sourceBlockId": "direction_c", "label": "Direction C", "emptyText": "Votre direction C apparaîtra ici." },
+        { "id": "page-16-text-01", "type": "text", "text": "Une variation plus radicale peut parfois révéler ce que les premières directions avaient en commun sans le savoir." },
+        { "id": "prompt-visual-language", "type": "promptCopy", "label": "Changer de langage visuel avec l’IA", "description": "Copiez l’intention et les trois directions existantes.", "text": "Voici mon intention visuelle :\n\n[COLLEZ ICI VOTRE INTENTION]\n\nVoici les directions déjà explorées :\n\nDIRECTION A\n[COLLEZ ICI A]\n\nDIRECTION B\n[COLLEZ ICI B]\n\nDIRECTION C\n[COLLEZ ICI C]\n\nPropose maintenant 4 ruptures de langage visuel réellement différentes.\n\nPar exemple :\n- plus réaliste ;\n- plus minimaliste ;\n- plus symbolique ;\n- plus onirique ;\n- plus documentaire ;\n- plus abstrait ;\n- plus graphique ;\n- plus silencieux visuellement.\n\nPour chaque proposition :\n1. décris le changement de langage ;\n2. indique ce qu’il pourrait révéler ;\n3. indique ce qu’il pourrait rendre moins perceptible ;\n4. précise ce qu’il faudrait absolument préserver pour que l’intention reste reconnaissable.\n\nNe choisis pas.\nNe cherche pas à rendre la proposition plus artistique.\nNe confonds pas changement de style et amélioration.\n\nLe but est de provoquer un vrai déplacement, pas de produire une version supposée supérieure." },
+        { "id": "direction_d", "type": "textarea", "label": "Quelle rupture mérite de devenir votre quatrième direction ?" }
+      ]
+    },
+    {
+      "id": "page-17",
+      "movementId": "regard",
+      "order": 17,
+      "title": "Première impression",
+      "blocks": [
+        { "id": "page-17-recall-direction-a", "type": "recall", "sourceBlockId": "direction_a", "label": "Direction A", "emptyText": "Votre direction A apparaîtra ici." },
+        { "id": "page-17-recall-direction-b", "type": "recall", "sourceBlockId": "direction_b", "label": "Direction B", "emptyText": "Votre direction B apparaîtra ici." },
+        { "id": "page-17-recall-direction-c", "type": "recall", "sourceBlockId": "direction_c", "label": "Direction C", "emptyText": "Votre direction C apparaîtra ici." },
+        { "id": "page-17-recall-direction-d", "type": "recall", "sourceBlockId": "direction_d", "label": "Direction D", "emptyText": "Votre direction D apparaîtra ici." },
+        { "id": "page-17-text-01", "type": "text", "text": "Vous avez maintenant plusieurs directions." },
+        { "id": "page-17-text-02", "type": "text", "text": "Avant de les analyser, regardez ce qui vous attire spontanément." },
+        { "id": "first_impression", "type": "textarea", "label": "Quelle direction vous attire immédiatement, et pourquoi ?" },
+        { "id": "first_impression_reason", "type": "textarea", "label": "Est-ce parce qu’elle vous semble juste, ou parce qu’elle est particulièrement spectaculaire ?" }
+      ]
+    },
+    {
+      "id": "page-18",
+      "movementId": "regard",
+      "order": 18,
+      "title": "Fidélité à l’intention",
+      "blocks": [
+        { "id": "page-18-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-18-recall-direction-a", "type": "recall", "sourceBlockId": "direction_a", "label": "Direction A", "emptyText": "Votre direction A apparaîtra ici." },
+        { "id": "page-18-recall-direction-b", "type": "recall", "sourceBlockId": "direction_b", "label": "Direction B", "emptyText": "Votre direction B apparaîtra ici." },
+        { "id": "page-18-recall-direction-c", "type": "recall", "sourceBlockId": "direction_c", "label": "Direction C", "emptyText": "Votre direction C apparaîtra ici." },
+        { "id": "page-18-recall-direction-d", "type": "recall", "sourceBlockId": "direction_d", "label": "Direction D", "emptyText": "Votre direction D apparaîtra ici." },
+        { "id": "page-18-text-01", "type": "text", "text": "Revenez maintenant au point de départ." },
+        { "id": "intention_fidelity", "type": "textarea", "label": "Quelle direction sert réellement votre intention, et pourquoi ?" },
+        { "id": "prompt-intention-fidelity", "type": "promptCopy", "label": "Comparer avec l’IA", "description": "L’IA compare sans classer ni choisir.", "text": "Voici mon intention visuelle :\n\n[COLLEZ ICI VOTRE INTENTION]\n\nVoici plusieurs directions visuelles :\n\nA\n[COLLEZ ICI A]\n\nB\n[COLLEZ ICI B]\n\nC\n[COLLEZ ICI C]\n\nD\n[COLLEZ ICI D]\n\nJe veux les comparer sans demander laquelle est la meilleure.\n\nPour chaque direction :\n- indique ce qu’elle semble renforcer par rapport à mon intention ;\n- indique ce qu’elle semble éloigner ou affaiblir ;\n- signale ce qui pourrait devenir plus explicite que prévu ;\n- signale ce qui reste encore ouvert.\n\nImportant :\n- ne classe pas les directions ;\n- ne donne pas de note ;\n- ne recommande pas de gagnante ;\n- ne reformule pas mon intention à ma place.\n\nLe but est de m’aider à comparer, pas de choisir." }
+      ]
+    },
+    {
+      "id": "page-19",
+      "movementId": "regard",
+      "order": 19,
+      "title": "Ce que l’image dit trop",
+      "blocks": [
+        { "id": "page-19-recall-intention-fidelity", "type": "recall", "sourceBlockId": "intention_fidelity", "label": "Fidélité à l’intention", "emptyText": "Votre comparaison apparaîtra ici." },
+        { "id": "page-19-text-01", "type": "text", "text": "Une image peut être séduisante et pourtant trop parler." },
+        { "id": "too_explicit", "type": "textarea", "label": "Qu’est-ce qui devient trop explicite, trop décoratif ou trop démonstratif ?" },
+        { "id": "page-19-text-02", "type": "text", "text": "Ce qui attire l’œil n’est pas toujours ce qui sert le récit." }
+      ]
+    },
+    {
+      "id": "page-20",
+      "movementId": "regard",
+      "order": 20,
+      "title": "Ce qu’elle laisse encore ouvert",
+      "blocks": [
+        { "id": "page-20-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-20-recall-first-impression", "type": "recall", "sourceBlockId": "first_impression", "label": "Première impression", "emptyText": "Votre première impression apparaîtra ici." },
+        { "id": "page-20-recall-too-explicit", "type": "recall", "sourceBlockId": "too_explicit", "label": "Ce qui dit trop", "emptyText": "Votre repérage apparaîtra ici." },
+        { "id": "page-20-text-01", "type": "text", "text": "Il reste maintenant à observer ce que les directions que vous envisagez n’épuisent pas." },
+        { "id": "prompt-remaining-openness", "type": "promptCopy", "label": "Éprouver l’ouverture avec l’IA", "description": "Copiez seulement les directions que vous souhaitez encore examiner.", "text": "Voici mon intention visuelle :\n\n[COLLEZ ICI VOTRE INTENTION]\n\nVoici ma première impression :\n\n[COLLEZ ICI VOTRE PREMIÈRE IMPRESSION]\n\nVoici ce qui me semble déjà trop explicite :\n\n[COLLEZ ICI CE QUI DIT TROP]\n\nVoici les directions que je veux encore examiner :\n\n[COLLEZ ICI LES DIRECTIONS CONCERNÉES]\n\nPour chacune, aide-moi à repérer ce qu’elle laisse encore indéterminé.\n\nJe cherche notamment :\n- ce que le regardeur doit encore imaginer ;\n- ce qui n’est pas complètement résolu ;\n- ce qui reste hors champ ;\n- ce qui peut recevoir plusieurs interprétations ;\n- ce qui donne envie de rester devant l’image plutôt que de la comprendre immédiatement.\n\nPour chaque direction :\n1. indique ce qui reste ouvert ;\n2. indique ce qui semble déjà trop fermé ;\n3. formule cela comme une observation possible, jamais comme un verdict.\n\nNe choisis pas l’image la plus ouverte.\nNe transforme pas l’ambiguïté en qualité automatique.\nNe suppose pas qu’une image difficile est nécessairement plus juste." },
+        { "id": "remaining_openness", "type": "textarea", "label": "Qu’est-ce qui reste réellement vivant dans l’image que vous envisagez de retenir ?" },
+        { "id": "page-20-text-02", "type": "text", "text": "Vous n’avez pas besoin d’améliorer tout ce que vous voyez." },
+        { "id": "page-20-text-03", "type": "text", "text": "Choisissez seulement ce qui mérite encore d’être touché." }
+      ]
+    },
+    {
+      "id": "page-21",
+      "movementId": "affinage",
+      "order": 21,
+      "title": "Ce qu’il faut conserver",
+      "blocks": [
+        { "id": "page-21-recall-remaining-openness", "type": "recall", "sourceBlockId": "remaining_openness", "label": "Ouverture restante", "emptyText": "Votre ouverture restante apparaîtra ici." },
+        { "id": "page-21-text-01", "type": "text", "text": "Avant de modifier une image, il faut savoir ce qu’on refuse de perdre." },
+        { "id": "visual_invariants", "type": "textarea", "label": "Qu’est-ce qui fonctionne déjà et doit absolument rester ?", "placeholder": "Une lumière, une distance, une tension, un motif, un vide, une présence…" }
+      ]
+    },
+    {
+      "id": "page-22",
+      "movementId": "affinage",
+      "order": 22,
+      "title": "Ce qui doit changer",
+      "blocks": [
+        { "id": "page-22-recall-visual-invariants", "type": "recall", "sourceBlockId": "visual_invariants", "label": "Invariants visuels", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-22-text-01", "type": "text", "text": "L’affinage commence lorsque l’on cesse de vouloir tout améliorer en même temps." },
+        { "id": "change_target", "type": "textarea", "label": "Quel élément précis empêche encore l’image d’être juste ?", "placeholder": "Cadrage, lumière, arrière-plan, symbole, densité, contraste…" },
+        { "id": "page-22-text-02", "type": "text", "text": "Une cible précise permet une transformation limitée." }
+      ]
+    },
+    {
+      "id": "page-23",
+      "movementId": "affinage",
+      "order": 23,
+      "title": "Modifier sans tout refaire",
+      "blocks": [
+        { "id": "page-23-recall-visual-invariants", "type": "recall", "sourceBlockId": "visual_invariants", "label": "Invariants visuels", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-23-recall-change-target", "type": "recall", "sourceBlockId": "change_target", "label": "Cible d’affinage", "emptyText": "Votre cible d’affinage apparaîtra ici." },
+        { "id": "page-23-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-23-text-01", "type": "text", "text": "L’IA peut maintenant servir à proposer des micro-ajustements." },
+        { "id": "page-23-text-02", "type": "text", "text": "Pas une nouvelle œuvre." },
+        { "id": "prompt-refinement", "type": "promptCopy", "label": "Explorer des ajustements avec l’IA", "description": "Copiez uniquement vos invariants, votre cible d’affinage et, si nécessaire, votre intention.", "text": "Voici ce que je veux absolument préserver :\n\n[COLLEZ ICI VOS INVARIANTS VISUELS]\n\nVoici ce que je souhaite modifier :\n\n[COLLEZ ICI VOTRE CIBLE D’AFFINAGE]\n\nVoici mon intention visuelle, si nécessaire :\n\n[COLLEZ ICI VOTRE INTENTION]\n\nPropose 4 micro-ajustements possibles.\n\nChaque proposition doit :\n- agir principalement sur la cible identifiée ;\n- préserver les invariants ;\n- éviter de refaire toute l’image ;\n- être suffisamment précise pour être testée séparément.\n\nLes ajustements peuvent concerner :\n- cadrage ;\n- lumière ;\n- densité ;\n- contraste ;\n- présence / absence ;\n- arrière-plan ;\n- poids d’un symbole ;\n- netteté ;\n- relation entre les plans.\n\nPour chaque ajustement :\n1. décris la modification ;\n2. indique ce qu’elle pourrait améliorer ;\n3. indique ce qu’elle risque de faire perdre.\n\nNe recommande aucune option.\nNe régénère pas conceptuellement toute l’image.\nNe touche pas aux invariants que j’ai explicitement protégés." },
+        { "id": "refinement_options", "type": "textarea", "label": "Quelle modification voulez-vous réellement tester ?" }
+      ]
+    },
+    {
+      "id": "page-24",
+      "movementId": "affinage",
+      "order": 24,
+      "title": "Ce que la nouvelle version gagne et perd",
+      "blocks": [
+        { "id": "page-24-recall-visual-invariants", "type": "recall", "sourceBlockId": "visual_invariants", "label": "Invariants visuels", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-24-recall-refinement-options", "type": "recall", "sourceBlockId": "refinement_options", "label": "Modification testée", "emptyText": "Votre modification apparaîtra ici." },
+        { "id": "page-24-text-01", "type": "text", "text": "Une transformation n’est jamais seulement un gain." },
+        { "id": "page-24-text-02", "type": "text", "text": "Elle peut aussi faire disparaître quelque chose de précieux." },
+        { "id": "refinement_gain", "type": "textarea", "label": "Qu’avez-vous gagné ?" },
+        { "id": "refinement_loss", "type": "textarea", "label": "Qu’avez-vous perdu ?" },
+        { "id": "refined_version_choice", "type": "textarea", "label": "Gardez-vous cette nouvelle version, ou préférez-vous revenir en arrière ?" }
+      ]
+    },
+    {
+      "id": "page-25",
+      "movementId": "image-seuil",
+      "order": 25,
+      "title": "Ce que cette image ouvre",
+      "blocks": [
+        { "id": "page-25-recall-refined-version-choice", "type": "recall", "sourceBlockId": "refined_version_choice", "label": "Choix de version", "emptyText": "Votre choix de version apparaîtra ici." },
+        { "id": "page-25-text-01", "type": "text", "text": "Vous avez généré, comparé, déplacé et affiné." },
+        { "id": "page-25-text-02", "type": "text", "text": "Il reste maintenant une question plus importante que celle de la perfection." },
+        { "id": "image_opening", "type": "textarea", "label": "Qu’est-ce que cette image rend désormais possible ?", "placeholder": "Une entrée dans le récit, une question, une sensation, une envie d’explorer…" },
+        { "id": "page-25-text-03", "type": "text", "text": "Une image peut être achevée sans être fermée." }
+      ]
+    },
+    {
+      "id": "page-26",
+      "movementId": "image-seuil",
+      "order": 26,
+      "title": "Ce qu’elle laisse hors champ",
+      "blocks": [
+        { "id": "page-26-recall-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-26-recall-open-space", "type": "recall", "sourceBlockId": "open_space", "label": "Espace d’ouverture", "emptyText": "Votre espace d’ouverture apparaîtra ici." },
+        { "id": "page-26-recall-image-opening", "type": "recall", "sourceBlockId": "image_opening", "label": "Ce que cette image ouvre", "emptyText": "Votre ouverture apparaîtra ici." },
+        { "id": "page-26-recall-visual-invariants", "type": "recall", "sourceBlockId": "visual_invariants", "label": "Invariants visuels", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-26-recall-refinement-gain", "type": "recall", "sourceBlockId": "refinement_gain", "label": "Gain de la transformation", "emptyText": "Votre gain apparaîtra ici." },
+        { "id": "page-26-recall-refinement-loss", "type": "recall", "sourceBlockId": "refinement_loss", "label": "Perte de la transformation", "emptyText": "Votre perte apparaîtra ici." },
+        { "id": "page-26-text-01", "type": "text", "text": "Revenons à ce que vous vouliez protéger dès le début." },
+        { "id": "final_opening", "type": "textarea", "label": "Cette image ouvre…" },
+        { "id": "final_out_of_frame", "type": "textarea", "label": "Elle laisse volontairement hors champ…" },
+        { "id": "stop_reason", "type": "textarea", "label": "Je choisis de m’arrêter ici parce que…" },
+        { "id": "image-threshold-ending", "type": "reveal", "label": "Une image-seuil", "content": "Une image juste n’est pas forcément celle qui montre le plus. C’est celle qui laisse encore quelque chose à rencontrer." },
+        { "id": "page-26-text-02", "type": "text", "text": "Votre Image-seuil" },
+        { "id": "page-26-text-03", "type": "text", "text": "Intention visuelle" },
+        { "id": "page-26-recall-summary-visual-intention", "type": "recall", "sourceBlockId": "visual_intention", "label": "Intention visuelle", "emptyText": "Votre intention visuelle apparaîtra ici." },
+        { "id": "page-26-text-04", "type": "text", "text": "Palette sensible" },
+        { "id": "page-26-recall-summary-sensitive-palette", "type": "recall", "sourceBlockId": "sensitive_palette", "label": "Palette sensible", "emptyText": "Votre palette sensible apparaîtra ici." },
+        { "id": "page-26-text-05", "type": "text", "text": "Signes retenus" },
+        { "id": "page-26-recall-summary-core-signs", "type": "recall", "sourceBlockId": "core_signs", "label": "Signes retenus", "emptyText": "Vos signes retenus apparaîtront ici." },
+        { "id": "page-26-text-06", "type": "text", "text": "Direction initiale" },
+        { "id": "page-26-recall-summary-direction-a", "type": "recall", "sourceBlockId": "direction_a", "label": "Direction initiale", "emptyText": "Votre direction initiale apparaîtra ici." },
+        { "id": "page-26-text-07", "type": "text", "text": "Direction transformée" },
+        { "id": "page-26-recall-summary-direction-d", "type": "recall", "sourceBlockId": "direction_d", "label": "Direction transformée", "emptyText": "Votre direction transformée apparaîtra ici." },
+        { "id": "page-26-text-08", "type": "text", "text": "Ce que vous avez choisi de préserver" },
+        { "id": "page-26-recall-summary-visual-invariants", "type": "recall", "sourceBlockId": "visual_invariants", "label": "Ce que vous avez choisi de préserver", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-26-text-09", "type": "text", "text": "Ce que cette image ouvre" },
+        { "id": "page-26-recall-summary-image-opening", "type": "recall", "sourceBlockId": "image_opening", "label": "Ce que cette image ouvre", "emptyText": "Votre ouverture apparaîtra ici." },
+        { "id": "page-26-text-10", "type": "text", "text": "Vous n’avez pas demandé à l’IA de décider quelle image était la bonne." },
+        { "id": "page-26-text-11", "type": "text", "text": "Vous avez utilisé ses variations pour apprendre à mieux voir ce que vous cherchiez." },
+        { "id": "page-26-text-12", "type": "text", "text": "L’image peut maintenant quitter l’atelier." }
+      ]
+    }
+  ]
+}

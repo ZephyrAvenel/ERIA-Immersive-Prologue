@@ -966,6 +966,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
       page,
       "document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] .workshop-card__cover img')?.complete === true && document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] .workshop-card__cover img')?.naturalWidth === 853",
     );
+    await waitForExpression(
+      page,
+      "document.querySelector('[data-workshop-id=\"art-augmente\"] .workshop-card__cover img')?.complete === true && document.querySelector('[data-workshop-id=\"art-augmente\"] .workshop-card__cover img')?.naturalWidth === 960",
+    );
     const workshopsState = await evaluate(
       page,
       `({
@@ -1048,22 +1052,23 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
             },
             {
               id: "art-augmente",
-              status: "planned",
-              visibleStatus: "Pr\u00e9vu",
+              status: "published",
+              visibleStatus: "Atelier publi\u00e9",
               orientation: "VOIR",
               title: "Art augment\u00e9",
               description: "Cr\u00e9er avec l\u2019IA sans renoncer \u00e0 son regard.",
-              access: "Parcours en pr\u00e9paration",
-              linkCount: 0,
-              href: null,
+              access: "Ouvrir l\u2019atelier",
+              linkCount: 1,
+              href: `${entryUrl}ateliers/art-augmente/`,
               role: null,
               tabIndex: null,
-              coverPresent: false,
-              coverAlt: null,
-              coverSrc: "",
-              coverNaturalWidth: 0,
-              coverNaturalHeight: 0,
-              coverObjectFit: null,
+              coverPresent: true,
+              coverAlt:
+                "Couverture d\u2019Art augment\u00e9 \u2014 un atelier visuel nocturne o\u00f9 plusieurs images et variations sont compar\u00e9es autour d\u2019une image centrale lumineuse.",
+              coverSrc: workshopsState.cards[2].coverSrc,
+              coverNaturalWidth: 960,
+              coverNaturalHeight: 1280,
+              coverObjectFit: "contain",
             },
             {
               id: "composer-recit-vivant-ia",
@@ -1128,22 +1133,23 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
             },
             {
               id: "art-augmente",
-              status: "planned",
-              visibleStatus: "Planned",
+              status: "published",
+              visibleStatus: "Published workshop",
               orientation: "SEE",
               title: "Augmented art",
               description: "Creating with AI without giving up your gaze.",
-              access: "Path in preparation",
-              linkCount: 0,
-              href: null,
+              access: "Open workshop",
+              linkCount: 1,
+              href: `${entryUrl}ateliers/art-augmente/`,
               role: null,
               tabIndex: null,
-              coverPresent: false,
-              coverAlt: null,
-              coverSrc: "",
-              coverNaturalWidth: 0,
-              coverNaturalHeight: 0,
-              coverObjectFit: null,
+              coverPresent: true,
+              coverAlt:
+                "Couverture d\u2019Art augment\u00e9 \u2014 un atelier visuel nocturne o\u00f9 plusieurs images et variations sont compar\u00e9es autour d\u2019une image centrale lumineuse.",
+              coverSrc: workshopsState.cards[2].coverSrc,
+              coverNaturalWidth: 960,
+              coverNaturalHeight: 1280,
+              coverObjectFit: "contain",
             },
             {
               id: "composer-recit-vivant-ia",
@@ -1168,7 +1174,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     );
     assert.equal(workshopsState.cards[0].coverSrc.endsWith("/packs/workshop-001-ecriture-augmentee/assets/images/00-couverture-ecriture-augmentee.webp"), true);
     assert.equal(workshopsState.cards[1].coverSrc.endsWith("/packs/workshop-002-cartographie-augmentee/assets/images/00-couverture-cartographie-augmentee.png"), true);
-    assert.equal(workshopsState.workshopHrefCount, 2);
+    assert.equal(workshopsState.cards[2].coverSrc.endsWith("/packs/workshop-003-art-augmente/assets/images/00-couverture-art-augmente.png"), true);
+    assert.equal(workshopsState.workshopHrefCount, 3);
     assert.equal(workshopsState.workshopPackLinkCount, 0);
     assert.equal(workshopsState.noHorizontalOverflow, true);
 
@@ -1302,12 +1309,23 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(completedWorkshop.pageTitle, "Continuer sans l'atelier");
 
     await loadUrl(page, `${entryUrl}ateliers/art-augmente/`);
-    await waitForExpression(page, "document.querySelector('.error-panel') !== null");
-    assert.equal(
-      await evaluate(page, "document.querySelector('.workshop-player') === null && document.querySelector('.error-panel') !== null"),
-      true,
-      "a planned workshop slug must not load a workshop",
-    );
+    await waitForExpression(page, "document.querySelector('.workshop-entry') !== null");
+    const artEntry = await readWorkshopEntryState(page);
+    assert.equal(artEntry.present, true);
+    assert.equal(artEntry.path.endsWith("/ateliers/art-augmente/"), true);
+    assert.equal(artEntry.title, "ART AUGMENT\u00c9");
+    assert.equal(artEntry.subtitle, "Cr\u00e9er avec l\u2019IA sans renoncer \u00e0 son regard.");
+    assert.equal(artEntry.description, "Cr\u00e9er avec l\u2019IA sans renoncer \u00e0 son regard.");
+    assert.equal(artEntry.coverPresent, true);
+    assert.equal(artEntry.coverAlt, "Couverture d\u2019Art augment\u00e9 \u2014 un atelier visuel nocturne o\u00f9 plusieurs images et variations sont compar\u00e9es autour d\u2019une image centrale lumineuse.");
+    assert.equal(artEntry.coverNaturalWidth, 960);
+    assert.equal(artEntry.coverNaturalHeight, 1280);
+    assert.equal(artEntry.coverObjectFit, "contain");
+    assert.equal(artEntry.primary, "Commencer l\u2019atelier");
+    assert.equal(artEntry.noHorizontalOverflow, true);
+    await evaluate(page, "document.querySelector('.workshop-entry__primary')?.click()");
+    await waitForWorkshopReady(page, "01 / 26");
+    assert.equal((await readWorkshopState(page)).pageTitle, "L\u2019impulsion");
 
     await loadUrl(page, `${entryUrl}ateliers/slug-inconnu/`);
     await waitForExpression(page, "document.querySelector('.error-panel') !== null");

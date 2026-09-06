@@ -121,11 +121,12 @@ test("editorial registry declares the published augmented workshops", () => {
         orientation: "VOIR",
         title: "Art augmenté",
         description: "Créer avec l’IA sans renoncer à son regard.",
-        status: "planned",
-        slug: undefined,
-        manifest: undefined,
-        coverImage: undefined,
-        coverImageAlt: undefined,
+        status: "published",
+        slug: "art-augmente",
+        manifest: "packs/workshop-003-art-augmente/pack.json",
+        coverImage: "packs/workshop-003-art-augmente/assets/images/00-couverture-art-augmente.png",
+        coverImageAlt:
+          "Couverture d’Art augmenté — un atelier visuel nocturne où plusieurs images et variations sont comparées autour d’une image centrale lumineuse.",
       },
       {
         orientation: "COMPOSER",
@@ -155,6 +156,11 @@ test("editorial registry resolves only published workshops by canonical slug", (
         slug: "cartographie-augmentee",
         manifest: "packs/workshop-002-cartographie-augmentee/pack.json",
       },
+      {
+        id: "art-augmente",
+        slug: "art-augmente",
+        manifest: "packs/workshop-003-art-augmente/pack.json",
+      },
     ],
   );
 
@@ -164,7 +170,9 @@ test("editorial registry resolves only published workshops by canonical slug", (
   const mappingWorkshop = findPublishedAugmentedWorkshopBySlug("cartographie-augmentee");
   assert.equal(mappingWorkshop?.id, "cartographie-augmentee");
   assert.equal(mappingWorkshop?.manifest, "packs/workshop-002-cartographie-augmentee/pack.json");
-  assert.equal(findPublishedAugmentedWorkshopBySlug("art-augmente"), undefined);
+  const artWorkshop = findPublishedAugmentedWorkshopBySlug("art-augmente");
+  assert.equal(artWorkshop?.id, "art-augmente");
+  assert.equal(artWorkshop?.manifest, "packs/workshop-003-art-augmente/pack.json");
   assert.equal(findPublishedAugmentedWorkshopBySlug("slug-inconnu"), undefined);
 });
 
@@ -172,7 +180,7 @@ test("editorial registry keeps planned workshops without public routes", () => {
   const planned = editorialRegistry.workshops.filter((workshop) => workshop.status === "planned");
   assert.deepEqual(
     planned.map((workshop) => workshop.id),
-    ["art-augmente", "composer-recit-vivant-ia"],
+    ["composer-recit-vivant-ia"],
   );
   for (const workshop of planned) {
     assert.equal("slug" in workshop, false);
@@ -270,9 +278,9 @@ test("editorial registry rejects invalid workshop publication states", () => {
   }
 
   const plannedWithPublicationMetadata = structuredClone(editorialRegistry);
-  plannedWithPublicationMetadata.workshops[2] = {
-    ...plannedWithPublicationMetadata.workshops[2],
-    slug: "art-augmente",
+  plannedWithPublicationMetadata.workshops[3] = {
+    ...plannedWithPublicationMetadata.workshops[3],
+    slug: "composer-recit-vivant-ia",
   };
   assert.throws(
     () => validateEditorialRegistry(plannedWithPublicationMetadata),

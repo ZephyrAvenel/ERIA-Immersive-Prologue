@@ -97,7 +97,11 @@
     {
       "id": "art-augmente",
       "family": "augmented-workshops",
-      "status": "planned",
+      "status": "published",
+      "slug": "art-augmente",
+      "manifest": "packs/workshop-003-art-augmente/pack.json",
+      "coverImage": "packs/workshop-003-art-augmente/assets/images/00-couverture-art-augmente.png",
+      "coverImageAlt": "Couverture d’Art augmenté — un atelier visuel nocturne où plusieurs images et variations sont comparées autour d’une image centrale lumineuse.",
       "labels": {
         "fr": {
           "orientation": "VOIR",
