@@ -1591,7 +1591,7 @@ test("augmented mapping workshop is valid, registered, and declarative", async (
   assert.equal(mappingWorkshop.manifest, "packs/workshop-002-cartographie-augmentee/pack.json");
   assert.equal(
     mappingWorkshop.coverImage,
-    "packs/workshop-002-cartographie-augmentee/assets/images/00-couverture-cartographie-augmentee.svg",
+    "packs/workshop-002-cartographie-augmentee/assets/images/00-couverture-cartographie-augmentee.png",
   );
 
   const engine = new WorkshopEngine(pack);

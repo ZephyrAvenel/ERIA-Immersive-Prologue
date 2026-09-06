@@ -1040,7 +1040,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               tabIndex: null,
               coverPresent: true,
               coverAlt:
-                "Couverture typographique temporaire de l\u2019atelier Cartographie augment\u00e9e, avec des lignes cartographiques lumineuses.",
+                "Cartographie augment\u00e9e \u2014 couverture du pack montrant une carte narrative lumineuse avec id\u00e9es, liens, territoires et relations, dans l\u2019univers visuel des R\u00e9cits Vivants.",
               coverSrc: workshopsState.cards[1].coverSrc,
               coverNaturalWidth: 1200,
               coverNaturalHeight: 1600,
@@ -1120,7 +1120,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               tabIndex: null,
               coverPresent: true,
               coverAlt:
-                "Couverture typographique temporaire de l\u2019atelier Cartographie augment\u00e9e, avec des lignes cartographiques lumineuses.",
+                "Cartographie augment\u00e9e \u2014 couverture du pack montrant une carte narrative lumineuse avec id\u00e9es, liens, territoires et relations, dans l\u2019univers visuel des R\u00e9cits Vivants.",
               coverSrc: workshopsState.cards[1].coverSrc,
               coverNaturalWidth: 1200,
               coverNaturalHeight: 1600,
@@ -1167,7 +1167,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
           ],
     );
     assert.equal(workshopsState.cards[0].coverSrc.endsWith("/packs/workshop-001-ecriture-augmentee/assets/images/00-couverture-ecriture-augmentee.webp"), true);
-    assert.equal(workshopsState.cards[1].coverSrc.endsWith("/packs/workshop-002-cartographie-augmentee/assets/images/00-couverture-cartographie-augmentee.svg"), true);
+    assert.equal(workshopsState.cards[1].coverSrc.endsWith("/packs/workshop-002-cartographie-augmentee/assets/images/00-couverture-cartographie-augmentee.png"), true);
     assert.equal(workshopsState.workshopHrefCount, 2);
     assert.equal(workshopsState.workshopPackLinkCount, 0);
     assert.equal(workshopsState.noHorizontalOverflow, true);

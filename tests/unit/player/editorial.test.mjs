@@ -113,9 +113,9 @@ test("editorial registry declares the published augmented workshops", () => {
         status: "published",
         slug: "cartographie-augmentee",
         manifest: "packs/workshop-002-cartographie-augmentee/pack.json",
-        coverImage: "packs/workshop-002-cartographie-augmentee/assets/images/00-couverture-cartographie-augmentee.svg",
+        coverImage: "packs/workshop-002-cartographie-augmentee/assets/images/00-couverture-cartographie-augmentee.png",
         coverImageAlt:
-          "Couverture typographique temporaire de l’atelier Cartographie augmentée, avec des lignes cartographiques lumineuses.",
+          "Cartographie augmentée — couverture du pack montrant une carte narrative lumineuse avec idées, liens, territoires et relations, dans l’univers visuel des Récits Vivants.",
       },
       {
         orientation: "VOIR",
