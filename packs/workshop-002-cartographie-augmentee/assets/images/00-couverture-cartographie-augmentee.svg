@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600" role="img" aria-labelledby="title desc">
+  <title id="title">Couverture temporaire — Cartographie augmentée</title>
+  <desc id="desc">Couverture typographique temporaire pour le squelette de l’atelier Cartographie augmentée.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="0.52" stop-color="#102f3c"/>
+      <stop offset="1" stop-color="#24143a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="42%" r="42%">
+      <stop offset="0" stop-color="#d7f7ff" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#d7f7ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#background)"/>
+  <rect width="1200" height="1600" fill="url(#glow)"/>
+  <g fill="none" stroke="#d7f7ff" stroke-opacity="0.35" stroke-width="4">
+    <path d="M205 982 C350 818 482 862 620 702 S886 486 1018 618"/>
+    <path d="M176 770 C334 686 454 752 588 602 S844 354 1034 428"/>
+    <path d="M246 1130 C414 1036 556 1090 716 906 S956 752 1052 820"/>
+  </g>
+  <g fill="#d7f7ff" opacity="0.78">
+    <circle cx="205" cy="982" r="10"/>
+    <circle cx="620" cy="702" r="12"/>
+    <circle cx="1018" cy="618" r="10"/>
+    <circle cx="176" cy="770" r="8"/>
+    <circle cx="588" cy="602" r="11"/>
+    <circle cx="1034" cy="428" r="9"/>
+    <circle cx="246" cy="1130" r="8"/>
+    <circle cx="716" cy="906" r="11"/>
+    <circle cx="1052" cy="820" r="8"/>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#f7fbff" text-anchor="middle">
+    <text x="600" y="360" font-size="58" letter-spacing="10">ATELIER AUGMENTÉ</text>
+    <text x="600" y="604" font-size="104" font-weight="700">Cartographie</text>
+    <text x="600" y="724" font-size="104" font-weight="700">augmentée</text>
+    <text x="600" y="888" font-size="42" opacity="0.92">Rendre visibles les relations avec l’IA.</text>
+    <text x="600" y="1242" font-size="34" opacity="0.82">SQUELETTE TEMPORAIRE</text>
+  </g>
+</svg>

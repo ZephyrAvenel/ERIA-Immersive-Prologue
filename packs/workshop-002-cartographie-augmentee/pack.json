@@ -1,0 +1,250 @@
+{
+  "$schema": "../../schemas/workshop-pack.schema.json",
+  "format": "ine-workshop-pack",
+  "version": "1.0",
+  "id": "cartographie-augmentee",
+  "slug": "cartographie-augmentee",
+  "title": "Cartographie augmentée",
+  "subtitle": "Rendre visibles les relations avec l’IA.",
+  "language": "fr",
+  "startPage": "page-01",
+  "movements": [
+    { "id": "intuition", "order": 1, "title": "Intuition", "description": "Retrouver ce qui cherche à devenir territoire." },
+    { "id": "fragments", "order": 2, "title": "Fragments", "description": "Déplier sans encore organiser." },
+    { "id": "relations", "order": 3, "title": "Relations", "description": "Passer de la liste au territoire." },
+    { "id": "tensions", "order": 4, "title": "Tensions", "description": "Voir ce qui ne peut pas simplement être fusionné." },
+    { "id": "territoires", "order": 5, "title": "Territoires", "description": "Découvrir qu’une même matière peut produire plusieurs cartes." },
+    { "id": "chemins", "order": 6, "title": "Chemins", "description": "Transformer la carte en espace de circulation." },
+    { "id": "carte-vivante", "order": 7, "title": "Carte vivante", "description": "Composer sans fermer." }
+  ],
+  "pages": [
+    { "id": "page-01", "movementId": "intuition", "order": 1, "title": "L’étincelle", "blocks": [
+      { "id": "page-01-intro-1", "type": "text", "text": "Parfois, une carte commence avant même que nous sachions ce qu’elle représente." },
+      { "id": "page-01-intro-2", "type": "text", "text": "Une question insiste. Une situation nous trouble. Une image revient. Un projet cherche sa forme." },
+      { "id": "spark", "type": "textarea", "label": "Qu’est-ce que vous cherchez à cartographier ?", "placeholder": "Une idée, une situation, un récit, un projet, un conflit, un monde, une relation…" },
+      { "id": "page-01-closing", "type": "text", "text": "Ne cherchez pas encore à organiser. Déposez seulement ce qui est là." }
+    ] },
+    { "id": "page-02", "movementId": "intuition", "order": 2, "title": "Ce qui insiste", "blocks": [
+      { "id": "page-02-intro-1", "type": "text", "text": "Tout ce qui compte n’est pas encore clair." },
+      { "id": "page-02-intro-2", "type": "text", "text": "Il y a parfois un élément que nous ne savons pas expliquer, mais que nous ne voulons pas perdre." },
+      { "id": "page-02-spark-recall", "type": "recall", "sourceBlockId": "spark", "label": "Vous cherchez à cartographier", "emptyText": "Vous n’avez encore rien noté à l’étape précédente." },
+      { "id": "insistence", "type": "textarea", "label": "Dans ce que vous venez d’écrire, qu’est-ce qui vous semble important sans que vous sachiez encore exactement pourquoi ?", "placeholder": "Ce qui revient, ce qui dérange, ce qui intrigue, ce qui semble décisif…" },
+      { "id": "page-02-closing", "type": "text", "text": "Une intuition n’a pas besoin d’être résolue pour devenir un point de départ." }
+    ] },
+    { "id": "page-03", "movementId": "intuition", "order": 3, "title": "Déplacer le regard", "blocks": [
+      { "id": "page-03-spark-recall", "type": "recall", "sourceBlockId": "spark", "label": "Votre point de départ", "emptyText": "Vous n’avez encore rien noté à l’étape 1." },
+      { "id": "page-03-insistence-recall", "type": "recall", "sourceBlockId": "insistence", "label": "Ce qui insiste", "emptyText": "Vous n’avez encore rien noté à l’étape 2." },
+      { "id": "page-03-intro-1", "type": "text", "text": "Une première formulation peut parfois enfermer trop vite ce que nous cherchons." },
+      { "id": "page-03-intro-2", "type": "text", "text": "Vous pouvez demander à l’IA de reformuler votre intuition de plusieurs manières. Elle ne choisira pas pour vous." },
+      { "id": "prompt-shifted-view", "type": "promptCopy", "label": "Explorer avec l’IA", "description": "Copiez d’abord vos deux traces ci-dessus, puis ce prompt dans l’assistant IA de votre choix.", "text": "Je cherche à cartographier ceci :\n\n[COLLEZ ICI CE QUE VOUS CHERCHEZ À CARTOGRAPHIER]\n\nEt ce qui me semble important, sans que je sache encore exactement pourquoi, est :\n\n[COLLEZ ICI CE QUI INSISTE]\n\nPropose-moi trois reformulations très différentes de ce noyau.\n\nContraintes :\n- ne choisis pas la meilleure formulation ;\n- ne cherche pas à clarifier trop vite ;\n- ne réduis pas l’ambiguïté si elle est féconde ;\n- garde au moins une reformulation proche de mon intuition initiale ;\n- propose au moins une reformulation qui déplace nettement mon regard ;\n- ne transforme pas encore cela en plan, carte ou solution.\n\nPrésente seulement trois formulations courtes, puis une question finale :\n\n« Laquelle vous semble reconnaître quelque chose que vous aviez déjà senti sans l’avoir encore formulé ? »" },
+      { "id": "shifted_view", "type": "textarea", "label": "Une reformulation vous aide-t-elle à mieux reconnaître ce que vous cherchez ?", "placeholder": "Vous pouvez reprendre une formulation, la modifier, ou ne rien changer." }
+    ] },
+    { "id": "page-04", "movementId": "intuition", "order": 4, "title": "Le foyer", "blocks": [
+      { "id": "page-04-spark-recall", "type": "recall", "sourceBlockId": "spark", "label": "Votre point de départ", "emptyText": "Vous n’avez encore rien noté à l’étape 1." },
+      { "id": "page-04-insistence-recall", "type": "recall", "sourceBlockId": "insistence", "label": "Ce qui insiste", "emptyText": "Vous n’avez encore rien noté à l’étape 2." },
+      { "id": "page-04-intro-1", "type": "text", "text": "Une carte peut contenir beaucoup de choses." },
+      { "id": "page-04-intro-2", "type": "text", "text": "Mais elle gagne en force lorsqu’on sait ce qu’elle cherche à rendre visible." },
+      { "id": "focus_statement", "type": "textarea", "label": "Complétez : Cette carte cherche à rendre visible…", "placeholder": "Cette carte cherche à rendre visible…" },
+      { "id": "page-04-closing", "type": "text", "text": "Cette phrase deviendra le foyer de votre carte. Vous pourrez la retrouver à la fin du parcours." },
+      { "id": "focus-not-conclusion", "type": "reveal", "label": "Le foyer n’est pas une conclusion", "content": "Il peut encore être déplacé plus tard. Pour l’instant, il sert seulement de point de repère." }
+    ] },
+    { "id": "page-05", "movementId": "fragments", "order": 5, "title": "Ce qui est déjà là", "blocks": [
+      { "id": "page-05-focus-recall", "type": "recall", "sourceBlockId": "focus_statement", "label": "Le foyer de votre carte", "emptyText": "Vous n’avez pas encore formulé le foyer de votre carte." },
+      { "id": "page-05-intro-1", "type": "text", "text": "Avant de relier, il faut laisser apparaître." },
+      { "id": "page-05-intro-2", "type": "text", "text": "Quels éléments appartiennent déjà à votre territoire ? Ils peuvent être très différents les uns des autres." },
+      { "id": "page-05-intro-3", "type": "text", "text": "Vous pouvez noter des personnes, des lieux, des événements, des idées, des émotions, des objets, des contraintes, des ressources, des images ou des questions." },
+      { "id": "fragments", "type": "textarea", "label": "Quels éléments sont déjà présents ?", "placeholder": "Un élément par ligne si vous le souhaitez." },
+      { "id": "page-05-closing", "type": "text", "text": "Pour l’instant, une liste suffit. La carte viendra plus tard." }
+    ] },
+    { "id": "page-06", "movementId": "fragments", "order": 6, "title": "Ce qui manque", "blocks": [
+      { "id": "page-06-focus-recall", "type": "recall", "sourceBlockId": "focus_statement", "label": "Le foyer de votre carte", "emptyText": "Vous n’avez pas encore formulé le foyer de votre carte." },
+      { "id": "page-06-fragments-recall", "type": "recall", "sourceBlockId": "fragments", "label": "Les éléments que vous avez déjà fait apparaître", "emptyText": "Vous n’avez pas encore listé de fragments." },
+      { "id": "page-06-intro-1", "type": "text", "text": "Une première liste révèle aussi ses propres absences." },
+      { "id": "page-06-intro-2", "type": "text", "text": "L’IA peut ici vous aider à regarder dans des directions auxquelles vous n’aviez pas pensé. Elle ne doit pas compléter la carte pour vous." },
+      { "id": "prompt-missing-fragments", "type": "promptCopy", "label": "Explorer les angles oubliés avec l’IA", "description": "Copiez votre foyer et vos fragments ci-dessus, puis utilisez ce prompt.", "text": "Voici le foyer de ma carte :\n\n[COLLEZ ICI VOTRE FOYER]\n\nVoici les éléments que j’ai déjà fait apparaître :\n\n[COLLEZ ICI VOS FRAGMENTS]\n\nAide-moi à repérer ce qui pourrait manquer.\n\nNe complète pas la carte à ma place.\n\nExamine plutôt la matière sous plusieurs angles :\n- acteurs ;\n- lieux ;\n- temporalités ;\n- forces ;\n- contraintes ;\n- ressources ;\n- absences ;\n- règles ;\n- habitudes ;\n- héritages ;\n- récits ;\n- objets ;\n- seuils ;\n- contradictions ;\n- conséquences.\n\nPour chaque catégorie réellement pertinente, propose au maximum deux questions ou éléments possibles.\n\nImportant :\n- ne suppose pas qu’un élément absent doit être ajouté ;\n- ne transforme pas tes suggestions en faits ;\n- distingue clairement ce qui vient de moi de ce que tu proposes.\n\nTermine par :\n\n« Gardez seulement ce qui vous semble réellement appartenir à votre territoire. »" },
+      { "id": "missing_fragments", "type": "textarea", "label": "Quelles pistes voulez-vous réellement intégrer à votre carte ?", "placeholder": "Ne gardez que ce qui vous semble appartenir réellement à votre territoire." },
+      { "id": "page-06-closing", "type": "text", "text": "Seuls les éléments que vous retenez ici rejoignent votre parcours." }
+    ] },
+    { "id": "page-07", "movementId": "fragments", "order": 7, "title": "Ce qui agit sans se montrer", "blocks": [
+      { "id": "page-07-focus-recall", "type": "recall", "sourceBlockId": "focus_statement", "label": "Le foyer de votre carte", "emptyText": "Vous n’avez pas encore formulé le foyer de votre carte." },
+      { "id": "page-07-fragments-recall", "type": "recall", "sourceBlockId": "fragments", "label": "Les éléments que vous avez retenus", "emptyText": "Vous n’avez pas encore listé de fragments." },
+      { "id": "page-07-missing-recall", "type": "recall", "sourceBlockId": "missing_fragments", "label": "Les pistes intégrées", "emptyText": "Vous n’avez pas encore retenu de pistes complémentaires." },
+      { "id": "page-07-intro-1", "type": "text", "text": "Tout ce qui agit dans une situation n’est pas forcément visible." },
+      { "id": "page-07-intro-2", "type": "text", "text": "Une règle implicite. Une habitude. Une absence. Un héritage. Une dépendance." },
+      { "id": "hidden_forces", "type": "textarea", "label": "Qu’est-ce qui pourrait agir dans votre territoire sans apparaître immédiatement ?", "placeholder": "Une règle, une absence, une mémoire, une dépendance, une influence indirecte…" },
+      { "id": "prompt-hidden-forces", "type": "promptCopy", "label": "Me poser des questions avec l’IA", "description": "Utilisez ce prompt seulement si vous souhaitez déplacer votre regard.", "text": "Je travaille sur cette carte :\n\n[COLLEZ ICI VOTRE FOYER]\n\nVoici les éléments que j’ai retenus :\n\n[COLLEZ ICI VOS FRAGMENTS RETENUS]\n\nJe cherche maintenant ce qui peut agir dans cette situation sans être immédiatement visible.\n\nNe me donne pas directement une liste d’éléments cachés.\n\nPose-moi plutôt 5 questions courtes qui pourraient faire apparaître :\n- un héritage ;\n- une règle implicite ;\n- une habitude ;\n- une dépendance ;\n- une absence ;\n- une mémoire ;\n- une contrainte non dite ;\n- ou une influence indirecte.\n\nLes questions doivent rester ouvertes.\n\nNe suppose pas que ces forces existent réellement.\nNe cherche pas à produire une interprétation psychologique ou un diagnostic.\n\nLe but est seulement de m’aider à regarder derrière ce qui est déjà visible." }
+    ] },
+    { "id": "page-08", "movementId": "fragments", "order": 8, "title": "Le fragment périphérique", "blocks": [
+      { "id": "page-08-fragments-recall", "type": "recall", "sourceBlockId": "fragments", "label": "Les fragments", "emptyText": "Vous n’avez pas encore listé de fragments." },
+      { "id": "page-08-missing-recall", "type": "recall", "sourceBlockId": "missing_fragments", "label": "Les pistes intégrées", "emptyText": "Vous n’avez pas encore retenu de pistes complémentaires." },
+      { "id": "page-08-hidden-recall", "type": "recall", "sourceBlockId": "hidden_forces", "label": "Ce qui agit sans se montrer", "emptyText": "Vous n’avez pas encore noté de force discrète." },
+      { "id": "page-08-intro", "type": "text", "text": "Une carte devient parfois intéressante lorsqu’un élément que l’on croyait secondaire commence à déplacer l’ensemble." },
+      { "id": "peripheral_fragment", "type": "textarea", "label": "Quel élément vous semblait périphérique, et que changerait-il s’il comptait davantage ?", "placeholder": "Le fragment choisi et ce qu’il pourrait déplacer." }
+    ] },
+    { "id": "page-09", "movementId": "relations", "order": 9, "title": "Ce qui relie quoi", "blocks": [
+      { "id": "page-09-fragments-recall", "type": "recall", "sourceBlockId": "fragments", "label": "Les fragments", "emptyText": "Vous n’avez pas encore listé de fragments." },
+      { "id": "page-09-missing-recall", "type": "recall", "sourceBlockId": "missing_fragments", "label": "Les pistes intégrées", "emptyText": "Vous n’avez pas encore retenu de pistes complémentaires." },
+      { "id": "page-09-peripheral-recall", "type": "recall", "sourceBlockId": "peripheral_fragment", "label": "Le fragment périphérique", "emptyText": "Vous n’avez pas encore choisi de fragment périphérique." },
+      { "id": "page-09-intro-1", "type": "text", "text": "Une carte commence vraiment lorsque les éléments cessent d’être isolés." },
+      { "id": "page-09-intro-2", "type": "text", "text": "Choisissez quelques fragments et décrivez ce qui les relie. Ne cherchez pas encore le mot parfait." },
+      { "id": "relations", "type": "textarea", "label": "Décrivez quelques relations importantes.", "placeholder": "A dépend de B…\nC rend D possible…\nE masque F…" }
+    ] },
+    { "id": "page-10", "movementId": "relations", "order": 10, "title": "Nommer le lien", "blocks": [
+      { "id": "page-10-relations-recall", "type": "recall", "sourceBlockId": "relations", "label": "Vos relations", "emptyText": "Vous n’avez pas encore décrit de relations." },
+      { "id": "page-10-intro", "type": "text", "text": "Un mot peut changer la manière dont nous comprenons une relation." },
+      { "id": "prompt-name-links", "type": "promptCopy", "label": "Chercher des verbes avec l’IA", "description": "Copiez vos relations ci-dessus puis utilisez ce prompt.", "text": "Voici plusieurs relations que j’ai décrites entre les éléments de ma carte :\n\n[COLLEZ ICI VOS RELATIONS]\n\nPour chacune, propose plusieurs verbes ou expressions relationnelles possibles.\n\nExemples :\n- dépend de ;\n- permet ;\n- empêche ;\n- transforme ;\n- nourrit ;\n- fragilise ;\n- masque ;\n- rend possible ;\n- hérite de ;\n- déclenche ;\n- amplifie ;\n- limite ;\n- attire ;\n- éloigne ;\n- entre en tension avec.\n\nPour chaque relation :\n1. propose entre 2 et 4 formulations différentes ;\n2. explique en une phrase très courte ce que chaque formulation met en avant ;\n3. ne choisis jamais à ma place.\n\nImportant :\n- n’ajoute pas de causalité si je n’en ai pas donné ;\n- ne transforme pas une simple association en relation de cause ;\n- ne considère pas les formulations proposées comme équivalentes.\n\nTermine par :\n\n« Choisissez le verbe qui décrit le mieux la relation que vous voulez réellement rendre visible. »" },
+      { "id": "named_links", "type": "textarea", "label": "Quels verbes ou formulations voulez-vous retenir ?", "placeholder": "Reformulez ici les relations que vous choisissez réellement." }
+    ] },
+    { "id": "page-11", "movementId": "relations", "order": 11, "title": "Les asymétries", "blocks": [
+      { "id": "page-11-named-links-recall", "type": "recall", "sourceBlockId": "named_links", "label": "Les liens retenus", "emptyText": "Vous n’avez pas encore retenu de formulations relationnelles." },
+      { "id": "page-11-intro-1", "type": "text", "text": "Toutes les relations ne fonctionnent pas dans les deux sens." },
+      { "id": "page-11-intro-2", "type": "text", "text": "A peut dépendre de B sans que B dépende de A. A peut influencer B beaucoup plus que B n’influence A." },
+      { "id": "asymmetries", "type": "textarea", "label": "Repérez au moins une relation asymétrique. Que fait A à B ? Et que fait réellement B à A ?", "placeholder": "A agit sur B de cette manière… B agit sur A autrement…" }
+    ] },
+    { "id": "page-12", "movementId": "relations", "order": 12, "title": "L’apparition du tiers", "blocks": [
+      { "id": "page-12-named-links-recall", "type": "recall", "sourceBlockId": "named_links", "label": "Les liens retenus", "emptyText": "Vous n’avez pas encore retenu de formulations relationnelles." },
+      { "id": "page-12-fragments-recall", "type": "recall", "sourceBlockId": "fragments", "label": "Les fragments disponibles", "emptyText": "Vous n’avez pas encore listé de fragments." },
+      { "id": "page-12-intro", "type": "text", "text": "Deux éléments ne sont parfois compréhensibles qu’à partir du moment où un troisième apparaît." },
+      { "id": "prompt-third-element", "type": "promptCopy", "label": "Explorer un tiers avec l’IA", "description": "Choisissez une relation ci-dessus et quelques fragments disponibles avant d’utiliser le prompt.", "text": "Dans ma carte, j’observe cette relation :\n\nA :\n[COLLEZ ICI LE FRAGMENT A]\n\nB :\n[COLLEZ ICI LE FRAGMENT B]\n\nRelation entre A et B :\n[COLLEZ ICI LA RELATION]\n\nVoici également quelques autres éléments présents dans mon territoire :\n[COLLEZ ICI QUELQUES AUTRES FRAGMENTS]\n\nAide-moi à explorer ce que l’apparition d’un troisième élément pourrait changer dans cette relation.\n\nPropose au maximum trois hypothèses de tiers.\n\nPour chaque hypothèse :\n- indique quel élément pourrait jouer ce rôle ;\n- décris ce qu’il pourrait modifier dans la relation entre A et B ;\n- formule cela comme une possibilité, jamais comme un fait.\n\nLe tiers peut :\n- médiatiser ;\n- déplacer ;\n- amplifier ;\n- réduire ;\n- rendre visible ;\n- empêcher ;\n- transformer ;\n- ou complexifier la relation.\n\nNe cherche pas à résoudre la relation.\nNe suppose pas que la présence d’un tiers est souhaitable.\nNe choisis pas le tiers le plus pertinent.\n\nTermine par :\n\n« Est-ce qu’un de ces tiers change réellement votre manière de voir la relation ? »" },
+      { "id": "third_element", "type": "textarea", "label": "Un tiers change-t-il réellement votre manière de voir cette relation ?", "placeholder": "Retenez, reformulez ou refusez les hypothèses proposées." }
+    ] },
+    { "id": "page-13", "movementId": "tensions", "order": 13, "title": "La tension centrale", "blocks": [
+      { "id": "page-13-named-links-recall", "type": "recall", "sourceBlockId": "named_links", "label": "Les liens retenus", "emptyText": "Vous n’avez pas encore retenu de formulations relationnelles." },
+      { "id": "page-13-asymmetries-recall", "type": "recall", "sourceBlockId": "asymmetries", "label": "Les asymétries", "emptyText": "Vous n’avez pas encore repéré d’asymétrie." },
+      { "id": "page-13-third-recall", "type": "recall", "sourceBlockId": "third_element", "label": "Le tiers éventuel", "emptyText": "Vous n’avez pas encore retenu de tiers." },
+      { "id": "page-13-intro-1", "type": "text", "text": "Toutes les contradictions ne sont pas des erreurs." },
+      { "id": "page-13-intro-2", "type": "text", "text": "Certaines tensions donnent au territoire son relief." },
+      { "id": "central_tension", "type": "textarea", "label": "Quelle tension compte réellement dans votre carte ?", "placeholder": "Par exemple : ouverture / maîtrise ; mémoire / transformation…" }
+    ] },
+    { "id": "page-14", "movementId": "tensions", "order": 14, "title": "Ne pas résoudre trop vite", "blocks": [
+      { "id": "page-14-tension-recall", "type": "recall", "sourceBlockId": "central_tension", "label": "Votre tension centrale", "emptyText": "Vous n’avez pas encore nommé de tension centrale." },
+      { "id": "page-14-intro-1", "type": "text", "text": "Une tension devient pauvre lorsqu’on cherche immédiatement à faire gagner un côté." },
+      { "id": "page-14-intro-2", "type": "text", "text": "On peut d’abord apprendre à la regarder depuis plusieurs endroits." },
+      { "id": "prompt-tension-readings", "type": "promptCopy", "label": "Explorer plusieurs lectures avec l’IA", "description": "Copiez votre tension ci-dessus et ajoutez seulement le contexte nécessaire.", "text": "Voici une tension importante dans ma carte :\n\n[COLLEZ ICI VOTRE TENSION]\n\nContexte minimal :\n\n[COLLEZ ICI 2 À 4 ÉLÉMENTS DIRECTEMENT CONCERNÉS]\n\nJe ne veux pas la résoudre maintenant.\n\nPropose trois manières différentes de la lire.\n\nChaque lecture doit préserver les deux pôles de la tension.\n\nPour chaque lecture :\n- dis ce qu’elle rend visible ;\n- dis ce qu’elle risque de masquer ;\n- ne propose pas de solution ;\n- ne désigne pas un pôle comme meilleur que l’autre.\n\nCherche si possible des lectures de nature différente :\n- relationnelle ;\n- temporelle ;\n- structurelle ;\n- narrative ;\n- ou liée à un changement d’échelle.\n\nNe produis aucune conclusion générale.\n\nLe but est de ralentir la résolution et d’augmenter le nombre de perspectives disponibles." },
+      { "id": "tension-readings-note", "type": "reveal", "label": "Après l’exploration", "content": "Vous n’avez pas besoin de conserver toutes les lectures proposées. Elles servent seulement à déplacer le regard." }
+    ] },
+    { "id": "page-15", "movementId": "tensions", "order": 15, "title": "Ce qu’elle ouvre", "blocks": [
+      { "id": "page-15-tension-recall", "type": "recall", "sourceBlockId": "central_tension", "label": "Votre tension centrale", "emptyText": "Vous n’avez pas encore nommé de tension centrale." },
+      { "id": "page-15-intro-1", "type": "text", "text": "Une tension n’est pas nécessairement quelque chose à éliminer." },
+      { "id": "page-15-intro-2", "type": "text", "text": "Elle peut maintenir plusieurs possibilités vivantes." },
+      { "id": "tension_opening", "type": "textarea", "label": "Que rend cette tension possible ?", "placeholder": "Une question, une relation, un mouvement, une alternative…" }
+    ] },
+    { "id": "page-16", "movementId": "tensions", "order": 16, "title": "Ce qu’elle ferme", "blocks": [
+      { "id": "page-16-tension-recall", "type": "recall", "sourceBlockId": "central_tension", "label": "Votre tension centrale", "emptyText": "Vous n’avez pas encore nommé de tension centrale." },
+      { "id": "page-16-opening-recall", "type": "recall", "sourceBlockId": "tension_opening", "label": "Ce que la tension ouvre", "emptyText": "Vous n’avez pas encore décrit ce que la tension ouvre." },
+      { "id": "page-16-intro-1", "type": "text", "text": "Mais toutes les tensions ne restent pas fécondes indéfiniment." },
+      { "id": "page-16-intro-2", "type": "text", "text": "À certains endroits, elles peuvent aussi enfermer, épuiser ou rendre impossible." },
+      { "id": "tension_closing", "type": "textarea", "label": "À partir de quel point cette tension cesse-t-elle d’ouvrir et commence-t-elle à fermer ?", "placeholder": "Le moment, la limite ou la condition à partir de laquelle quelque chose devient inhabitable ou impossible." },
+      { "id": "page-16-human-judgment", "type": "text", "text": "Il ne s’agit pas de demander à l’IA où se trouve cette limite. Ce jugement vous appartient." },
+      { "id": "page-16-breathing", "type": "reveal", "label": "Respirer", "content": "Vous n’avez pas besoin de tout tenir en même temps. Regardez simplement ce qui commence à prendre forme." }
+    ] },
+    { "id": "page-17", "movementId": "territoires", "order": 17, "title": "Ma première carte", "blocks": [
+      { "id": "page-17-focus-recall", "type": "recall", "sourceBlockId": "focus_statement", "label": "Le foyer", "emptyText": "Vous n’avez pas encore formulé le foyer de votre carte." },
+      { "id": "page-17-fragments-recall", "type": "recall", "sourceBlockId": "fragments", "label": "Les fragments", "emptyText": "Vous n’avez pas encore listé de fragments." },
+      { "id": "page-17-named-links-recall", "type": "recall", "sourceBlockId": "named_links", "label": "Les relations", "emptyText": "Vous n’avez pas encore nommé de liens." },
+      { "id": "page-17-tension-recall", "type": "recall", "sourceBlockId": "central_tension", "label": "La tension centrale", "emptyText": "Vous n’avez pas encore nommé de tension centrale." },
+      { "id": "page-17-intro-1", "type": "text", "text": "Vous avez désormais un foyer, des fragments, des relations et une tension." },
+      { "id": "page-17-intro-2", "type": "text", "text": "Il est temps d’organiser." },
+      { "id": "map_v1", "type": "textarea", "label": "Construisez votre première carte avec vos propres mots.", "placeholder": "Centre :\nAutour :\nRelations majeures :\nMarges :" }
+    ] },
+    { "id": "page-18", "movementId": "territoires", "order": 18, "title": "Une autre carte du même monde", "blocks": [
+      { "id": "page-18-focus-recall", "type": "recall", "sourceBlockId": "focus_statement", "label": "Le foyer", "emptyText": "Vous n’avez pas encore formulé le foyer de votre carte." },
+      { "id": "page-18-fragments-recall", "type": "recall", "sourceBlockId": "fragments", "label": "Les fragments", "emptyText": "Vous n’avez pas encore listé de fragments." },
+      { "id": "page-18-named-links-recall", "type": "recall", "sourceBlockId": "named_links", "label": "Les relations", "emptyText": "Vous n’avez pas encore nommé de liens." },
+      { "id": "page-18-tension-recall", "type": "recall", "sourceBlockId": "central_tension", "label": "La tension centrale", "emptyText": "Vous n’avez pas encore nommé de tension centrale." },
+      { "id": "page-18-map-v1-recall", "type": "recall", "sourceBlockId": "map_v1", "label": "Votre première carte", "emptyText": "Vous n’avez pas encore décrit votre première carte." },
+      { "id": "page-18-intro-1", "type": "text", "text": "Votre première carte n’est pas fausse. Mais elle n’est pas la seule possible." },
+      { "id": "page-18-intro-2", "type": "text", "text": "L’IA peut maintenant vous aider à organiser exactement la même matière autrement." },
+      { "id": "prompt-map-v2", "type": "promptCopy", "label": "Explorer une autre organisation avec l’IA", "description": "Copiez uniquement les éléments réellement nécessaires depuis les rappels ci-dessus.", "text": "Voici le foyer de ma carte :\n\n[COLLEZ ICI VOTRE FOYER]\n\nVoici ma première organisation du territoire :\n\n[COLLEZ ICI VOTRE PREMIÈRE CARTE]\n\nVoici les fragments principaux :\n\n[COLLEZ ICI LES FRAGMENTS PRINCIPAUX]\n\nVoici certaines relations :\n\n[COLLEZ ICI LES RELATIONS PRINCIPALES]\n\nEt une tension centrale :\n\n[COLLEZ ICI LA TENSION CENTRALE]\n\nPropose une autre manière d’organiser exactement la même matière.\n\nImportant :\n- ne corrige pas ma première carte ;\n- ne cherche pas à produire une version meilleure ;\n- ne supprime aucun élément important ;\n- change réellement le principe d’organisation.\n\nTu peux par exemple réorganiser selon :\n- le temps ;\n- les acteurs ;\n- les causalités ;\n- les tensions ;\n- les niveaux d’échelle ;\n- les lieux ;\n- les récits concurrents ;\n- ou les conséquences.\n\nPrésente :\n1. le principe de cette seconde organisation ;\n2. sa structure en quelques points ;\n3. ce qu’elle pourrait rendre plus visible que ma première carte ;\n4. ce qu’elle pourrait au contraire rendre moins visible.\n\nNe conclus pas laquelle est préférable." },
+      { "id": "map_v2", "type": "textarea", "label": "Quelle organisation alternative voulez-vous réellement conserver ?", "placeholder": "Résumez ou reformulez ici uniquement ce que vous retenez." }
+    ] },
+    { "id": "page-19", "movementId": "territoires", "order": 19, "title": "Ce que chaque carte révèle", "blocks": [
+      { "id": "page-19-map-v1-recall", "type": "recall", "sourceBlockId": "map_v1", "label": "Première carte", "emptyText": "Vous n’avez pas encore décrit votre première carte." },
+      { "id": "page-19-map-v2-recall", "type": "recall", "sourceBlockId": "map_v2", "label": "Seconde organisation", "emptyText": "Vous n’avez pas encore décrit de seconde organisation." },
+      { "id": "page-19-intro", "type": "text", "text": "Deux cartes du même territoire peuvent toutes les deux être pertinentes et pourtant ne pas montrer la même chose." },
+      { "id": "map_v1_reveals", "type": "textarea", "label": "La première carte révèle…" },
+      { "id": "map_v1_hides", "type": "textarea", "label": "La première carte masque…" },
+      { "id": "map_v2_reveals", "type": "textarea", "label": "La seconde carte révèle…" },
+      { "id": "map_v2_hides", "type": "textarea", "label": "La seconde carte masque…" }
+    ] },
+    { "id": "page-20", "movementId": "territoires", "order": 20, "title": "Ce qui résiste à la carte", "blocks": [
+      { "id": "page-20-intro-1", "type": "text", "text": "Toute carte sélectionne." },
+      { "id": "page-20-intro-2", "type": "text", "text": "Certaines choses restent nécessairement à la marge, hors cadre ou difficiles à représenter." },
+      { "id": "outside_map", "type": "textarea", "label": "Qu’est-ce que vos cartes ne parviennent pas encore à montrer correctement ?", "placeholder": "Ce qui résiste, échappe ou reste irréductible." },
+      { "id": "page-20-closing", "type": "text", "text": "Ce qui échappe à la carte n’est pas forcément un défaut de la carte." }
+    ] },
+    { "id": "page-21", "movementId": "chemins", "order": 21, "title": "Entrer", "blocks": [
+      { "id": "page-21-map-v1-recall", "type": "recall", "sourceBlockId": "map_v1", "label": "Première carte", "emptyText": "Vous n’avez pas encore décrit votre première carte." },
+      { "id": "page-21-map-v2-recall", "type": "recall", "sourceBlockId": "map_v2", "label": "Seconde organisation", "emptyText": "Vous n’avez pas encore décrit de seconde organisation." },
+      { "id": "page-21-outside-map-recall", "type": "recall", "sourceBlockId": "outside_map", "label": "Ce qui résiste à la carte", "emptyText": "Vous n’avez pas encore noté ce qui résiste à la carte." },
+      { "id": "page-21-intro-1", "type": "text", "text": "Imaginez quelqu’un qui découvre votre territoire pour la première fois." },
+      { "id": "page-21-intro-2", "type": "text", "text": "Il ne peut pas tout voir en même temps." },
+      { "id": "entry_point", "type": "textarea", "label": "Par où devrait-il entrer, et pourquoi ce point plutôt qu’un autre ?", "placeholder": "Le point d’entrée et ce qui le rend pertinent." }
+    ] },
+    { "id": "page-22", "movementId": "chemins", "order": 22, "title": "Bifurquer", "blocks": [
+      { "id": "page-22-entry-point-recall", "type": "recall", "sourceBlockId": "entry_point", "label": "Le point d’entrée", "emptyText": "Vous n’avez pas encore choisi de point d’entrée." },
+      { "id": "page-22-tension-recall", "type": "recall", "sourceBlockId": "central_tension", "label": "La tension centrale", "emptyText": "Vous n’avez pas encore nommé de tension centrale." },
+      { "id": "page-22-map-v1-recall", "type": "recall", "sourceBlockId": "map_v1", "label": "Première carte", "emptyText": "Vous n’avez pas encore décrit votre première carte." },
+      { "id": "page-22-map-v2-recall", "type": "recall", "sourceBlockId": "map_v2", "label": "Seconde organisation", "emptyText": "Vous n’avez pas encore décrit de seconde organisation." },
+      { "id": "page-22-intro-1", "type": "text", "text": "Un point d’entrée n’impose pas une seule suite." },
+      { "id": "page-22-intro-2", "type": "text", "text": "Plusieurs chemins peuvent devenir possibles." },
+      { "id": "prompt-branches", "type": "promptCopy", "label": "Explorer des bifurcations avec l’IA", "description": "Copiez votre point d’entrée et un résumé court du territoire.", "text": "Voici le point d’entrée que j’ai choisi dans ma carte :\n\n[COLLEZ ICI VOTRE POINT D’ENTRÉE]\n\nRésumé du territoire :\n\n[COLLEZ ICI UN RÉSUMÉ COURT DE VOTRE CARTE]\n\nTension importante :\n\n[COLLEZ ICI VOTRE TENSION CENTRALE]\n\nÀ partir de ce point d’entrée, propose quatre bifurcations réellement différentes.\n\nUne bifurcation ne doit pas être une simple variante de formulation.\n\nElle doit changer quelque chose dans :\n- le point de vue ;\n- la relation entre les éléments ;\n- l’ordre des événements ;\n- l’échelle ;\n- la priorité ;\n- ou ce qui devient possible ensuite.\n\nPour chaque bifurcation :\n- donne un titre très court ;\n- décris la direction ouverte en deux phrases maximum ;\n- indique ce qu’elle rend possible ;\n- indique ce qu’elle risque de laisser de côté.\n\nNe choisis pas la meilleure.\nNe cherche pas à produire la direction la plus efficace.\nNe suppose pas que toutes les bifurcations sont souhaitables.\n\nLe but est de faire apparaître plusieurs futurs possibles à partir du même présent." },
+      { "id": "branch_1", "type": "textarea", "label": "Chemin 1" },
+      { "id": "branch_2", "type": "textarea", "label": "Chemin 2" },
+      { "id": "branch_3", "type": "textarea", "label": "Chemin 3" }
+    ] },
+    { "id": "page-23", "movementId": "chemins", "order": 23, "title": "Franchir un seuil", "blocks": [
+      { "id": "page-23-branch-1-recall", "type": "recall", "sourceBlockId": "branch_1", "label": "Chemin 1", "emptyText": "Vous n’avez pas encore décrit le chemin 1." },
+      { "id": "page-23-branch-2-recall", "type": "recall", "sourceBlockId": "branch_2", "label": "Chemin 2", "emptyText": "Vous n’avez pas encore décrit le chemin 2." },
+      { "id": "page-23-branch-3-recall", "type": "recall", "sourceBlockId": "branch_3", "label": "Chemin 3", "emptyText": "Vous n’avez pas encore décrit le chemin 3." },
+      { "id": "page-23-intro-1", "type": "text", "text": "Une bifurcation n’est pas toujours un seuil." },
+      { "id": "page-23-intro-2", "type": "text", "text": "Un seuil apparaît lorsqu’un déplacement change réellement ce qui peut arriver ensuite." },
+      { "id": "threshold", "type": "textarea", "label": "Dans l’un de vos chemins, à quel moment ne sommes-nous plus simplement ailleurs, mais autrement ?", "placeholder": "Le passage et ce qu’il rend désormais possible." }
+    ] },
+    { "id": "page-24", "movementId": "chemins", "order": 24, "title": "Les chemins empêchés", "blocks": [
+      { "id": "page-24-branch-1-recall", "type": "recall", "sourceBlockId": "branch_1", "label": "Chemin 1", "emptyText": "Vous n’avez pas encore décrit le chemin 1." },
+      { "id": "page-24-branch-2-recall", "type": "recall", "sourceBlockId": "branch_2", "label": "Chemin 2", "emptyText": "Vous n’avez pas encore décrit le chemin 2." },
+      { "id": "page-24-branch-3-recall", "type": "recall", "sourceBlockId": "branch_3", "label": "Chemin 3", "emptyText": "Vous n’avez pas encore décrit le chemin 3." },
+      { "id": "page-24-threshold-recall", "type": "recall", "sourceBlockId": "threshold", "label": "Le seuil", "emptyText": "Vous n’avez pas encore nommé de seuil." },
+      { "id": "page-24-intro-1", "type": "text", "text": "Toutes les voies imaginables ne sont pas ouvertes." },
+      { "id": "page-24-intro-2", "type": "text", "text": "Certaines sont impossibles. Certaines sont empêchées. Certaines ont été oubliées. Certaines ne sont pas encore pensables." },
+      { "id": "blocked_paths", "type": "textarea", "label": "Quels chemins sont impossibles, empêchés, oubliés ou encore inconnus ?", "placeholder": "Décrivez-les sans chercher encore à les rouvrir." },
+      { "id": "prompt-blocked-paths", "type": "promptCopy", "label": "Interroger l’empêchement avec l’IA", "description": "Copiez uniquement les chemins que vous venez d’identifier et leur contexte minimal.", "text": "Voici des chemins que j’ai identifiés comme impossibles, empêchés, oubliés ou encore inconnus :\n\n[COLLEZ ICI LES CHEMINS IDENTIFIÉS]\n\nContexte général :\n\n[COLLEZ ICI LE CONTEXTE STRICTEMENT NÉCESSAIRE]\n\nNe cherche pas immédiatement à les rouvrir.\n\nPour chacun, pose plutôt des questions permettant d’examiner ce qui maintient cette fermeture.\n\nTu peux interroger :\n- une contrainte matérielle ;\n- une règle ;\n- une dépendance ;\n- un héritage ;\n- une décision passée ;\n- une peur ;\n- une absence de ressource ;\n- une structure institutionnelle ;\n- une représentation ;\n- ou simplement une limite réelle.\n\nImportant :\n- ne suppose pas que toute fermeture doit être dépassée ;\n- ne présente pas une limite comme un problème à résoudre ;\n- ne psychologise pas automatiquement ;\n- ne propose pas de solution tant que la nature de l’empêchement n’est pas comprise.\n\nPour chaque chemin, pose au maximum deux questions.\n\nTermine par :\n\n« Certaines voies sont fermées parce qu’elles sont empêchées. D’autres parce qu’elles protègent quelque chose. D’autres encore parce que leur ouverture n’est pas encore pensable. »" }
+    ] },
+    { "id": "page-25", "movementId": "carte-vivante", "order": 25, "title": "Ce que je vois maintenant", "blocks": [
+      { "id": "page-25-focus-recall", "type": "recall", "sourceBlockId": "focus_statement", "label": "Le foyer initial", "emptyText": "Vous n’avez pas encore formulé le foyer de votre carte." },
+      { "id": "page-25-intro-1", "type": "text", "text": "Vous avez commencé avec une intuition." },
+      { "id": "page-25-intro-2", "type": "text", "text": "Revenons-y." },
+      { "id": "initial_view", "type": "textarea", "label": "Au début, je voyais…" },
+      { "id": "final_insight", "type": "textarea", "label": "Maintenant, je vois aussi…" },
+      { "id": "page-25-closing", "type": "text", "text": "Ce déplacement du regard est l’une des traces essentielles de votre carte." }
+    ] },
+    { "id": "page-26", "movementId": "carte-vivante", "order": 26, "title": "Ce qui reste ouvert", "blocks": [
+      { "id": "page-26-intro-1", "type": "text", "text": "Une carte vivante n’est pas une carte qui a tout résolu." },
+      { "id": "page-26-intro-2", "type": "text", "text": "Elle laisse apparaître ce qui demeure incertain, mobile ou encore possible." },
+      { "id": "visible_now", "type": "textarea", "label": "Ce qui est devenu visible" },
+      { "id": "remaining_uncertainty", "type": "textarea", "label": "Ce qui reste incertain" },
+      { "id": "future_change", "type": "textarea", "label": "Ce qui pourrait encore changer" },
+      { "id": "open_future", "type": "textarea", "label": "Le prochain chemin que j’aimerais explorer" },
+      { "id": "living-map-ending", "type": "reveal", "label": "Une carte vivante", "content": "Une carte vivante n’est pas achevée lorsque tout est rempli. Elle l’est lorsqu’elle rend possible un prochain déplacement." },
+      { "id": "summary-title", "type": "text", "text": "Votre Carte vivante" },
+      { "id": "summary-focus-title", "type": "text", "text": "Le foyer" },
+      { "id": "summary-focus-recall", "type": "recall", "sourceBlockId": "focus_statement", "label": "Le foyer", "emptyText": "Aucun foyer n’a été formulé." },
+      { "id": "summary-tension-title", "type": "text", "text": "La tension centrale" },
+      { "id": "summary-central-tension-recall", "type": "recall", "sourceBlockId": "central_tension", "label": "Tension centrale", "emptyText": "Aucune tension centrale n’a été nommée." },
+      { "id": "summary-map-v1-title", "type": "text", "text": "Première carte" },
+      { "id": "summary-map-v1-recall", "type": "recall", "sourceBlockId": "map_v1", "label": "Première carte", "emptyText": "Aucune première carte n’a été décrite." },
+      { "id": "summary-map-v2-title", "type": "text", "text": "Autre organisation" },
+      { "id": "summary-map-v2-recall", "type": "recall", "sourceBlockId": "map_v2", "label": "Autre organisation", "emptyText": "Aucune autre organisation n’a été décrite." },
+      { "id": "summary-entry-point-title", "type": "text", "text": "Le point d’entrée" },
+      { "id": "summary-entry-point-recall", "type": "recall", "sourceBlockId": "entry_point", "label": "Point d’entrée", "emptyText": "Aucun point d’entrée n’a été choisi." },
+      { "id": "summary-threshold-title", "type": "text", "text": "Le seuil" },
+      { "id": "summary-threshold-recall", "type": "recall", "sourceBlockId": "threshold", "label": "Seuil", "emptyText": "Aucun seuil n’a été nommé." },
+      { "id": "summary-final-insight-title", "type": "text", "text": "Ce que je vois maintenant" },
+      { "id": "summary-final-insight-recall", "type": "recall", "sourceBlockId": "final_insight", "label": "Maintenant, je vois aussi", "emptyText": "Aucun déplacement final n’a été formulé." },
+      { "id": "summary-closing-1", "type": "text", "text": "Une carte ne remplace pas le territoire." },
+      { "id": "summary-closing-2", "type": "text", "text": "Elle rend certaines relations visibles afin que nous puissions y circuler autrement." },
+      { "id": "summary-closing-3", "type": "text", "text": "Ce qui demeure ouvert n’est pas un manque à combler. C’est aussi ce qui permet à la carte de rester vivante." }
+    ] }
+  ]
+}

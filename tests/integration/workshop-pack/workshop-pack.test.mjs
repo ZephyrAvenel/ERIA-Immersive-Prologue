@@ -1445,3 +1445,158 @@ test("augmented writing workshop remains a valid declarative pack", async () => 
     globalThis.fetch = previousFetch;
   }
 });
+
+test("augmented mapping workshop is valid, registered, and declarative", async () => {
+  const pack = await readProjectJson("packs", "workshop-002-cartographie-augmentee", "pack.json");
+  const result = validateWorkshopPack(pack);
+  assert.deepEqual(result, { valid: true, errors: [] });
+  assert.equal(pack.format, "ine-workshop-pack");
+  assert.equal(pack.id, "cartographie-augmentee");
+  assert.equal(pack.slug, "cartographie-augmentee");
+  assert.equal(pack.version, "1.0");
+  assert.equal(pack.language, "fr");
+  assert.equal(pack.startPage, "page-01");
+  assert.equal(pack.movements.length, 7);
+  assert.equal(pack.pages.length, 26);
+
+  assert.deepEqual(
+    pack.movements.map((movement) => [movement.id, movement.order, movement.title]),
+    [
+      ["intuition", 1, "Intuition"],
+      ["fragments", 2, "Fragments"],
+      ["relations", 3, "Relations"],
+      ["tensions", 4, "Tensions"],
+      ["territoires", 5, "Territoires"],
+      ["chemins", 6, "Chemins"],
+      ["carte-vivante", 7, "Carte vivante"],
+    ],
+  );
+
+  assert.deepEqual(
+    pack.pages.map((page) => [page.id, page.order, page.movementId, page.title]),
+    [
+      ["page-01", 1, "intuition", "L’étincelle"],
+      ["page-02", 2, "intuition", "Ce qui insiste"],
+      ["page-03", 3, "intuition", "Déplacer le regard"],
+      ["page-04", 4, "intuition", "Le foyer"],
+      ["page-05", 5, "fragments", "Ce qui est déjà là"],
+      ["page-06", 6, "fragments", "Ce qui manque"],
+      ["page-07", 7, "fragments", "Ce qui agit sans se montrer"],
+      ["page-08", 8, "fragments", "Le fragment périphérique"],
+      ["page-09", 9, "relations", "Ce qui relie quoi"],
+      ["page-10", 10, "relations", "Nommer le lien"],
+      ["page-11", 11, "relations", "Les asymétries"],
+      ["page-12", 12, "relations", "L’apparition du tiers"],
+      ["page-13", 13, "tensions", "La tension centrale"],
+      ["page-14", 14, "tensions", "Ne pas résoudre trop vite"],
+      ["page-15", 15, "tensions", "Ce qu’elle ouvre"],
+      ["page-16", 16, "tensions", "Ce qu’elle ferme"],
+      ["page-17", 17, "territoires", "Ma première carte"],
+      ["page-18", 18, "territoires", "Une autre carte du même monde"],
+      ["page-19", 19, "territoires", "Ce que chaque carte révèle"],
+      ["page-20", 20, "territoires", "Ce qui résiste à la carte"],
+      ["page-21", 21, "chemins", "Entrer"],
+      ["page-22", 22, "chemins", "Bifurquer"],
+      ["page-23", 23, "chemins", "Franchir un seuil"],
+      ["page-24", 24, "chemins", "Les chemins empêchés"],
+      ["page-25", 25, "carte-vivante", "Ce que je vois maintenant"],
+      ["page-26", 26, "carte-vivante", "Ce qui reste ouvert"],
+    ],
+  );
+
+  const supportedTypes = new Set(["text", "textarea", "choice", "reveal", "promptCopy", "recall"]);
+  assert.equal(pack.pages.every((page) => page.blocks.every((block) => supportedTypes.has(block.type))), true);
+  assert.equal(JSON.stringify(pack).includes("[TEMPORAIRE]"), false);
+
+  const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
+  for (const traceId of [
+    "spark",
+    "insistence",
+    "focus_statement",
+    "shifted_view",
+    "fragments",
+    "missing_fragments",
+    "hidden_forces",
+    "peripheral_fragment",
+    "relations",
+    "named_links",
+    "asymmetries",
+    "third_element",
+    "central_tension",
+    "tension_opening",
+    "tension_closing",
+    "map_v1",
+    "map_v2",
+    "map_v1_reveals",
+    "map_v1_hides",
+    "map_v2_reveals",
+    "map_v2_hides",
+    "outside_map",
+    "entry_point",
+    "branch_1",
+    "branch_2",
+    "branch_3",
+    "threshold",
+    "blocked_paths",
+    "initial_view",
+    "final_insight",
+    "visible_now",
+    "remaining_uncertainty",
+    "future_change",
+    "open_future",
+  ]) {
+    assert.equal(blockIds.includes(traceId), true, `${traceId} should exist as a memory trace`);
+  }
+
+  assert.equal(new Set(blockIds).size, blockIds.length, "block ids should be unique");
+
+  assert.deepEqual(
+    pack.pages
+      .filter((page) => page.blocks.some((block) => block.type === "promptCopy"))
+      .map((page) => page.order),
+    [3, 6, 7, 10, 12, 14, 18, 22, 24],
+  );
+
+  const recallSources = pack.pages
+    .flatMap((page) => page.blocks)
+    .filter((block) => block.type === "recall")
+    .map((block) => block.sourceBlockId);
+  assert.equal(recallSources.every((sourceBlockId) => blockIds.includes(sourceBlockId)), true);
+
+  const promptPages = new Set(
+    pack.pages
+      .filter((page) => page.blocks.some((block) => block.type === "promptCopy"))
+      .map((page) => page.order),
+  );
+  for (const humanDecisionStep of [1, 2, 4, 5, 8, 9, 11, 13, 15, 16, 17, 19, 20, 21, 23, 25, 26]) {
+    assert.equal(promptPages.has(humanDecisionStep), false, `page ${humanDecisionStep} should not include AI promptCopy`);
+  }
+
+  const serialized = JSON.stringify(pack).toLowerCase();
+  for (const forbidden of ["apikey", "api_key", "endpoint", "streaming", "openaikey", "chatbot"]) {
+    assert.equal(serialized.includes(forbidden), false, `pack should not contain ${forbidden}`);
+  }
+
+  const registry = await readProjectJson("apps", "player", "src", "editorial-registry.json");
+  const workshops = registry.workshops.map((workshop) => workshop.id);
+  assert.deepEqual(workshops, [
+    "ecriture-augmentee",
+    "cartographie-augmentee",
+    "art-augmente",
+    "composer-recit-vivant-ia",
+  ]);
+  const mappingWorkshop = registry.workshops.find((workshop) => workshop.id === "cartographie-augmentee");
+  assert.equal(mappingWorkshop.status, "published");
+  assert.equal(mappingWorkshop.slug, "cartographie-augmentee");
+  assert.equal(mappingWorkshop.manifest, "packs/workshop-002-cartographie-augmentee/pack.json");
+  assert.equal(
+    mappingWorkshop.coverImage,
+    "packs/workshop-002-cartographie-augmentee/assets/images/00-couverture-cartographie-augmentee.svg",
+  );
+
+  const engine = new WorkshopEngine(pack);
+  assert.equal(engine.currentPage.id, "page-01");
+  for (let index = 1; index < pack.pages.length; index += 1) engine.next();
+  assert.equal(engine.currentPage.id, "page-26");
+  assert.equal(engine.canGoNext, false);
+});
