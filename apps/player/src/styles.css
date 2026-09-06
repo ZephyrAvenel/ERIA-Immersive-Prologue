@@ -1853,6 +1853,8 @@ button:disabled {
 
 .workshop-entry__content {
   width: min(100%, 46rem);
+  min-width: 0;
+  max-width: 100%;
   display: grid;
   gap: clamp(0.75rem, 1.8vw, 1.15rem);
 }
@@ -1873,10 +1875,12 @@ button:disabled {
 
 .workshop-entry h1 {
   margin: 0;
+  max-width: 100%;
   color: var(--ink);
   font-family: var(--title-font);
   font-size: clamp(3rem, 8vw, 6.5rem);
   line-height: 0.9;
+  overflow-wrap: anywhere;
   text-wrap: balance;
 }
 
@@ -2543,7 +2547,8 @@ button:disabled {
   }
 
   .workshop-entry h1 {
-    font-size: clamp(2.55rem, 14vw, 4.4rem);
+    font-size: clamp(2.15rem, 10vw, 3.4rem);
+    line-height: 0.95;
   }
 
   .workshop-player__footer {

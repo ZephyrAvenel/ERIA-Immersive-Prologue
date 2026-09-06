@@ -1042,8 +1042,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               coverAlt:
                 "Cartographie augment\u00e9e \u2014 couverture du pack montrant une carte narrative lumineuse avec id\u00e9es, liens, territoires et relations, dans l\u2019univers visuel des R\u00e9cits Vivants.",
               coverSrc: workshopsState.cards[1].coverSrc,
-              coverNaturalWidth: 1200,
-              coverNaturalHeight: 1600,
+              coverNaturalWidth: 960,
+              coverNaturalHeight: 1280,
               coverObjectFit: "contain",
             },
             {
@@ -1122,8 +1122,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               coverAlt:
                 "Cartographie augment\u00e9e \u2014 couverture du pack montrant une carte narrative lumineuse avec id\u00e9es, liens, territoires et relations, dans l\u2019univers visuel des R\u00e9cits Vivants.",
               coverSrc: workshopsState.cards[1].coverSrc,
-              coverNaturalWidth: 1200,
-              coverNaturalHeight: 1600,
+              coverNaturalWidth: 960,
+              coverNaturalHeight: 1280,
               coverObjectFit: "contain",
             },
             {
