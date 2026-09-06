@@ -116,6 +116,27 @@
       }
     },
     {
+      "id": "clarification-augmentee",
+      "family": "augmented-workshops",
+      "status": "published",
+      "slug": "clarification-augmentee",
+      "manifest": "packs/workshop-004-clarification-augmentee/pack.json",
+      "coverImage": "packs/workshop-004-clarification-augmentee/assets/images/00-couverture-clarification-augmentee.png",
+      "coverImageAlt": "Couverture de Clarification augmentée — une constellation de fragments, images et notes reliés autour d’un noyau lumineux qui rend l’ensemble plus lisible sans effacer sa complexité.",
+      "labels": {
+        "fr": {
+          "orientation": "CLARIFIER",
+          "title": "Clarification augmentée",
+          "description": "Voir plus précisément sans réduire la complexité."
+        },
+        "en": {
+          "orientation": "CLARIFY",
+          "title": "Augmented clarification",
+          "description": "Seeing more precisely without reducing complexity."
+        }
+      }
+    },
+    {
       "id": "composer-recit-vivant-ia",
       "family": "augmented-workshops",
       "status": "planned",

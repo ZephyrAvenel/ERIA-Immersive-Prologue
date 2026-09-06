@@ -946,7 +946,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await evaluate(page, "document.querySelector('[data-family=\"augmented-workshops\"] a')?.click()");
     await waitForExpression(
       page,
-      "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 4",
+      "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 5",
     );
     assert.equal(
       await evaluate(page, "window.location.pathname.endsWith('/ateliers/')"),
@@ -961,7 +961,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await waitForPlayerReady(page, "Sc\u00e8ne 1 / 9");
 
     await loadUrl(page, workshopsUrl);
-    await waitForExpression(page, "document.querySelectorAll('.workshop-card').length === 4");
+    await waitForExpression(page, "document.querySelectorAll('.workshop-card').length === 5");
     await waitForExpression(
       page,
       "document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] .workshop-card__cover img')?.complete === true && document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] .workshop-card__cover img')?.naturalWidth === 853",
@@ -969,6 +969,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await waitForExpression(
       page,
       "document.querySelector('[data-workshop-id=\"art-augmente\"] .workshop-card__cover img')?.complete === true && document.querySelector('[data-workshop-id=\"art-augmente\"] .workshop-card__cover img')?.naturalWidth === 960",
+    );
+    await waitForExpression(
+      page,
+      "document.querySelector('[data-workshop-id=\"clarification-augmentee\"] .workshop-card__cover img')?.complete === true && document.querySelector('[data-workshop-id=\"clarification-augmentee\"] .workshop-card__cover img')?.naturalWidth === 960",
     );
     const workshopsState = await evaluate(
       page,
@@ -1071,6 +1075,26 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               coverObjectFit: "contain",
             },
             {
+              id: "clarification-augmentee",
+              status: "published",
+              visibleStatus: "Atelier publié",
+              orientation: "CLARIFIER",
+              title: "Clarification augmentée",
+              description: "Voir plus précisément sans réduire la complexité.",
+              access: "Ouvrir l’atelier",
+              linkCount: 1,
+              href: `${entryUrl}ateliers/clarification-augmentee/`,
+              role: null,
+              tabIndex: null,
+              coverPresent: true,
+              coverAlt:
+                "Couverture de Clarification augmentée — une constellation de fragments, images et notes reliés autour d’un noyau lumineux qui rend l’ensemble plus lisible sans effacer sa complexité.",
+              coverSrc: workshopsState.cards[3].coverSrc,
+              coverNaturalWidth: 960,
+              coverNaturalHeight: 1280,
+              coverObjectFit: "contain",
+            },
+            {
               id: "composer-recit-vivant-ia",
               status: "planned",
               visibleStatus: "Pr\u00e9vu",
@@ -1152,6 +1176,26 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               coverObjectFit: "contain",
             },
             {
+              id: "clarification-augmentee",
+              status: "published",
+              visibleStatus: "Published workshop",
+              orientation: "CLARIFY",
+              title: "Augmented clarification",
+              description: "Seeing more precisely without reducing complexity.",
+              access: "Open workshop",
+              linkCount: 1,
+              href: `${entryUrl}ateliers/clarification-augmentee/`,
+              role: null,
+              tabIndex: null,
+              coverPresent: true,
+              coverAlt:
+                "Couverture de Clarification augmentée — une constellation de fragments, images et notes reliés autour d’un noyau lumineux qui rend l’ensemble plus lisible sans effacer sa complexité.",
+              coverSrc: workshopsState.cards[3].coverSrc,
+              coverNaturalWidth: 960,
+              coverNaturalHeight: 1280,
+              coverObjectFit: "contain",
+            },
+            {
               id: "composer-recit-vivant-ia",
               status: "planned",
               visibleStatus: "Planned",
@@ -1175,7 +1219,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(workshopsState.cards[0].coverSrc.endsWith("/packs/workshop-001-ecriture-augmentee/assets/images/00-couverture-ecriture-augmentee.webp"), true);
     assert.equal(workshopsState.cards[1].coverSrc.endsWith("/packs/workshop-002-cartographie-augmentee/assets/images/00-couverture-cartographie-augmentee.png"), true);
     assert.equal(workshopsState.cards[2].coverSrc.endsWith("/packs/workshop-003-art-augmente/assets/images/00-couverture-art-augmente.png"), true);
-    assert.equal(workshopsState.workshopHrefCount, 3);
+    assert.equal(workshopsState.cards[3].coverSrc.endsWith("/packs/workshop-004-clarification-augmentee/assets/images/00-couverture-clarification-augmentee.png"), true);
+    assert.equal(workshopsState.workshopHrefCount, 4);
     assert.equal(workshopsState.workshopPackLinkCount, 0);
     assert.equal(workshopsState.noHorizontalOverflow, true);
 
@@ -1326,6 +1371,28 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await evaluate(page, "document.querySelector('.workshop-entry__primary')?.click()");
     await waitForWorkshopReady(page, "01 / 26");
     assert.equal((await readWorkshopState(page)).pageTitle, "L\u2019impulsion");
+
+    await loadUrl(page, `${entryUrl}ateliers/clarification-augmentee/`);
+    await waitForExpression(page, "document.querySelector('.workshop-entry') !== null");
+    const clarificationEntry = await readWorkshopEntryState(page);
+    assert.equal(clarificationEntry.present, true);
+    assert.equal(clarificationEntry.path.endsWith("/ateliers/clarification-augmentee/"), true);
+    assert.equal(clarificationEntry.title, "CLARIFICATION AUGMENT\u00c9E");
+    assert.equal(clarificationEntry.subtitle, "Voir plus pr\u00e9cis\u00e9ment sans r\u00e9duire la complexit\u00e9.");
+    assert.equal(clarificationEntry.description, "Voir plus pr\u00e9cis\u00e9ment sans r\u00e9duire la complexit\u00e9.");
+    assert.equal(clarificationEntry.coverPresent, true);
+    assert.equal(
+      clarificationEntry.coverAlt,
+      "Couverture de Clarification augment\u00e9e \u2014 une constellation de fragments, images et notes reli\u00e9s autour d\u2019un noyau lumineux qui rend l\u2019ensemble plus lisible sans effacer sa complexit\u00e9.",
+    );
+    assert.equal(clarificationEntry.coverNaturalWidth, 960);
+    assert.equal(clarificationEntry.coverNaturalHeight, 1280);
+    assert.equal(clarificationEntry.coverObjectFit, "contain");
+    assert.equal(clarificationEntry.primary, "Commencer l\u2019atelier");
+    assert.equal(clarificationEntry.noHorizontalOverflow, true);
+    await evaluate(page, "document.querySelector('.workshop-entry__primary')?.click()");
+    await waitForWorkshopReady(page, "01 / 26");
+    assert.equal((await readWorkshopState(page)).pageTitle, "Ce qui est devant moi");
 
     await loadUrl(page, `${entryUrl}ateliers/slug-inconnu/`);
     await waitForExpression(page, "document.querySelector('.error-panel') !== null");
@@ -1541,7 +1608,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(clearedWorkshop.revealExpanded, "false");
 
     await loadUrl(page, workshopsUrl);
-    await waitForExpression(page, "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 4");
+    await waitForExpression(page, "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 5");
 
     await loadUrl(page, libraryUrl);
     await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");

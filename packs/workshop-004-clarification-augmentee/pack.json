@@ -1,0 +1,431 @@
+{
+  "$schema": "../../schemas/workshop-pack.schema.json",
+  "format": "ine-workshop-pack",
+  "version": "1.0",
+  "id": "clarification-augmentee",
+  "slug": "clarification-augmentee",
+  "title": "Clarification augmentée",
+  "subtitle": "Voir plus précisément sans réduire la complexité.",
+  "language": "fr",
+  "startPage": "page-01",
+  "movements": [
+    { "id": "observer", "order": 1, "title": "Observer", "description": "Voir ce qui est réellement là avant de vouloir corriger." },
+    { "id": "nommer", "order": 2, "title": "Nommer", "description": "Distinguer les éléments sans les figer." },
+    { "id": "relier", "order": 3, "title": "Relier", "description": "Faire apparaître les relations plutôt que regarder les éléments isolément." },
+    { "id": "eprouver", "order": 4, "title": "Éprouver", "description": "Tester cohérence, tension et lisibilité." },
+    { "id": "elaguer", "order": 5, "title": "Élaguer", "description": "Retirer sans appauvrir." },
+    { "id": "affiner", "order": 6, "title": "Affiner", "description": "Agir localement plutôt que refaire toute l’œuvre." },
+    { "id": "justesse", "order": 7, "title": "Justesse", "description": "Savoir quand une forme est suffisamment claire." }
+  ],
+  "pages": [
+    {
+      "id": "page-01",
+      "movementId": "observer",
+      "order": 1,
+      "title": "Ce qui est devant moi",
+      "blocks": [
+        { "id": "page-01-text-01", "type": "text", "text": "Avant de corriger, il faut regarder." },
+        { "id": "page-01-text-02", "type": "text", "text": "Pas ce que vous vouliez faire." },
+        { "id": "page-01-text-03", "type": "text", "text": "Pas ce que vous pensez avoir réussi." },
+        { "id": "page-01-text-04", "type": "text", "text": "Ce qui est réellement là, maintenant." },
+        { "id": "current_state", "type": "textarea", "label": "Que voyez-vous dans cette version ?", "placeholder": "Décrivez les éléments présents, la structure, le rythme, le ton, les zones dominantes…" },
+        { "id": "page-01-text-05", "type": "text", "text": "Décrivez sans expliquer, sans corriger et sans interpréter." }
+      ]
+    },
+    {
+      "id": "page-02",
+      "movementId": "observer",
+      "order": 2,
+      "title": "Ce qui attire immédiatement",
+      "blocks": [
+        { "id": "page-02-recall-current-state", "type": "recall", "sourceBlockId": "current_state", "label": "Ce qui est devant moi", "emptyText": "Votre observation initiale apparaîtra ici." },
+        { "id": "page-02-text-01", "type": "text", "text": "Tout n’occupe pas la même place dans notre perception." },
+        { "id": "page-02-text-02", "type": "text", "text": "Certaines choses se montrent immédiatement." },
+        { "id": "page-02-text-03", "type": "text", "text": "D’autres attendent." },
+        { "id": "first_attention", "type": "textarea", "label": "Qu’est-ce que votre regard remarque en premier ?", "placeholder": "Une idée, une scène, une phrase, un motif, une tension, une rupture…" },
+        { "id": "page-02-text-04", "type": "text", "text": "Ce qui attire le plus n’est pas forcément ce qui compte le plus." }
+      ]
+    },
+    {
+      "id": "page-03",
+      "movementId": "observer",
+      "order": 3,
+      "title": "Ce qui reste en retrait",
+      "blocks": [
+        { "id": "page-03-recall-current-state", "type": "recall", "sourceBlockId": "current_state", "label": "Ce qui est devant moi", "emptyText": "Votre observation initiale apparaîtra ici." },
+        { "id": "page-03-recall-first-attention", "type": "recall", "sourceBlockId": "first_attention", "label": "Ce qui attire immédiatement", "emptyText": "Votre première attention apparaîtra ici." },
+        { "id": "page-03-text-01", "type": "text", "text": "Ce qui est discret n’est pas toujours secondaire." },
+        { "id": "page-03-text-02", "type": "text", "text": "Il peut simplement être moins visible." },
+        { "id": "background_elements", "type": "textarea", "label": "Qu’est-ce qui est là, mais que l’on remarque peu ?", "placeholder": "Une relation, une tension, un silence, un passage, un détail, une idée en arrière-plan…" },
+        { "id": "page-03-text-03", "type": "text", "text": "Voir ce qui reste en retrait, c’est déjà commencer à voir autrement." }
+      ]
+    },
+    {
+      "id": "page-04",
+      "movementId": "observer",
+      "order": 4,
+      "title": "Le constat sans correction",
+      "blocks": [
+        { "id": "page-04-recall-current-state", "type": "recall", "sourceBlockId": "current_state", "label": "Ce qui est devant moi", "emptyText": "Votre observation initiale apparaîtra ici." },
+        { "id": "page-04-recall-first-attention", "type": "recall", "sourceBlockId": "first_attention", "label": "Ce qui attire immédiatement", "emptyText": "Votre première attention apparaîtra ici." },
+        { "id": "page-04-recall-background-elements", "type": "recall", "sourceBlockId": "background_elements", "label": "Ce qui reste en retrait", "emptyText": "Vos éléments en retrait apparaîtront ici." },
+        { "id": "page-04-text-01", "type": "text", "text": "Vous avez maintenant regardé ce qui est présent, ce qui attire et ce qui reste en retrait." },
+        { "id": "neutral_observation", "type": "textarea", "label": "Complétez : Dans cette version, je vois…", "placeholder": "Dans cette version, je vois…" },
+        { "id": "page-04-text-02", "type": "text", "text": "Pas encore de « il faudrait »." },
+        { "id": "page-04-text-03", "type": "text", "text": "Pas encore de solution." },
+        { "id": "page-04-text-04", "type": "text", "text": "Seulement un constat." }
+      ]
+    },
+    {
+      "id": "page-05",
+      "movementId": "nommer",
+      "order": 5,
+      "title": "Les éléments structurants",
+      "blocks": [
+        { "id": "page-05-recall-neutral-observation", "type": "recall", "sourceBlockId": "neutral_observation", "label": "Constat sans correction", "emptyText": "Votre constat apparaîtra ici." },
+        { "id": "page-05-text-01", "type": "text", "text": "Certaines choses portent l’ensemble." },
+        { "id": "page-05-text-02", "type": "text", "text": "Sans elles, la version ne serait plus vraiment la même." },
+        { "id": "structuring_elements", "type": "textarea", "label": "Quels éléments portent réellement cette version ?", "placeholder": "Une idée centrale, une relation, une scène, une image, une question, une tension…" },
+        { "id": "page-05-text-03", "type": "text", "text": "Structurant ne veut pas dire visible. Cela veut dire : ce qui donne une forme à l’ensemble." }
+      ]
+    },
+    {
+      "id": "page-06",
+      "movementId": "nommer",
+      "order": 6,
+      "title": "Ce qui est secondaire",
+      "blocks": [
+        { "id": "page-06-recall-structuring-elements", "type": "recall", "sourceBlockId": "structuring_elements", "label": "Éléments structurants", "emptyText": "Vos éléments structurants apparaîtront ici." },
+        { "id": "page-06-text-01", "type": "text", "text": "Tout ce qui n’est pas central n’est pas inutile." },
+        { "id": "page-06-text-02", "type": "text", "text": "Certains éléments accompagnent, soutiennent ou préparent." },
+        { "id": "secondary_elements", "type": "textarea", "label": "Quels éléments sont secondaires sans être pour autant dispensables ?", "placeholder": "Éléments de soutien, développements, transitions, variations, respirations…" },
+        { "id": "page-06-text-03", "type": "text", "text": "Secondaire ne signifie pas accessoire." }
+      ]
+    },
+    {
+      "id": "page-07",
+      "movementId": "nommer",
+      "order": 7,
+      "title": "Ce qui reste difficile à nommer",
+      "blocks": [
+        { "id": "page-07-recall-neutral-observation", "type": "recall", "sourceBlockId": "neutral_observation", "label": "Constat sans correction", "emptyText": "Votre constat apparaîtra ici." },
+        { "id": "page-07-recall-structuring-elements", "type": "recall", "sourceBlockId": "structuring_elements", "label": "Éléments structurants", "emptyText": "Vos éléments structurants apparaîtront ici." },
+        { "id": "page-07-recall-secondary-elements", "type": "recall", "sourceBlockId": "secondary_elements", "label": "Éléments secondaires", "emptyText": "Vos éléments secondaires apparaîtront ici." },
+        { "id": "page-07-text-01", "type": "text", "text": "Il arrive qu’une présence soit perceptible avant d’être formulable." },
+        { "id": "page-07-text-02", "type": "text", "text": "Quelque chose est là." },
+        { "id": "page-07-text-03", "type": "text", "text": "Mais aucun mot ne semble encore tout à fait juste." },
+        { "id": "prompt-hard-to-name", "type": "promptCopy", "label": "Chercher plusieurs formulations avec l’IA", "description": "Copiez votre constat, vos éléments structurants et secondaires ci-dessus.", "text": "Voici mon constat actuel :\n\n[COLLEZ ICI VOTRE CONSTAT SANS CORRECTION]\n\nVoici les éléments que je considère comme structurants :\n\n[COLLEZ ICI VOS ÉLÉMENTS STRUCTURANTS]\n\nVoici les éléments que je considère comme secondaires :\n\n[COLLEZ ICI VOS ÉLÉMENTS SECONDAIRES]\n\nIl reste quelque chose que je perçois mais que je n’arrive pas encore à nommer clairement.\n\nAide-moi à chercher plusieurs formulations possibles.\n\nPropose 5 formulations provisoires réellement différentes.\n\nPour chacune :\n1. formule ce qu’elle permettrait de rendre plus visible ;\n2. indique ce qu’elle risque de simplifier ou d’écraser ;\n3. précise si elle décrit plutôt une idée, une relation, une tension, une fonction ou une sensation.\n\nImportant :\n- ne présente aucune formulation comme la bonne ;\n- ne réduis pas ce qui reste indéterminé à une seule catégorie ;\n- ne transforme pas une intuition en diagnostic ;\n- ne reformule pas l’ensemble de mon œuvre.\n\nLe but est de m’aider à mieux nommer une zone encore floue, pas de la figer." },
+        { "id": "hard_to_name", "type": "textarea", "label": "Après cette exploration, comment nommeriez-vous provisoirement cette zone ?" }
+      ]
+    },
+    {
+      "id": "page-08",
+      "movementId": "nommer",
+      "order": 8,
+      "title": "La fonction de chaque élément",
+      "blocks": [
+        { "id": "page-08-recall-structuring-elements", "type": "recall", "sourceBlockId": "structuring_elements", "label": "Éléments structurants", "emptyText": "Vos éléments structurants apparaîtront ici." },
+        { "id": "page-08-recall-secondary-elements", "type": "recall", "sourceBlockId": "secondary_elements", "label": "Éléments secondaires", "emptyText": "Vos éléments secondaires apparaîtront ici." },
+        { "id": "page-08-recall-hard-to-name", "type": "recall", "sourceBlockId": "hard_to_name", "label": "Ce qui reste difficile à nommer", "emptyText": "Votre formulation provisoire apparaîtra ici." },
+        { "id": "page-08-text-01", "type": "text", "text": "Un élément ne vaut pas seulement par ce qu’il signifie." },
+        { "id": "page-08-text-02", "type": "text", "text": "Il vaut aussi par ce qu’il fait." },
+        { "id": "element_functions", "type": "textarea", "label": "Que fait chaque élément dans l’ensemble ?", "placeholder": "Ouvre, explique, relie, ralentit, intensifie, déplace, fait respirer, prépare, conclut…" },
+        { "id": "prompt-element-functions", "type": "promptCopy", "label": "Questionner les fonctions avec l’IA", "description": "Utilisez ce prompt seulement si vous souhaitez explorer plusieurs fonctions possibles.", "text": "Voici les éléments structurants que j’ai identifiés :\n\n[COLLEZ ICI VOS ÉLÉMENTS STRUCTURANTS]\n\nVoici les éléments secondaires :\n\n[COLLEZ ICI VOS ÉLÉMENTS SECONDAIRES]\n\nVoici ce qui reste encore difficile à nommer :\n\n[COLLEZ ICI CE QUI RESTE DIFFICILE À NOMMER]\n\nJe cherche maintenant à comprendre la fonction possible de ces éléments dans l’ensemble.\n\nNe classe pas les éléments à ma place.\n\nPour chaque élément, pose-moi des questions courtes permettant d’examiner s’il sert principalement à :\n- ouvrir ;\n- expliquer ;\n- relier ;\n- déplacer ;\n- ralentir ;\n- intensifier ;\n- faire respirer ;\n- créer une rupture ;\n- préparer une transition ;\n- conclure.\n\nSi plusieurs fonctions semblent possibles, conserve cette pluralité.\n\nImportant :\n- ne transforme pas les fonctions en catégories fixes ;\n- ne suppose pas qu’un élément doit n’avoir qu’une seule fonction ;\n- ne décide pas qu’un élément est inutile parce que sa fonction n’est pas immédiatement claire.\n\nLe but est de m’aider à voir ce que chaque élément fait, pas seulement ce qu’il signifie." }
+      ]
+    },
+    {
+      "id": "page-09",
+      "movementId": "relier",
+      "order": 9,
+      "title": "Ce qui dépend de quoi",
+      "blocks": [
+        { "id": "page-09-recall-structuring-elements", "type": "recall", "sourceBlockId": "structuring_elements", "label": "Éléments structurants", "emptyText": "Vos éléments structurants apparaîtront ici." },
+        { "id": "page-09-recall-element-functions", "type": "recall", "sourceBlockId": "element_functions", "label": "Fonctions des éléments", "emptyText": "Vos fonctions d’éléments apparaîtront ici." },
+        { "id": "page-09-text-01", "type": "text", "text": "Une œuvre ne tient pas seulement par ses éléments." },
+        { "id": "page-09-text-02", "type": "text", "text": "Elle tient par ce qu’ils rendent possible les uns pour les autres." },
+        { "id": "dependencies", "type": "textarea", "label": "Quels éléments dépendent les uns des autres pour prendre sens ?", "placeholder": "X prépare Y ; Z n’existe que parce que A revient ; B devient lisible après C…" },
+        { "id": "page-09-text-03", "type": "text", "text": "Une relation peut être discrète et pourtant essentielle." }
+      ]
+    },
+    {
+      "id": "page-10",
+      "movementId": "relier",
+      "order": 10,
+      "title": "Les liens visibles",
+      "blocks": [
+        { "id": "page-10-recall-dependencies", "type": "recall", "sourceBlockId": "dependencies", "label": "Dépendances", "emptyText": "Vos dépendances apparaîtront ici." },
+        { "id": "page-10-recall-structuring-elements", "type": "recall", "sourceBlockId": "structuring_elements", "label": "Éléments structurants", "emptyText": "Vos éléments structurants apparaîtront ici." },
+        { "id": "page-10-recall-secondary-elements", "type": "recall", "sourceBlockId": "secondary_elements", "label": "Éléments secondaires", "emptyText": "Vos éléments secondaires apparaîtront ici." },
+        { "id": "page-10-text-01", "type": "text", "text": "Certains liens apparaissent immédiatement." },
+        { "id": "page-10-text-02", "type": "text", "text": "D’autres se révèlent lorsque l’on regarde les reprises, les échos ou les tensions." },
+        { "id": "prompt-visible-links", "type": "promptCopy", "label": "Faire apparaître les liens possibles avec l’IA", "description": "Copiez vos éléments structurants, secondaires et dépendances ci-dessus.", "text": "Voici les éléments que j’ai identifiés comme structurants :\n\n[COLLEZ ICI VOS ÉLÉMENTS STRUCTURANTS]\n\nVoici les éléments secondaires :\n\n[COLLEZ ICI VOS ÉLÉMENTS SECONDAIRES]\n\nVoici les dépendances que j’ai déjà repérées :\n\n[COLLEZ ICI CE QUI DÉPEND DE QUOI]\n\nAide-moi à repérer d’autres relations possibles entre ces éléments.\n\nCherche notamment :\n- répétitions ;\n- échos ;\n- oppositions ;\n- continuités ;\n- reprises ;\n- variations ;\n- transitions ;\n- symétries ;\n- tensions ;\n- correspondances à distance.\n\nPour chaque lien possible :\n1. indique quels éléments il relie ;\n2. précise ce qui rend cette relation plausible ;\n3. indique si ce lien semble fort, discret ou seulement hypothétique.\n\nImportant :\n- ne transforme pas une proximité en relation certaine ;\n- ne cherche pas à relier absolument tout ;\n- ne crée pas de symbolisme caché sans appui dans ce que je fournis ;\n- accepte qu’un élément puisse rester isolé.\n\nLe but est de faire apparaître des relations possibles, pas de fabriquer une cohérence artificielle." },
+        { "id": "visible_links", "type": "textarea", "label": "Quels liens vous paraissent réellement présents ?" }
+      ]
+    },
+    {
+      "id": "page-11",
+      "movementId": "relier",
+      "order": 11,
+      "title": "Les ruptures",
+      "blocks": [
+        { "id": "page-11-recall-visible-links", "type": "recall", "sourceBlockId": "visible_links", "label": "Liens visibles", "emptyText": "Vos liens visibles apparaîtront ici." },
+        { "id": "page-11-recall-dependencies", "type": "recall", "sourceBlockId": "dependencies", "label": "Dépendances", "emptyText": "Vos dépendances apparaîtront ici." },
+        { "id": "page-11-text-01", "type": "text", "text": "Toutes les ruptures ne sont pas des erreurs." },
+        { "id": "page-11-text-02", "type": "text", "text": "Certaines sont nécessaires." },
+        { "id": "page-11-text-03", "type": "text", "text": "Certaines dérangent." },
+        { "id": "page-11-text-04", "type": "text", "text": "Certaines ouvrent." },
+        { "id": "ruptures", "type": "textarea", "label": "Où sentez-vous une coupure, une transition brusque ou un changement difficile à habiter ?", "placeholder": "Entre deux scènes, deux idées, deux rythmes, deux registres, deux mouvements…" },
+        { "id": "page-11-text-05", "type": "text", "text": "Ne corrigez rien encore." },
+        { "id": "page-11-text-06", "type": "text", "text": "Commencez par reconnaître la rupture." }
+      ]
+    },
+    {
+      "id": "page-12",
+      "movementId": "relier",
+      "order": 12,
+      "title": "Ce qui manque — ou non — entre deux éléments",
+      "blocks": [
+        { "id": "page-12-recall-ruptures", "type": "recall", "sourceBlockId": "ruptures", "label": "Ruptures", "emptyText": "Vos ruptures apparaîtront ici." },
+        { "id": "page-12-recall-visible-links", "type": "recall", "sourceBlockId": "visible_links", "label": "Liens visibles", "emptyText": "Vos liens visibles apparaîtront ici." },
+        { "id": "page-12-recall-dependencies", "type": "recall", "sourceBlockId": "dependencies", "label": "Dépendances", "emptyText": "Vos dépendances apparaîtront ici." },
+        { "id": "page-12-text-01", "type": "text", "text": "Une rupture peut demander une médiation." },
+        { "id": "page-12-text-02", "type": "text", "text": "Mais elle peut aussi avoir besoin de rester une rupture." },
+        { "id": "prompt-mediation-options", "type": "promptCopy", "label": "Tester les médiations possibles avec l’IA", "description": "Copiez vos ruptures, liens visibles et dépendances.", "text": "Voici les ruptures ou transitions que je perçois :\n\n[COLLEZ ICI VOS RUPTURES]\n\nVoici les liens déjà visibles :\n\n[COLLEZ ICI VOS LIENS VISIBLES]\n\nVoici les dépendances que j’ai repérées :\n\n[COLLEZ ICI VOS DÉPENDANCES]\n\nJe veux examiner si quelque chose manque réellement entre certains éléments.\n\nPour chaque rupture importante, propose 4 hypothèses possibles parmi lesquelles peut figurer :\n\n« Aucun ajout n’est nécessaire : la rupture peut être conservée telle quelle. »\n\nLes autres hypothèses peuvent être, selon le cas :\n- une transition ;\n- une phrase ou scène de médiation ;\n- un déplacement ;\n- un silence ;\n- une reprise ;\n- un changement de rythme ;\n- un rapprochement plus explicite ;\n- une séparation plus assumée.\n\nPour chaque hypothèse :\n1. indique ce qu’elle rendrait plus lisible ;\n2. indique ce qu’elle risquerait d’affaiblir ;\n3. précise si elle clarifie la relation ou si elle risque au contraire de trop l’expliquer.\n\nNe choisis pas à ma place.\n\nImportant :\n- ne suppose jamais qu’une rupture est un défaut ;\n- ne cherche pas à combler tous les vides ;\n- considère explicitement la possibilité que rien ne manque.\n\nLe but est de tester la nécessité d’une médiation, pas d’en imposer une." },
+        { "id": "mediation_options", "type": "textarea", "label": "Qu’est-ce qui manque réellement ? Ou que choisissez-vous de ne pas ajouter ?" }
+      ]
+    },
+    {
+      "id": "page-13",
+      "movementId": "eprouver",
+      "order": 13,
+      "title": "Le fil principal",
+      "blocks": [
+        { "id": "page-13-recall-structuring-elements", "type": "recall", "sourceBlockId": "structuring_elements", "label": "Éléments structurants", "emptyText": "Vos éléments structurants apparaîtront ici." },
+        { "id": "page-13-recall-visible-links", "type": "recall", "sourceBlockId": "visible_links", "label": "Liens visibles", "emptyText": "Vos liens visibles apparaîtront ici." },
+        { "id": "page-13-recall-mediation-options", "type": "recall", "sourceBlockId": "mediation_options", "label": "Médiations possibles", "emptyText": "Vos médiations possibles apparaîtront ici." },
+        { "id": "page-13-text-01", "type": "text", "text": "Vous avez observé les éléments et leurs relations." },
+        { "id": "page-13-text-02", "type": "text", "text": "Il reste maintenant à demander ce qui traverse réellement l’ensemble." },
+        { "id": "main_thread", "type": "textarea", "label": "Si vous deviez dire en une phrase ce qui traverse cette version, que diriez-vous ?", "placeholder": "Cette version est traversée par…" },
+        { "id": "page-13-text-03", "type": "text", "text": "Il ne s’agit pas de résumer l’œuvre." },
+        { "id": "page-13-text-04", "type": "text", "text": "Il s’agit d’identifier une dynamique." }
+      ]
+    },
+    {
+      "id": "page-14",
+      "movementId": "eprouver",
+      "order": 14,
+      "title": "Ce qui soutient ce fil",
+      "blocks": [
+        { "id": "page-14-recall-main-thread", "type": "recall", "sourceBlockId": "main_thread", "label": "Fil principal", "emptyText": "Votre fil principal apparaîtra ici." },
+        { "id": "page-14-recall-structuring-elements", "type": "recall", "sourceBlockId": "structuring_elements", "label": "Éléments structurants", "emptyText": "Vos éléments structurants apparaîtront ici." },
+        { "id": "page-14-text-01", "type": "text", "text": "Un fil principal n’est pas une idée abstraite." },
+        { "id": "page-14-text-02", "type": "text", "text": "Il existe parce que certains éléments le rendent perceptible." },
+        { "id": "thread_support", "type": "textarea", "label": "Quels éléments soutiennent réellement ce fil ?", "placeholder": "Scènes, passages, motifs, relations, variations, silences…" }
+      ]
+    },
+    {
+      "id": "page-15",
+      "movementId": "eprouver",
+      "order": 15,
+      "title": "Ce qui l’éloigne",
+      "blocks": [
+        { "id": "page-15-recall-main-thread", "type": "recall", "sourceBlockId": "main_thread", "label": "Fil principal", "emptyText": "Votre fil principal apparaîtra ici." },
+        { "id": "page-15-recall-thread-support", "type": "recall", "sourceBlockId": "thread_support", "label": "Ce qui soutient le fil", "emptyText": "Vos soutiens du fil apparaîtront ici." },
+        { "id": "page-15-recall-secondary-elements", "type": "recall", "sourceBlockId": "secondary_elements", "label": "Éléments secondaires", "emptyText": "Vos éléments secondaires apparaîtront ici." },
+        { "id": "page-15-text-01", "type": "text", "text": "Tout ce qui s’écarte du fil principal n’est pas forcément une dispersion." },
+        { "id": "page-15-text-02", "type": "text", "text": "Un détour peut enrichir." },
+        { "id": "page-15-text-03", "type": "text", "text": "Une complexité peut être nécessaire." },
+        { "id": "prompt-thread-deviations", "type": "promptCopy", "label": "Distinguer les écarts avec l’IA", "description": "Copiez le fil principal, ce qui le soutient et les éléments secondaires.", "text": "Voici le fil principal que j’ai identifié :\n\n[COLLEZ ICI VOTRE FIL PRINCIPAL]\n\nVoici ce qui semble le soutenir :\n\n[COLLEZ ICI CE QUI SOUTIENT LE FIL]\n\nVoici les éléments secondaires :\n\n[COLLEZ ICI VOS ÉLÉMENTS SECONDAIRES]\n\nAide-moi à examiner ce qui semble éloigner ou déplacer ce fil principal.\n\nPour chaque élément concerné, distingue trois possibilités :\n\n1. dispersion réelle ;\n2. détour fécond ;\n3. complexité nécessaire.\n\nPour chacune :\n- explique brièvement pourquoi cette lecture est possible ;\n- indique ce que l’élément apporte ;\n- indique ce qu’il risque de faire perdre en lisibilité.\n\nImportant :\n- ne considère pas toute divergence comme un défaut ;\n- ne recommande pas automatiquement de supprimer ce qui s’éloigne ;\n- ne confonds pas cohérence et uniformité ;\n- accepte qu’un détour puisse enrichir l’ensemble.\n\nLe but est de distinguer ce qui disperse réellement de ce qui ouvre ou complexifie utilement." },
+        { "id": "thread_deviations", "type": "textarea", "label": "Après examen, comment distinguez-vous ce qui disperse, ce qui ouvre et ce qui complexifie utilement ?" }
+      ]
+    },
+    {
+      "id": "page-16",
+      "movementId": "eprouver",
+      "order": 16,
+      "title": "Ce qui doit rester complexe",
+      "blocks": [
+        { "id": "page-16-recall-main-thread", "type": "recall", "sourceBlockId": "main_thread", "label": "Fil principal", "emptyText": "Votre fil principal apparaîtra ici." },
+        { "id": "page-16-recall-thread-deviations", "type": "recall", "sourceBlockId": "thread_deviations", "label": "Écarts au fil principal", "emptyText": "Vos écarts apparaîtront ici." },
+        { "id": "page-16-text-01", "type": "text", "text": "Clarifier ne signifie pas tout rendre immédiatement compréhensible." },
+        { "id": "page-16-text-02", "type": "text", "text": "Certaines choses deviennent fausses lorsqu’on les simplifie trop." },
+        { "id": "protected_complexity", "type": "textarea", "label": "Qu’est-ce qui deviendrait faux si vous le rendiez plus simple ?", "placeholder": "Une tension, une ambiguïté, une contradiction, une relation, une temporalité…" },
+        { "id": "page-16-text-03", "type": "text", "text": "Ce que vous inscrivez ici devient une complexité protégée pour la suite du parcours." }
+      ]
+    },
+    {
+      "id": "page-17",
+      "movementId": "elaguer",
+      "order": 17,
+      "title": "Les répétitions utiles",
+      "blocks": [
+        { "id": "page-17-recall-main-thread", "type": "recall", "sourceBlockId": "main_thread", "label": "Fil principal", "emptyText": "Votre fil principal apparaîtra ici." },
+        { "id": "page-17-recall-protected-complexity", "type": "recall", "sourceBlockId": "protected_complexity", "label": "Complexité protégée", "emptyText": "Votre complexité protégée apparaîtra ici." },
+        { "id": "page-17-text-01", "type": "text", "text": "Une répétition peut être une mémoire." },
+        { "id": "page-17-text-02", "type": "text", "text": "Une insistance." },
+        { "id": "page-17-text-03", "type": "text", "text": "Un rythme." },
+        { "id": "page-17-text-04", "type": "text", "text": "Une variation." },
+        { "id": "useful_repetitions", "type": "textarea", "label": "Quelles répétitions jouent réellement un rôle dans cette version ?", "placeholder": "Reprises qui créent du rythme, de la mémoire, une tension ou un déplacement…" },
+        { "id": "page-17-text-05", "type": "text", "text": "Répéter n’est pas toujours redire." }
+      ]
+    },
+    {
+      "id": "page-18",
+      "movementId": "elaguer",
+      "order": 18,
+      "title": "Les redondances possibles",
+      "blocks": [
+        { "id": "page-18-recall-useful-repetitions", "type": "recall", "sourceBlockId": "useful_repetitions", "label": "Répétitions utiles", "emptyText": "Vos répétitions utiles apparaîtront ici." },
+        { "id": "page-18-recall-main-thread", "type": "recall", "sourceBlockId": "main_thread", "label": "Fil principal", "emptyText": "Votre fil principal apparaîtra ici." },
+        { "id": "page-18-recall-thread-deviations", "type": "recall", "sourceBlockId": "thread_deviations", "label": "Écarts au fil principal", "emptyText": "Vos écarts apparaîtront ici." },
+        { "id": "page-18-text-01", "type": "text", "text": "Certaines répétitions déplacent le sens." },
+        { "id": "page-18-text-02", "type": "text", "text": "D’autres semblent seulement recommencer." },
+        { "id": "prompt-possible-redundancies", "type": "promptCopy", "label": "Repérer les redondances possibles avec l’IA", "description": "Copiez vos répétitions utiles, votre fil principal et vos écarts.", "text": "Voici les répétitions que je considère comme utiles :\n\n[COLLEZ ICI VOS RÉPÉTITIONS UTILES]\n\nVoici le fil principal :\n\n[COLLEZ ICI VOTRE FIL PRINCIPAL]\n\nVoici les éléments qui semblent parfois s’en éloigner :\n\n[COLLEZ ICI VOS ÉCARTS OU DÉVIATIONS]\n\nAide-moi à repérer des redondances possibles.\n\nCherche seulement :\n- des formulations qui disent presque la même chose ;\n- des idées déjà présentes sans véritable déplacement ;\n- des reprises qui n’ajoutent ni rythme, ni tension, ni mémoire, ni nuance ;\n- des explications qui répètent ce qui est déjà perceptible.\n\nPour chaque redondance possible :\n1. cite ou résume les éléments concernés ;\n2. indique pourquoi ils peuvent sembler redondants ;\n3. précise ce qui pourrait néanmoins justifier leur conservation.\n\nImportant :\n- ne décide pas qu’une répétition est inutile ;\n- ne confonds pas répétition et redondance ;\n- ne recommande aucune suppression ;\n- respecte explicitement la liste des répétitions que j’ai décidé de protéger.\n\nLe but est de repérer des candidats à examiner, pas des éléments à supprimer." },
+        { "id": "possible_redundancies", "type": "textarea", "label": "Quelles redondances mérite-t-il réellement d’examiner ?" }
+      ]
+    },
+    {
+      "id": "page-19",
+      "movementId": "elaguer",
+      "order": 19,
+      "title": "Ce qui peut disparaître",
+      "blocks": [
+        { "id": "page-19-recall-possible-redundancies", "type": "recall", "sourceBlockId": "possible_redundancies", "label": "Redondances possibles", "emptyText": "Vos redondances possibles apparaîtront ici." },
+        { "id": "page-19-recall-useful-repetitions", "type": "recall", "sourceBlockId": "useful_repetitions", "label": "Répétitions utiles", "emptyText": "Vos répétitions utiles apparaîtront ici." },
+        { "id": "page-19-text-01", "type": "text", "text": "Repérer une redondance n’oblige pas à la supprimer." },
+        { "id": "page-19-text-02", "type": "text", "text": "Il faut encore éprouver ce que sa disparition ferait perdre." },
+        { "id": "removal_candidates", "type": "textarea", "label": "Quels éléments pourriez-vous envisager de retirer ?", "placeholder": "Élément, passage, explication, reprise, transition…" },
+        { "id": "removal_loss", "type": "textarea", "label": "Si cet élément disparaissait, que perdrait réellement l’ensemble ?" }
+      ]
+    },
+    {
+      "id": "page-20",
+      "movementId": "elaguer",
+      "order": 20,
+      "title": "Retirer sans fermer",
+      "blocks": [
+        { "id": "page-20-recall-removal-candidates", "type": "recall", "sourceBlockId": "removal_candidates", "label": "Candidats au retrait", "emptyText": "Vos candidats au retrait apparaîtront ici." },
+        { "id": "page-20-recall-protected-complexity", "type": "recall", "sourceBlockId": "protected_complexity", "label": "Complexité protégée", "emptyText": "Votre complexité protégée apparaîtra ici." },
+        { "id": "page-20-recall-main-thread", "type": "recall", "sourceBlockId": "main_thread", "label": "Fil principal", "emptyText": "Votre fil principal apparaîtra ici." },
+        { "id": "page-20-text-01", "type": "text", "text": "Enlever peut clarifier." },
+        { "id": "page-20-text-02", "type": "text", "text": "Mais enlever peut aussi fermer." },
+        { "id": "safe_pruning", "type": "textarea", "label": "Que pourriez-vous retirer sans effacer une ambiguïté, une respiration ou une tension nécessaire ?" },
+        { "id": "prompt-safe-pruning", "type": "promptCopy", "label": "Tester une suppression avec l’IA", "description": "Utilisez ce prompt si vous souhaitez éprouver les effets possibles d’un retrait.", "text": "Voici les éléments que j’envisage éventuellement de retirer :\n\n[COLLEZ ICI VOS CANDIDATS À LA SUPPRESSION]\n\nVoici ce qui doit rester complexe ou irréductible :\n\n[COLLEZ ICI VOTRE COMPLEXITÉ PROTÉGÉE]\n\nVoici le fil principal :\n\n[COLLEZ ICI VOTRE FIL PRINCIPAL]\n\nJe veux tester les effets possibles d’un retrait sans réduire abusivement l’ensemble.\n\nPour chaque élément candidat :\n1. indique ce qui pourrait devenir plus clair s’il disparaît ;\n2. indique ce qui pourrait être perdu ;\n3. indique si sa suppression risque de fermer une ambiguïté utile ;\n4. indique si elle risque d’appauvrir le rythme, la respiration, la tension ou la complexité ;\n5. envisage aussi l’option de le conserver tel quel.\n\nNe décide pas à ma place.\n\nImportant :\n- ne transforme pas la concision en objectif automatique ;\n- ne suppose pas que moins est toujours mieux ;\n- protège explicitement ce que j’ai identifié comme complexité nécessaire.\n\nLe but est de tester une suppression avant de la rendre définitive." },
+        { "id": "page-20-text-03", "type": "text", "text": "Vous n’avez pas besoin de corriger tout ce que vous avez remarqué." },
+        { "id": "page-20-text-04", "type": "text", "text": "Choisissez seulement ce qui demande réellement une intervention." }
+      ]
+    },
+    {
+      "id": "page-21",
+      "movementId": "affiner",
+      "order": 21,
+      "title": "Le point précis à travailler",
+      "blocks": [
+        { "id": "page-21-recall-safe-pruning", "type": "recall", "sourceBlockId": "safe_pruning", "label": "Retirer sans fermer", "emptyText": "Votre piste d’élagage apparaîtra ici." },
+        { "id": "page-21-recall-main-thread", "type": "recall", "sourceBlockId": "main_thread", "label": "Fil principal", "emptyText": "Votre fil principal apparaîtra ici." },
+        { "id": "page-21-recall-protected-complexity", "type": "recall", "sourceBlockId": "protected_complexity", "label": "Complexité protégée", "emptyText": "Votre complexité protégée apparaîtra ici." },
+        { "id": "page-21-text-01", "type": "text", "text": "Après avoir observé, relié et élagué, il reste peut-être encore plusieurs choses à changer." },
+        { "id": "page-21-text-02", "type": "text", "text": "N’en choisissez qu’une." },
+        { "id": "refinement_target", "type": "textarea", "label": "Quel est maintenant le point le plus important à travailler ?", "placeholder": "Une transition, une formulation, un rythme, une relation, un passage précis…" },
+        { "id": "page-21-text-03", "type": "text", "text": "Une cible précise protège le reste de l’œuvre contre la réécriture permanente." }
+      ]
+    },
+    {
+      "id": "page-22",
+      "movementId": "affiner",
+      "order": 22,
+      "title": "Ce qu’il faut préserver",
+      "blocks": [
+        { "id": "page-22-recall-refinement-target", "type": "recall", "sourceBlockId": "refinement_target", "label": "Point précis à travailler", "emptyText": "Votre cible d’affinage apparaîtra ici." },
+        { "id": "page-22-recall-protected-complexity", "type": "recall", "sourceBlockId": "protected_complexity", "label": "Complexité protégée", "emptyText": "Votre complexité protégée apparaîtra ici." },
+        { "id": "page-22-text-01", "type": "text", "text": "Avant de modifier ce point, regardez ce qui fonctionne déjà autour de lui." },
+        { "id": "refinement_invariants", "type": "textarea", "label": "Qu’est-ce qui ne doit surtout pas être perdu pendant cette modification ?", "placeholder": "Un rythme, une ambiguïté, une tonalité, une relation, une tension, une respiration…" },
+        { "id": "page-22-text-02", "type": "text", "text": "Ces éléments deviennent vos invariants." }
+      ]
+    },
+    {
+      "id": "page-23",
+      "movementId": "affiner",
+      "order": 23,
+      "title": "Les micro-transformations possibles",
+      "blocks": [
+        { "id": "page-23-recall-refinement-target", "type": "recall", "sourceBlockId": "refinement_target", "label": "Cible d’affinage", "emptyText": "Votre cible d’affinage apparaîtra ici." },
+        { "id": "page-23-recall-refinement-invariants", "type": "recall", "sourceBlockId": "refinement_invariants", "label": "Invariants", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-23-recall-main-thread", "type": "recall", "sourceBlockId": "main_thread", "label": "Fil principal", "emptyText": "Votre fil principal apparaîtra ici." },
+        { "id": "page-23-text-01", "type": "text", "text": "Il est maintenant possible d’intervenir." },
+        { "id": "page-23-text-02", "type": "text", "text": "Mais localement." },
+        { "id": "prompt-micro-transformations", "type": "promptCopy", "label": "Explorer des micro-transformations avec l’IA", "description": "Copiez votre cible d’affinage, vos invariants et votre fil principal.", "text": "Voici le point précis que je veux travailler :\n\n[COLLEZ ICI VOTRE CIBLE D’AFFINAGE]\n\nVoici ce que je veux absolument préserver autour de ce point :\n\n[COLLEZ ICI VOS INVARIANTS]\n\nVoici le fil principal de cette version :\n\n[COLLEZ ICI VOTRE FIL PRINCIPAL]\n\nPropose 4 micro-transformations possibles.\n\nChaque proposition doit :\n- agir principalement sur la cible indiquée ;\n- préserver les invariants ;\n- éviter de réécrire l’ensemble ;\n- être testable séparément.\n\nLes micro-transformations peuvent concerner :\n- raccourcir ;\n- déplacer ;\n- préciser ;\n- ralentir ;\n- relier ;\n- reformuler ;\n- supprimer localement ;\n- redistribuer ;\n- ajouter une respiration ;\n- modifier une transition.\n\nPour chaque proposition :\n1. décris précisément l’ajustement ;\n2. indique ce qu’il pourrait clarifier ;\n3. indique ce qu’il risque de faire perdre ;\n4. précise ce qui doit être surveillé pour ne pas appauvrir l’ensemble.\n\nNe recommande aucune option.\nNe réécris pas toute la version.\nNe touche pas aux invariants explicitement protégés.\n\nLe but est d’ajuster localement, pas de remplacer l’œuvre." },
+        { "id": "micro_transformations", "type": "textarea", "label": "Quelle micro-transformation voulez-vous réellement tester ?" }
+      ]
+    },
+    {
+      "id": "page-24",
+      "movementId": "affiner",
+      "order": 24,
+      "title": "Ce que la nouvelle version gagne et perd",
+      "blocks": [
+        { "id": "page-24-recall-micro-transformations", "type": "recall", "sourceBlockId": "micro_transformations", "label": "Micro-transformation testée", "emptyText": "Votre micro-transformation apparaîtra ici." },
+        { "id": "page-24-recall-refinement-invariants", "type": "recall", "sourceBlockId": "refinement_invariants", "label": "Invariants", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-24-text-01", "type": "text", "text": "Toute clarification modifie un équilibre." },
+        { "id": "page-24-text-02", "type": "text", "text": "Il faut regarder non seulement ce qui est gagné, mais aussi ce qui disparaît." },
+        { "id": "clarity_gain", "type": "textarea", "label": "Qu’est-ce qui est devenu plus clair ?" },
+        { "id": "clarity_loss", "type": "textarea", "label": "Qu’est-ce qui a été perdu ?" },
+        { "id": "change_decision", "type": "textarea", "label": "Cette perte est-elle acceptable ?", "placeholder": "Oui, non, partiellement — et pourquoi…" }
+      ]
+    },
+    {
+      "id": "page-25",
+      "movementId": "justesse",
+      "order": 25,
+      "title": "Ce qui est devenu plus visible",
+      "blocks": [
+        { "id": "page-25-recall-main-thread", "type": "recall", "sourceBlockId": "main_thread", "label": "Fil principal", "emptyText": "Votre fil principal apparaîtra ici." },
+        { "id": "page-25-recall-clarity-gain", "type": "recall", "sourceBlockId": "clarity_gain", "label": "Gain de clarté", "emptyText": "Votre gain de clarté apparaîtra ici." },
+        { "id": "page-25-recall-change-decision", "type": "recall", "sourceBlockId": "change_decision", "label": "Décision de transformation", "emptyText": "Votre décision apparaîtra ici." },
+        { "id": "page-25-text-01", "type": "text", "text": "Revenez à la version que vous regardiez au début." },
+        { "id": "page-25-text-02", "type": "text", "text": "Vous ne cherchez plus seulement ce qui a changé." },
+        { "id": "page-25-text-03", "type": "text", "text": "Vous cherchez ce que vous pouvez maintenant voir." },
+        { "id": "new_visibility", "type": "textarea", "label": "Qu’est-ce que vous voyez maintenant que la version précédente ne permettait pas de voir ?", "placeholder": "Une relation, une hiérarchie, une tension, une fonction, un espace devenu plus lisible…" },
+        { "id": "page-25-text-04", "type": "text", "text": "Clarifier, c’est parfois moins transformer l’œuvre que transformer le regard que l’on porte sur elle." }
+      ]
+    },
+    {
+      "id": "page-26",
+      "movementId": "justesse",
+      "order": 26,
+      "title": "Ce qui doit rester ouvert",
+      "blocks": [
+        { "id": "page-26-recall-neutral-observation", "type": "recall", "sourceBlockId": "neutral_observation", "label": "Constat initial", "emptyText": "Votre constat initial apparaîtra ici." },
+        { "id": "page-26-recall-structuring-elements", "type": "recall", "sourceBlockId": "structuring_elements", "label": "Éléments structurants", "emptyText": "Vos éléments structurants apparaîtront ici." },
+        { "id": "page-26-recall-main-thread", "type": "recall", "sourceBlockId": "main_thread", "label": "Fil principal", "emptyText": "Votre fil principal apparaîtra ici." },
+        { "id": "page-26-recall-protected-complexity", "type": "recall", "sourceBlockId": "protected_complexity", "label": "Complexité protégée", "emptyText": "Votre complexité protégée apparaîtra ici." },
+        { "id": "page-26-recall-refinement-target", "type": "recall", "sourceBlockId": "refinement_target", "label": "Cible d’affinage", "emptyText": "Votre cible d’affinage apparaîtra ici." },
+        { "id": "page-26-recall-new-visibility", "type": "recall", "sourceBlockId": "new_visibility", "label": "Ce qui est devenu plus visible", "emptyText": "Votre visibilité nouvelle apparaîtra ici." },
+        { "id": "page-26-text-01", "type": "text", "text": "La clarification touche à sa limite lorsqu’elle commence à vouloir tout résoudre." },
+        { "id": "page-26-text-02", "type": "text", "text": "Revenons à ce qui doit rester vivant." },
+        { "id": "final_clarity", "type": "textarea", "label": "Cette version est plus claire parce que…" },
+        { "id": "final_liveness", "type": "textarea", "label": "Elle reste vivante parce que…" },
+        { "id": "stop_reason", "type": "textarea", "label": "Je choisis de m’arrêter ici parce que…" },
+        { "id": "clarification-ending", "type": "reveal", "label": "Une forme suffisamment claire", "content": "Clarifier n’est pas rendre tout simple. C’est mieux voir ce qui doit rester." },
+        { "id": "page-26-text-03", "type": "text", "text": "Votre clarification" },
+        { "id": "page-26-text-04", "type": "text", "text": "Constat initial" },
+        { "id": "page-26-recall-summary-neutral-observation", "type": "recall", "sourceBlockId": "neutral_observation", "label": "Constat initial", "emptyText": "Votre constat initial apparaîtra ici." },
+        { "id": "page-26-text-05", "type": "text", "text": "Éléments structurants" },
+        { "id": "page-26-recall-summary-structuring-elements", "type": "recall", "sourceBlockId": "structuring_elements", "label": "Éléments structurants", "emptyText": "Vos éléments structurants apparaîtront ici." },
+        { "id": "page-26-text-06", "type": "text", "text": "Fil principal" },
+        { "id": "page-26-recall-summary-main-thread", "type": "recall", "sourceBlockId": "main_thread", "label": "Fil principal", "emptyText": "Votre fil principal apparaîtra ici." },
+        { "id": "page-26-text-07", "type": "text", "text": "Complexité protégée" },
+        { "id": "page-26-recall-summary-protected-complexity", "type": "recall", "sourceBlockId": "protected_complexity", "label": "Complexité protégée", "emptyText": "Votre complexité protégée apparaîtra ici." },
+        { "id": "page-26-text-08", "type": "text", "text": "Ce qui pouvait disparaître" },
+        { "id": "page-26-recall-summary-removal-candidates", "type": "recall", "sourceBlockId": "removal_candidates", "label": "Ce qui pouvait disparaître", "emptyText": "Vos candidats au retrait apparaîtront ici." },
+        { "id": "page-26-text-09", "type": "text", "text": "Cible d’affinage" },
+        { "id": "page-26-recall-summary-refinement-target", "type": "recall", "sourceBlockId": "refinement_target", "label": "Cible d’affinage", "emptyText": "Votre cible d’affinage apparaîtra ici." },
+        { "id": "page-26-text-10", "type": "text", "text": "Ce qui est devenu plus visible" },
+        { "id": "page-26-recall-summary-new-visibility", "type": "recall", "sourceBlockId": "new_visibility", "label": "Ce qui est devenu plus visible", "emptyText": "Votre visibilité nouvelle apparaîtra ici." },
+        { "id": "page-26-text-11", "type": "text", "text": "Vous n’avez pas cherché à supprimer toute ambiguïté." },
+        { "id": "page-26-text-12", "type": "text", "text": "Vous avez appris à distinguer ce qui demandait d’être clarifié de ce qui demandait simplement d’être mieux regardé." },
+        { "id": "page-26-text-13", "type": "text", "text": "Cette version peut maintenant quitter l’atelier." }
+      ]
+    }
+  ]
+}

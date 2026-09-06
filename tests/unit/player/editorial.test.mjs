@@ -129,6 +129,17 @@ test("editorial registry declares the published augmented workshops", () => {
           "Couverture d’Art augmenté — un atelier visuel nocturne où plusieurs images et variations sont comparées autour d’une image centrale lumineuse.",
       },
       {
+        orientation: "CLARIFIER",
+        title: "Clarification augmentée",
+        description: "Voir plus précisément sans réduire la complexité.",
+        status: "published",
+        slug: "clarification-augmentee",
+        manifest: "packs/workshop-004-clarification-augmentee/pack.json",
+        coverImage: "packs/workshop-004-clarification-augmentee/assets/images/00-couverture-clarification-augmentee.png",
+        coverImageAlt:
+          "Couverture de Clarification augmentée — une constellation de fragments, images et notes reliés autour d’un noyau lumineux qui rend l’ensemble plus lisible sans effacer sa complexité.",
+      },
+      {
         orientation: "COMPOSER",
         title: "Créer un Récit Vivant avec l’IA",
         description: "Faire dialoguer écriture, image et cartographie.",
@@ -161,6 +172,11 @@ test("editorial registry resolves only published workshops by canonical slug", (
         slug: "art-augmente",
         manifest: "packs/workshop-003-art-augmente/pack.json",
       },
+      {
+        id: "clarification-augmentee",
+        slug: "clarification-augmentee",
+        manifest: "packs/workshop-004-clarification-augmentee/pack.json",
+      },
     ],
   );
 
@@ -173,6 +189,9 @@ test("editorial registry resolves only published workshops by canonical slug", (
   const artWorkshop = findPublishedAugmentedWorkshopBySlug("art-augmente");
   assert.equal(artWorkshop?.id, "art-augmente");
   assert.equal(artWorkshop?.manifest, "packs/workshop-003-art-augmente/pack.json");
+  const clarificationWorkshop = findPublishedAugmentedWorkshopBySlug("clarification-augmentee");
+  assert.equal(clarificationWorkshop?.id, "clarification-augmentee");
+  assert.equal(clarificationWorkshop?.manifest, "packs/workshop-004-clarification-augmentee/pack.json");
   assert.equal(findPublishedAugmentedWorkshopBySlug("slug-inconnu"), undefined);
 });
 
@@ -278,8 +297,8 @@ test("editorial registry rejects invalid workshop publication states", () => {
   }
 
   const plannedWithPublicationMetadata = structuredClone(editorialRegistry);
-  plannedWithPublicationMetadata.workshops[3] = {
-    ...plannedWithPublicationMetadata.workshops[3],
+  plannedWithPublicationMetadata.workshops[4] = {
+    ...plannedWithPublicationMetadata.workshops[4],
     slug: "composer-recit-vivant-ia",
   };
   assert.throws(

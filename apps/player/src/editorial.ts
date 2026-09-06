@@ -153,7 +153,7 @@ export function validateEditorialRegistry(value: unknown): EditorialRegistry {
 
   const workshops = value.workshops;
   if (
-    workshops.length !== 4 ||
+    workshops.length !== 5 ||
     !workshops.every((workshop) => {
       if (
         !isRecord(workshop) ||

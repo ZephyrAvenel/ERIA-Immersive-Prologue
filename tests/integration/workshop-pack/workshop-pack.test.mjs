@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import test from "node:test";
 import {
   loadWorkshopPack,
@@ -1583,6 +1584,7 @@ test("augmented mapping workshop is valid, registered, and declarative", async (
     "ecriture-augmentee",
     "cartographie-augmentee",
     "art-augmente",
+    "clarification-augmentee",
     "composer-recit-vivant-ia",
   ]);
   const mappingWorkshop = registry.workshops.find((workshop) => workshop.id === "cartographie-augmentee");
@@ -1750,6 +1752,7 @@ test("augmented art workshop is valid, complete, registered, and route-ready", a
     "ecriture-augmentee",
     "cartographie-augmentee",
     "art-augmente",
+    "clarification-augmentee",
     "composer-recit-vivant-ia",
   ]);
   const artWorkshop = registry.workshops.find((workshop) => workshop.id === "art-augmente");
@@ -1757,6 +1760,181 @@ test("augmented art workshop is valid, complete, registered, and route-ready", a
   assert.equal(artWorkshop.slug, "art-augmente");
   assert.equal(artWorkshop.manifest, "packs/workshop-003-art-augmente/pack.json");
   assert.equal(artWorkshop.coverImage, "packs/workshop-003-art-augmente/assets/images/00-couverture-art-augmente.png");
+
+  const engine = new WorkshopEngine(pack);
+  assert.equal(engine.currentPage.id, "page-01");
+  for (let index = 1; index < pack.pages.length; index += 1) engine.next();
+  assert.equal(engine.currentPage.id, "page-26");
+  assert.equal(engine.canGoNext, false);
+});
+
+test("augmented clarification workshop is valid, complete, registered, and route-ready", async () => {
+  const pack = await readProjectJson("packs", "workshop-004-clarification-augmentee", "pack.json");
+  const result = validateWorkshopPack(pack);
+  assert.deepEqual(result, { valid: true, errors: [] });
+  assert.equal(pack.format, "ine-workshop-pack");
+  assert.equal(pack.id, "clarification-augmentee");
+  assert.equal(pack.slug, "clarification-augmentee");
+  assert.equal(pack.version, "1.0");
+  assert.equal(pack.language, "fr");
+  assert.equal(pack.startPage, "page-01");
+  assert.equal(pack.movements.length, 7);
+  assert.equal(pack.pages.length, 26);
+
+  assert.deepEqual(
+    pack.movements.map((movement) => [movement.id, movement.order, movement.title]),
+    [
+      ["observer", 1, "Observer"],
+      ["nommer", 2, "Nommer"],
+      ["relier", 3, "Relier"],
+      ["eprouver", 4, "Éprouver"],
+      ["elaguer", 5, "Élaguer"],
+      ["affiner", 6, "Affiner"],
+      ["justesse", 7, "Justesse"],
+    ],
+  );
+
+  assert.deepEqual(
+    pack.pages.map((page) => [page.id, page.order, page.movementId, page.title]),
+    [
+      ["page-01", 1, "observer", "Ce qui est devant moi"],
+      ["page-02", 2, "observer", "Ce qui attire immédiatement"],
+      ["page-03", 3, "observer", "Ce qui reste en retrait"],
+      ["page-04", 4, "observer", "Le constat sans correction"],
+      ["page-05", 5, "nommer", "Les éléments structurants"],
+      ["page-06", 6, "nommer", "Ce qui est secondaire"],
+      ["page-07", 7, "nommer", "Ce qui reste difficile à nommer"],
+      ["page-08", 8, "nommer", "La fonction de chaque élément"],
+      ["page-09", 9, "relier", "Ce qui dépend de quoi"],
+      ["page-10", 10, "relier", "Les liens visibles"],
+      ["page-11", 11, "relier", "Les ruptures"],
+      ["page-12", 12, "relier", "Ce qui manque — ou non — entre deux éléments"],
+      ["page-13", 13, "eprouver", "Le fil principal"],
+      ["page-14", 14, "eprouver", "Ce qui soutient ce fil"],
+      ["page-15", 15, "eprouver", "Ce qui l’éloigne"],
+      ["page-16", 16, "eprouver", "Ce qui doit rester complexe"],
+      ["page-17", 17, "elaguer", "Les répétitions utiles"],
+      ["page-18", 18, "elaguer", "Les redondances possibles"],
+      ["page-19", 19, "elaguer", "Ce qui peut disparaître"],
+      ["page-20", 20, "elaguer", "Retirer sans fermer"],
+      ["page-21", 21, "affiner", "Le point précis à travailler"],
+      ["page-22", 22, "affiner", "Ce qu’il faut préserver"],
+      ["page-23", 23, "affiner", "Les micro-transformations possibles"],
+      ["page-24", 24, "affiner", "Ce que la nouvelle version gagne et perd"],
+      ["page-25", 25, "justesse", "Ce qui est devenu plus visible"],
+      ["page-26", 26, "justesse", "Ce qui doit rester ouvert"],
+    ],
+  );
+
+  const supportedTypes = new Set(["text", "textarea", "choice", "reveal", "promptCopy", "recall"]);
+  assert.equal(pack.pages.every((page) => page.blocks.every((block) => supportedTypes.has(block.type))), true);
+  assert.equal(JSON.stringify(pack).includes("[TEMPORAIRE]"), false);
+
+  const blockIds = pack.pages.flatMap((page) => page.blocks.map((block) => block.id));
+  assert.equal(new Set(blockIds).size, blockIds.length, "block ids should be unique");
+  const blocks = pack.pages.flatMap((page) => page.blocks);
+  assert.equal(blocks.length, 201);
+  assert.equal(blocks.filter((block) => block.type === "textarea").length, 31);
+  assert.equal(blocks.filter((block) => block.type === "recall").length, 70);
+  assert.equal(blocks.filter((block) => block.type === "reveal").length, 1);
+  for (const traceId of [
+    "current_state",
+    "first_attention",
+    "background_elements",
+    "neutral_observation",
+    "structuring_elements",
+    "secondary_elements",
+    "hard_to_name",
+    "element_functions",
+    "dependencies",
+    "visible_links",
+    "ruptures",
+    "mediation_options",
+    "main_thread",
+    "thread_support",
+    "thread_deviations",
+    "protected_complexity",
+    "useful_repetitions",
+    "possible_redundancies",
+    "removal_candidates",
+    "safe_pruning",
+    "refinement_target",
+    "refinement_invariants",
+    "micro_transformations",
+    "clarity_gain",
+    "clarity_loss",
+    "change_decision",
+    "new_visibility",
+    "final_clarity",
+    "final_liveness",
+    "stop_reason",
+  ]) {
+    assert.equal(blockIds.includes(traceId), true, `${traceId} should exist as a prepared memory trace`);
+  }
+
+  assert.equal(
+    blocks
+      .filter((block) => block.type === "recall")
+      .every((block) => blockIds.includes(block.sourceBlockId)),
+    true,
+    "recall sourceBlockId values should reference existing blocks",
+  );
+
+  const promptCopies = pack.pages.flatMap((page) =>
+    page.blocks.filter((block) => block.type === "promptCopy").map((block) => [page.order, block.id]),
+  );
+  assert.deepEqual(
+    promptCopies,
+    [
+      [7, "prompt-hard-to-name"],
+      [8, "prompt-element-functions"],
+      [10, "prompt-visible-links"],
+      [12, "prompt-mediation-options"],
+      [15, "prompt-thread-deviations"],
+      [18, "prompt-possible-redundancies"],
+      [20, "prompt-safe-pruning"],
+      [23, "prompt-micro-transformations"],
+    ],
+  );
+  assert.equal(promptCopies.length, 8);
+  const humanOnlyPages = new Set([1, 2, 3, 4, 5, 6, 9, 11, 13, 14, 16, 17, 19, 21, 22, 24, 25, 26]);
+  assert.equal(
+    pack.pages
+      .filter((page) => humanOnlyPages.has(page.order))
+      .every((page) => page.blocks.every((block) => block.type !== "promptCopy")),
+    true,
+    "human-only pages should not contain promptCopy blocks",
+  );
+  assert.equal(
+    pack.pages
+      .find((page) => page.order === 26)
+      .blocks.filter((block) => block.type === "recall")
+      .every((block) => !["final_clarity", "final_liveness", "stop_reason"].includes(block.sourceBlockId)),
+    true,
+    "page 26 should not recall textarea values from the same page",
+  );
+
+  const registry = await readProjectJson("apps", "player", "src", "editorial-registry.json");
+  const workshops = registry.workshops.map((workshop) => workshop.id);
+  assert.deepEqual(workshops, [
+    "ecriture-augmentee",
+    "cartographie-augmentee",
+    "art-augmente",
+    "clarification-augmentee",
+    "composer-recit-vivant-ia",
+  ]);
+  const clarificationWorkshop = registry.workshops.find((workshop) => workshop.id === "clarification-augmentee");
+  assert.equal(clarificationWorkshop.status, "published");
+  assert.equal(clarificationWorkshop.slug, "clarification-augmentee");
+  assert.equal(clarificationWorkshop.manifest, "packs/workshop-004-clarification-augmentee/pack.json");
+  assert.equal(
+    clarificationWorkshop.coverImage,
+    "packs/workshop-004-clarification-augmentee/assets/images/00-couverture-clarification-augmentee.png",
+  );
+  assert.equal(
+    existsSync("packs/workshop-004-clarification-augmentee/assets/images/00-couverture-clarification-augmentee.png"),
+    true,
+  );
 
   const engine = new WorkshopEngine(pack);
   assert.equal(engine.currentPage.id, "page-01");
