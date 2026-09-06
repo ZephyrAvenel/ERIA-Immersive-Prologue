@@ -1669,6 +1669,11 @@ button:disabled {
   margin-top: clamp(2rem, 5vw, 4rem);
 }
 
+.workshops__grid {
+  width: min(84rem, 100%);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+}
+
 .review__eyebrow,
 .workshops__eyebrow {
   margin-bottom: 0.7rem;
@@ -1676,6 +1681,7 @@ button:disabled {
 
 .review-card,
 .workshop-card {
+  min-width: 0;
   min-height: 17rem;
   padding: clamp(1.25rem, 3vw, 1.8rem);
   display: grid;
