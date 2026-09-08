@@ -1585,6 +1585,7 @@ test("augmented mapping workshop is valid, registered, and declarative", async (
     "cartographie-augmentee",
     "art-augmente",
     "clarification-augmentee",
+    "evolution-augmentee",
     "composer-recit-vivant-ia",
   ]);
   const mappingWorkshop = registry.workshops.find((workshop) => workshop.id === "cartographie-augmentee");
@@ -1594,6 +1595,145 @@ test("augmented mapping workshop is valid, registered, and declarative", async (
   assert.equal(
     mappingWorkshop.coverImage,
     "packs/workshop-002-cartographie-augmentee/assets/images/00-couverture-cartographie-augmentee.png",
+  );
+
+  const engine = new WorkshopEngine(pack);
+  assert.equal(engine.currentPage.id, "page-01");
+  for (let index = 1; index < pack.pages.length; index += 1) engine.next();
+  assert.equal(engine.currentPage.id, "page-26");
+  assert.equal(engine.canGoNext, false);
+});
+
+test("augmented evolution workshop is valid, complete, registered, and route-ready", async () => {
+  const pack = await readProjectJson("packs", "workshop-005-evolution-augmentee", "pack.json");
+  const result = validateWorkshopPack(pack);
+  assert.deepEqual(result, { valid: true, errors: [] });
+  assert.equal(pack.format, "ine-workshop-pack");
+  assert.equal(pack.id, "evolution-augmentee");
+  assert.equal(pack.slug, "evolution-augmentee");
+  assert.equal(pack.version, "1.0");
+  assert.equal(pack.language, "fr");
+  assert.equal(pack.startPage, "page-01");
+  assert.equal(pack.movements.length, 7);
+  assert.equal(pack.pages.length, 26);
+  assert.equal(JSON.stringify(pack).includes("[TEMPORAIRE]"), false);
+
+  const supportedTypes = new Set(["text", "textarea", "choice", "reveal", "promptCopy", "recall"]);
+  assert.equal(pack.pages.every((page) => page.blocks.every((block) => supportedTypes.has(block.type))), true);
+
+  const blocks = pack.pages.flatMap((page) => page.blocks);
+  const blockIds = blocks.map((block) => block.id);
+  assert.equal(new Set(blockIds).size, blockIds.length, "block ids should be unique");
+  const textareaIds = blocks.filter((block) => block.type === "textarea").map((block) => block.id);
+  const expectedTextareaIds = [
+    "current_version",
+    "reference_version",
+    "change_trigger",
+    "active_trace",
+    "visible_changes",
+    "structural_changes",
+    "meaning_shifts",
+    "evolution_changes",
+    "surviving_elements",
+    "deep_invariants",
+    "transformed_heritage",
+    "left_behind",
+    "open_question",
+    "trajectory_a",
+    "trajectory_b_options",
+    "trajectory_limit",
+    "trajectory_openings",
+    "trajectory_closures",
+    "trajectory_requirements",
+    "irreversible_thresholds",
+    "carry_forward",
+    "leave_behind",
+    "evolution_gesture",
+    "projected_version",
+    "continuity_criterion",
+    "same_work",
+    "became_other",
+    "next_opening",
+  ];
+  assert.deepEqual(textareaIds, expectedTextareaIds);
+  assert.equal(textareaIds.length, 28);
+
+  const promptCopies = pack.pages.flatMap((page) =>
+    page.blocks.filter((block) => block.type === "promptCopy").map((block) => [page.order, block.id]),
+  );
+  assert.deepEqual(promptCopies, [
+    [7, "prompt-meaning-shifts"],
+    [10, "prompt-deep-invariants"],
+    [15, "prompt-change-direction"],
+    [16, "prompt-improbable-branch"],
+    [18, "prompt-trajectory-closures"],
+    [23, "prompt-evolution-gesture"],
+  ]);
+  assert.equal(promptCopies.length, 6);
+  assert.equal(blocks.filter((block) => block.type === "reveal").length, 1);
+  assert.deepEqual(
+    pack.pages.flatMap((page) =>
+      page.blocks.filter((block) => block.type === "reveal").map((block) => [page.order, block.id]),
+    ),
+    [[26, "evolution-ending"]],
+  );
+  assert.equal(
+    [3, 11, 20].every((order) =>
+      pack.pages.find((page) => page.order === order).blocks.every((block) => block.type !== "promptCopy"),
+    ),
+    true,
+    "steps 3, 11 and 20 should not include promptCopy blocks",
+  );
+
+  const textareaPageById = new Map(
+    pack.pages.flatMap((page) =>
+      page.blocks.filter((block) => block.type === "textarea").map((block) => [block.id, page.order]),
+    ),
+  );
+  const recallBlocks = pack.pages.flatMap((page) =>
+    page.blocks.filter((block) => block.type === "recall").map((block) => ({ ...block, pageOrder: page.order })),
+  );
+  assert.equal(recallBlocks.length > 0, true);
+  assert.equal(
+    recallBlocks.every((block) => textareaPageById.has(block.sourceBlockId)),
+    true,
+    "recall blocks should only target textarea ids",
+  );
+  assert.equal(
+    recallBlocks.every((block) => textareaPageById.get(block.sourceBlockId) < block.pageOrder),
+    true,
+    "recall blocks should only target previous pages",
+  );
+  assert.equal(
+    pack.pages
+      .find((page) => page.order === 26)
+      .blocks.filter((block) => block.type === "recall")
+      .every((block) => !["same_work", "became_other", "next_opening"].includes(block.sourceBlockId)),
+    true,
+    "page 26 should not recall textarea values from the same page",
+  );
+
+  const registry = await readProjectJson("apps", "player", "src", "editorial-registry.json");
+  const workshops = registry.workshops.map((workshop) => workshop.id);
+  assert.deepEqual(workshops, [
+    "ecriture-augmentee",
+    "cartographie-augmentee",
+    "art-augmente",
+    "clarification-augmentee",
+    "evolution-augmentee",
+    "composer-recit-vivant-ia",
+  ]);
+  const evolutionWorkshop = registry.workshops.find((workshop) => workshop.id === "evolution-augmentee");
+  assert.equal(evolutionWorkshop.status, "published");
+  assert.equal(evolutionWorkshop.slug, "evolution-augmentee");
+  assert.equal(evolutionWorkshop.manifest, "packs/workshop-005-evolution-augmentee/pack.json");
+  assert.equal(
+    evolutionWorkshop.coverImage,
+    "packs/workshop-005-evolution-augmentee/assets/images/00-couverture-evolution-augmentee.png",
+  );
+  assert.equal(
+    existsSync("packs/workshop-005-evolution-augmentee/assets/images/00-couverture-evolution-augmentee.png"),
+    true,
   );
 
   const engine = new WorkshopEngine(pack);
@@ -1753,6 +1893,7 @@ test("augmented art workshop is valid, complete, registered, and route-ready", a
     "cartographie-augmentee",
     "art-augmente",
     "clarification-augmentee",
+    "evolution-augmentee",
     "composer-recit-vivant-ia",
   ]);
   const artWorkshop = registry.workshops.find((workshop) => workshop.id === "art-augmente");
@@ -1921,6 +2062,7 @@ test("augmented clarification workshop is valid, complete, registered, and route
     "cartographie-augmentee",
     "art-augmente",
     "clarification-augmentee",
+    "evolution-augmentee",
     "composer-recit-vivant-ia",
   ]);
   const clarificationWorkshop = registry.workshops.find((workshop) => workshop.id === "clarification-augmentee");

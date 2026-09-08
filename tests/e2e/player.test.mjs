@@ -946,7 +946,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await evaluate(page, "document.querySelector('[data-family=\"augmented-workshops\"] a')?.click()");
     await waitForExpression(
       page,
-      "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 5",
+      "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 6",
     );
     assert.equal(
       await evaluate(page, "window.location.pathname.endsWith('/ateliers/')"),
@@ -961,7 +961,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await waitForPlayerReady(page, "Sc\u00e8ne 1 / 9");
 
     await loadUrl(page, workshopsUrl);
-    await waitForExpression(page, "document.querySelectorAll('.workshop-card').length === 5");
+    await waitForExpression(page, "document.querySelectorAll('.workshop-card').length === 6");
     await waitForExpression(
       page,
       "document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] .workshop-card__cover img')?.complete === true && document.querySelector('[data-workshop-id=\"ecriture-augmentee\"] .workshop-card__cover img')?.naturalWidth === 853",
@@ -973,6 +973,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await waitForExpression(
       page,
       "document.querySelector('[data-workshop-id=\"clarification-augmentee\"] .workshop-card__cover img')?.complete === true && document.querySelector('[data-workshop-id=\"clarification-augmentee\"] .workshop-card__cover img')?.naturalWidth === 960",
+    );
+    await waitForExpression(
+      page,
+      "document.querySelector('[data-workshop-id=\"evolution-augmentee\"] .workshop-card__cover img')?.complete === true && document.querySelector('[data-workshop-id=\"evolution-augmentee\"] .workshop-card__cover img')?.naturalWidth === 960",
     );
     const workshopsState = await evaluate(
       page,
@@ -1095,6 +1099,25 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               coverObjectFit: "contain",
             },
             {
+              id: "evolution-augmentee",
+              status: "published",
+              visibleStatus: "Atelier publié",
+              orientation: "ÉVOLUER",
+              title: "Évolution augmentée",
+              description: "Faire évoluer une œuvre sans perdre ce qui la rend vivante.",
+              access: "Ouvrir l’atelier",
+              linkCount: 1,
+              href: `${entryUrl}ateliers/evolution-augmentee/`,
+              role: null,
+              tabIndex: null,
+              coverPresent: true,
+              coverAlt: "Couverture d’Évolution augmentée — plusieurs états d’une même œuvre reliés par des bifurcations lumineuses, montrant ce qui change, ce qui demeure et ce qui peut encore devenir.",
+              coverSrc: workshopsState.cards[4].coverSrc,
+              coverNaturalWidth: 960,
+              coverNaturalHeight: 1280,
+              coverObjectFit: "contain",
+            },
+            {
               id: "composer-recit-vivant-ia",
               status: "planned",
               visibleStatus: "Pr\u00e9vu",
@@ -1196,6 +1219,25 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               coverObjectFit: "contain",
             },
             {
+              id: "evolution-augmentee",
+              status: "published",
+              visibleStatus: "Published workshop",
+              orientation: "EVOLVE",
+              title: "Augmented evolution",
+              description: "Evolving a work without losing what keeps it alive.",
+              access: "Open workshop",
+              linkCount: 1,
+              href: `${entryUrl}ateliers/evolution-augmentee/`,
+              role: null,
+              tabIndex: null,
+              coverPresent: true,
+              coverAlt: "Couverture d’Évolution augmentée — plusieurs états d’une même œuvre reliés par des bifurcations lumineuses, montrant ce qui change, ce qui demeure et ce qui peut encore devenir.",
+              coverSrc: workshopsState.cards[4].coverSrc,
+              coverNaturalWidth: 960,
+              coverNaturalHeight: 1280,
+              coverObjectFit: "contain",
+            },
+            {
               id: "composer-recit-vivant-ia",
               status: "planned",
               visibleStatus: "Planned",
@@ -1220,7 +1262,8 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(workshopsState.cards[1].coverSrc.endsWith("/packs/workshop-002-cartographie-augmentee/assets/images/00-couverture-cartographie-augmentee.png"), true);
     assert.equal(workshopsState.cards[2].coverSrc.endsWith("/packs/workshop-003-art-augmente/assets/images/00-couverture-art-augmente.png"), true);
     assert.equal(workshopsState.cards[3].coverSrc.endsWith("/packs/workshop-004-clarification-augmentee/assets/images/00-couverture-clarification-augmentee.png"), true);
-    assert.equal(workshopsState.workshopHrefCount, 4);
+    assert.equal(workshopsState.cards[4].coverSrc.endsWith("/packs/workshop-005-evolution-augmentee/assets/images/00-couverture-evolution-augmentee.png"), true);
+    assert.equal(workshopsState.workshopHrefCount, 5);
     assert.equal(workshopsState.workshopPackLinkCount, 0);
     assert.equal(workshopsState.noHorizontalOverflow, true);
 
@@ -1393,6 +1436,28 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     await evaluate(page, "document.querySelector('.workshop-entry__primary')?.click()");
     await waitForWorkshopReady(page, "01 / 26");
     assert.equal((await readWorkshopState(page)).pageTitle, "Ce qui est devant moi");
+
+    await loadUrl(page, `${entryUrl}ateliers/evolution-augmentee/`);
+    await waitForExpression(page, "document.querySelector('.workshop-entry') !== null");
+    const evolutionEntry = await readWorkshopEntryState(page);
+    assert.equal(evolutionEntry.present, true);
+    assert.equal(evolutionEntry.path.endsWith("/ateliers/evolution-augmentee/"), true);
+    assert.equal(evolutionEntry.title, "\u00c9VOLUTION AUGMENT\u00c9E");
+    assert.equal(evolutionEntry.subtitle, "Faire \u00e9voluer une \u0153uvre sans perdre ce qui la rend vivante.");
+    assert.equal(evolutionEntry.description, "Faire \u00e9voluer une \u0153uvre sans perdre ce qui la rend vivante.");
+    assert.equal(evolutionEntry.coverPresent, true);
+    assert.equal(
+      evolutionEntry.coverAlt,
+      "Couverture d\u2019\u00c9volution augment\u00e9e \u2014 plusieurs \u00e9tats d\u2019une m\u00eame \u0153uvre reli\u00e9s par des bifurcations lumineuses, montrant ce qui change, ce qui demeure et ce qui peut encore devenir.",
+    );
+    assert.equal(evolutionEntry.coverNaturalWidth, 960);
+    assert.equal(evolutionEntry.coverNaturalHeight, 1280);
+    assert.equal(evolutionEntry.coverObjectFit, "contain");
+    assert.equal(evolutionEntry.primary, "Commencer l\u2019atelier");
+    assert.equal(evolutionEntry.noHorizontalOverflow, true);
+    await evaluate(page, "document.querySelector('.workshop-entry__primary')?.click()");
+    await waitForWorkshopReady(page, "01 / 26");
+    assert.equal((await readWorkshopState(page)).pageTitle, "La version pr\u00e9sente");
 
     await loadUrl(page, `${entryUrl}ateliers/slug-inconnu/`);
     await waitForExpression(page, "document.querySelector('.error-panel') !== null");
@@ -1608,7 +1673,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(clearedWorkshop.revealExpanded, "false");
 
     await loadUrl(page, workshopsUrl);
-    await waitForExpression(page, "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 5");
+    await waitForExpression(page, "window.location.pathname.endsWith('/ateliers/') && document.querySelectorAll('.workshop-card').length === 6");
 
     await loadUrl(page, libraryUrl);
     await waitForExpression(page, "document.querySelectorAll('.work-card').length === 13");

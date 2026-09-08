@@ -137,6 +137,27 @@
       }
     },
     {
+      "id": "evolution-augmentee",
+      "family": "augmented-workshops",
+      "status": "published",
+      "slug": "evolution-augmentee",
+      "manifest": "packs/workshop-005-evolution-augmentee/pack.json",
+      "coverImage": "packs/workshop-005-evolution-augmentee/assets/images/00-couverture-evolution-augmentee.png",
+      "coverImageAlt": "Couverture d’Évolution augmentée — plusieurs états d’une même œuvre reliés par des bifurcations lumineuses, montrant ce qui change, ce qui demeure et ce qui peut encore devenir.",
+      "labels": {
+        "fr": {
+          "orientation": "ÉVOLUER",
+          "title": "Évolution augmentée",
+          "description": "Faire évoluer une œuvre sans perdre ce qui la rend vivante."
+        },
+        "en": {
+          "orientation": "EVOLVE",
+          "title": "Augmented evolution",
+          "description": "Evolving a work without losing what keeps it alive."
+        }
+      }
+    },
+    {
       "id": "composer-recit-vivant-ia",
       "family": "augmented-workshops",
       "status": "planned",

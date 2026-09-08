@@ -1,0 +1,420 @@
+{
+  "$schema": "../../schemas/workshop-pack.schema.json",
+  "format": "ine-workshop-pack",
+  "version": "1.0",
+  "id": "evolution-augmentee",
+  "slug": "evolution-augmentee",
+  "title": "Évolution augmentée",
+  "subtitle": "Faire évoluer une œuvre sans perdre ce qui la rend vivante.",
+  "language": "fr",
+  "startPage": "page-01",
+  "movements": [
+    { "id": "traces", "order": 1, "title": "Traces", "description": "Observer ce qui relie une version présente à ce qui l’a précédée." },
+    { "id": "ecarts", "order": 2, "title": "Écarts", "description": "Distinguer les changements visibles, structurels et sensibles." },
+    { "id": "heritages", "order": 3, "title": "Héritages", "description": "Reconnaître ce qui survit, revient ou peut rester derrière." },
+    { "id": "bifurcations", "order": 4, "title": "Bifurcations", "description": "Ouvrir plusieurs trajectoires sans décider trop tôt." },
+    { "id": "epreuves", "order": 5, "title": "Épreuves", "description": "Évaluer ce que chaque trajectoire ouvre, ferme et exige." },
+    { "id": "transformation", "order": 6, "title": "Transformation", "description": "Formuler le geste qui peut porter la prochaine version." },
+    { "id": "continuite-vivante", "order": 7, "title": "Continuité vivante", "description": "Décider ce qui demeure vivant dans l’évolution." }
+  ],
+  "pages": [
+    {
+      "id": "page-01",
+      "movementId": "traces",
+      "order": 1,
+      "title": "La version présente",
+      "blocks": [
+        { "id": "page-01-text-01", "type": "text", "text": "Avant de parler d’évolution, commencez par regarder où l’œuvre se trouve aujourd’hui." },
+        { "id": "page-01-text-02", "type": "text", "text": "Pas son histoire." },
+        { "id": "page-01-text-03", "type": "text", "text": "Son état actuel." },
+        { "id": "current_version", "type": "textarea", "label": "Dans quel état se trouve l’œuvre aujourd’hui ?", "placeholder": "Forme actuelle, structure, ton, intention, point d’avancement, éléments dominants…" },
+        { "id": "page-01-text-04", "type": "text", "text": "Décrivez ce qui est là maintenant, sans raconter encore comment vous y êtes arrivé." }
+      ]
+    },
+    {
+      "id": "page-02",
+      "movementId": "traces",
+      "order": 2,
+      "title": "La version de référence",
+      "blocks": [
+        { "id": "page-02-recall-current-version", "type": "recall", "sourceBlockId": "current_version", "label": "Version présente", "emptyText": "Votre version présente apparaîtra ici." },
+        { "id": "page-02-text-01", "type": "text", "text": "Toutes les versions antérieures ne sont pas également utiles pour comprendre une transformation." },
+        { "id": "page-02-text-02", "type": "text", "text": "Certaines éclairent mieux le changement que d’autres." },
+        { "id": "reference_version", "type": "textarea", "label": "Quelle version antérieure voulez-vous prendre comme point de comparaison ?", "placeholder": "Une version précédente importante, un prototype, une première forme, une version avant bifurcation…" },
+        { "id": "page-02-text-03", "type": "text", "text": "Choisissez la version qui rend le changement le plus lisible, pas forcément la plus récente." }
+      ]
+    },
+    {
+      "id": "page-03",
+      "movementId": "traces",
+      "order": 3,
+      "title": "Ce qui a déclenché le changement",
+      "blocks": [
+        { "id": "page-03-recall-reference-version", "type": "recall", "sourceBlockId": "reference_version", "label": "Version de référence", "emptyText": "Votre version de référence apparaîtra ici." },
+        { "id": "page-03-text-01", "type": "text", "text": "Une évolution commence rarement sans raison." },
+        { "id": "page-03-text-02", "type": "text", "text": "Quelque chose a rendu la version précédente insuffisante." },
+        { "id": "change_trigger", "type": "textarea", "label": "Qu’est-ce qui vous a poussé à ne pas rester dans cette version ?", "placeholder": "Une insatisfaction, une découverte, une contrainte, une nouvelle question, une erreur féconde…" },
+        { "id": "page-03-text-03", "type": "text", "text": "Le déclencheur n’explique pas tout. Il indique seulement où le mouvement a commencé." }
+      ]
+    },
+    {
+      "id": "page-04",
+      "movementId": "traces",
+      "order": 4,
+      "title": "La trace de ce geste",
+      "blocks": [
+        { "id": "page-04-recall-current-version", "type": "recall", "sourceBlockId": "current_version", "label": "Version présente", "emptyText": "Votre version présente apparaîtra ici." },
+        { "id": "page-04-recall-reference-version", "type": "recall", "sourceBlockId": "reference_version", "label": "Version de référence", "emptyText": "Votre version de référence apparaîtra ici." },
+        { "id": "page-04-recall-change-trigger", "type": "recall", "sourceBlockId": "change_trigger", "label": "Déclencheur du changement", "emptyText": "Votre déclencheur apparaîtra ici." },
+        { "id": "page-04-text-01", "type": "text", "text": "Un changement passé peut continuer à agir longtemps après avoir eu lieu." },
+        { "id": "active_trace", "type": "textarea", "label": "Quelle décision de cette transition reste encore visible dans la version actuelle ?", "placeholder": "Un déplacement, une suppression, un motif, une structure, une relation, une nouvelle contrainte…" },
+        { "id": "page-04-text-02", "type": "text", "text": "Ce que vous repérez ici est une trace active du changement." }
+      ]
+    },
+    {
+      "id": "page-05",
+      "movementId": "ecarts",
+      "order": 5,
+      "title": "Les changements visibles",
+      "blocks": [
+        { "id": "page-05-recall-current-version", "type": "recall", "sourceBlockId": "current_version", "label": "Version présente", "emptyText": "Votre version présente apparaîtra ici." },
+        { "id": "page-05-recall-reference-version", "type": "recall", "sourceBlockId": "reference_version", "label": "Version de référence", "emptyText": "Votre version de référence apparaîtra ici." },
+        { "id": "page-05-text-01", "type": "text", "text": "Commençons par les différences les plus évidentes." },
+        { "id": "visible_changes", "type": "textarea", "label": "Qu’est-ce qui a changé de manière immédiatement perceptible ?", "placeholder": "Forme, ordre, couleur, scène, titre, interface, rythme, composition…" },
+        { "id": "page-05-text-02", "type": "text", "text": "Visible ne veut pas encore dire profond." }
+      ]
+    },
+    {
+      "id": "page-06",
+      "movementId": "ecarts",
+      "order": 6,
+      "title": "Les changements de structure",
+      "blocks": [
+        { "id": "page-06-recall-current-version", "type": "recall", "sourceBlockId": "current_version", "label": "Version présente", "emptyText": "Votre version présente apparaîtra ici." },
+        { "id": "page-06-recall-reference-version", "type": "recall", "sourceBlockId": "reference_version", "label": "Version de référence", "emptyText": "Votre version de référence apparaîtra ici." },
+        { "id": "page-06-recall-visible-changes", "type": "recall", "sourceBlockId": "visible_changes", "label": "Changements visibles", "emptyText": "Vos changements visibles apparaîtront ici." },
+        { "id": "page-06-text-01", "type": "text", "text": "Certains changements ne sautent pas aux yeux, mais modifient la manière dont l’œuvre tient ensemble." },
+        { "id": "structural_changes", "type": "textarea", "label": "Qu’est-ce qui a changé dans la manière dont les éléments s’organisent ou dépendent les uns des autres ?", "placeholder": "Hiérarchie, ordre, temporalité, relation entre parties, centre de gravité, progression…" },
+        { "id": "page-06-text-02", "type": "text", "text": "Un changement structurel peut transformer l’œuvre même si son apparence reste proche." }
+      ]
+    },
+    {
+      "id": "page-07",
+      "movementId": "ecarts",
+      "order": 7,
+      "title": "Les changements de sens",
+      "blocks": [
+        { "id": "page-07-recall-current-version", "type": "recall", "sourceBlockId": "current_version", "label": "Version présente", "emptyText": "Votre version présente apparaîtra ici." },
+        { "id": "page-07-recall-reference-version", "type": "recall", "sourceBlockId": "reference_version", "label": "Version de référence", "emptyText": "Votre version de référence apparaîtra ici." },
+        { "id": "page-07-recall-visible-changes", "type": "recall", "sourceBlockId": "visible_changes", "label": "Changements visibles", "emptyText": "Vos changements visibles apparaîtront ici." },
+        { "id": "page-07-recall-structural-changes", "type": "recall", "sourceBlockId": "structural_changes", "label": "Changements de structure", "emptyText": "Vos changements de structure apparaîtront ici." },
+        { "id": "page-07-text-01", "type": "text", "text": "Deux versions peuvent se ressembler et pourtant ne plus faire sentir la même chose." },
+        { "id": "prompt-meaning-shifts", "type": "promptCopy", "label": "Explorer les changements de sens avec l’IA", "description": "Copiez les deux versions et les changements déjà repérés ci-dessus.", "text": "Voici la version actuelle de l’œuvre :\n\n[COLLEZ ICI VOTRE VERSION ACTUELLE]\n\nVoici la version de référence antérieure :\n\n[COLLEZ ICI VOTRE VERSION DE RÉFÉRENCE]\n\nVoici les changements visibles que j’ai déjà repérés :\n\n[COLLEZ ICI VOS CHANGEMENTS VISIBLES]\n\nVoici les changements de structure que j’ai identifiés :\n\n[COLLEZ ICI VOS CHANGEMENTS DE STRUCTURE]\n\nAide-moi à comparer les deux versions uniquement du point de vue des déplacements de sens.\n\nCherche notamment :\n- ce qui devient plus visible ;\n- ce qui devient moins visible ;\n- ce qui change de relation ;\n- ce qui prend une nouvelle importance ;\n- ce qui devient plus ambigu ;\n- ce qui devient plus explicite ;\n- ce qui devient nouvellement possible à comprendre, sentir ou imaginer.\n\nPour chaque déplacement possible :\n1. indique l’élément concerné ;\n2. décris ce qui change entre les deux versions ;\n3. précise ce qui soutient cette observation dans ce que je fournis ;\n4. indique si cette lecture est forte, plausible ou seulement hypothétique.\n\nImportant :\n- ne prête pas d’intention à l’auteur ;\n- ne propose pas de diagnostic psychologique ;\n- ne juge pas quelle version est meilleure ;\n- ne confonds pas différence de forme et changement de sens ;\n- accepte qu’un changement visible n’entraîne aucun déplacement de sens.\n\nLe but est de faire apparaître les déplacements possibles, pas d’imposer une interprétation." },
+        { "id": "meaning_shifts", "type": "textarea", "label": "Quels déplacements de sens vous paraissent réellement présents ?" }
+      ]
+    },
+    {
+      "id": "page-08",
+      "movementId": "ecarts",
+      "order": 8,
+      "title": "Variation ou évolution ?",
+      "blocks": [
+        { "id": "page-08-recall-visible-changes", "type": "recall", "sourceBlockId": "visible_changes", "label": "Changements visibles", "emptyText": "Vos changements visibles apparaîtront ici." },
+        { "id": "page-08-recall-structural-changes", "type": "recall", "sourceBlockId": "structural_changes", "label": "Changements de structure", "emptyText": "Vos changements de structure apparaîtront ici." },
+        { "id": "page-08-recall-meaning-shifts", "type": "recall", "sourceBlockId": "meaning_shifts", "label": "Déplacements de sens", "emptyText": "Vos déplacements de sens apparaîtront ici." },
+        { "id": "page-08-text-01", "type": "text", "text": "Tous les changements ne transforment pas le devenir de l’œuvre." },
+        { "id": "page-08-text-02", "type": "text", "text": "Certains ne font que varier sa forme." },
+        { "id": "evolution_changes", "type": "textarea", "label": "Parmi ces changements, lesquels modifient réellement ce que l’œuvre peut encore devenir ?", "placeholder": "Ce changement ouvre désormais…, rend impossible…, déplace durablement…" },
+        { "id": "page-08-text-03", "type": "text", "text": "Une version est un état nouveau." },
+        { "id": "page-08-text-04", "type": "text", "text": "Une évolution modifie le champ des possibles de l’œuvre." }
+      ]
+    },
+    {
+      "id": "page-09",
+      "movementId": "heritages",
+      "order": 9,
+      "title": "Ce qui a survécu",
+      "blocks": [
+        { "id": "page-09-recall-evolution-changes", "type": "recall", "sourceBlockId": "evolution_changes", "label": "Évolutions réelles", "emptyText": "Vos évolutions réelles apparaîtront ici." },
+        { "id": "page-09-recall-current-version", "type": "recall", "sourceBlockId": "current_version", "label": "Version présente", "emptyText": "Votre version présente apparaîtra ici." },
+        { "id": "page-09-text-01", "type": "text", "text": "Une transformation n’efface pas tout." },
+        { "id": "page-09-text-02", "type": "text", "text": "Certaines choses traversent les versions." },
+        { "id": "surviving_elements", "type": "textarea", "label": "Qu’est-ce qui est resté malgré les transformations ?", "placeholder": "Motifs, questions, gestes, relations, tonalité, structure, rythme…" }
+      ]
+    },
+    {
+      "id": "page-10",
+      "movementId": "heritages",
+      "order": 10,
+      "title": "Les invariants profonds",
+      "blocks": [
+        { "id": "page-10-recall-evolution-changes", "type": "recall", "sourceBlockId": "evolution_changes", "label": "Évolutions réelles", "emptyText": "Vos évolutions réelles apparaîtront ici." },
+        { "id": "page-10-recall-surviving-elements", "type": "recall", "sourceBlockId": "surviving_elements", "label": "Ce qui a survécu", "emptyText": "Vos éléments survivants apparaîtront ici." },
+        { "id": "page-10-text-01", "type": "text", "text": "Ce qui demeure n’a pas toujours besoin de garder la même forme." },
+        { "id": "prompt-deep-invariants", "type": "promptCopy", "label": "Identifier les invariants avec l’IA", "description": "Copiez les évolutions réelles et ce qui a survécu ci-dessus.", "text": "Voici les changements que je considère comme de véritables évolutions :\n\n[COLLEZ ICI VOS ÉVOLUTIONS RÉELLES]\n\nVoici ce qui a survécu aux transformations :\n\n[COLLEZ ICI CE QUI A SURVÉCU]\n\nJe cherche maintenant ce qui pourrait rester reconnaissable même si sa forme change encore.\n\nPropose au maximum 6 invariants possibles, à différents niveaux.\n\nIls peuvent concerner :\n- une question ;\n- une tension ;\n- une relation ;\n- un geste ;\n- un motif ;\n- un rythme ;\n- une manière d’ouvrir ou de fermer ;\n- une structure de relation ;\n- une manière d’habiter le temps ou l’espace.\n\nPour chaque invariant possible :\n1. formule-le brièvement ;\n2. indique ce qui, dans les éléments que je fournis, permet de l’envisager ;\n3. explique comment il pourrait changer de forme sans disparaître ;\n4. indique ce qui risquerait de le rendre trop vague ou trop général.\n\nImportant :\n- n’utilise pas le mot « essence » ;\n- ne cherche pas une définition définitive de l’œuvre ;\n- ne suppose pas qu’un invariant doit être présent dans toutes les versions ;\n- ne confonds pas répétition littérale et continuité profonde ;\n- ne choisis pas à ma place ce qui est essentiel.\n\nLe but est d’ouvrir plusieurs hypothèses de continuité, pas de définir ce qu’est l’œuvre une fois pour toutes." },
+        { "id": "deep_invariants", "type": "textarea", "label": "Quels invariants voulez-vous réellement retenir ?" }
+      ]
+    },
+    {
+      "id": "page-11",
+      "movementId": "heritages",
+      "order": 11,
+      "title": "Ce qui revient autrement",
+      "blocks": [
+        { "id": "page-11-recall-surviving-elements", "type": "recall", "sourceBlockId": "surviving_elements", "label": "Ce qui a survécu", "emptyText": "Vos éléments survivants apparaîtront ici." },
+        { "id": "page-11-recall-deep-invariants", "type": "recall", "sourceBlockId": "deep_invariants", "label": "Invariants profonds", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-11-text-01", "type": "text", "text": "Un héritage peut survivre en changeant de forme." },
+        { "id": "transformed_heritage", "type": "textarea", "label": "Qu’est-ce qui réapparaît dans la version actuelle sous une autre forme ?", "placeholder": "Un motif devenu relation, une scène devenue structure, une question devenue tension…" },
+        { "id": "page-11-text-02", "type": "text", "text": "Continuer ne signifie pas répéter à l’identique." }
+      ]
+    },
+    {
+      "id": "page-12",
+      "movementId": "heritages",
+      "order": 12,
+      "title": "Ce qui peut rester derrière",
+      "blocks": [
+        { "id": "page-12-recall-surviving-elements", "type": "recall", "sourceBlockId": "surviving_elements", "label": "Ce qui a survécu", "emptyText": "Vos éléments survivants apparaîtront ici." },
+        { "id": "page-12-recall-deep-invariants", "type": "recall", "sourceBlockId": "deep_invariants", "label": "Invariants profonds", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-12-recall-transformed-heritage", "type": "recall", "sourceBlockId": "transformed_heritage", "label": "Ce qui revient autrement", "emptyText": "Votre héritage transformé apparaîtra ici." },
+        { "id": "page-12-text-01", "type": "text", "text": "Tout ce qui appartient à l’histoire de l’œuvre n’a pas besoin de voyager avec elle." },
+        { "id": "left_behind", "type": "textarea", "label": "Qu’est-ce qui appartient à l’histoire de cette œuvre, mais peut rester dans une version précédente ?", "placeholder": "Une forme, un dispositif, une scène, un principe, une contrainte, une manière de faire…" },
+        { "id": "page-12-text-02", "type": "text", "text": "Laisser derrière n’efface pas l’histoire. Cela permet parfois à la suite d’exister." }
+      ]
+    },
+    {
+      "id": "page-13",
+      "movementId": "bifurcations",
+      "order": 13,
+      "title": "La question encore ouverte",
+      "blocks": [
+        { "id": "page-13-recall-evolution-changes", "type": "recall", "sourceBlockId": "evolution_changes", "label": "Évolutions réelles", "emptyText": "Vos évolutions réelles apparaîtront ici." },
+        { "id": "page-13-recall-deep-invariants", "type": "recall", "sourceBlockId": "deep_invariants", "label": "Invariants profonds", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-13-recall-left-behind", "type": "recall", "sourceBlockId": "left_behind", "label": "Ce qui peut rester derrière", "emptyText": "Ce que vous pouvez laisser apparaîtra ici." },
+        { "id": "page-13-text-01", "type": "text", "text": "Une œuvre continue souvent parce qu’une question reste active." },
+        { "id": "open_question", "type": "textarea", "label": "Quelle question de l’œuvre n’a pas encore trouvé sa forme ?", "placeholder": "Une relation non résolue, une tension, un seuil, une question de forme ou de sens…" },
+        { "id": "page-13-text-02", "type": "text", "text": "Une bifurcation féconde commence par une question réelle, pas par le désir de changer pour changer." }
+      ]
+    },
+    {
+      "id": "page-14",
+      "movementId": "bifurcations",
+      "order": 14,
+      "title": "La trajectoire spontanée",
+      "blocks": [
+        { "id": "page-14-recall-open-question", "type": "recall", "sourceBlockId": "open_question", "label": "Question encore ouverte", "emptyText": "Votre question ouverte apparaîtra ici." },
+        { "id": "page-14-recall-deep-invariants", "type": "recall", "sourceBlockId": "deep_invariants", "label": "Invariants profonds", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-14-text-01", "type": "text", "text": "Avant d’ouvrir d’autres possibilités, regardez où l’œuvre semble aller d’elle-même." },
+        { "id": "trajectory_a", "type": "textarea", "label": "Si l’œuvre poursuivait sa logique actuelle, où pourrait-elle aller ?", "placeholder": "Prochaine forme, approfondissement naturel, continuité du geste actuel…" },
+        { "id": "page-14-text-02", "type": "text", "text": "C’est votre trajectoire spontanée. Elle n’est ni obligatoire ni insuffisante." }
+      ]
+    },
+    {
+      "id": "page-15",
+      "movementId": "bifurcations",
+      "order": 15,
+      "title": "Changer de direction",
+      "blocks": [
+        { "id": "page-15-recall-open-question", "type": "recall", "sourceBlockId": "open_question", "label": "Question encore ouverte", "emptyText": "Votre question ouverte apparaîtra ici." },
+        { "id": "page-15-recall-trajectory-a", "type": "recall", "sourceBlockId": "trajectory_a", "label": "Trajectoire spontanée", "emptyText": "Votre trajectoire spontanée apparaîtra ici." },
+        { "id": "page-15-recall-deep-invariants", "type": "recall", "sourceBlockId": "deep_invariants", "label": "Invariants profonds", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-15-text-01", "type": "text", "text": "Une œuvre peut aussi évoluer en déplaçant ce qu’elle tenait jusque-là pour acquis." },
+        { "id": "prompt-change-direction", "type": "promptCopy", "label": "Explorer d’autres directions avec l’IA", "description": "Copiez la question ouverte, la trajectoire spontanée et les invariants ci-dessus.", "text": "Voici la question de l’œuvre qui reste encore ouverte :\n\n[COLLEZ ICI VOTRE QUESTION ENCORE OUVERTE]\n\nVoici la trajectoire spontanée que j’imagine :\n\n[COLLEZ ICI VOTRE TRAJECTOIRE SPONTANÉE]\n\nVoici les invariants que je souhaite garder en mémoire :\n\n[COLLEZ ICI VOS INVARIANTS PROFONDS]\n\nPropose 4 bifurcations réellement différentes de la trajectoire spontanée.\n\nChaque bifurcation doit agir principalement sur un déplacement distinct, par exemple :\n- changer le point de vue ;\n- déplacer le centre de gravité ;\n- changer d’échelle ;\n- modifier la temporalité ;\n- inverser une relation ;\n- changer de médium ;\n- supprimer un principe jusque-là important ;\n- déplacer ce qui était périphérique vers le centre.\n\nPour chaque bifurcation :\n1. donne un titre court ;\n2. décris précisément ce qui change ;\n3. indique ce qui reste reconnaissable par rapport aux invariants ;\n4. indique ce que cette direction rend nouvellement possible ;\n5. indique ce qu’elle risque de mettre en danger.\n\nImportant :\n- ne propose pas quatre variantes superficielles ;\n- ne cherche pas à améliorer la trajectoire spontanée ;\n- ne recommande aucune bifurcation ;\n- ne change pas tous les paramètres à la fois ;\n- ne confonds pas nouveauté et évolution.\n\nLe but est d’ouvrir de véritables trajectoires alternatives, pas de produire davantage d’options pour le plaisir de varier." },
+        { "id": "trajectory_b_options", "type": "textarea", "label": "Quelles bifurcations méritent réellement d’être gardées en vue ?" }
+      ]
+    },
+    {
+      "id": "page-16",
+      "movementId": "bifurcations",
+      "order": 16,
+      "title": "La bifurcation improbable",
+      "blocks": [
+        { "id": "page-16-recall-open-question", "type": "recall", "sourceBlockId": "open_question", "label": "Question encore ouverte", "emptyText": "Votre question ouverte apparaîtra ici." },
+        { "id": "page-16-recall-trajectory-a", "type": "recall", "sourceBlockId": "trajectory_a", "label": "Trajectoire spontanée", "emptyText": "Votre trajectoire spontanée apparaîtra ici." },
+        { "id": "page-16-recall-trajectory-b-options", "type": "recall", "sourceBlockId": "trajectory_b_options", "label": "Bifurcations gardées en vue", "emptyText": "Vos bifurcations apparaîtront ici." },
+        { "id": "page-16-recall-deep-invariants", "type": "recall", "sourceBlockId": "deep_invariants", "label": "Invariants profonds", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-16-text-01", "type": "text", "text": "Certaines directions semblent presque étrangères à l’œuvre." },
+        { "id": "page-16-text-02", "type": "text", "text": "Elles peuvent pourtant révéler sa frontière." },
+        { "id": "trajectory_limit", "type": "textarea", "label": "Quelle direction vous semble presque étrangère à l’œuvre, mais mérite peut-être d’être éprouvée ?" },
+        { "id": "prompt-improbable-branch", "type": "promptCopy", "label": "Tester une bifurcation improbable avec l’IA", "description": "Prompt facultatif pour éprouver une direction limite sans l’adopter automatiquement.", "text": "Voici la question encore ouverte de l’œuvre :\n\n[COLLEZ ICI VOTRE QUESTION OUVERTE]\n\nVoici la trajectoire spontanée :\n\n[COLLEZ ICI VOTRE TRAJECTOIRE SPONTANÉE]\n\nVoici les bifurcations déjà explorées :\n\n[COLLEZ ICI VOS TRAJECTOIRES ALTERNATIVES]\n\nVoici les invariants que j’ai identifiés :\n\n[COLLEZ ICI VOS INVARIANTS PROFONDS]\n\nJe veux maintenant tester une direction presque étrangère à l’œuvre, sans la transformer arbitrairement en autre chose.\n\nPropose 3 bifurcations limites.\n\nPour chacune :\n1. déplace un principe que les trajectoires précédentes tenaient encore pour acquis ;\n2. indique pourquoi cette direction peut sembler presque étrangère ;\n3. explique ce qu’elle pourrait révéler de l’œuvre justement parce qu’elle la met en tension ;\n4. précise quel invariant permettrait malgré tout de maintenir une continuité ;\n5. indique à quel moment cette direction cesserait probablement d’appartenir à la même œuvre.\n\nImportant :\n- ne cherche pas le choc ou l’originalité pour eux-mêmes ;\n- ne rends pas la proposition absurde volontairement ;\n- ne détruis pas tous les invariants ;\n- ne conclus pas qu’une rupture radicale est plus courageuse ou plus créative.\n\nLe but est d’éprouver la frontière de l’œuvre, pas de la franchir automatiquement." }
+      ]
+    },
+    {
+      "id": "page-17",
+      "movementId": "epreuves",
+      "order": 17,
+      "title": "Ce que chaque trajectoire ouvre",
+      "blocks": [
+        { "id": "page-17-recall-trajectory-a", "type": "recall", "sourceBlockId": "trajectory_a", "label": "Trajectoire spontanée", "emptyText": "Votre trajectoire spontanée apparaîtra ici." },
+        { "id": "page-17-recall-trajectory-b-options", "type": "recall", "sourceBlockId": "trajectory_b_options", "label": "Bifurcations gardées en vue", "emptyText": "Vos bifurcations apparaîtront ici." },
+        { "id": "page-17-recall-trajectory-limit", "type": "recall", "sourceBlockId": "trajectory_limit", "label": "Bifurcation improbable", "emptyText": "Votre bifurcation limite apparaîtra ici." },
+        { "id": "page-17-text-01", "type": "text", "text": "Une direction n’est pas seulement une forme possible." },
+        { "id": "page-17-text-02", "type": "text", "text": "Elle modifie ce que l’œuvre pourra ensuite porter." },
+        { "id": "trajectory_openings", "type": "textarea", "label": "Que devient possible dans chacune de ces directions ?", "placeholder": "Nouvelle relation, nouveau médium, nouvelle temporalité, autre type d’expérience…" },
+        { "id": "page-17-text-03", "type": "text", "text": "Regardez d’abord les ouvertures avant de regarder les coûts." }
+      ]
+    },
+    {
+      "id": "page-18",
+      "movementId": "epreuves",
+      "order": 18,
+      "title": "Ce qu’elle ferme",
+      "blocks": [
+        { "id": "page-18-recall-trajectory-a", "type": "recall", "sourceBlockId": "trajectory_a", "label": "Trajectoire spontanée", "emptyText": "Votre trajectoire spontanée apparaîtra ici." },
+        { "id": "page-18-recall-trajectory-b-options", "type": "recall", "sourceBlockId": "trajectory_b_options", "label": "Bifurcations gardées en vue", "emptyText": "Vos bifurcations apparaîtront ici." },
+        { "id": "page-18-recall-trajectory-limit", "type": "recall", "sourceBlockId": "trajectory_limit", "label": "Bifurcation improbable", "emptyText": "Votre bifurcation limite apparaîtra ici." },
+        { "id": "page-18-recall-trajectory-openings", "type": "recall", "sourceBlockId": "trajectory_openings", "label": "Ouvertures des trajectoires", "emptyText": "Vos ouvertures apparaîtront ici." },
+        { "id": "page-18-text-01", "type": "text", "text": "Toute ouverture crée aussi des renoncements." },
+        { "id": "prompt-trajectory-closures", "type": "promptCopy", "label": "Examiner les fermetures avec l’IA", "description": "Copiez les trajectoires et leurs ouvertures ci-dessus.", "text": "Voici la trajectoire spontanée :\n\n[COLLEZ ICI VOTRE TRAJECTOIRE SPONTANÉE]\n\nVoici les trajectoires alternatives :\n\n[COLLEZ ICI VOS TRAJECTOIRES ALTERNATIVES]\n\nVoici, si je l’ai explorée, la bifurcation limite :\n\n[COLLEZ ICI VOTRE BIFURCATION IMPROBABLE]\n\nVoici ce que chaque trajectoire semble ouvrir :\n\n[COLLEZ ICI LES OUVERTURES QUE VOUS AVEZ REPÉRÉES]\n\nAide-moi maintenant à examiner ce que chaque trajectoire ferme, rend plus difficile ou rend moins accessible.\n\nPour chaque trajectoire :\n1. indique ce qui risque de disparaître ;\n2. indique ce qui devient plus difficile à retrouver ensuite ;\n3. indique quelles relations, tonalités, questions ou possibilités peuvent devenir moins visibles ;\n4. signale ce qui pourrait devenir irréversible si cette direction est poussée loin ;\n5. indique aussi si certaines fermetures peuvent être nécessaires pour permettre une vraie évolution.\n\nImportant :\n- ne classe pas les trajectoires ;\n- ne donne pas de score ;\n- ne recommande pas celle qui ferme le moins ;\n- ne suppose pas que préserver le maximum est toujours préférable ;\n- ne traite pas toute perte comme un défaut.\n\nLe but est de rendre visibles les coûts d’une trajectoire, pas de trouver une option sans perte." },
+        { "id": "trajectory_closures", "type": "textarea", "label": "Quelles fermetures vous paraissent réellement importantes à prendre en compte ?" }
+      ]
+    },
+    {
+      "id": "page-19",
+      "movementId": "epreuves",
+      "order": 19,
+      "title": "Ce qu’elle exige",
+      "blocks": [
+        { "id": "page-19-recall-trajectory-openings", "type": "recall", "sourceBlockId": "trajectory_openings", "label": "Ouvertures des trajectoires", "emptyText": "Vos ouvertures apparaîtront ici." },
+        { "id": "page-19-recall-trajectory-closures", "type": "recall", "sourceBlockId": "trajectory_closures", "label": "Fermetures importantes", "emptyText": "Vos fermetures apparaîtront ici." },
+        { "id": "page-19-text-01", "type": "text", "text": "Une trajectoire peut être séduisante en idée et très exigeante en réalité." },
+        { "id": "trajectory_requirements", "type": "textarea", "label": "Qu’est-ce que chaque direction demanderait réellement à l’œuvre ?", "placeholder": "Temps, nouvelle structure, autre médium, suppression, apprentissage, renoncement…" },
+        { "id": "page-19-text-02", "type": "text", "text": "Une évolution n’existe pas seulement dans l’imaginaire. Elle doit pouvoir être traversée." }
+      ]
+    },
+    {
+      "id": "page-20",
+      "movementId": "epreuves",
+      "order": 20,
+      "title": "Ce qui deviendrait irréversible",
+      "blocks": [
+        { "id": "page-20-recall-trajectory-openings", "type": "recall", "sourceBlockId": "trajectory_openings", "label": "Ouvertures des trajectoires", "emptyText": "Vos ouvertures apparaîtront ici." },
+        { "id": "page-20-recall-trajectory-closures", "type": "recall", "sourceBlockId": "trajectory_closures", "label": "Fermetures importantes", "emptyText": "Vos fermetures apparaîtront ici." },
+        { "id": "page-20-recall-trajectory-requirements", "type": "recall", "sourceBlockId": "trajectory_requirements", "label": "Exigences des trajectoires", "emptyText": "Vos exigences apparaîtront ici." },
+        { "id": "page-20-text-01", "type": "text", "text": "Certaines transformations peuvent être annulées facilement." },
+        { "id": "page-20-text-02", "type": "text", "text": "D’autres changent tellement le champ des possibles qu’un simple retour en arrière n’existe plus vraiment." },
+        { "id": "irreversible_thresholds", "type": "textarea", "label": "Quel changement ferait que vous ne pourriez plus simplement revenir à la version précédente ?", "placeholder": "Changement de médium, suppression structurante, nouvelle logique, déplacement du centre…" },
+        { "id": "page-20-text-03", "type": "text", "text": "Toutes les directions possibles n’ont pas besoin de devenir des versions." },
+        { "id": "page-20-text-04", "type": "text", "text": "Il suffit maintenant de choisir ce qui mérite réellement d’être traversé." }
+      ]
+    },
+    {
+      "id": "page-21",
+      "movementId": "transformation",
+      "order": 21,
+      "title": "Ce qu’il faut emporter",
+      "blocks": [
+        { "id": "page-21-recall-deep-invariants", "type": "recall", "sourceBlockId": "deep_invariants", "label": "Invariants profonds", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-21-recall-trajectory-openings", "type": "recall", "sourceBlockId": "trajectory_openings", "label": "Ouvertures des trajectoires", "emptyText": "Vos ouvertures apparaîtront ici." },
+        { "id": "page-21-recall-trajectory-closures", "type": "recall", "sourceBlockId": "trajectory_closures", "label": "Fermetures importantes", "emptyText": "Vos fermetures apparaîtront ici." },
+        { "id": "page-21-recall-irreversible-thresholds", "type": "recall", "sourceBlockId": "irreversible_thresholds", "label": "Seuils d’irréversibilité", "emptyText": "Vos seuils apparaîtront ici." },
+        { "id": "page-21-text-01", "type": "text", "text": "Une transformation ne commence pas par ce que l’on ajoute." },
+        { "id": "page-21-text-02", "type": "text", "text": "Elle commence par ce que l’on décide de faire traverser." },
+        { "id": "carry_forward", "type": "textarea", "label": "Qu’est-ce qui doit absolument traverser la prochaine transformation ?", "placeholder": "Une question, une tension, une relation, un motif, une manière d’habiter le temps…" },
+        { "id": "page-21-text-03", "type": "text", "text": "Ce que vous inscrivez ici devient un héritage à emporter." }
+      ]
+    },
+    {
+      "id": "page-22",
+      "movementId": "transformation",
+      "order": 22,
+      "title": "Ce qu’il faut laisser",
+      "blocks": [
+        { "id": "page-22-recall-left-behind", "type": "recall", "sourceBlockId": "left_behind", "label": "Ce qui peut rester derrière", "emptyText": "Ce que vous pouvez laisser apparaîtra ici." },
+        { "id": "page-22-recall-irreversible-thresholds", "type": "recall", "sourceBlockId": "irreversible_thresholds", "label": "Seuils d’irréversibilité", "emptyText": "Vos seuils apparaîtront ici." },
+        { "id": "page-22-recall-carry-forward", "type": "recall", "sourceBlockId": "carry_forward", "label": "Ce qu’il faut emporter", "emptyText": "Ce que vous voulez emporter apparaîtra ici." },
+        { "id": "page-22-text-01", "type": "text", "text": "Pour qu’une nouvelle version existe réellement, certaines choses doivent parfois rester derrière." },
+        { "id": "leave_behind", "type": "textarea", "label": "Qu’est-ce qui doit rester dans la version précédente ?", "placeholder": "Une forme, une contrainte, une structure, une habitude, un dispositif…" },
+        { "id": "page-22-text-02", "type": "text", "text": "Renoncer n’annule pas ce qui a existé. Cela libère une possibilité nouvelle." }
+      ]
+    },
+    {
+      "id": "page-23",
+      "movementId": "transformation",
+      "order": 23,
+      "title": "Le geste d’évolution",
+      "blocks": [
+        { "id": "page-23-recall-open-question", "type": "recall", "sourceBlockId": "open_question", "label": "Question encore ouverte", "emptyText": "Votre question ouverte apparaîtra ici." },
+        { "id": "page-23-recall-deep-invariants", "type": "recall", "sourceBlockId": "deep_invariants", "label": "Invariants profonds", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-23-recall-carry-forward", "type": "recall", "sourceBlockId": "carry_forward", "label": "Ce qu’il faut emporter", "emptyText": "Ce que vous voulez emporter apparaîtra ici." },
+        { "id": "page-23-recall-leave-behind", "type": "recall", "sourceBlockId": "leave_behind", "label": "Ce qu’il faut laisser", "emptyText": "Ce que vous voulez laisser apparaîtra ici." },
+        { "id": "page-23-recall-irreversible-thresholds", "type": "recall", "sourceBlockId": "irreversible_thresholds", "label": "Seuils d’irréversibilité", "emptyText": "Vos seuils apparaîtront ici." },
+        { "id": "page-23-text-01", "type": "text", "text": "Vous avez maintenant défini ce qui doit traverser et ce qui doit rester derrière." },
+        { "id": "page-23-text-02", "type": "text", "text": "L’IA peut aider à explorer des gestes précis." },
+        { "id": "prompt-evolution-gesture", "type": "promptCopy", "label": "Formuler un geste d’évolution avec l’IA", "description": "Copiez la question ouverte, les invariants, les héritages à emporter ou laisser et les seuils ci-dessus.", "text": "Voici la question encore ouverte de l’œuvre :\n\n[COLLEZ ICI VOTRE QUESTION OUVERTE]\n\nVoici les invariants profonds que je souhaite garder en mémoire :\n\n[COLLEZ ICI VOS INVARIANTS PROFONDS]\n\nVoici ce que je veux emporter dans la prochaine transformation :\n\n[COLLEZ ICI CE QU’IL FAUT EMPORTER]\n\nVoici ce que je choisis de laisser derrière :\n\n[COLLEZ ICI CE QU’IL FAUT LAISSER]\n\nVoici les seuils d’irréversibilité que j’ai repérés :\n\n[COLLEZ ICI VOS SEUILS D’IRRÉVERSIBILITÉ]\n\nPropose 4 gestes d’évolution possibles.\n\nChaque geste doit :\n- être suffisamment précis pour pouvoir être testé ;\n- transformer réellement quelque chose ;\n- préserver ce que j’ai choisi d’emporter ;\n- respecter ce que j’ai décidé de laisser derrière ;\n- tenir compte des seuils d’irréversibilité ;\n- ne pas reconstruire toute l’œuvre à ma place.\n\nLes gestes peuvent concerner :\n- déplacer ;\n- condenser ;\n- ouvrir ;\n- inverser ;\n- redistribuer ;\n- changer d’échelle ;\n- modifier une temporalité ;\n- faire migrer vers un autre médium ;\n- retirer un élément structurant ;\n- faire passer un élément périphérique au centre.\n\nPour chaque geste :\n1. décris précisément la transformation ;\n2. indique ce qu’elle rend possible ;\n3. indique ce qu’elle oblige à abandonner ;\n4. indique ce qu’elle doit absolument préserver ;\n5. précise si elle semble locale, structurelle ou irréversible.\n\nNe recommande aucune option.\nNe compose pas la prochaine version à ma place.\nNe transforme pas les invariants en contraintes rigides.\n\nLe but est de proposer des gestes de transformation, pas de décider quelle œuvre doit naître ensuite." },
+        { "id": "evolution_gesture", "type": "textarea", "label": "Quel geste d’évolution voulez-vous réellement retenir ?" }
+      ]
+    },
+    {
+      "id": "page-24",
+      "movementId": "transformation",
+      "order": 24,
+      "title": "La prochaine version",
+      "blocks": [
+        { "id": "page-24-recall-carry-forward", "type": "recall", "sourceBlockId": "carry_forward", "label": "Ce qu’il faut emporter", "emptyText": "Ce que vous voulez emporter apparaîtra ici." },
+        { "id": "page-24-recall-leave-behind", "type": "recall", "sourceBlockId": "leave_behind", "label": "Ce qu’il faut laisser", "emptyText": "Ce que vous voulez laisser apparaîtra ici." },
+        { "id": "page-24-recall-evolution-gesture", "type": "recall", "sourceBlockId": "evolution_gesture", "label": "Geste d’évolution", "emptyText": "Votre geste d’évolution apparaîtra ici." },
+        { "id": "page-24-text-01", "type": "text", "text": "Il reste maintenant à imaginer ce que devient l’œuvre si ce geste est réellement traversé." },
+        { "id": "projected_version", "type": "textarea", "label": "À quoi ressemble la prochaine version ?", "placeholder": "Ce qu’elle conserve, ce qu’elle abandonne, ce qu’elle rend nouveau, ce qu’elle ouvre désormais…" },
+        { "id": "page-24-text-02", "type": "text", "text": "Ne cherchez pas à tout spécifier. Décrivez suffisamment pour reconnaître une nouvelle étape." }
+      ]
+    },
+    {
+      "id": "page-25",
+      "movementId": "continuite-vivante",
+      "order": 25,
+      "title": "Est-ce encore la même œuvre ?",
+      "blocks": [
+        { "id": "page-25-recall-deep-invariants", "type": "recall", "sourceBlockId": "deep_invariants", "label": "Invariants profonds", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-25-recall-carry-forward", "type": "recall", "sourceBlockId": "carry_forward", "label": "Ce qu’il faut emporter", "emptyText": "Ce que vous voulez emporter apparaîtra ici." },
+        { "id": "page-25-recall-leave-behind", "type": "recall", "sourceBlockId": "leave_behind", "label": "Ce qu’il faut laisser", "emptyText": "Ce que vous voulez laisser apparaîtra ici." },
+        { "id": "page-25-recall-evolution-gesture", "type": "recall", "sourceBlockId": "evolution_gesture", "label": "Geste d’évolution", "emptyText": "Votre geste d’évolution apparaîtra ici." },
+        { "id": "page-25-recall-projected-version", "type": "recall", "sourceBlockId": "projected_version", "label": "Prochaine version", "emptyText": "Votre prochaine version apparaîtra ici." },
+        { "id": "page-25-text-01", "type": "text", "text": "Une transformation réussie ne se mesure pas seulement à sa nouveauté." },
+        { "id": "page-25-text-02", "type": "text", "text": "Il faut aussi pouvoir reconnaître ce qui continue." },
+        { "id": "continuity_criterion", "type": "textarea", "label": "Qu’est-ce qui vous permet de reconnaître cette nouvelle version comme appartenant encore à la même œuvre ?", "placeholder": "Une question, une tension, une relation, un geste, une manière de faire monde…" },
+        { "id": "page-25-text-03", "type": "text", "text": "La continuité n’est pas l’absence de changement. C’est ce qui demeure reconnaissable à travers lui." }
+      ]
+    },
+    {
+      "id": "page-26",
+      "movementId": "continuite-vivante",
+      "order": 26,
+      "title": "Ce qui peut encore devenir",
+      "blocks": [
+        { "id": "page-26-recall-current-version", "type": "recall", "sourceBlockId": "current_version", "label": "Version présente", "emptyText": "Votre version présente apparaîtra ici." },
+        { "id": "page-26-recall-evolution-changes", "type": "recall", "sourceBlockId": "evolution_changes", "label": "Évolutions réelles", "emptyText": "Vos évolutions réelles apparaîtront ici." },
+        { "id": "page-26-recall-deep-invariants", "type": "recall", "sourceBlockId": "deep_invariants", "label": "Invariants profonds", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-26-recall-open-question", "type": "recall", "sourceBlockId": "open_question", "label": "Question encore ouverte", "emptyText": "Votre question ouverte apparaîtra ici." },
+        { "id": "page-26-recall-carry-forward", "type": "recall", "sourceBlockId": "carry_forward", "label": "Ce qu’il faut emporter", "emptyText": "Ce que vous voulez emporter apparaîtra ici." },
+        { "id": "page-26-recall-leave-behind", "type": "recall", "sourceBlockId": "leave_behind", "label": "Ce qu’il faut laisser", "emptyText": "Ce que vous voulez laisser apparaîtra ici." },
+        { "id": "page-26-recall-projected-version", "type": "recall", "sourceBlockId": "projected_version", "label": "Prochaine version", "emptyText": "Votre prochaine version apparaîtra ici." },
+        { "id": "page-26-text-01", "type": "text", "text": "Une œuvre vivante ne se termine pas parce qu’une nouvelle version a trouvé sa forme." },
+        { "id": "page-26-text-02", "type": "text", "text": "Elle conserve un horizon." },
+        { "id": "page-26-text-03", "type": "text", "text": "Complétez ces trois phrases." },
+        { "id": "same_work", "type": "textarea", "label": "Cette œuvre demeure la même parce que…" },
+        { "id": "became_other", "type": "textarea", "label": "Elle est devenue autre parce que…" },
+        { "id": "next_opening", "type": "textarea", "label": "La prochaine possibilité que je veux laisser ouverte est…" },
+        { "id": "evolution-ending", "type": "reveal", "label": "Continuité vivante", "content": "Une évolution juste ne ferme pas l’œuvre sur sa nouvelle version.\n\nElle lui ouvre un nouveau possible." },
+        { "id": "page-26-text-04", "type": "text", "text": "Votre évolution" },
+        { "id": "page-26-text-05", "type": "text", "text": "Version présente" },
+        { "id": "page-26-summary-current-version", "type": "recall", "sourceBlockId": "current_version", "label": "Version présente", "emptyText": "Votre version présente apparaîtra ici." },
+        { "id": "page-26-text-07", "type": "text", "text": "Évolutions réelles" },
+        { "id": "page-26-summary-evolution-changes", "type": "recall", "sourceBlockId": "evolution_changes", "label": "Évolutions réelles", "emptyText": "Vos évolutions réelles apparaîtront ici." },
+        { "id": "page-26-text-08", "type": "text", "text": "Invariants profonds" },
+        { "id": "page-26-summary-deep-invariants", "type": "recall", "sourceBlockId": "deep_invariants", "label": "Invariants profonds", "emptyText": "Vos invariants apparaîtront ici." },
+        { "id": "page-26-text-09", "type": "text", "text": "Question encore ouverte" },
+        { "id": "page-26-summary-open-question", "type": "recall", "sourceBlockId": "open_question", "label": "Question encore ouverte", "emptyText": "Votre question ouverte apparaîtra ici." },
+        { "id": "page-26-text-10", "type": "text", "text": "Ce qu’il faut emporter" },
+        { "id": "page-26-summary-carry-forward", "type": "recall", "sourceBlockId": "carry_forward", "label": "Ce qu’il faut emporter", "emptyText": "Ce que vous voulez emporter apparaîtra ici." },
+        { "id": "page-26-text-11", "type": "text", "text": "Ce qu’il faut laisser" },
+        { "id": "page-26-summary-leave-behind", "type": "recall", "sourceBlockId": "leave_behind", "label": "Ce qu’il faut laisser", "emptyText": "Ce que vous voulez laisser apparaîtra ici." },
+        { "id": "page-26-text-12", "type": "text", "text": "Prochaine version" },
+        { "id": "page-26-summary-projected-version", "type": "recall", "sourceBlockId": "projected_version", "label": "Prochaine version", "emptyText": "Votre prochaine version apparaîtra ici." },
+        { "id": "page-26-text-14", "type": "text", "text": "Vous n’avez pas cherché à produire une nouvelle version pour remplacer la précédente." },
+        { "id": "page-26-text-15", "type": "text", "text": "Vous avez cherché ce que cette transformation change dans ce que l’œuvre peut encore devenir." },
+        { "id": "page-26-text-16", "type": "text", "text": "L’œuvre peut maintenant poursuivre son histoire." }
+      ]
+    }
+  ]
+}
