@@ -1884,9 +1884,11 @@ button:disabled {
   max-width: 100%;
   color: var(--ink);
   font-family: var(--title-font);
-  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-size: clamp(3rem, 6.2vw, 5.8rem);
   line-height: 0.9;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
   text-wrap: balance;
 }
 
