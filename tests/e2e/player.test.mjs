@@ -1439,6 +1439,10 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
 
     await loadUrl(page, `${entryUrl}ateliers/evolution-augmentee/`);
     await waitForExpression(page, "document.querySelector('.workshop-entry') !== null");
+    await waitForExpression(
+      page,
+      "document.querySelector('.workshop-entry__cover img')?.complete === true && document.querySelector('.workshop-entry__cover img')?.naturalWidth > 0 && document.querySelector('.workshop-entry__cover img')?.naturalHeight > 0",
+    );
     const evolutionEntry = await readWorkshopEntryState(page);
     assert.equal(evolutionEntry.present, true);
     assert.equal(evolutionEntry.path.endsWith("/ateliers/evolution-augmentee/"), true);
