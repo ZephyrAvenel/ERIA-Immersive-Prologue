@@ -39,11 +39,21 @@ The site root presents two editorial doors: **VIVRE / Packs narratifs** and
 **CRÉER / Ateliers augmentés**. Narrative Packs remain available through the
 immersive works library at `/bibliotheque/`, and public works keep their stable
 routes under `/oeuvres/<slug>/`. The Augmented Workshops orientation is exposed
-at `/ateliers/` as planned editorial entries only; no pedagogical runtime is
-implemented yet. The build derives pack routes and social metadata from the pack
-registry and each pack manifest. The `?pack=<manifest>` query remains available
-for local preview and diagnostics. Adding a conforming work never requires
-editing an engine package.
+at `/ateliers/`, with five published, self-contained workshop packs and one
+planned entry. Each published workshop has a dedicated `/ateliers/<slug>/` route,
+seven movements, 26 steps, optional manual `promptCopy` interactions, and local
+browser progress. The build derives pack routes and social metadata from the
+registries and manifests. The `?pack=<manifest>` query remains available for
+local preview and diagnostics. Adding a conforming work never requires editing
+an engine package.
+
+Published workshops keep participant responses and progress in browser
+`localStorage`, separately for each workshop. This local continuity is not a
+durable backup or a synchronization service: it does not move between browsers
+or devices and may be lost when site data is cleared, in private browsing, or
+when storage is unavailable. AI prompts are copied manually to an external
+assistant; the site makes no provider call. These optional interactions never
+block workshop navigation or completion.
 
 ## Narrative Pack assets
 
@@ -99,7 +109,7 @@ packages/validators/ Runtime Narrative Pack validation
 examples/demo-pack/ First artistic Narrative Pack and normalized assets
 packs/             Published pack registry, PACK-002, and PACK-003
 apps/player/src/editorial-registry.json
-                   Editorial families and planned Augmented Workshops
+                   Editorial families and published/planned Augmented Workshops
 schemas/           Versioned JSON Schemas
 docs/              Architecture and Narrative Pack documentation
 tests/             Unit, integration, browser, accessibility, and fixture tests

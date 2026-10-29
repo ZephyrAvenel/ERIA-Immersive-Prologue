@@ -138,6 +138,8 @@ function createWorkshopState(overrides = {}) {
       promptCopyAction: "Copier le prompt",
       promptCopySuccess: "Prompt copié",
       promptCopyFailure: "Copie impossible",
+      promptOptional: "Cette invitation est facultative.",
+      promptPlaceholderHelp: "Remplacez les indications entre crochets.",
       recallEmptyText: "Aucune réponse.",
     },
     ...overrides,
@@ -329,6 +331,8 @@ test("WorkshopRenderer copies prompt text exactly and exposes accessible feedbac
     const status = findElement(target, ".workshop-prompt-copy__status");
     assert.equal(button.textContent, "Copier le prompt");
     assert.equal(findElement(prompt, "code").textContent, "<script>alert('x')</script>\nNe choisis pas à ma place.");
+    assert.equal(findElements(target, ".workshop-prompt-copy__help").length, 1);
+    assert.equal(findElement(target, ".workshop-prompt-copy__help").textContent, "Cette invitation est facultative.");
     assert.equal(findElements(target, "script").length, 0);
     assert.equal(status.getAttribute("aria-live"), "polite");
 

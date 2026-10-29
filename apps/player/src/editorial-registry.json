@@ -41,12 +41,12 @@
         "fr": {
           "orientation": "CRÉER",
           "title": "Ateliers augmentés",
-          "description": "Des formations créatives pour apprendre à créer avec l’IA."
+          "description": "Des parcours créatifs pour explorer, avec ou sans IA, de nouvelles possibilités."
         },
         "en": {
           "orientation": "CREATE",
           "title": "Augmented workshops",
-          "description": "Creative learning paths for learning to create with AI."
+          "description": "Creative journeys to explore new possibilities, with or without AI."
         }
       }
     }

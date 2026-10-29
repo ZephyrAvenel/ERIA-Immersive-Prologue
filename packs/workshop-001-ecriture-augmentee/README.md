@@ -1,12 +1,12 @@
 # Écriture augmentée
 
-Status: planned
+Statut : publié
 
 Sous-titre : **Écrire avec l'IA sans lui abandonner sa voix**
 
 Description courte : **Un atelier d’écriture en 7 mouvements pour apprendre à dialoguer avec l’IA sans lui abandonner le geste d’auteur.**
 
-Ce dossier contient le squelette éditorial du premier Atelier augmenté de l'INE. Il utilise le format déclaratif `ine-workshop-pack` V1 et reste volontairement non publié dans l'interface publique à ce stade.
+Ce dossier contient le premier Atelier augmenté publié de l'INE. Il utilise le format déclaratif `ine-workshop-pack` V1 et est accessible depuis l'interface publique.
 
 ## Finalité
 
@@ -80,9 +80,8 @@ La couverture artistique validée est présente dans le dossier du Workshop, mai
 
 ## Publication
 
-Ce Workshop n'est pas encore rendu public :
+Ce Workshop est publié :
 
-- l'entrée `ecriture-augmentee` reste en statut `planned` dans le registre éditorial ;
-- aucune route `/ateliers/ecriture-augmentee/` n'est créée ;
-- aucune carte cliquable n'est ajoutée ;
-- `/ateliers/` reste inchangé.
+- l'entrée `ecriture-augmentee` est en statut `published` dans le registre éditorial ;
+- la route `/ateliers/ecriture-augmentee/` est créée au build ;
+- une carte cliquable est visible dans `/ateliers/`.

@@ -437,6 +437,9 @@ async function readWorkshopEntryState(client) {
         steps: document.querySelector('.workshop-entry__steps')?.textContent,
         intro: Array.from(document.querySelectorAll('.workshop-entry__intro p')).map((paragraph) => paragraph.textContent),
         privacy: document.querySelector('.workshop-entry__privacy')?.textContent,
+        guideSummary: document.querySelector('.workshop-participation-guide summary')?.textContent ?? null,
+        guideOpen: document.querySelector('.workshop-participation-guide')?.open ?? false,
+        guideText: document.querySelector('.workshop-participation-guide__content')?.textContent ?? null,
         primary: primary?.textContent ?? null,
         secondary: secondary?.textContent ?? null,
         resume: document.querySelector('.workshop-entry__resume')?.textContent ?? null,
@@ -748,7 +751,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               family: "augmented-workshops",
               orientation: "CR\u00c9ER",
               title: "Ateliers augment\u00e9s",
-              description: "Des formations cr\u00e9atives pour apprendre \u00e0 cr\u00e9er avec l\u2019IA.",
+              description: "Des parcours cr\u00e9atifs pour explorer, avec ou sans IA, de nouvelles possibilit\u00e9s.",
               href: workshopsUrl,
               linkLabel: "Entrer \u2014 CR\u00c9ER, Ateliers augment\u00e9s",
             },
@@ -774,7 +777,7 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
               family: "augmented-workshops",
               orientation: "CREATE",
               title: "Augmented workshops",
-              description: "Creative learning paths for learning to create with AI.",
+              description: "Creative journeys to explore new possibilities, with or without AI.",
               href: workshopsUrl,
               linkLabel: "Enter \u2014 CREATE, Augmented workshops",
             },
@@ -1293,6 +1296,9 @@ test("Player loads, localizes, navigates, keeps focus, and remains responsive in
     assert.equal(emptyEntry.coverNaturalHeight, 1280);
     assert.equal(emptyEntry.coverObjectFit, "contain");
     assert.equal(emptyEntry.primary, "Commencer l\u2019atelier");
+    assert.equal(emptyEntry.guideSummary, "Comment participer ?");
+    assert.equal(emptyEntry.guideOpen, false);
+    assert.equal((emptyEntry.guideText?.length ?? 0) > 0, true);
     assert.equal(emptyEntry.secondary, null);
     assert.equal(emptyEntry.resume, null);
     assert.equal(emptyEntry.backHref, workshopsUrl);

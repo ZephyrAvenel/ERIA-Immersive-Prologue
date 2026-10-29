@@ -6,7 +6,7 @@ Cinquième atelier augmenté de l’INE.
 - Slug : `evolution-augmentee`
 - Route : `/ateliers/evolution-augmentee/`
 - Format : `ine-workshop-pack`
-- Statut : prêt pour publication
+- Statut : publié
 - Structure : 7 mouvements, 26 étapes, 6 interventions IA
 - Couverture : finale, `assets/images/00-couverture-evolution-augmentee.png`
 - Contenu définitif : intégré dans `pack.json`

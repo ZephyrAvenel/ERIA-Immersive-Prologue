@@ -62,24 +62,27 @@ through `apps/player/src/editorial.ts`. It is intentionally separate from
 `packs/index.json`:
 
 - the **editorial registry** describes public orientations, families, and
-  planned non-runtime entries such as Augmented Workshops;
+  published or planned Augmented Workshops;
 - the **pack registry** keeps the existing deployment contract for published
   packs, manifests, slugs, and static `/oeuvres/<slug>/` routes.
 
 `VIVRE / Packs narratifs` points to `/bibliotheque/`, where existing packs are
 loaded from `packs/index.json` exactly as before. `CRÉER / Ateliers augmentés`
-points to `/ateliers/`, which currently presents four planned creative training
-entries:
+points to `/ateliers/`, which currently presents five published creative
+workshops and one planned entry:
 
 - ÉCRIRE — Écriture augmentée;
 - VOIR — Art augmenté;
 - RELIER — Cartographie augmentée;
-- COMPOSER — Créer un Récit Vivant avec l’IA.
+- CLARIFIER — Clarification augmentée;
+- ÉVOLUER — Évolution augmentée;
+- COMPOSER — Créer un Récit Vivant avec l’IA (planned).
 
-These workshop entries are editorial metadata only. They are not
-`ine-narrative-pack`, `ine-polarity-pack`, or `ine-living-card-pack` documents,
-and there is no pedagogical runtime yet. Future workshop implementation should
-add an explicit format and renderer only when real training behavior is defined.
+Published workshop entries point to `ine-workshop-pack` documents, loaded by the
+Workshop runtime and rendered with the same Player shell. Their progress and
+participant responses are stored locally per workshop in the browser; no AI
+provider is called by the site. The planned COMPOSER entry remains editorial
+metadata only until it has its own published workshop pack.
 
 ## UX foundation
 

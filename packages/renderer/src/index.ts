@@ -265,6 +265,8 @@ export interface WorkshopRendererMessages {
   readonly promptCopyAction: string;
   readonly promptCopySuccess: string;
   readonly promptCopyFailure: string;
+  readonly promptOptional: string;
+  readonly promptPlaceholderHelp: string;
   readonly recallEmptyText: string;
 }
 
@@ -452,6 +454,14 @@ function createWorkshopBlock(
       section.append(title);
     }
 
+    const optionalHelp = document.createElement("p");
+    optionalHelp.className = "workshop-prompt-copy__help";
+    optionalHelp.textContent = messages.promptOptional;
+
+    const placeholderHelp = document.createElement("p");
+    placeholderHelp.className = "workshop-prompt-copy__help";
+    placeholderHelp.textContent = messages.promptPlaceholderHelp;
+
     const prompt = document.createElement("pre");
     prompt.id = promptId;
     prompt.className = "workshop-prompt-copy__text";
@@ -476,6 +486,8 @@ function createWorkshopBlock(
       })();
     });
 
+    section.append(optionalHelp);
+    if (/\[[^\]]+\]/.test(block.text)) section.append(placeholderHelp);
     section.append(prompt, button, status);
     return section;
   }

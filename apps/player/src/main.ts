@@ -148,6 +148,40 @@ function resolveApplicationRoute(route: string): string {
   return new URL(route.replace(/^\//, ""), applicationBaseUrl).href;
 }
 
+function createWorkshopParticipationGuide(messages: LocaleMessages): HTMLElement {
+  const guide = document.createElement("details");
+  guide.className = "workshop-participation-guide";
+  const summary = document.createElement("summary");
+  summary.textContent = messages.workshopParticipationSummary;
+  const content = document.createElement("div");
+  content.className = "workshop-participation-guide__content";
+  const title = document.createElement("h2");
+  title.textContent = messages.workshopParticipationTitle;
+  content.append(title);
+
+  const sections: readonly [string, string][] = [
+    [messages.workshopParticipationPaceTitle, messages.workshopParticipationPaceText],
+    [messages.workshopParticipationChoiceTitle, messages.workshopParticipationChoiceText],
+    [messages.workshopParticipationHowTitle, messages.workshopParticipationHowText],
+    [messages.workshopParticipationKeepTitle, messages.workshopParticipationKeepText],
+    [messages.workshopParticipationChangeTitle, messages.workshopParticipationChangeText],
+    [messages.workshopParticipationResumeTitle, messages.workshopParticipationResumeText],
+    [messages.workshopParticipationFreedomTitle, messages.workshopParticipationFreedomText],
+  ];
+  for (const [heading, text] of sections) {
+    const section = document.createElement("section");
+    const sectionTitle = document.createElement("h3");
+    sectionTitle.textContent = heading;
+    const paragraph = document.createElement("p");
+    paragraph.textContent = text;
+    section.append(sectionTitle, paragraph);
+    content.append(section);
+  }
+
+  guide.append(summary, content);
+  return guide;
+}
+
 function resolveReviewCoverImage(coverImage: string): string {
   return /^https:\/\//.test(coverImage) ? coverImage : resolveApplicationRoute(coverImage);
 }
@@ -1172,6 +1206,8 @@ async function renderWorkshopEntryGate(
   privacy.className = "workshop-entry__privacy";
   privacy.textContent = messages.workshopEntryPrivacy;
 
+  const participationGuide = createWorkshopParticipationGuide(messages);
+
   const actions = document.createElement("div");
   actions.className = "workshop-entry__actions";
 
@@ -1241,7 +1277,7 @@ async function renderWorkshopEntryGate(
   back.href = workshopsUrl.href;
   back.textContent = messages.workshopEntryBack;
 
-  content.append(eyebrow, title, subtitle, description, steps, intro, privacy, actions, back);
+  content.append(eyebrow, title, subtitle, description, steps, intro, privacy, participationGuide, actions, back);
   section.append(media, content);
   mount.removeAttribute("aria-busy");
   mount.replaceChildren(section);
@@ -1371,6 +1407,8 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
         promptCopyAction: messages.workshopPromptCopyAction,
         promptCopySuccess: messages.workshopPromptCopySuccess,
         promptCopyFailure: messages.workshopPromptCopyFailure,
+        promptOptional: messages.workshopPromptOptional,
+        promptPlaceholderHelp: messages.workshopPromptPlaceholderHelp,
         recallEmptyText: messages.workshopRecallEmptyText,
       },
     });
