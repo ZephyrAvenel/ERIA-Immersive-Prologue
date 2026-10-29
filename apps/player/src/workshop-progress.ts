@@ -143,6 +143,35 @@ export class WorkshopProgressStore {
     }
   }
 
+  /**
+   * Writes a complete v1 progress record and reads it back before reporting
+   * success. The existing non-blocking `save()` remains available for callers
+   * that intentionally do not need a visible storage result.
+   */
+  saveConfirmed(progress: WorkshopProgress): boolean {
+    if (!this.#storage) return false;
+
+    const key = workshopProgressKey(progress.workshopId);
+    const serialized = JSON.stringify(progress);
+    let previous: string | null = null;
+    try {
+      previous = this.#storage.getItem(key);
+      this.#storage.setItem(key, serialized);
+      if (this.#storage.getItem(key) === serialized) return true;
+    } catch {
+      // A best-effort restoration is attempted below. It must not turn a
+      // failed import into a destructive operation.
+    }
+
+    try {
+      if (previous === null) this.#storage.removeItem(key);
+      else this.#storage.setItem(key, previous);
+    } catch {
+      // The caller receives failure in all cases and must not claim success.
+    }
+    return false;
+  }
+
   clear(workshopId: string): void {
     if (!this.#storage) return;
 

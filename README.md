@@ -49,9 +49,14 @@ an engine package.
 
 Published workshops keep participant responses and progress in browser
 `localStorage`, separately for each workshop. This local continuity is not a
-durable backup or a synchronization service: it does not move between browsers
-or devices and may be lost when site data is cleared, in private browsing, or
-when storage is unavailable. AI prompts are copied manually to an external
+synchronization service: it does not move between browsers or devices and may
+be lost when site data is cleared, in private browsing, or when storage is
+unavailable. Each workshop also offers a voluntary local export: Markdown is
+for reading and archiving, while the versioned JSON backup can be checked and
+restored only for the same compatible workshop version. Import never replaces
+an existing local progression without explicit confirmation. Downloaded files
+may contain personal writing and can be synchronized or shared by the user’s
+device or chosen services. AI prompts are copied manually to an external
 assistant; the site makes no provider call. These optional interactions never
 block workshop navigation or completion.
 

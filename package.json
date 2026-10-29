@@ -18,7 +18,7 @@
     "test:prepare": "tsc -p tsconfig.test.json",
     "test:unit": "npm run test:prepare && node --test tests/run-unit.mjs",
     "test:integration": "npm run test:prepare && node --test tests/run-integration.mjs",
-    "test:e2e": "node --test tests/e2e/player.test.mjs",
+    "test:e2e": "node --test tests/e2e/*.test.mjs",
     "test:coverage": "npm run test:prepare && node --test --experimental-test-coverage --test-coverage-include=.test-build/packages/core/src/index.js --test-coverage-include=.test-build/packages/renderer/src/index.js --test-coverage-include=.test-build/packages/validators/src/index.js --test-coverage-lines=80 --test-coverage-functions=80 --test-coverage-branches=70 tests/run-unit-integration.mjs",
     "test:ci": "npm run typecheck && npm run test:unit && npm run test:integration && npm run test:coverage && npm run build && npm run test:e2e"
   },

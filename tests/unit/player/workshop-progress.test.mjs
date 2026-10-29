@@ -39,6 +39,15 @@ class ThrowingStorage {
   }
 }
 
+class ReadbackFailingStorage extends MemoryStorage {
+  reads = 0;
+
+  getItem(key) {
+    this.reads += 1;
+    return this.reads === 2 ? "different" : super.getItem(key);
+  }
+}
+
 const pages = [
   {
     id: "page-01",
@@ -184,4 +193,19 @@ test("WorkshopProgressStore remains non-blocking when storage is unavailable", (
   assert.equal(store.load("workshop-demo", "1.0", pages), null);
   assert.doesNotThrow(() => store.save(createProgress()));
   assert.doesNotThrow(() => store.clear("workshop-demo"));
+});
+
+test("WorkshopProgressStore confirms an import write by reading it back", () => {
+  const storage = new MemoryStorage();
+  const store = new WorkshopProgressStore(storage);
+  const progress = createProgress();
+  assert.equal(store.saveConfirmed(progress), true);
+  assert.deepEqual(store.load("workshop-demo", "1.0", pages), progress);
+
+  const unavailable = new WorkshopProgressStore(new ThrowingStorage());
+  assert.equal(unavailable.saveConfirmed(progress), false);
+
+  const readbackFailure = new WorkshopProgressStore(new ReadbackFailingStorage());
+  assert.equal(readbackFailure.saveConfirmed(progress), false);
+  assert.equal(readbackFailure.load("workshop-demo", "1.0", pages), null);
 });

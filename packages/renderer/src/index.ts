@@ -282,6 +282,8 @@ export interface RenderWorkshopState {
   readonly onResponseChange?: (blockId: string, value: WorkshopResponseValue) => void;
   readonly onCopyText?: (text: string) => Promise<boolean>;
   readonly controls: HTMLElement;
+  readonly secondaryControl?: HTMLElement;
+  readonly saveStatus?: HTMLElement;
   readonly exitControl?: HTMLElement;
   readonly resetControl?: HTMLElement;
   readonly messages: WorkshopRendererMessages;
@@ -565,6 +567,7 @@ export function renderWorkshop(target: HTMLElement, state: RenderWorkshopState):
   }
 
   article.append(movement, title, body);
+  if (state.saveStatus) article.append(state.saveStatus);
 
   const progress = document.createElement("div");
   progress.className = "workshop-progress";
@@ -577,6 +580,7 @@ export function renderWorkshop(target: HTMLElement, state: RenderWorkshopState):
   const footer = document.createElement("footer");
   footer.className = "workshop-player__footer";
   footer.append(progress, state.controls);
+  if (state.secondaryControl) footer.append(state.secondaryControl);
   if (state.resetControl) footer.append(state.resetControl);
   if (state.exitControl) footer.append(state.exitControl);
 

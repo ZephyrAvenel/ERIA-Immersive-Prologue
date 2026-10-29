@@ -605,6 +605,13 @@ async function clickLocalizedNext(client, expectedProgress) {
 }
 
 async function clickNavigationNext(client, expectedProgress) {
+  await waitForExpression(
+    client,
+    `(() => {
+      const next = document.querySelector('[data-navigation="next"]');
+      return next instanceof HTMLButtonElement && next.disabled === false;
+    })()`,
+  );
   await evaluate(client, "document.querySelector('[data-navigation=\"next\"]')?.click()");
   if (expectedProgress) {
     await waitForPlayerReady(client, expectedProgress);

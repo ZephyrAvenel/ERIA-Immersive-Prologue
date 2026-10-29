@@ -40,7 +40,16 @@ import {
 import {
   createBrowserWorkshopProgressStore,
   createWorkshopProgress,
+  type WorkshopProgress,
+  type WorkshopProgressStore,
 } from "./workshop-progress";
+import {
+  WORKSHOP_IMPORT_MAX_BYTES,
+  createWorkshopMarkdown,
+  inspectWorkshopImport,
+  serializeWorkshopExport,
+  workshopExportFilename,
+} from "./workshop-portability";
 import {
   findRegistryEntryBySlug,
   loadCatalog,
@@ -180,6 +189,177 @@ function createWorkshopParticipationGuide(messages: LocaleMessages): HTMLElement
 
   guide.append(summary, content);
   return guide;
+}
+
+function downloadWorkshopFile(content: string, filename: string, type: string): void {
+  const url = URL.createObjectURL(new Blob([content], { type }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.hidden = true;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  globalThis.setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+function downloadWorkshopMarkdown(pack: Parameters<typeof createWorkshopMarkdown>[0], progress: WorkshopProgress): void {
+  const exportedAt = new Date().toISOString();
+  downloadWorkshopFile(
+    createWorkshopMarkdown(pack, progress, exportedAt),
+    workshopExportFilename(pack, "md", exportedAt),
+    "text/markdown;charset=utf-8",
+  );
+}
+
+function downloadWorkshopJson(pack: Parameters<typeof serializeWorkshopExport>[0], progress: WorkshopProgress): void {
+  const exportedAt = new Date().toISOString();
+  downloadWorkshopFile(
+    serializeWorkshopExport(pack, progress, () => exportedAt),
+    workshopExportFilename(pack, "json", exportedAt),
+    "application/json;charset=utf-8",
+  );
+}
+
+interface WorkshopPortabilityPanelOptions {
+  readonly pack: Parameters<typeof createWorkshopMarkdown>[0];
+  readonly messages: LocaleMessages;
+  readonly progressStore: WorkshopProgressStore;
+  readonly getProgress: () => WorkshopProgress;
+  readonly onImported?: () => void;
+  readonly exportOnly?: boolean;
+}
+
+function createWorkshopPortabilityPanel(options: WorkshopPortabilityPanelOptions): HTMLElement {
+  const panel = document.createElement("details");
+  panel.className = "workshop-portability";
+  const summary = document.createElement("summary");
+  summary.textContent = options.exportOnly ? options.messages.workshopPortabilityExportSummary : options.messages.workshopPortabilitySummary;
+  const content = document.createElement("div");
+  content.className = "workshop-portability__content";
+
+  const title = document.createElement("h2");
+  title.textContent = options.exportOnly ? options.messages.workshopPortabilityExportTitle : options.messages.workshopPortabilityTitle;
+  const intro = document.createElement("p");
+  intro.textContent = options.messages.workshopPortabilityIntro;
+  const readable = document.createElement("p");
+  readable.textContent = options.messages.workshopPortabilityReadable;
+  const restorable = document.createElement("p");
+  restorable.textContent = options.messages.workshopPortabilityRestorable;
+  const privacy = document.createElement("p");
+  privacy.className = "workshop-portability__privacy";
+  privacy.textContent = options.messages.workshopPortabilityPrivacy;
+
+  const actions = document.createElement("div");
+  actions.className = "workshop-portability__actions";
+  const markdown = createButton(options.messages.workshopPortabilityMarkdownAction, () => {
+    downloadWorkshopMarkdown(options.pack, options.getProgress());
+  });
+  const json = createButton(options.messages.workshopPortabilityJsonAction, () => {
+    downloadWorkshopJson(options.pack, options.getProgress());
+  });
+  markdown.className = "workshop-portability__button";
+  json.className = "workshop-portability__button";
+  actions.append(markdown, json);
+  content.append(title, intro, readable, restorable, actions, privacy);
+
+  if (!options.exportOnly) {
+    const importAction = createButton(options.messages.workshopPortabilityImportAction, () => input.click());
+    importAction.className = "workshop-portability__button";
+    actions.append(importAction);
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json,application/json";
+    input.hidden = true;
+    const status = document.createElement("p");
+    status.className = "workshop-portability__status";
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
+    const preview = document.createElement("section");
+    preview.className = "workshop-portability__preview";
+    preview.hidden = true;
+
+    input.addEventListener("change", () => {
+      const file = input.files?.[0];
+      input.value = "";
+      preview.replaceChildren();
+      preview.hidden = true;
+      if (!file) return;
+      if (file.size > WORKSHOP_IMPORT_MAX_BYTES) {
+        status.textContent = options.messages.workshopPortabilityImportTooLarge;
+        return;
+      }
+      void file.text().then((text) => {
+        const result = inspectWorkshopImport(text, options.pack);
+        if (!result.valid) {
+          status.textContent = result.reason === "workshop"
+            ? options.messages.workshopPortabilityImportWrongWorkshop
+            : result.reason === "version"
+              ? options.messages.workshopPortabilityImportVersion
+              : options.messages.workshopPortabilityImportInvalid;
+          return;
+        }
+        const page = options.pack.pages[result.preview.pageIndex];
+        status.textContent = "";
+        preview.hidden = false;
+        const previewTitle = document.createElement("h3");
+        previewTitle.textContent = options.messages.workshopPortabilityPreviewTitle;
+        const previewText = document.createElement("p");
+        previewText.textContent = interpolate(options.messages.workshopPortabilityPreviewText, {
+          title: options.pack.title,
+          date: result.preview.exportedAt,
+          step: result.preview.pageIndex + 1,
+          total: options.pack.pages.length,
+          state: result.preview.progress.completed
+            ? options.messages.workshopPortabilityCompleted
+            : options.messages.workshopPortabilityInProgress,
+          responses: result.preview.responseCount,
+          page: page?.title ?? "",
+        });
+        const previewActions = document.createElement("div");
+        previewActions.className = "workshop-portability__actions";
+        const existing = options.progressStore.load(options.pack.id, options.pack.version, options.pack.pages);
+        if (existing) {
+          const warning = document.createElement("p");
+          warning.className = "workshop-portability__warning";
+          warning.textContent = options.messages.workshopPortabilityExistingWarning;
+          const downloadCurrent = createButton(options.messages.workshopPortabilityDownloadCurrent, () => {
+            downloadWorkshopJson(options.pack, existing);
+          });
+          downloadCurrent.className = "workshop-portability__button";
+          preview.append(warning);
+          previewActions.append(downloadCurrent);
+        }
+        const cancel = createButton(options.messages.workshopPortabilityCancel, () => {
+          preview.replaceChildren();
+          preview.hidden = true;
+          status.textContent = options.messages.workshopPortabilityImportCancelled;
+          importAction.focus();
+        });
+        const replace = createButton(options.messages.workshopPortabilityReplace, () => {
+          if (!options.progressStore.saveConfirmed(result.preview.progress)) {
+            status.textContent = options.messages.workshopPortabilityImportFailure;
+            return;
+          }
+          status.textContent = options.messages.workshopPortabilityImportSuccess;
+          preview.replaceChildren();
+          preview.hidden = true;
+          options.onImported?.();
+        });
+        cancel.className = "workshop-portability__button";
+        replace.className = "workshop-portability__button workshop-portability__button--danger";
+        previewActions.append(cancel, replace);
+        preview.append(previewTitle, previewText, previewActions);
+      }).catch(() => {
+        status.textContent = options.messages.workshopPortabilityImportInvalid;
+      });
+    });
+    content.append(input, status, preview);
+  }
+
+  panel.append(summary, content);
+  return panel;
 }
 
 function resolveReviewCoverImage(coverImage: string): string {
@@ -1135,6 +1315,7 @@ async function startLivingCardPack(packUrl: URL): Promise<void> {
 async function renderWorkshopEntryGate(
   workshop: PublishedAugmentedWorkshop,
   packUrl: URL,
+  portabilityNotice?: string,
 ): Promise<void> {
   const pack = await loadWorkshopPack(packUrl, validateWorkshopPack);
   const messages = resolveLocale(pack.language);
@@ -1207,6 +1388,27 @@ async function renderWorkshopEntryGate(
   privacy.textContent = messages.workshopEntryPrivacy;
 
   const participationGuide = createWorkshopParticipationGuide(messages);
+  const portability = createWorkshopPortabilityPanel({
+    pack,
+    messages,
+    progressStore,
+    getProgress: () => savedProgress ?? createWorkshopProgress({
+      workshopId: pack.id,
+      workshopVersion: pack.version,
+      pageId: pack.startPage,
+      completed: false,
+      responses: new Map(),
+    }),
+    onImported: () => {
+      void renderWorkshopEntryGate(workshop, packUrl, messages.workshopPortabilityImportSuccess);
+    },
+  });
+  const notice = portabilityNotice ? document.createElement("p") : undefined;
+  if (notice) {
+    notice.className = "workshop-portability__status";
+    notice.setAttribute("role", "status");
+    notice.textContent = portabilityNotice ?? "";
+  }
 
   const actions = document.createElement("div");
   actions.className = "workshop-entry__actions";
@@ -1277,7 +1479,9 @@ async function renderWorkshopEntryGate(
   back.href = workshopsUrl.href;
   back.textContent = messages.workshopEntryBack;
 
-  content.append(eyebrow, title, subtitle, description, steps, intro, privacy, participationGuide, actions, back);
+  content.append(eyebrow, title, subtitle, description, steps, intro, privacy, participationGuide, portability);
+  if (notice) content.append(notice);
+  content.append(actions, back);
   section.append(media, content);
   mount.removeAttribute("aria-busy");
   mount.replaceChildren(section);
@@ -1297,6 +1501,7 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
   }
   let navigationInProgress = false;
   let clearConfirmationPending = false;
+  let savingFailed = false;
   const responses = new Map<string, WorkshopResponseValue>();
   const progressStore = createBrowserWorkshopProgressStore();
   const savedProgress = progressStore.load(pack.id, pack.version, pack.pages);
@@ -1323,16 +1528,18 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
     }
   };
 
-  const saveCurrentProgress = (): void => {
-    progressStore.save(
-      createWorkshopProgress({
+  const currentProgress = (): WorkshopProgress => createWorkshopProgress({
         workshopId: pack.id,
         workshopVersion: pack.version,
         pageId: engine.currentPage.id,
         completed: !engine.canGoNext,
         responses,
-      }),
-    );
+      });
+
+  const saveCurrentProgress = (): boolean => {
+    const saved = progressStore.saveConfirmed(currentProgress());
+    savingFailed = !saved;
+    return saved;
   };
 
   const clearProgress = (): void => {
@@ -1384,6 +1591,19 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
     exit.setAttribute("aria-label", messages.workshopExit);
 
     const current = engine.currentPageIndex + 1;
+    const saveStatus = savingFailed ? document.createElement("p") : undefined;
+    if (saveStatus) {
+      saveStatus.className = "workshop-save-status";
+      saveStatus.setAttribute("role", "status");
+      saveStatus.textContent = messages.workshopPortabilitySaveFailure;
+    }
+    const portability = createWorkshopPortabilityPanel({
+      pack,
+      messages,
+      progressStore,
+      getProgress: currentProgress,
+      exportOnly: true,
+    });
     renderWorkshop(mount, {
       pack,
       page: engine.currentPage,
@@ -1393,10 +1613,12 @@ async function startWorkshopPack(packUrl: URL): Promise<void> {
       responses,
       onResponseChange: (blockId, value) => {
         responses.set(blockId, value);
-        saveCurrentProgress();
+        if (!saveCurrentProgress()) render();
       },
       onCopyText: copyText,
       controls,
+      secondaryControl: portability,
+      saveStatus,
       exitControl: !engine.canGoNext ? exit : undefined,
       resetControl: createResetControl(),
       messages: {

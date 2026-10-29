@@ -9,6 +9,10 @@ import {
   WorkshopProgressStore,
   createWorkshopProgress,
 } from "../../../.test-build/apps/player/src/workshop-progress.js";
+import {
+  inspectWorkshopImport,
+  serializeWorkshopExport,
+} from "../../../.test-build/apps/player/src/workshop-portability.js";
 import { validateWorkshopPack } from "../../../.test-build/packages/validators/src/index.js";
 import { readJsonFixture, readProjectJson } from "../../helpers/fixtures.mjs";
 
@@ -147,6 +151,33 @@ test("workshop progress restores local responses into a new traversal instance",
 
   store.clear(demo.id);
   assert.equal(store.load(demo.id, demo.version, demo.pages), null);
+});
+
+test("a portable workshop export restores a v1 progression into a fresh browser store", async () => {
+  const demo = await readProjectJson("examples", "workshop-demo", "pack.json");
+  const source = new WorkshopProgressStore(new MemoryStorage());
+  const responses = new Map([
+    ["technical-note", "Une trace exportée"],
+    ["technical-choice", "reveler"],
+    ["technical-reveal", true],
+  ]);
+  const progress = createWorkshopProgress({
+    workshopId: demo.id,
+    workshopVersion: demo.version,
+    pageId: "page-04",
+    completed: true,
+    responses,
+  }, () => "2026-10-29T10:25:00.000Z");
+  source.save(progress);
+
+  const imported = inspectWorkshopImport(
+    serializeWorkshopExport(demo, source.load(demo.id, demo.version, demo.pages), () => "2026-10-29T10:30:00.000Z"),
+    demo,
+  );
+  assert.equal(imported.valid, true);
+  const destination = new WorkshopProgressStore(new MemoryStorage());
+  assert.equal(destination.saveConfirmed(imported.preview.progress), true);
+  assert.deepEqual(destination.load(demo.id, demo.version, demo.pages), progress);
 });
 
 test("augmented writing workshop remains a valid declarative pack", async () => {
