@@ -39,13 +39,13 @@ async function stop(child) {
   await Promise.race([once(child, "exit"), new Promise((resolve) => setTimeout(resolve, 2_000))]);
 }
 async function removeTemporaryDirectory(path) {
-  for (let attempt = 0; attempt < 5; attempt += 1) {
+  for (let attempt = 0; attempt < 20; attempt += 1) {
     try {
       await rm(path, { recursive: true, force: true });
       return;
     } catch (error) {
-      if (error?.code !== "EBUSY" || attempt === 4) throw error;
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      if (error?.code !== "EBUSY" || attempt === 19) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 250));
     }
   }
 }
