@@ -11,6 +11,20 @@ const baseUrl = "/ERIA-Immersive-Prologue/";
 const storageKey = "ine:workshop-progress:v1:ecriture-augmentee";
 
 function once(emitter, event) { return new Promise((resolve) => emitter.once(event, resolve)); }
+function findChromeExecutable() {
+  const candidates = [
+    process.env.CHROME_PATH,
+    process.env.GOOGLE_CHROME_SHIM,
+    "/usr/bin/google-chrome",
+    "/usr/bin/google-chrome-stable",
+    "/usr/bin/chromium",
+    "/usr/bin/chromium-browser",
+    "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+    join(process.env.LOCALAPPDATA ?? "", "Google\\Chrome\\Application\\chrome.exe"),
+  ].filter(Boolean);
+  return candidates.find((candidate) => existsSync(candidate));
+}
 async function freePort() {
   const server = createServer();
   server.listen(0, "127.0.0.1");
@@ -23,6 +37,17 @@ async function stop(child) {
   if (!child || child.exitCode !== null) return;
   child.kill();
   await Promise.race([once(child, "exit"), new Promise((resolve) => setTimeout(resolve, 2_000))]);
+}
+async function removeTemporaryDirectory(path) {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    try {
+      await rm(path, { recursive: true, force: true });
+      return;
+    } catch (error) {
+      if (error?.code !== "EBUSY" || attempt === 4) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+  }
 }
 async function waitFor(predicate, timeoutMs = 10_000) {
   const deadline = Date.now() + timeoutMs;
@@ -38,7 +63,17 @@ class Cdp {
   static async connect(url) { const socket = new WebSocket(url); await new Promise((resolve, reject) => { socket.addEventListener("open", resolve, { once: true }); socket.addEventListener("error", reject, { once: true }); }); return new Cdp(socket); }
   send(method, params = {}) { const id = ++this.#id; const result = new Promise((resolve, reject) => this.#pending.set(id, { resolve, reject })); this.socket.send(JSON.stringify({ id, method, params })); return result; }
   async evaluate(expression) { const result = await this.send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true }); if (result.exceptionDetails) throw new Error(result.exceptionDetails.text); return result.result.value; }
-  close() { this.socket.close(); }
+  close() {
+    if (this.socket.readyState === WebSocket.CLOSED) return Promise.resolve();
+    return new Promise((resolve) => {
+      const timeout = setTimeout(resolve, 1_000);
+      this.socket.addEventListener("close", () => {
+        clearTimeout(timeout);
+        resolve();
+      }, { once: true });
+      this.socket.close();
+    });
+  }
 }
 async function launchVite(port) {
   const child = spawn(process.execPath, ["node_modules/vite/bin/vite.js", "--host", "127.0.0.1", "--port", String(port), "--strictPort"], { stdio: "ignore" });
@@ -46,16 +81,22 @@ async function launchVite(port) {
   return child;
 }
 async function launchChrome() {
-  const executable = process.env.CHROME_PATH;
-  assert.ok(executable && existsSync(executable), "CHROME_PATH must reference Chrome");
+  const executable = findChromeExecutable();
+  assert.ok(executable, "Chrome executable not found");
   const profile = await mkdtemp(join(tmpdir(), "ine-portability-profile-"));
-  const child = spawn(executable, ["--headless=new", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "--disable-gpu", "--no-first-run", "--no-default-browser-check", "about:blank"], { stdio: ["ignore", "ignore", "pipe"] });
-  const endpoint = await new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => reject(new Error("Chrome DevTools endpoint timed out")), 15_000);
-    child.stderr.on("data", (data) => { const match = String(data).match(/DevTools listening on (ws:\/\/[^\s]+)/); if (match) { clearTimeout(timeout); resolve(match[1]); } });
-    child.once("error", reject);
-  });
-  return { child, endpoint, profile };
+  const child = spawn(executable, ["--headless=new", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "--disable-gpu", "--no-first-run", "--no-default-browser-check", "--no-sandbox", "about:blank"], { stdio: ["ignore", "ignore", "pipe"] });
+  try {
+    const endpoint = await new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => reject(new Error("Chrome DevTools endpoint timed out")), 15_000);
+      child.stderr.on("data", (data) => { const match = String(data).match(/DevTools listening on (ws:\/\/[^\s]+)/); if (match) { clearTimeout(timeout); resolve(match[1]); } });
+      child.once("error", reject);
+    });
+    return { child, endpoint, profile };
+  } catch (error) {
+    await stop(child);
+    await removeTemporaryDirectory(profile);
+    throw error;
+  }
 }
 async function openPage(endpoint) {
   const { port } = new URL(endpoint);
@@ -81,10 +122,13 @@ test("Augmented Workshop portability downloads, previews, imports, cancels and r
   const downloads = await mkdtemp(join(tmpdir(), "ine-portability-downloads-"));
   const files = await mkdtemp(join(tmpdir(), "ine-portability-files-"));
   const port = await freePort();
-  const vite = await launchVite(port);
-  const chrome = await launchChrome();
-  const page = await openPage(chrome.endpoint);
+  let vite;
+  let chrome;
+  let page;
   try {
+    vite = await launchVite(port);
+    chrome = await launchChrome();
+    page = await openPage(chrome.endpoint);
     await page.send("Page.enable");
     await page.send("Browser.setDownloadBehavior", { behavior: "allow", downloadPath: downloads });
     await page.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
@@ -139,13 +183,33 @@ test("Augmented Workshop portability downloads, previews, imports, cancels and r
     await page.send("Page.navigate", { url });
     await waitFor(() => page.evaluate("document.querySelector('.workshop-entry__primary')?.textContent === 'Reprendre l’atelier'"));
 
+    // A fresh browser profile gives the optional backup download its own explicit
+    // user-gesture context, independent from the two earlier export downloads.
+    await page.close();
+    await stop(chrome.child);
+    await removeTemporaryDirectory(chrome.profile);
+    chrome = await launchChrome();
+    page = await openPage(chrome.endpoint);
+    await page.send("Page.enable");
+    await page.send("Browser.setDownloadBehavior", { behavior: "allow", downloadPath: downloads });
+    await page.send("Page.navigate", { url });
+    await waitFor(() => page.evaluate("document.querySelector('.workshop-entry') !== null"));
     await page.evaluate(`localStorage.setItem(${JSON.stringify(storageKey)}, JSON.stringify({ schemaVersion: 1, workshopId: 'ecriture-augmentee', workshopVersion: '1.0', pageId: 'page-01', updatedAt: new Date().toISOString(), completed: false, responses: {} }))`);
     await page.send("Page.navigate", { url });
     await waitFor(() => page.evaluate("document.querySelector('.workshop-entry') !== null"));
     await page.evaluate("document.querySelector('.workshop-portability summary')?.click(); Array.from(document.querySelectorAll('.workshop-portability button')).find((button) => button.textContent.includes('Reprendre un parcours'))?.click()");
     await setFile(page, importPath);
     await waitFor(() => page.evaluate("document.querySelector('.workshop-portability__warning') !== null"));
-    await page.evaluate("Array.from(document.querySelectorAll('.workshop-portability__preview button')).find((button) => button.textContent.includes('progression actuelle'))?.click()");
+    const currentDownloadButton = await page.evaluate(`(() => {
+      const button = Array.from(document.querySelectorAll('.workshop-portability__preview button')).find((candidate) => candidate.textContent.includes('progression actuelle'));
+      if (!button) return null;
+      button.scrollIntoView({ block: 'center' });
+      const rect = button.getBoundingClientRect();
+      return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    })()`);
+    assert.ok(currentDownloadButton, "Current-progress download action missing");
+    await page.send("Input.dispatchMouseEvent", { type: "mousePressed", x: currentDownloadButton.x, y: currentDownloadButton.y, button: "left", clickCount: 1 });
+    await page.send("Input.dispatchMouseEvent", { type: "mouseReleased", x: currentDownloadButton.x, y: currentDownloadButton.y, button: "left", clickCount: 1 });
     let currentPath;
     await waitFor(async () => {
       for (const name of (await readdir(downloads)).filter((candidate) => candidate.endsWith(".json"))) {
@@ -197,9 +261,11 @@ test("Augmented Workshop portability downloads, previews, imports, cancels and r
     assert.equal(JSON.parse(await page.evaluate(`localStorage.getItem(${JSON.stringify(storageKey)})`)).pageId, "page-01");
     assert.ok(Date.now() - started > 0);
   } finally {
-    page.close(); await stop(vite); await stop(chrome.child);
-    await rm(chrome.profile, { recursive: true, force: true });
-    await rm(downloads, { recursive: true, force: true });
-    await rm(files, { recursive: true, force: true });
+    await page?.close();
+    await stop(vite);
+    await stop(chrome?.child);
+    if (chrome?.profile) await removeTemporaryDirectory(chrome.profile);
+    await removeTemporaryDirectory(downloads);
+    await removeTemporaryDirectory(files);
   }
 });
